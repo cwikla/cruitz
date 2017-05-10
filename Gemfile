@@ -22,11 +22,13 @@ gem 'coffee-rails', '~> 4.2'
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+#gem 'jbuilder', '~> 2.5'
+gem 'active_model_serializers'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -38,6 +40,9 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'ffaker'
 end
 
 group :development do
@@ -47,6 +52,19 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+#
+source "http://pyr:akbash42@gems.cwikla.com" do
+  gem 'pyr_gem', :path => "../pyr/pyr_gem"
+  gem 'pyr_async', :path => "../pyr/pyr_async"
+  gem 'pyr_base', :path => "../pyr/pyr_base"
+  #gem 'pyr_base', '~> 8.0'
+#  gem 'pyr_geo', :path => "../pyr/pyr_geo"
+#  gem 'pyr_push', :path => "../pyr/pyr_push"
+  gem 'jpyr', :path => "../pyr/jpyr"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
