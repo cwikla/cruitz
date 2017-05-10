@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../pyr/pyr_base
   specs:
-    pyr_base (8.0.8)
+    pyr_base (8.1.0)
       aws-sdk
       aws-sdk-rails
       cancan
