@@ -11,9 +11,9 @@ default: &default
 
 development:
   <<: *default
-  database: bullseye_dev
-  username: bullseye
-  password: bullseye
+  database: cruitz_dev
+  username: cruitz
+  password: cruitz
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

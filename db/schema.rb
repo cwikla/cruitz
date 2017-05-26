@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 20170510203461) do
     t.index ["facebook_id"], name: "index_users_on_facebook_id", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["twitter_id"], name: "index_users_on_twitter_id", using: :btree
+    t.index ["unconfirmed_email"], name: "index_users_on_unconfirmed_email", using: :btree
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
     t.index ["uuid"], name: "index_users_on_uuid", unique: true, using: :btree
   end

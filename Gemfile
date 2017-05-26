@@ -56,8 +56,10 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'tether-rails'
+gem 'bootstrap', '~> 4.0.0.alpha6'
 #
-source "http://pyr:akbash42@gems.cwikla.com" do
+#source "http://pyr:akbash42@gems.cwikla.com" do
   gem 'pyr_gem', :path => "../pyr/pyr_gem"
   gem 'pyr_async', :path => "../pyr/pyr_async"
   gem 'pyr_base', :path => "../pyr/pyr_base"
@@ -65,7 +67,7 @@ source "http://pyr:akbash42@gems.cwikla.com" do
 #  gem 'pyr_geo', :path => "../pyr/pyr_geo"
 #  gem 'pyr_push', :path => "../pyr/pyr_push"
   gem 'jpyr', :path => "../pyr/jpyr"
-end
+#end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

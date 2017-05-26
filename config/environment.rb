@@ -1,11 +1,11 @@
 # Load the Rails application.
 require_relative 'application'
 
-APP_NAME = "Bullseye"
+APP_NAME = "Cruitz"
 TAG_LINE = "Sourcing the World"
-COMPANY_NAME = "Bullseye"
+COMPANY_NAME = "Cruitz"
 
-EMAIL_DOMAIN = "cwikla.com"
+EMAIL_DOMAIN = "cruitz.com"
 DEFAULT_APP_MAILER_ADDR = "info@#{EMAIL_DOMAIN}"
 EXCEPTION_NOTIFICATION_EMAIL = "cwikla@#{EMAIL_DOMAIN}"
 
