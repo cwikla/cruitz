@@ -3,4 +3,8 @@ Rails.application.routes.draw do
       #scope module: :v1 do
       #end
   #end
+
+  get 'pricing' => 'home#pricing'
+  get 'about' => 'home#about'
+  get 'recruiters' => 'home#recruiters'
 end
