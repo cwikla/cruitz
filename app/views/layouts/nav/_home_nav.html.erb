@@ -1,0 +1,17 @@
+<% @tabs = [[pricing_path, "Pricing"], [recruiters_path, "Recruiters"]] %>
+
+  <% if !@tabs.empty? -%>
+    <% curr_url = request.url.split('?')[0] -%>
+    <ul class="navbar-nav  ml-auto justify-content-end">
+      <% for url, label in @tabs -%>
+        <%
+           tab_active = curr_url == url || @selected_tab == url
+           tab_sub_active = tab_active && curr_url != url
+        -%>
+        <li class="nav-item <%= 'active' if tab_active -%> <%= 'sub-active' if tab_sub_active -%>">
+          <a class="nav-link" href="<%= url -%>"><%= label -%></a>
+        </li>
+      <% end -%>
+    </ul>
+  <% end -%>
+
