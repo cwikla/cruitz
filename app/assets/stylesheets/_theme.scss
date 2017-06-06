@@ -1,0 +1,139 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ */
+
+$primary_color: rgba(#0097a7, 1.0);
+$primary_light: rgba(#56c8d8, 1.0);
+$primary_dark:  rgba(#006978, 1.0);
+
+$primary_color_50: rgba(red($primary_color), green($primary_color), blue($primary_color), 0.5);
+$primary_light_50: rgba(red($primary_light), green($primary_light), blue($primary_light), 0.5);
+$primary_dark_50:  rgba(red($primary_dark), green($primary_dark), blue($primary_dark), 0.5);
+
+$secondary_color: rgba(#ffb300, 1.0);
+$secondary_light: rgba(#ffe54c, 1.0);
+$secondary_dark:  rgba(#c68400, 1.0);
+
+$secondary_color_50: rgba(red($secondary_color), green($secondary_color), blue($secondary_color), 0.5);
+$secondary_light_50: rgba(red($secondary_light), green($secondary_light), blue($secondary_light), 0.5);
+$secondary_dark_50:  rgba(red($secondary_dark), green($secondary_dark), blue($secondary_dark), 0.5);
+
+$hover_color: rgb(108, 220, 240); 
+
+body {
+  margin-bottom: 60px;
+}
+
+hr {
+  color: $primary_color !important;
+}
+
+a {
+  color: $primary_color !important;
+}
+a:hover {
+  color: $primary_light !important;
+}
+
+.fa2 {
+  color: $primary_color !important;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 2em;
+  background-color: $primary_color;
+  color: #fff;
+}
+
+.bg-primary {
+  background-color: $primary_color !important;
+}
+
+.btn-primary {
+  background-color: $secondary_color !important;
+  border-color: $secondary_color !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: lighten($secondary_color, 5%) !important;
+  color: #fff !important;
+}
+
+.btn-action {
+  background-color: $secondary_color !important;
+  border-color: $secondary_color !important;
+  color: #fff;
+}
+
+.btn-action:hover, .btn-action:focus, .btn-action:active {
+  background-color: lighten($secondary_color, 5%) !important;
+}
+
+.btn-outline-action {
+  background-color: #fff;
+  border-color: $secondary_color !important;
+  color: $secondary_color;
+}
+
+
+.text-primary {
+  color: $primary_color !important;
+}
+
+.nav-link, .nav-icon:focus {
+  outline: none;
+}
+
+.nav-link:hover, .nav-icon:hover {
+  color:  $hover_color !important;
+}
+
+.trans-50 {
+  background-color: rgba($primary_color, 0.45);
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.jumbotron {
+  border-radius: 0;
+}
+
+.modal-backdrop {
+  background-color: $primary_color;
+}
+
+.form-notice {
+  color: #f00;
+}
+
+.control-group {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.navbar-brand {
+  color: $primary_color !important;
+  font-size: 1.2em;
+}
+

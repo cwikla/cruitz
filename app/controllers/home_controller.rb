@@ -1,6 +1,8 @@
 
 
 COMMISSION = 2.5
+RECRUITER = 'recruiter'
+NORMIE = 'normie'
 
 class HomeController < ApplicationController
 
@@ -22,11 +24,13 @@ class HomeController < ApplicationController
   end
 
   def recruiters
+    @type = RECRUITER
   end
 
   private
   
   def setup
+    @type = NORMIE
     @commission = COMMISSION
   end
 

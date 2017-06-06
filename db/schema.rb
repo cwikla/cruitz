@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170510203461) do
+ActiveRecord::Schema.define(version: 20170606201352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20170510203461) do
     t.integer  "api_key_id"
     t.index ["last_accessed_at"], name: "index_access_tokens_on_last_accessed_at", using: :btree
     t.index ["token"], name: "index_access_tokens_on_token", unique: true, using: :btree
+  end
+
+  create_table "agencies", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.datetime "deleted_at"
+    t.string   "name",        null: false
+    t.text     "description"
+    t.index ["name"], name: "index_agencies_on_name", using: :btree
   end
 
   create_table "api_keys", force: :cascade do |t|
@@ -56,6 +65,55 @@ ActiveRecord::Schema.define(version: 20170510203461) do
     t.index ["started_at", "status"], name: "index_async_queues_on_started_at_and_status", using: :btree
   end
 
+  create_table "candidates", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.datetime "deleted_at"
+    t.integer  "head_id",     null: false
+    t.integer  "position_id", null: false
+    t.index ["head_id"], name: "index_candidates_on_head_id", using: :btree
+    t.index ["position_id"], name: "index_candidates_on_position_id", using: :btree
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.datetime "deleted_at"
+    t.string   "name",        null: false
+    t.text     "description"
+    t.index ["name"], name: "index_companies_on_name", using: :btree
+  end
+
+  create_table "employers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_employers_on_user_id", using: :btree
+  end
+
+  create_table "heads", force: :cascade do |t|
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.datetime "deleted_at"
+    t.integer  "recruiter_id", null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.index ["recruiter_id"], name: "index_heads_on_recruiter_id", using: :btree
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.datetime "deleted_at"
+    t.integer  "employer_id", null: false
+    t.text     "title",       null: false
+    t.text     "description", null: false
+    t.index ["employer_id"], name: "index_positions_on_employer_id", using: :btree
+  end
+
   create_table "pyr_base_magic_keys", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -66,6 +124,24 @@ ActiveRecord::Schema.define(version: 20170510203461) do
     t.datetime "issued_at"
     t.index ["magic_key", "user_id"], name: "index_pyr_base_magic_keys_on_magic_key_and_user_id", using: :btree
     t.index ["user_id", "created_at"], name: "index_pyr_base_magic_keys_on_user_id_and_created_at", using: :btree
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.datetime "deleted_at"
+    t.integer  "user_id",      null: false
+    t.integer  "recruiter_id", null: false
+    t.index ["user_id", "recruiter_id"], name: "index_ratings_on_user_id_and_recruiter_id", using: :btree
+  end
+
+  create_table "recruiters", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deletd_at"
+    t.integer  "user_id"
+    t.integer  "agency_id"
+    t.index ["agency_id", "user_id"], name: "index_recruiters_on_agency_id_and_user_id", using: :btree
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -106,10 +182,17 @@ ActiveRecord::Schema.define(version: 20170510203461) do
     t.string   "digits_phone"
     t.string   "twitter_id"
     t.boolean  "anon",                              default: true, null: false
+    t.integer  "employer_id"
+    t.integer  "recruiter_id"
+    t.string   "first_name",                                       null: false
+    t.string   "last_name",                                        null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
     t.index ["digits_user_id", "deleted_at"], name: "index_users_on_digits_user_id_and_deleted_at", unique: true, using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["employer_id"], name: "index_users_on_employer_id", using: :btree
     t.index ["facebook_id"], name: "index_users_on_facebook_id", unique: true, using: :btree
+    t.index ["last_name", "first_name"], name: "index_users_on_last_name_and_first_name", using: :btree
+    t.index ["recruiter_id"], name: "index_users_on_recruiter_id", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["twitter_id"], name: "index_users_on_twitter_id", using: :btree
     t.index ["unconfirmed_email"], name: "index_users_on_unconfirmed_email", using: :btree

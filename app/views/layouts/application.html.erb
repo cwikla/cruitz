@@ -1,14 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>cruitz</title>
+<head>
+    <title><%= app_name -%></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans:400,700|Montserrat:400,700|Roboto:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= stylesheet_link_tag params[:controller] %>
+    <%= content_for :styles %>
     <%= csrf_meta_tags %>
+</head>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+<body class="<%= defined?(@engine_name) ? @engine_name : '' %>" >
 
-  <body>
-    <%= yield %>
-  </body>
+    <%= render "layouts/nav/nav" %>
+    <hr class="mt-0"/>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 hidden-xs-down sidebar" id="sidebar">
+          <%= render "layouts/nav/sidebar" %>
+        </nav>
+        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2" id="main">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+
+
+    <% if content_for?(:footer) %>
+      <%= yield :footer %>
+    <% else %>
+      <%#= render "shared/footer" %>
+    <% end %>
+
+    <% if !current_user -%>
+        <%= render_modal "sign_in_modal" -%>
+        <%= render_modal "register_modal" -%>
+        <%= render_modal "forgot_password_modal" -%>
+    <% end -%>
+
+    <% if false %>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <% end %>
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag params[:controller] %>
+    <%= content_for :scripts %>
+</body>
 </html>
+

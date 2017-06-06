@@ -1,9 +1,9 @@
 # Load the Rails application.
 require_relative 'application'
 
-APP_NAME = "Cruitz"
+APP_NAME = "CRUITZ"
 TAG_LINE = "Sourcing the World"
-COMPANY_NAME = "Cruitz"
+COMPANY_NAME = "CRUITZ"
 
 EMAIL_DOMAIN = "cruitz.com"
 DEFAULT_APP_MAILER_ADDR = "info@#{EMAIL_DOMAIN}"
