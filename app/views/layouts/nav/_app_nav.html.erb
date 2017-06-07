@@ -1,13 +1,13 @@
-<nav class="navbar navbar-toggleable-sm">
+<nav class="navbar navbar-toggleable-xl">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" 
     data-target="#main-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-user-o <% if user_signed_in? %>signed_in<% end %>"></span>
   </button>
 
   <a href="<%= root_path %>" class="navbar-brand"><%= app_name -%></a>
 
-  <div class="collapse navbar-collapse" id="main-navbar">
-<div id="user-nav" class="nav-item dropdown ml-auto justify-content-end">
-      <a class="nav-link dropdown-toggle <%= "btn-danger" if ghosted_user -%> " data-toggle="dropdown" pyr-target="#user-nav"><span class="fa fa-user-o"></span> <%= current_user.ui_identifier %></a>
+  <div class="navbar-collapse" id="main-navbar">
+    <div id="user-nav" class="nav-item dropdown ml-auto justify-content-end">
+      <a class="nav-link dropdown-toggle <%= "btn-danger" if ghosted_user -%> " data-toggle="dropdown" ><span class="fa fa-user-o"></span> <%= current_user.ui_identifier %></a>
       <ul class="dropdown-menu dropdown-default dropdown-menu-right" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
           <li class="dropdown-item">
               <a href="<%= main_app.edit_user_registration_url %>"><%= current_user.ui_identifier %></a>
@@ -17,7 +17,7 @@
           </li>
           <li class="dropdown-item"><%= link_to "Log Out", main_app.destroy_user_session_url, :method => "delete" %></li>
       </ul>
-</div>
+    </div>
 
 <% if can? :view_admin_tools, User -%>
     <div id="admin-nav" class="nav-item dropdown navbar-right">
