@@ -28,8 +28,6 @@ $secondary_color_50: rgba(red($secondary_color), green($secondary_color), blue($
 $secondary_light_50: rgba(red($secondary_light), green($secondary_light), blue($secondary_light), 0.5);
 $secondary_dark_50:  rgba(red($secondary_dark), green($secondary_dark), blue($secondary_dark), 0.5);
 
-$hover_color: rgb(108, 220, 240); 
-
 body {
   margin-bottom: 60px;
 }
@@ -100,7 +98,7 @@ a:hover {
 }
 
 .nav-link:hover, .nav-icon:hover {
-  color:  $hover_color !important;
+  color:  $primary_light !important;
 }
 
 .trans-50 {
@@ -137,3 +135,9 @@ a:hover {
   font-size: 1.2em;
 }
 
+.navbar-toggler {
+  color: $primary_color !important;
+}
+.navbar-toggler:hover {
+  color:  $primary_light !important;
+}
