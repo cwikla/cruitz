@@ -1,6 +1,8 @@
 class EmployersController < ApplicationController
 
-	def new
+  def index
+    @employer = current_user.employer
+    @jobs = @employer.jobs.open
   end
 
   private

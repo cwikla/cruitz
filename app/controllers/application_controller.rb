@@ -13,9 +13,6 @@ class ApplicationController < Pyr::Base::ApplicationController
 
   def get_layout
     using = "pyr/base/layout"
-    if current_user
-      using = "application"
-    end
     return using
   end
 end

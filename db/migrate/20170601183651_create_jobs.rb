@@ -1,6 +1,6 @@
-class CreatePositions < ActiveRecord::Migration[5.0]
+class CreateJobs < ActiveRecord::Migration[5.0]
   def change
-    create_table :positions do |t|
+    create_table :jobs do |t|
       t.timestamps
       t.timestamp :deleted_at 
 
@@ -10,6 +10,6 @@ class CreatePositions < ActiveRecord::Migration[5.0]
       t.text :description, :null => false
     end
 
-    add_index :positions, [:employer_id]
+    add_index :jobs, [:employer_id]
   end
 end

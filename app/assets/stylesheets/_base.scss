@@ -1,4 +1,34 @@
 
+
+@include media-breakpoint-down(xs) {
+  .hide-below-xs {
+    display: none;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .hide-below-sm {
+    display: none;
+  }
+}
+@include media-breakpoint-down(md) {
+  .hide-below_md {
+    display: none;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .hide-below-lg {
+    display: none;
+  }
+}
+
+@include media-breakpoint-down(xl) {
+  .hide-below-xl {
+    display: none;
+  }
+}
+
 @import "sidebar";
 
 .nav-tabs {

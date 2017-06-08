@@ -1,4 +1,4 @@
 class Company < ApplicationRecord
   has_many :employers
-  has_many :positions, :through => :employers
+  has_many :jobs, :through => :employers
 end

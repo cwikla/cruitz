@@ -1,0 +1,9 @@
+  <hr class="mt-0 nav-line"/>
+
+  <% if user_signed_in? %>
+    <div class="container">
+      <%= yield %>
+    </div>
+  <% else %>
+    <%= yield %>
+  <% end %>

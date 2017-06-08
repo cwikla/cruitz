@@ -1,5 +1,5 @@
 <div id="user-nav" class="nav-item dropdown ml-auto justify-content-end">
-      <a class="nav-link dropdown-toggle <%= "btn-danger" if ghosted_user -%> " data-toggle="dropdown" pyr-target="#user-nav"><span class="fa fa-user-o"></span> <%= current_user.ui_identifier %></a>
+      <a class="nav-link dropdown-toggle <%= "btn-danger" if ghosted_user -%> " data-toggle="dropdown" pyr-target="#user-nav"><span class="fa fa-user-o"></span><span class="hide-below-sm"><%= current_user.ui_identifier %></span></a>
       <ul class="dropdown-menu dropdown-default dropdown-menu-right" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
           <li class="dropdown-item">
               <a href="<%= main_app.edit_user_registration_url %>"><%= current_user.ui_identifier %></a>

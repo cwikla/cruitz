@@ -5,10 +5,10 @@ class CreateCandidates < ActiveRecord::Migration[5.0]
       t.timestamp :deleted_at
 
       t.integer :head_id, :null => false
-      t.integer :position_id, :null => false
+      t.integer :job_id, :null => false
     end
 
     add_index :candidates, [:head_id]
-    add_index :candidates, [:position_id]
+    add_index :candidates, [:job_id]
   end
 end
