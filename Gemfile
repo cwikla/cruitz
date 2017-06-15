@@ -64,7 +64,7 @@ gem 'bootstrap', '~> 4.0.0.alpha6'
   gem 'pyr_async', :path => "../pyr/pyr_async"
   gem 'pyr_base', :path => "../pyr/pyr_base"
   #gem 'pyr_base', '~> 8.0'
-#  gem 'pyr_geo', :path => "../pyr/pyr_geo"
+  gem 'pyr_geo', :path => "../pyr/pyr_geo"
 #  gem 'pyr_push', :path => "../pyr/pyr_push"
   gem 'jpyr', :path => "../pyr/jpyr"
 #end

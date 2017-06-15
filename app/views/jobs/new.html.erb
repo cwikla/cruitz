@@ -1,2 +1,45 @@
-<form>
+<form id="newJob">
+  <div class="form-group">
+    <label for="jobTitle">Title</label>
+    <input type="" class="form-control auto-complete" id="jobTitle" data-source="<%= jobs_location_path %>" aria-describedby="jobTitle" placeholder="Enter job title" />
+    <small id="jobTitleHelp" class="form-text text-muted">A catchy title for this position</small>
+  </div>
+  <div class="form-group">
+    <label for="location">Location</label>
+    <input type="" class="form-control" id="location" aria-describedby="location" placeholder="Enter location" />
+    <small id="locationHelp" class="form-text text-muted">Where this job is located</small>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea type="" class="form-control" id="description" aria-describedby="description" placeholder="Enter description" rows="3"></textarea>
+    <small id="descriptionHelp" class="form-text text-muted">Exciting job text.</small>
+  </div>
+  <div class="form-group">
+    <label for="timeCommit">Time Requirements</label>
+    <select class="form-control" id="timeCommit">
+      <option>Full Time</option>
+      <option>Part Time</option>
+      <option>Contractor</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <div class="form-inline">
+      <label for="description">Skills</label>
+      <input type="" data-target="skills" class="form-control" id="skills" aria-describedby="skills" placeholder="Skill"/>
+  
+       <label for="skillTime">Experience</label>
+       <input type="" data-target="skills" class="form-control" id="skillsTime" aria-describedby="skillsTime" placeholder="Time"/>
+    </div>
+    <small id="skillsTimeHelp" class="form-text text-muted">Add skill time requirements</small>
+  </div>
+  <div class="form-group">
+     <label for="resources">Required Resources</label>
+     <input type="" data-target="resources" class="form-control" id="resources" aria-describedby="resources" placeholder="Resource"/>
+     <small id="resourcesHelp" class="form-text text-muted">Add needed items</small>
+  </div>
+  <div class="form-group">
+     <label for="benefits">Benefits</label>
+     <input type="" data-target="benefits" class="form-control" id="benefits" aria-describedby="benefits" placeholder="Resource"/>
+     <small id="benefitsHelp" class="form-text text-muted">Benefits to entice</small>
+  </div>
 </form>
