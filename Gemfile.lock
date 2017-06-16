@@ -1,7 +1,7 @@
 PATH
   remote: ../pyr/jpyr
   specs:
-    jpyr (2.0.1)
+    jpyr (3.0.0)
       jquery-rails
       jquery-ui-rails
 
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../pyr/pyr_base
   specs:
-    pyr_base (8.3.0)
+    pyr_base (9.0.0)
       aws-sdk
       aws-sdk-rails
       bootstrap (~> 4.0.0.alpha6)

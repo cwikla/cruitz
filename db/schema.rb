@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614070524) do
+ActiveRecord::Schema.define(version: 20170615191208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,16 +105,19 @@ ActiveRecord::Schema.define(version: 20170614070524) do
   end
 
   create_table "jobs", force: :cascade do |t|
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.datetime "deleted_at"
-    t.integer  "employer_id",   null: false
-    t.text     "title",         null: false
-    t.text     "description",   null: false
+    t.integer  "employer_id",               null: false
+    t.text     "title",                     null: false
+    t.text     "description",               null: false
     t.datetime "closed_at"
     t.integer  "closed_reason"
     t.datetime "filled_at"
+    t.string   "location",                  null: false
+    t.integer  "time_commit",   default: 0, null: false
     t.index ["employer_id"], name: "index_jobs_on_employer_id", using: :btree
+    t.index ["location"], name: "index_jobs_on_location", using: :btree
   end
 
   create_table "pyr_base_magic_keys", force: :cascade do |t|
