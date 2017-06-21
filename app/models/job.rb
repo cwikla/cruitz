@@ -1,5 +1,5 @@
 class Job < ApplicationRecord
-  belongs_to :employer
+  belongs_to :user
 
   JOB_FULL_TIME = 0
   JOB_PART_TIME = 1

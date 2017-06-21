@@ -29,7 +29,7 @@ $secondary_light_50: rgba(red($secondary_light), green($secondary_light), blue($
 $secondary_dark_50:  rgba(red($secondary_dark), green($secondary_dark), blue($secondary_dark), 0.5);
 
 body {
-  margin-bottom: 60px;
+  background-color: #FF0;
 }
 
 hr {
@@ -114,15 +114,6 @@ a:hover {
 
 .modal-backdrop {
   background-color: $primary_color;
-}
-
-.form-notice {
-  color: #f00;
-}
-
-.control-group {
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 
 .navbar-brand {

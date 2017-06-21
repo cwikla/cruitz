@@ -2,15 +2,14 @@ class User < ApplicationRecord
   include Pyr::Base::Model::User
 
   acts_as_simple_cache
-  make_authorized_by(:email)
+  #make_authorized_by(:email)
 
   after_create :on_after_create
 
-  has_one :employer   # if set you are an employer
-  has_one :recruiter  # if set you are a recruiter
+  has_many :jobs
+  has_many :heads
 
-  has_many :jobs, :through => :employer
-  has_many :heads, :through => :recruiter
+  belongs_to :company
 
   def ui_identifier
     return first_name if first_name
@@ -21,6 +20,6 @@ class User < ApplicationRecord
   private
 
   def on_after_create
-    self.build_employer
+    #self.build_employer
   end
 end

@@ -11,8 +11,7 @@ class JobsController < ApplicationController
     if @job.save
       resp = @job
     else
-      response.status = 400
-      render json: {:errors => @job.errors }
+      return render_create_error json: @job
     end
   end
 

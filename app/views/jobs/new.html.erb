@@ -1,29 +1,29 @@
 <% error = @job.errors.any? ? 'error' : '' %>
-<%= form_for(@job, :html => { :id => "newJob", :class => "pyr-form #{ error }" }, :data => {"success-target" => root_path} ) do |f| %>
+<%= form_for(@job, :html => { :class => "pyr-form #{ error }" }, :data => {"success-target" => root_path} ) do |f| %>
 
   <%#= render "shared/error_messages", :obj => @job %>
 
   <div class="form-group <%= field_with_errors_class?(@job, :title) %>">
-    <label for="jobTitle">Title <%= field_with_errors_message?(@job, :title) %></label>
-    <%= f.text_field :title, :class =>  "form-control auto-complete", :id => "jobTitle", "data-source" => jobs_location_path, "aria-describedby" => "jobTitle" , :placeholder =>  "Enter job title" %>
-    <!-- small id="jobTitleHelp" class="form-text text-muted">A catchy title for this position</small !-->
+    <label for="job_title">Title <%= field_with_errors_message?(@job, :title) %></label>
+    <%= f.text_field :title, :class =>  "form-control auto-complete", "data-source" => jobs_location_path, "aria-describedby" => "job_title" , :placeholder =>  "Enter job title" %>
+    <!-- small id="job_title_help" class="form-text text-muted">A catchy title for this position</small !-->
   </div>
   <div class="form-group <%= field_with_errors_class?(@job, :location) %>">
-    <label for="location">Location <%= field_with_errors_message?(@job, :location) %></label>
-    <%= f.text_field :location, :class => "form-control", :id=>"location", "aria-describedby"=>"location", :placeholder=>"Enter location"  %>
-    <!-- small id="locationHelp" class="form-text text-muted">Where this job is located</small !-->
+    <label for="job_location">Location <%= field_with_errors_message?(@job, :location) %></label>
+    <%= f.text_field :location, :class => "form-control", "aria-describedby"=>"job_location", :placeholder=>"Enter location"  %>
+    <!-- small id="location_help" class="form-text text-muted">Where this job is located</small !-->
   </div>
   <div class="form-group" <%= field_with_errors_class?(@job, :time_commit) %>>
-    <label for="timeCommit">Time Requirements <%= field_with_errors_message?(@job, :time_commit) %></label>
+    <label for="job_time_commit">Time Requirements <%= field_with_errors_message?(@job, :time_commit) %></label>
     <%= f.select :time_commit, options_for_select([["Full Time", 0], ["Part Time", 1], ["Contractor", 2]]),
-     :class => "form-control", :id => "timeCommit" %>
+     :class => "form-control" %>
   </div>
   <div class="form-group <%= field_with_errors_class?(@job, :description) %>">
-    <label for="description">Description <%= field_with_errors_message?(@job, :description) %></label>
-    <%= f.text_area :description, :class=>"form-control", :id=>"description", "aria-describedby"=>"description" , :placeholder=>"Enter description", :rows=>10, :style=>"height: auto" %>
-    <!-- small id="descriptionHelp" class="form-text text-muted">Exciting job text.</small !-->
+    <label for="job_description">Description <%= field_with_errors_message?(@job, :description) %></label>
+    <%= f.text_area :description, :class=>"form-control", "aria-describedby"=>"job_description" , :placeholder=>"Enter description", :rows=>10, :style=>"height: auto" %>
+    <!-- small id="description_help" class="form-text text-muted">Exciting job text.</small !-->
   </div>
 <% end %>
 <div class="form-footer">
-  <a href="#" class="btn btn-primary pyr-button" pyr-target-form="newJob">Sign In</a>
+  <a href="#" class="btn btn-primary pyr-button" pyr-target-form="new_job">Create</a>
 </div>

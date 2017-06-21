@@ -1,2 +1,0 @@
-class AgenciesController < ApplicationController
-end

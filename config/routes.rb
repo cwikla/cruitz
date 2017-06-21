@@ -2,11 +2,8 @@ Rails.application.routes.draw do
 
   get 'jobs/location' => 'jobs#lsearch'
 
-  resources :recruiters
-  resources :employers
   resources :ratings
   resources :companies
-  resources :agencies
   resources :candidates
   resources :heads
   resources :jobs

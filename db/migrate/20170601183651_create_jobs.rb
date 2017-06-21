@@ -4,12 +4,12 @@ class CreateJobs < ActiveRecord::Migration[5.0]
       t.timestamps
       t.timestamp :deleted_at 
 
-      t.integer :employer_id, :null => false
+      t.integer :user_id, :null => false
 
       t.text :title, :null => false
       t.text :description, :null => false
     end
 
-    add_index :jobs, [:employer_id]
+    add_index :jobs, [:user_id]
   end
 end

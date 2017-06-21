@@ -55,14 +55,7 @@
   }
 }
 
-.field_with_errors {
-  label {
-    color: $state-danger-text;
-  }
-  .form-control {
-    color: $state-danger-text;
-    border-bottom: 1px solid $state-danger-text;
-  }
+.hidden {
+  display: none;
 }
-
 

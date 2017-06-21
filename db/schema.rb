@@ -27,15 +27,6 @@ ActiveRecord::Schema.define(version: 20170615191208) do
     t.index ["token"], name: "index_access_tokens_on_token", unique: true, using: :btree
   end
 
-  create_table "agencies", force: :cascade do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.datetime "deleted_at"
-    t.string   "name",        null: false
-    t.text     "description"
-    t.index ["name"], name: "index_agencies_on_name", using: :btree
-  end
-
   create_table "api_keys", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -84,14 +75,6 @@ ActiveRecord::Schema.define(version: 20170615191208) do
     t.index ["name"], name: "index_companies_on_name", using: :btree
   end
 
-  create_table "employers", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
-    t.integer  "user_id"
-    t.index ["user_id"], name: "index_employers_on_user_id", using: :btree
-  end
-
   create_table "heads", force: :cascade do |t|
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
@@ -108,7 +91,7 @@ ActiveRecord::Schema.define(version: 20170615191208) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.datetime "deleted_at"
-    t.integer  "employer_id",               null: false
+    t.integer  "user_id",                   null: false
     t.text     "title",                     null: false
     t.text     "description",               null: false
     t.datetime "closed_at"
@@ -116,8 +99,8 @@ ActiveRecord::Schema.define(version: 20170615191208) do
     t.datetime "filled_at"
     t.string   "location",                  null: false
     t.integer  "time_commit",   default: 0, null: false
-    t.index ["employer_id"], name: "index_jobs_on_employer_id", using: :btree
     t.index ["location"], name: "index_jobs_on_location", using: :btree
+    t.index ["user_id"], name: "index_jobs_on_user_id", using: :btree
   end
 
   create_table "pyr_base_magic_keys", force: :cascade do |t|
@@ -192,15 +175,6 @@ ActiveRecord::Schema.define(version: 20170615191208) do
     t.integer  "user_id",      null: false
     t.integer  "recruiter_id", null: false
     t.index ["user_id", "recruiter_id"], name: "index_ratings_on_user_id_and_recruiter_id", using: :btree
-  end
-
-  create_table "recruiters", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deletd_at"
-    t.integer  "user_id"
-    t.integer  "agency_id"
-    t.index ["agency_id", "user_id"], name: "index_recruiters_on_agency_id_and_user_id", using: :btree
   end
 
   create_table "sessions", force: :cascade do |t|
