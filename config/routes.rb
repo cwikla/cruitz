@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  namespace :api do
+    resources :users, only: [:index, :create, :show, :update, :destroy]
+    #resources :microposts, only: [:index, :create, :show, :update, :destroy]
+  end
+
+
   get 'jobs/location' => 'jobs#lsearch'
 
   resources :ratings

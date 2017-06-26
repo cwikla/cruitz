@@ -1,0 +1,13 @@
+HTTP/1.1 302 Found
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Location: http://localhost:12000/
+Content-Type: text/html; charset=utf-8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjpudWxsLCJzdWIiOiIxMSIsInNjcCI6InVzZXIiLCJpYXQiOjE0OTg1MDgyNTcsImV4cCI6MTQ5ODUxMTg1NywianRpIjoiMDI5NGM3M2ItNTc4Ny00ZDJjLTkxNmMtN2JkMzNhOGZiMGEzIn0.0XJG3z8UZBc_vfu4LrtyxreVZ6bDYeitfOUvH6YhO6Y
+Cache-Control: no-cache
+Set-Cookie: _cruitz_session=djJaNURKcWtFd2JlbXhmQ0lxOVRYVXFqQk9WNE1qQ1doaHBJK2RSY1RyWE5tSTVxZTNDZDEzdTI2aE1JbkRTUVRJaGJJQVFpc1A3M05HVC9UZUxaZ1ltZDgwMHN3ZndLZE1yRzlaY21tWXdxU2Y5LzExbmxpZ0V6TlB2emdteDcxOVQ5SEpHbldsUzhmc1RLN0p2cVVVN1VhYUF1MEdyUHo5U2JjZ0UxWmZvOTVjQUxnRGtmdVJuenUrTTl1TTFCL0JGQVhCZWtad1ZQZlU5RW9vRUVCZjVpenRSMUtJaFBnbzhVaXNoUXJNVzdNVjhTSENCRjhWQmpiU3Y5bERMYy0tYjVFNHd5dlBqcUxKTHhlTitSSUZ6dz09--29ef8176e2c7b7ab15e896692f9e563f4394c56e; path=/; HttpOnly
+X-Request-Id: 78c54e8a-69a8-4bc5-bf5f-10419a10f5dd
+X-Runtime: 10.260981
+Transfer-Encoding: chunked
+

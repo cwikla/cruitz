@@ -1,0 +1,1 @@
+ActiveModelSerializers.config.embed = :ids

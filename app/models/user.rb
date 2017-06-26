@@ -17,6 +17,10 @@ class User < ApplicationRecord
     return email
   end
 
+  def jwt_payload
+    {:uuid => self.uuid}
+  end
+
   private
 
   def on_after_create
