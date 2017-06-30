@@ -1,8 +1,8 @@
 
 Pyr.dashboard = {
   pageSetup: function() {
-    $('.page-default').showPage();
-  };
+    //$('.pyr-page .page-default').showPage();
+  }
 };
 
 Pyr.addJob = {
@@ -11,6 +11,6 @@ Pyr.addJob = {
   },
 
   formSuccess: function(e, form, data) {
-    $('.page-default').showPage();
+    $('.pyr-page .page-default').showPage();
   },
 };

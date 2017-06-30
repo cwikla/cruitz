@@ -1,9 +1,11 @@
   <hr class="mt-0 nav-line"/>
 
   <% if user_signed_in? %>
-    <div class="container-fluid <%= params[:controller] %>">
-      <%= yield %>
+    <div class="container-fluid <%= params[:controller] %>" id="container">
     </div>
   <% else %>
     <%= yield %>
   <% end %>
+
+
+      <%= javascript_pack_tag "pages/#{params[:controller]}" %>

@@ -7,6 +7,10 @@ class JobsController < ApplicationController
   end
 
   def create
+   request.headers.each do |k,v|
+     puts "HEADER: #{k} => #{v}"
+   end
+
     @job = current_user.jobs.build(job_params)
     if @job.save
       resp = @job

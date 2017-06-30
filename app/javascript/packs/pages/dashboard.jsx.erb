@@ -1,0 +1,124 @@
+<% include Rails.application.routes.url_helpers %>
+<% include Rails.application.helpers %>
+
+import React from 'react';
+import { render } from 'react-dom';
+import classNames from 'classnames';
+
+const propsMergeClass = (props, defaultClasses) => {
+  let propClassName = props.className || "";
+  let fullClass = classNames(defaultClasses, propClassName);
+
+  console.log(fullClass);
+
+  let result = {};
+  Object.assign(result, props);
+  Object.assign(result, {className:fullClass});
+
+  console.log(result.className);
+  
+  return result;
+}
+
+const Page = (props) => (
+  <div {...propsMergeClass(props, "col col-md-12 pyr-page")}>{props.children}</div>
+);
+
+const CandidatePage = (props) => (
+  <Page id="add-candidate-page" {...props}>
+    <AddCandidatePage {...props}/>
+  </Page>
+);
+
+const AddCandidatePage = (props) => (
+  <div {...props}>Candidate Page</div>
+);
+
+const AddJobPage = (props) => (
+<div id="job-page-form">
+<form action="<%= url_for([Job.new, {:only_path => true}]) %>" className = "pyr-form" data-success-target="<%= root_path %>" id="new_job">
+  <div className="form-group">
+    <label htmlFor="job_title">Title</label>
+    <input type="text" name="job[title]" className="form-control auto-complete" data-source="<%= jobs_location_path %>" aria-describedby="job_title"  placeholder= "Enter job title"/>
+  </div>
+  <div className="form-group">
+    <label htmlFor="job_location">Location</label>
+    <input type="text" name="job[location]" className="form-control" aria-describedby="job_location" placeholder="Enter location"/>
+  </div>
+  <div className="form-group">
+    <label htmlFor="job_time_commit">Time Requirements</label>
+    <select name="job[time_commit]" className="form-control">
+      <option value="0">Full Time</option>
+      <option value="1">Part Time</option>
+      <option value="2">Contractor</option>
+    </select>
+  </div>
+  <div className="form-group">
+    <label htmlFor="job_description">Description</label>
+    <textarea name="job[description]" className="form-control" aria-describedby="job_description" placeholder="Enter description" rows="10" />
+  </div>
+</form>
+<div className="form-footer">
+  <a href="#" className="btn btn-primary pyr-button" data-pyr-target-form="new_job">Create</a>
+</div>
+</div>
+);
+
+const JobPage = (props) => (
+  <Page id="add-job-page" {...props}>
+    <AddJobPage {...props}/>
+  </Page>
+);
+
+const AddRecruiterPage = (props) => (
+  <Page id="add-recruiter-page" {...props}>Add a recruiter here</Page>
+);
+
+const RecruiterPage = (props) => (
+  <Page id="add-recruiter-page" {...props}>
+    <AddRecruiterPage {...props}/>
+  </Page>
+);
+
+const Title = (props) => (
+  <label {...propsMergeClass(props, "title")}>{props.children}</label>
+);
+
+const Sidebar = (props) => (
+  <div id="side_bar" {...props} >
+    <Title htmlFor="job_list" {...props.titleProps}>Jobs</Title>
+    <div>{props.children}</div>
+  </div>
+);
+
+const Row = (props) => (
+  <div {...propsMergeClass(props, "row")} >{props.children}</div>
+);
+
+const Column = (props) => (
+  <div {...propsMergeClass(props, "col")}>{props.children}</div>
+);
+
+const Container = (props) => (
+  <Row>
+    <Column className="col-md-2 red" id="sidebar">
+      <Sidebar {...props} />
+    </Column>
+    <Column className="col-md-10 blue" id="main_page">
+      <CandidatePage {...props.candidatePageProps}/>
+      <RecruiterPage {...props.recruiterPageProps}/>
+      <JobPage {...props.jobPageProps}/>
+    </Column>
+  </Row>
+);
+
+const Footer = (props) => (
+  <div>Footer {props.name}!</div>
+);
+
+render(
+  <Page>
+    <Container />
+  </Page>,
+  document.getElementById('container')
+);
