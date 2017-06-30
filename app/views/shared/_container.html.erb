@@ -8,4 +8,6 @@
   <% end %>
 
 
+  <% if user_signed_in? %>
       <%= javascript_pack_tag "pages/#{params[:controller]}" %>
+  <% end %>
