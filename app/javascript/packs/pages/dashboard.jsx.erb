@@ -7,6 +7,8 @@ import React, {
   Component
 } from 'react';
 
+import PropTypes from 'prop-types';
+
 import ReactDOM from 'react-dom';
 
 import { 
@@ -15,7 +17,11 @@ import {
 
 import classNames from 'classnames';
 
-function propsForKids(props, children, kidType) {
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function childrenWithProps(children, props, kidType) {
   return React.Children.map(children, (child) => {
 		if (!kidType || child.type == kidType) {
 			return React.cloneElement(child, props);
@@ -24,7 +30,7 @@ function propsForKids(props, children, kidType) {
 	});
 }
 
-function propsRest(props, ripOut) {
+function propsRemove(props, ripOut) {
 	let tmp = Object.assign({}, props);
 	ripOut.forEach((a) => {
 		delete tmp[a];
@@ -32,23 +38,26 @@ function propsRest(props, ripOut) {
   return tmp;
 }
 
-function propsMergeClass(props, defaultClasses) {
-  let propClassName = props.className || "";
-  let fullClass = classNames(defaultClasses, propClassName);
-
-  console.log(fullClass);
-
+function propsMerge(props, moreProps) {
   let result = {};
-  Object.assign(result, props);
-  Object.assign(result, {className:fullClass});
 
-  console.log(result.className);
-  
+  let propsClassName = props.className || "";
+  let morePropsClassName = moreProps.className || "";
+
+  Object.assign(result, props);
+  Object.assign(result, moreProps);
+
+  result.className = classNames(propsClassName, morePropsClassName);
+
   return result;
 }
 
+function propsMergeClassName(props, className) {
+  return propsMerge(props, {className});
+}
+
 const Page = (props) => (
-  <div {...propsMergeClass(props, "col col-md-12 pyr-page")}>{props.children}</div>
+  <div {...propsMergeClassName(props, "col col-md-12 pyr-page")}>{props.children}</div>
 );
 
 const CandidatePage = (props) => (
@@ -70,6 +79,13 @@ class PyrForm extends Component {
       errors: null
     };
   }
+
+  getChildContext() {
+		return { 
+			model: this.props.model,
+			errors: this.state.errors 
+		}
+	}
 
   setIsLoading(val=true) {
     this.setState({isLoading: val, errors: null});
@@ -177,35 +193,73 @@ class PyrForm extends Component {
 	}
 
   render() {
-		let rest = propsRest(this.props, ["preSubmit", "postSubmit"]);
+		let rest = propsRemove(this.props, ["preSubmit", "postSubmit", "model"]);
 
     return (
     	<form ref={(node) => {this.form = node;}} 
 				{...rest}
 		  	onSubmit={this.onSubmitHandler}
     	>
-				{propsForKids({errors: this.state.errors}, this.props.children, PyrFormGroup)}
+				{this.props.children}
     	</form>
 		);
   }
+}
+PyrForm.childContextTypes = {
+  model: PropTypes.string,
+	errors: PropTypes.object
 }
 
 class PyrFormGroup extends Component {
   constructor(props) {
   	super(props);
-    this.state = {
-			errors: null
+
+		this.state = {
+			error: null
 		};
+			
   }
+
+  getChildContext() {
+		return {
+			name: this.props.name,
+			error: this.state.error
+		};
+	}
 
   render() { 
 		return (
-    	<div className="form-group {this.state.errors ? 'error' : ''}">
-      {this.props.children}
+    	<div className="form-group">
+				{this.props.children}
     	</div>
 		);
   }
 }
+PyrFormGroup.childContextTypes = {
+  name: PropTypes.string,
+	error: PropTypes.string
+}
+
+class PyrFormChild extends Component {
+	htmlID() {
+		return (this.context.model.toLowerCase() + "_" + this.context.name.toLowerCase());
+	}
+
+  name() {
+		return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
+	}
+
+  hasError() {
+		return false;
+	}
+}
+
+PyrFormChild.contextTypes = {
+  name: PropTypes.string,
+  model: PropTypes.string,
+	error: PropTypes.string,
+}
+
 
 class PyrSubmitButton extends Component {
   constructor(props) {
@@ -228,6 +282,32 @@ class PyrSubmitButton extends Component {
       <a href="#" className="btn btn-primary" onClick={this.onClickHandler.bind(this)}>{this.props.children}</a>
     );
   }
+}
+
+class PyrFormLabel extends PyrFormChild {
+  render() {
+		let myProps = {
+			htmlFor: this.htmlID()
+		};
+
+		return(
+			<label {...myProps} {...propsMergeClassName(this.props,"form-control")}>{this.props.children}</label>
+		)
+	}
+}
+
+class PyrFormText extends PyrFormChild {
+  render() {
+		let myProps = { 
+			name: this.name(), 
+			type: "text", 
+			id: this.htmlID() ,
+			"aria-describedby": this.htmlID()
+		};
+		return(
+			<input {...myProps} {...propsMergeClassName(this.props, "form-control")} />
+		)
+	}
 }
 
 class AddJobPage extends Component {
@@ -257,6 +337,7 @@ class AddJobPage extends Component {
 	return ( 
 <div id="job-page-form">
 <PyrForm 
+  model="Job"
 	action="<%= url_for([Job.new, {:only_path => true}]) %>" 
 	id="new_job" 
 	ref={(node) => { this.form = node; }} 
@@ -264,15 +345,17 @@ class AddJobPage extends Component {
 	postSubmit={this.postSubmit}
 >
 
-  <PyrFormGroup>
-    <label htmlFor="job_title">Title</label>
-    <input type="text" name="job[title]" className="form-control auto-complete" data-source="<%= jobs_location_path %>" aria-describedby="job_title"  placeholder= "Enter job title"/>
+  <PyrFormGroup name="title">
+    <PyrFormLabel>Title</PyrFormLabel>
+    <PyrFormText placeholder= "Enter job title"/>
   </PyrFormGroup>
-  <div className="form-group">
-    <label htmlFor="job_location">Location</label>
-    <input type="text" name="job[location]" className="form-control" aria-describedby="job_location" placeholder="Enter location"/>
-  </div>
-  <div className="form-group">
+
+  <PyrFormGroup name="location">
+    <PyrFormLabel>Location</PyrFormLabel>
+    <PyrFormText placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
+  </PyrFormGroup>
+
+  <div name="time_commit">
     <label htmlFor="job_time_commit">Time Requirements</label>
     <select name="job[time_commit]" className="form-control">
       <option value="0">Full Time</option>
@@ -280,10 +363,12 @@ class AddJobPage extends Component {
       <option value="2">Contractor</option>
     </select>
   </div>
-  <div className="form-group">
+
+  <div name="description">
     <label htmlFor="job_description">Description</label>
     <textarea name="job[description]" className="form-control" aria-describedby="job_description" placeholder="Enter description" rows="10" />
   </div>
+
 </PyrForm>
 <div className="form-footer">
   <PyrSubmitButton target={self} disabled={this.state.isLoading}>Create</PyrSubmitButton>
@@ -309,7 +394,7 @@ const RecruiterPage = (props) => (
 );
 
 const Title = (props) => (
-  <label {...propsMergeClass(props, "title")}>{props.children}</label>
+  <label {...propsMergeClassName(props, "title")}>{props.children}</label>
 );
 
 const Sidebar = (props) => (
@@ -320,11 +405,11 @@ const Sidebar = (props) => (
 );
 
 const Row = (props) => (
-  <div {...propsMergeClass(props, "row")} >{props.children}</div>
+  <div {...propsMergeClassName(props, "row")} >{props.children}</div>
 );
 
 const Column = (props) => (
-  <div {...propsMergeClass(props, "col")}>{props.children}</div>
+  <div {...propsMergeClassName(props, "col")}>{props.children}</div>
 );
 
 const Container = (props) => (
