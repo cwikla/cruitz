@@ -23,18 +23,18 @@ function capitalizeFirstLetter(string) {
 
 function childrenWithProps(children, props, kidType) {
   return React.Children.map(children, (child) => {
-		if (!kidType || child.type == kidType) {
-			return React.cloneElement(child, props);
-		}
-		return child;
-	});
+    if (!kidType || child.type == kidType) {
+      return React.cloneElement(child, props);
+    }
+    return child;
+  });
 }
 
 function propsRemove(props, ripOut) {
-	let tmp = Object.assign({}, props);
-	ripOut.forEach((a) => {
-		delete tmp[a];
-	});
+  let tmp = Object.assign({}, props);
+  ripOut.forEach((a) => {
+    delete tmp[a];
+  });
   return tmp;
 }
 
@@ -71,6 +71,11 @@ const AddCandidatePage = (props) => (
 );
 
 class PyrForm extends Component {
+  static childContextTypes = {
+    model: PropTypes.string,
+    errors: PropTypes.object
+  }
+
   constructor(props) {
     super(props);
 
@@ -81,29 +86,33 @@ class PyrForm extends Component {
   }
 
   getChildContext() {
-		return { 
-			model: this.props.model,
-			errors: this.state.errors 
-		}
-	}
+    return { 
+      model: this.props.model,
+      errors: this.state.errors 
+    }
+  }
 
   setIsLoading(val=true) {
-    this.setState({isLoading: val, errors: null});
+    let stuff = {isLoading: val};
+    if (val) {
+      stuff.errors = null;
+    }
+    this.setState(stuff);
   }
 
   preSubmit() {
-		this.setIsLoading();
-	}
+    this.setIsLoading();
+  }
 
   postSubmit() {
-		this.setIsLoading(false);
-	}
+    this.setIsLoading(false);
+  }
 
   submit(e) {
     //alert("submit");
-		if (e) {
-    	e.preventDefault();
-		}
+    if (e) {
+      e.preventDefault();
+    }
 
     if (this.state.isLoading) {
       return;
@@ -119,8 +128,8 @@ class PyrForm extends Component {
   innerSubmit(data) {
     var self = this;
 
-		$.ajax({
-    	type: self.props.method || POST,
+    $.ajax({
+      type: self.props.method || POST,
       url: self.props.action,
       data: data,
       context: self
@@ -146,7 +155,7 @@ class PyrForm extends Component {
   }
 
   ajaxError(jqXHR, textStatus, errorThrown) {
-		this.postSubmit();
+    this.postSubmit();
 
     var data;
 
@@ -157,7 +166,7 @@ class PyrForm extends Component {
     }
 
     if (this.props.onError) {
-			this.props.onError(data, jqXHR.status, jqXHR);
+      this.props.onError(data, jqXHR.status, jqXHR);
     }
     else {
       this.defaultErrorHandler(data, jqXHR.status, jqXHR);
@@ -170,16 +179,16 @@ class PyrForm extends Component {
     alert(JSON.stringify(data.errors));
 
     if (data) {
-  	  if (status == 409 && data.errors.stale_object) { // 409 == Conflict 
-				if (this.props.onStaleObject) {
+      if (status == 409 && data.errors.stale_object) { // 409 == Conflict 
+        if (this.props.onStaleObject) {
           this.props.onStaleObject(this, data, jqXHR);
         }
         else {
-					this.defaultStaleObjectHandler();
-				}
-			} else if (data.errors) {
+          this.defaultStaleObjectHandler();
+        }
+      } else if (data.errors) {
         this.setState({errors: data.errors});
-			}
+      }
     }
   }
 
@@ -189,76 +198,92 @@ class PyrForm extends Component {
 
   onSubmitHandler(e) {
     e.preventDefault();
-		this.submit();
-	}
+    this.submit();
+  }
 
   render() {
-		let rest = propsRemove(this.props, ["preSubmit", "postSubmit", "model"]);
+    let rest = propsRemove(this.props, ["preSubmit", "postSubmit", "model"]);
 
     return (
-    	<form ref={(node) => {this.form = node;}} 
-				{...rest}
-		  	onSubmit={this.onSubmitHandler}
-    	>
-				{this.props.children}
-    	</form>
-		);
+      <form ref={(node) => {this.form = node;}} 
+        {...rest}
+        onSubmit={this.onSubmitHandler}
+      >
+        {this.props.children}
+      </form>
+    );
   }
-}
-PyrForm.childContextTypes = {
-  model: PropTypes.string,
-	errors: PropTypes.object
 }
 
 class PyrFormGroup extends Component {
-  constructor(props) {
-  	super(props);
+  static childContextTypes = {
+    name: PropTypes.string,
+    errorString: PropTypes.string
+  }
 
-		this.state = {
-			error: null
-		};
-			
+  static contextTypes = {
+    errors: PropTypes.object
+  };
+
+  constructor(props) {
+    super(props);
+    //alert("PFG");
+
+    this.state = {
+      errorString: null
+    };
+      
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextContext.errors) {
+      let result = nextContext.errors[this.props.name];
+      if (result) {
+        this.setState({errorString: result[0]}); // HMMM
+      }
+    }
   }
 
   getChildContext() {
-		return {
-			name: this.props.name,
-			error: this.state.error
-		};
-	}
+    return {
+      name: this.props.name,
+      errorString: this.state.errorString
+    };
+  }
 
   render() { 
-		return (
-    	<div className="form-group">
-				{this.props.children}
-    	</div>
-		);
+    let className = "form-group";
+  if (this.state.errorString) {
+    className += " error";
+      }
+    return (
+      <div className={className}>
+        {this.props.children}
+      </div>
+    );
   }
-}
-PyrFormGroup.childContextTypes = {
-  name: PropTypes.string,
-	error: PropTypes.string
 }
 
 class PyrFormChild extends Component {
-	htmlID() {
-		return (this.context.model.toLowerCase() + "_" + this.context.name.toLowerCase());
-	}
+  static contextTypes = {
+    name: PropTypes.string,
+    model: PropTypes.string,
+    errorString: PropTypes.string,
+  }
+
+  htmlID() {
+    return (this.context.model.toLowerCase() + "_" + this.context.name.toLowerCase());
+  }
 
   name() {
-		return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
-	}
+    return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
+  }
 
   hasError() {
-		return false;
-	}
+    return false;
+  }
 }
 
-PyrFormChild.contextTypes = {
-  name: PropTypes.string,
-  model: PropTypes.string,
-	error: PropTypes.string,
-}
 
 
 class PyrSubmitButton extends Component {
@@ -267,13 +292,13 @@ class PyrSubmitButton extends Component {
   }
  
   onClickHandler(e) {
-		//alert("CLICK");
+    //alert("CLICK");
     e.preventDefault();
 
     if (this.props.target) {
       //alert(this.props.target.form.constructor.name);
-			this.props.target.form.submit();
-		}
+      this.props.target.form.submit();
+    }
 
   }
 
@@ -286,90 +311,124 @@ class PyrSubmitButton extends Component {
 
 class PyrFormLabel extends PyrFormChild {
   render() {
-		let myProps = {
-			htmlFor: this.htmlID()
-		};
-
-		return(
-			<label {...myProps} {...propsMergeClassName(this.props,"form-control")}>{this.props.children}</label>
-		)
-	}
+    let myProps = {
+      htmlFor: this.htmlID()
+    };
+    //alert(this.props.children);
+    return(
+      <label {...myProps} {...propsMergeClassName(this.props,"form-label")}>{this.props.children}</label>
+    );
+  }
 }
 
-class PyrFormText extends PyrFormChild {
+class PyrFormTextField extends PyrFormChild {
   render() {
-		let myProps = { 
-			name: this.name(), 
-			type: "text", 
-			id: this.htmlID() ,
-			"aria-describedby": this.htmlID()
-		};
-		return(
-			<input {...myProps} {...propsMergeClassName(this.props, "form-control")} />
-		)
-	}
+    let myProps = { 
+      name: this.name(), 
+      type: "text", 
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID()
+    };
+    return(
+      <input {...myProps} {...propsMergeClassName(this.props, "form-control")} />
+    );
+  }
+}
+
+class PyrFormSelect extends PyrFormChild {
+  render() {
+    let myProps = { 
+      name: this.name(), 
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID()
+    };
+    return(
+      <select {...myProps} {...propsMergeClassName(this.props, "form-control")} />
+    );
+  }
+}
+
+class PyrFormOption extends PyrFormChild {
+  render() {
+    return(
+      <option {...propsMergeClassName(this.props, "form-control")}>{this.props.children}</option>
+    );
+  }
+}
+
+class PyrFormTextArea extends PyrFormChild {
+  render() {
+    let myProps = { 
+      name: this.name(), 
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID()
+    };
+    return(
+      <text {...myProps} {...propsMergeClassName(this.props, "form-control")} />
+    );
+  }
 }
 
 class AddJobPage extends Component {
   constructor(props) {
     super(props);
 
-		this.state = {
-			isLoading: false
-		};
+    this.state = {
+      isLoading: false
+    };
   }
 
   preSubmit() {
-		this.setState({isLoading: true});
-		if (this.props.preSubmit) {
-			this.props.preSubmit();
-		}
+    this.isLoading();
+    if (this.props.preSubmit) {
+      this.props.preSubmit();
+    }
   }
 
   postSubmit() {
-		this.setState({isLoading: false});
-		if (this.props.postSubmit) {
-			this.props.postSubmit();
-		}
-	}
+    this.isLoading(false);
+    if (this.props.postSubmit) {
+      this.props.postSubmit();
+    }
+  }
 
-	render() { let self = this;
-	return ( 
+  render() { let self = this;
+  return ( 
 <div id="job-page-form">
-<PyrForm 
-  model="Job"
-	action="<%= url_for([Job.new, {:only_path => true}]) %>" 
-	id="new_job" 
-	ref={(node) => { this.form = node; }} 
-	preSubmit={this.preSubmit} 
-	postSubmit={this.postSubmit}
->
+  <PyrForm 
+    model="Job"
+    action="<%= url_for([Job.new, {:only_path => true}]) %>" 
+    id="new_job" 
+    ref={(node) => { this.form = node; }} 
+    preSubmit={this.preSubmit} 
+    postSubmit={this.postSubmit}
+  >
 
-  <PyrFormGroup name="title">
-    <PyrFormLabel>Title</PyrFormLabel>
-    <PyrFormText placeholder= "Enter job title"/>
-  </PyrFormGroup>
+    <PyrFormGroup name="title">
+      <PyrFormLabel>Title</PyrFormLabel>
+      <PyrFormTextField placeholder= "Enter job title"/>
+    </PyrFormGroup>
 
-  <PyrFormGroup name="location">
-    <PyrFormLabel>Location</PyrFormLabel>
-    <PyrFormText placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
-  </PyrFormGroup>
+    <PyrFormGroup name="location">
+      <PyrFormLabel>Location</PyrFormLabel>
+      <PyrFormTextField placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
+    </PyrFormGroup>
 
-  <div name="time_commit">
-    <label htmlFor="job_time_commit">Time Requirements</label>
-    <select name="job[time_commit]" className="form-control">
-      <option value="0">Full Time</option>
-      <option value="1">Part Time</option>
-      <option value="2">Contractor</option>
-    </select>
-  </div>
+    <PyrFormGroup name="time_commit">
+      <PyrFormLabel>Time Requirements</PyrFormLabel>
+      <PyrFormSelect>
+        <PyrFormOption value="0">Full Time</PyrFormOption>
+        <PyrFormOption value="1">Part Time</PyrFormOption>
+        <PyrFormOption value="2">Contractor</PyrFormOption>
+      </PyrFormSelect>
+    </PyrFormGroup>
 
-  <div name="description">
-    <label htmlFor="job_description">Description</label>
-    <textarea name="job[description]" className="form-control" aria-describedby="job_description" placeholder="Enter description" rows="10" />
-  </div>
+    <PyrFormGroup name="description">
+      <PyrFormLabel>Description</PyrFormLabel>
+      <PyrFormTextArea placeholder="Enter description" rows="10" />
+    </PyrFormGroup>
 
-</PyrForm>
+  </PyrForm>
 <div className="form-footer">
   <PyrSubmitButton target={self} disabled={this.state.isLoading}>Create</PyrSubmitButton>
 </div>
