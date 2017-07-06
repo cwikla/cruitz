@@ -60,8 +60,9 @@
 }
 
 
-.transition{
-    transition: opacity 1.5s ease-in;  
+.transition {
+  transition: all .25s ease-in;  
+  transition-property: opacity, display;
 }
 
 .on {
@@ -70,4 +71,5 @@
 
 .off {
   opacity: 0.0;
+  display: none;
 }

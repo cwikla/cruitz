@@ -36,18 +36,33 @@ const Title = (props) => (
 );
 
 
-const SidebarButton = (props) => (
-  <li {...propsMergeClassName(props, "sidebar-button")}>{props.children}</li>
-);
+class SidebarButton extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selected: false
+    };
+
+  }
+
+  render() {
+    let myClass = "sidebar-button" + this.state.selected ? " selected" : "";
+    return(
+      <li {...propsMergeClassName(this.props, myClass)} >{this.props.children}</li>
+    );
+   }
+}
 
 class Sidebar extends Component {
   render() {
-    let newKids = React.Children.map(this.props.children, (child) => {
-      return (<SidebarButton>{child}</SidebarButton>);
-    });
+    //let newKids = React.Children.map(this.props.children, (child) => {
+      //return (barButton>{child}</SidebarButton>);
+    //});
+    let newKids = this.props.children;
 
     return (
-      <ul id="side_bar" {...this.props} >
+      <ul id="side-bar" {...this.props} >
         {newKids}
       </ul>
     );
@@ -62,28 +77,52 @@ const Column = (props) => (
   <div {...propsMergeClassName(props, "col")}>{props.children}</div>
 );
 
-const Container = (props) => ( 
-   <Row>
-    <Column className="col-md-2 red" id="sidebar">
-      <Sidebar {...props}>
-        <SidebarButton target={this.jobPage}>Jobs</SidebarButton>
-        <SidebarButton target={this.candidatesPage}>Candidates</SidebarButton>
-        <SidebarButton target={this.sidebarPage}>Recruiters</SidebarButton>
-      </Sidebar>
-    </Column>
-    <Column className="col-md-10 blue" id="main_page">
-      <CandidatePage {...props.candidatePageProps}
-        ref={(node) => this.candidatePage = node }
-      />
-      <RecruiterPage {...props.recruiterPageProps}
-        ref={(node) => this.recruitersPage = node }
-      />
-      <JobPage {...props.jobPageProps}
-        ref={(node) => this.jobPage = node }
-      />
-    </Column>
-  </Row>
-);
+const JOBS_PAGE = 'jobs';
+const CANDIDATES_PAGE = 'candidates';
+const RECRUITERS_PAGE = 'recruiters';
+
+class Container extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      openPage: JOBS_PAGE
+    };
+  }
+
+  setPage(page) {
+    this.setState({openPage: page});
+    //alert(page);
+  }
+
+  render() {
+    return(
+      <Row>
+        <Column className="col-md-2 red" id="sidebar">
+          <Sidebar {...this.props}>
+            <SidebarButton target={this.jobsPage} 
+              selected={this.state.openPage==JOBS_PAGE} 
+              onClick={(e) => {e.preventDefault(); this.setPage(JOBS_PAGE); } }
+            >Jobs</SidebarButton>
+            <SidebarButton 
+              selected={this.state.openPage==CANDIDATES_PAGE} 
+              onClick={(e) => {e.preventDefault(); this.setPage(CANDIDATES_PAGE); } }
+            >Candidates</SidebarButton>
+            <SidebarButton
+              selected={this.state.openPage==RECRUITERS_PAGE} 
+              onClick={(e) => {e.preventDefault(); this.setPage(RECRUITERS_PAGE); } }
+            >Recruiters</SidebarButton>
+          </Sidebar>
+        </Column>
+        <Column className="col-md-10 blue" id="main_page">
+          <CandidatePage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE}/>
+          <RecruiterPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE}/>
+          <JobPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE}/>
+        </Column>
+      </Row>
+    );
+  }
+}
 
 const Footer = (props) => (
   <div>Footer {props.name}!</div>

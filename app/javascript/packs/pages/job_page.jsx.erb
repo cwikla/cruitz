@@ -55,52 +55,55 @@ class AddJobPage extends Component {
     }
   }
 
-  render() { let self = this;
-  return ( 
-<div id="job-page-form">
-  <PyrForm 
-    model="Job"
-    action="<%= url_for([Job.new, {:only_path => true}]) %>" 
-    id="new_job" 
-    ref={(node) => { this.form = node; }} 
-    preSubmit={this.preSubmit} 
-    postSubmit={this.postSubmit}
-  >
+  render() { 
+    let self = this;
 
-    <PyrFormGroup name="title">
-      <PyrFormLabel>Title</PyrFormLabel>
-      <PyrFormTextField placeholder= "Enter job title"/>
-    </PyrFormGroup>
-
-    <PyrFormGroup name="location">
-      <PyrFormLabel>Location</PyrFormLabel>
-      <PyrFormTextField placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
-    </PyrFormGroup>
-
-    <PyrFormGroup name="time_commit">
-      <PyrFormLabel>Time Requirements</PyrFormLabel>
-      <PyrFormSelect>
-        <PyrFormOption value="0">Full Time</PyrFormOption>
-        <PyrFormOption value="1">Part Time</PyrFormOption>
-        <PyrFormOption value="2">Contractor</PyrFormOption>
-      </PyrFormSelect>
-    </PyrFormGroup>
-
-    <PyrFormGroup name="description">
-      <PyrFormLabel>Description</PyrFormLabel>
-      <PyrFormTextArea placeholder="Enter description" rows="10" />
-    </PyrFormGroup>
-
-  </PyrForm>
-<div className="form-footer">
-  <PyrFormSubmitButton target={self} disabled={this.state.isLoading}>Create</PyrFormSubmitButton>
-</div>
-</div>);
-}
+    return ( 
+      <div id="job-page-form">
+        <PyrForm 
+          model="Job"
+          action="<%= url_for([Job.new, {:only_path => true}]) %>" 
+          id="new_job" 
+          ref={(node) => { this.form = node; }} 
+          preSubmit={this.preSubmit} 
+          postSubmit={this.postSubmit}
+        >
+      
+          <PyrFormGroup name="title">
+            <PyrFormLabel>Title</PyrFormLabel>
+            <PyrFormTextField placeholder= "Enter job title"/>
+          </PyrFormGroup>
+      
+          <PyrFormGroup name="location">
+            <PyrFormLabel>Location</PyrFormLabel>
+            <PyrFormTextField placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
+          </PyrFormGroup>
+      
+          <PyrFormGroup name="time_commit">
+            <PyrFormLabel>Time Requirements</PyrFormLabel>
+            <PyrFormSelect>
+              <PyrFormOption value="0">Full Time</PyrFormOption>
+              <PyrFormOption value="1">Part Time</PyrFormOption>
+              <PyrFormOption value="2">Contractor</PyrFormOption>
+            </PyrFormSelect>
+          </PyrFormGroup>
+      
+          <PyrFormGroup name="description">
+            <PyrFormLabel>Description</PyrFormLabel>
+            <PyrFormTextArea placeholder="Enter description" rows="10" />
+          </PyrFormGroup>
+      
+        </PyrForm>
+      <div className="form-footer">
+        <PyrFormSubmitButton target={self} disabled={this.state.isLoading}>Create</PyrFormSubmitButton>
+      </div>
+      </div>
+    );
+  }
 }
 
 const JobPage = (props) => (
-  <Page id="add-job-page" {...props}>
+  <Page id="jobs-page" {...props}>
     <AddJobPage {...props}/>
   </Page>
 );
