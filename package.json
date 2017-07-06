@@ -28,6 +28,8 @@
     "react-dom": "^15.6.1",
     "react-pyr": "file:../pyr/react-pyr",
     "react-redux": "^5.0.5",
+    "redux": "^3.7.1",
+    "redux-logger": "^3.0.6",
     "resolve-url-loader": "^2.1.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
@@ -36,8 +38,6 @@
     "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "webpack-dev-server": "^2.5.0"
   }
 }

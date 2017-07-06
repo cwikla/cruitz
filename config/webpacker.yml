@@ -20,6 +20,7 @@ default: &default
     - .gif
     - .jpeg
     - .jpg
+    - .jsx.erb
 
 development:
   <<: *default

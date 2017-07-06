@@ -1,0 +1,47 @@
+<% include Rails.application.routes.url_helpers %>
+<% include Rails.application.helpers %>
+
+import React, { 
+  Component
+} from 'react';
+
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+
+import Page from './page';
+
+import { 
+  PyrForm, 
+  PyrFormGroup, 
+  PyrFormSubmitButton, 
+  PyrFormLabel, 
+  PyrFormTextField, 
+  PyrFormTextArea,
+  PyrFormSelect, 
+  PyrFormOption 
+} from '../form/pyr_form';
+
+import {
+  capFirstLetter,
+  childrenWithProps,
+  propsMergeClassName,
+} from '../util/util';
+    
+
+import { 
+  render 
+} from 'react-dom';
+
+const AddCandidatePage = (props) => (
+  <div {...props}>Candidate Page</div>
+);
+
+const CandidatePage = (props) => (
+  <Page id="add-candidate-page" {...props}>
+    <AddCandidatePage {...props}/>
+  </Page>
+);
+
+export default CandidatePage;
+
+

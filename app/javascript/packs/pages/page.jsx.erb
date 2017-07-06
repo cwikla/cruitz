@@ -1,0 +1,15 @@
+
+import React, {
+  Component
+} from 'react';
+
+import {
+  propsMergeClassName
+} from '../util/util';
+
+
+const Page = (props) => (
+  <div {...propsMergeClassName(props, "col col-md-12")}>{props.children}</div>
+);
+export default Page;
+

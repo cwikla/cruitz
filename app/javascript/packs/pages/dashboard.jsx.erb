@@ -1,467 +1,58 @@
 <% include Rails.application.routes.url_helpers %>
 <% include Rails.application.helpers %>
 
-const POST = 'POST';
-
 import React, { 
   Component
 } from 'react';
 
 import PropTypes from 'prop-types';
-
 import ReactDOM from 'react-dom';
-
 import { 
   render 
 } from 'react-dom';
 
-import classNames from 'classnames';
+import {
+  createStore,
+  applyMiddleware
+} from 'redux';
+
+import {
+  Provider
+} from 'react-redux';
+
+import {
+  capFirstLetter,
+  childrenWithProps,
+  propsMergeClassName,
+} from '../util/util';
+
+import JobPage, { JobSideButton } from './job_page';
+import CandidatePage from './candidate_page';
+import RecruiterPage from './recruiter_page';
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function childrenWithProps(children, props, kidType) {
-  return React.Children.map(children, (child) => {
-    if (!kidType || child.type == kidType) {
-      return React.cloneElement(child, props);
-    }
-    return child;
-  });
-}
-
-function propsRemove(props, ripOut) {
-  let tmp = Object.assign({}, props);
-  ripOut.forEach((a) => {
-    delete tmp[a];
-  });
-  return tmp;
-}
-
-function propsMerge(props, moreProps) {
-  let result = {};
-
-  let propsClassName = props.className || "";
-  let morePropsClassName = moreProps.className || "";
-
-  Object.assign(result, props);
-  Object.assign(result, moreProps);
-
-  result.className = classNames(propsClassName, morePropsClassName);
-
-  return result;
-}
-
-function propsMergeClassName(props, className) {
-  return propsMerge(props, {className});
-}
-
-const Page = (props) => (
-  <div {...propsMergeClassName(props, "col col-md-12 pyr-page")}>{props.children}</div>
-);
-
-const CandidatePage = (props) => (
-  <Page id="add-candidate-page" {...props}>
-    <AddCandidatePage {...props}/>
-  </Page>
-);
-
-const AddCandidatePage = (props) => (
-  <div {...props}>Candidate Page</div>
-);
-
-class PyrForm extends Component {
-  static childContextTypes = {
-    model: PropTypes.string,
-    errors: PropTypes.object
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: false,
-      errors: null
-    };
-  }
-
-  getChildContext() {
-    return { 
-      model: this.props.model,
-      errors: this.state.errors 
-    }
-  }
-
-  setIsLoading(val=true) {
-    let stuff = {isLoading: val};
-    if (val) {
-      stuff.errors = null;
-    }
-    this.setState(stuff);
-  }
-
-  preSubmit() {
-    this.setIsLoading();
-  }
-
-  postSubmit() {
-    this.setIsLoading(false);
-  }
-
-  submit(e) {
-    //alert("submit");
-    if (e) {
-      e.preventDefault();
-    }
-
-    if (this.state.isLoading) {
-      return;
-    }
-
-    let $item = $(ReactDOM.findDOMNode(this));
-    let data = $item.serialize();
-
-    this.preSubmit();
-    this.innerSubmit(data);
-  }
-
-  innerSubmit(data) {
-    var self = this;
-
-    $.ajax({
-      type: self.props.method || POST,
-      url: self.props.action,
-      data: data,
-      context: self
-    }).done(function(data, textStatus, jaXHR) {
-      self.ajaxSuccess(data, textStatus, jaXHR);
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      self.ajaxError(jaXHR, textStatus, errorThrown);
-    });
-  }
-
-  ajaxSuccess(data, textStatus, jqXHR) {
-    this.postSubmit();
-    if (this.props.onSuccess) {
-      this.props.onSuccess(data, textStatus, jqXHR);
-    }
-    else {
-      this.defaultSuccessHandler(data, textStatus, jqXHR);
-    }
-  }
-
-  defaultSuccessHandler(data, textStatus, jqXHR) {
-    // nothing to see here!
-  }
-
-  ajaxError(jqXHR, textStatus, errorThrown) {
-    this.postSubmit();
-
-    var data;
-
-    if(jqXHR.responseText) {
-        try {
-          data = $.parseJSON(jqXHR.responseText);
-        } catch (err) {}
-    }
-
-    if (this.props.onError) {
-      this.props.onError(data, jqXHR.status, jqXHR);
-    }
-    else {
-      this.defaultErrorHandler(data, jqXHR.status, jqXHR);
-    }
-
-  }
-
-  defaultErrorHandler(data, status, jqXHR) {
-    //alert(status);
-    alert(JSON.stringify(data.errors));
-
-    if (data) {
-      if (status == 409 && data.errors.stale_object) { // 409 == Conflict 
-        if (this.props.onStaleObject) {
-          this.props.onStaleObject(this, data, jqXHR);
-        }
-        else {
-          this.defaultStaleObjectHandler();
-        }
-      } else if (data.errors) {
-        this.setState({errors: data.errors});
-      }
-    }
-  }
-
-  defaultStaleObjectHandler() {
-    alert('This record is stale. Please refresh before making your updates');
-  }
-
-  onSubmitHandler(e) {
-    e.preventDefault();
-    this.submit();
-  }
-
-  render() {
-    let rest = propsRemove(this.props, ["preSubmit", "postSubmit", "model"]);
-
-    return (
-      <form ref={(node) => {this.form = node;}} 
-        {...rest}
-        onSubmit={this.onSubmitHandler}
-      >
-        {this.props.children}
-      </form>
-    );
-  }
-}
-
-class PyrFormGroup extends Component {
-  static childContextTypes = {
-    name: PropTypes.string,
-    errorString: PropTypes.string
-  }
-
-  static contextTypes = {
-    errors: PropTypes.object
-  };
-
-  constructor(props) {
-    super(props);
-    //alert("PFG");
-
-    this.state = {
-      errorString: null
-    };
-      
-  }
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (nextContext.errors) {
-      let result = nextContext.errors[this.props.name];
-      if (result) {
-        this.setState({errorString: result[0]}); // HMMM
-      }
-    }
-  }
-
-  getChildContext() {
-    return {
-      name: this.props.name,
-      errorString: this.state.errorString
-    };
-  }
-
-  render() { 
-    let className = "form-group";
-  if (this.state.errorString) {
-    className += " error";
-      }
-    return (
-      <div className={className}>
-        {this.props.children}
-      </div>
-    );
-  }
-}
-
-class PyrFormChild extends Component {
-  static contextTypes = {
-    name: PropTypes.string,
-    model: PropTypes.string,
-    errorString: PropTypes.string,
-  }
-
-  htmlID() {
-    return (this.context.model.toLowerCase() + "_" + this.context.name.toLowerCase());
-  }
-
-  name() {
-    return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
-  }
-
-  hasError() {
-    return false;
-  }
-}
-
-
-
-class PyrSubmitButton extends Component {
-  constructor(props) {
-    super(props);
-  }
- 
-  onClickHandler(e) {
-    //alert("CLICK");
-    e.preventDefault();
-
-    if (this.props.target) {
-      //alert(this.props.target.form.constructor.name);
-      this.props.target.form.submit();
-    }
-
-  }
-
-  render() {
-    return (
-      <a href="#" className="btn btn-primary" onClick={this.onClickHandler.bind(this)}>{this.props.children}</a>
-    );
-  }
-}
-
-class PyrFormLabel extends PyrFormChild {
-  render() {
-    let myProps = {
-      htmlFor: this.htmlID()
-    };
-    //alert(this.props.children);
-    return(
-      <label {...myProps} {...propsMergeClassName(this.props,"form-label")}>{this.props.children}</label>
-    );
-  }
-}
-
-class PyrFormTextField extends PyrFormChild {
-  render() {
-    let myProps = { 
-      name: this.name(), 
-      type: "text", 
-      id: this.htmlID() ,
-      "aria-describedby": this.htmlID()
-    };
-    return(
-      <input {...myProps} {...propsMergeClassName(this.props, "form-control")} />
-    );
-  }
-}
-
-class PyrFormSelect extends PyrFormChild {
-  render() {
-    let myProps = { 
-      name: this.name(), 
-      id: this.htmlID() ,
-      "aria-describedby": this.htmlID()
-    };
-    return(
-      <select {...myProps} {...propsMergeClassName(this.props, "form-control")} />
-    );
-  }
-}
-
-class PyrFormOption extends PyrFormChild {
-  render() {
-    return(
-      <option {...propsMergeClassName(this.props, "form-control")}>{this.props.children}</option>
-    );
-  }
-}
-
-class PyrFormTextArea extends PyrFormChild {
-  render() {
-    let myProps = { 
-      name: this.name(), 
-      id: this.htmlID() ,
-      "aria-describedby": this.htmlID()
-    };
-    return(
-      <text {...myProps} {...propsMergeClassName(this.props, "form-control")} />
-    );
-  }
-}
-
-class AddJobPage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: false
-    };
-  }
-
-  preSubmit() {
-    this.isLoading();
-    if (this.props.preSubmit) {
-      this.props.preSubmit();
-    }
-  }
-
-  postSubmit() {
-    this.isLoading(false);
-    if (this.props.postSubmit) {
-      this.props.postSubmit();
-    }
-  }
-
-  render() { let self = this;
-  return ( 
-<div id="job-page-form">
-  <PyrForm 
-    model="Job"
-    action="<%= url_for([Job.new, {:only_path => true}]) %>" 
-    id="new_job" 
-    ref={(node) => { this.form = node; }} 
-    preSubmit={this.preSubmit} 
-    postSubmit={this.postSubmit}
-  >
-
-    <PyrFormGroup name="title">
-      <PyrFormLabel>Title</PyrFormLabel>
-      <PyrFormTextField placeholder= "Enter job title"/>
-    </PyrFormGroup>
-
-    <PyrFormGroup name="location">
-      <PyrFormLabel>Location</PyrFormLabel>
-      <PyrFormTextField placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
-    </PyrFormGroup>
-
-    <PyrFormGroup name="time_commit">
-      <PyrFormLabel>Time Requirements</PyrFormLabel>
-      <PyrFormSelect>
-        <PyrFormOption value="0">Full Time</PyrFormOption>
-        <PyrFormOption value="1">Part Time</PyrFormOption>
-        <PyrFormOption value="2">Contractor</PyrFormOption>
-      </PyrFormSelect>
-    </PyrFormGroup>
-
-    <PyrFormGroup name="description">
-      <PyrFormLabel>Description</PyrFormLabel>
-      <PyrFormTextArea placeholder="Enter description" rows="10" />
-    </PyrFormGroup>
-
-  </PyrForm>
-<div className="form-footer">
-  <PyrSubmitButton target={self} disabled={this.state.isLoading}>Create</PyrSubmitButton>
-</div>
-</div>);
-}
-}
-
-const JobPage = (props) => (
-  <Page id="add-job-page" {...props}>
-    <AddJobPage {...props}/>
-  </Page>
-);
-
-const AddRecruiterPage = (props) => (
-  <Page id="add-recruiter-page" {...props}>Add a recruiter here</Page>
-);
-
-const RecruiterPage = (props) => (
-  <Page id="add-recruiter-page" {...props}>
-    <AddRecruiterPage {...props}/>
-  </Page>
-);
 
 const Title = (props) => (
   <label {...propsMergeClassName(props, "title")}>{props.children}</label>
 );
 
-const Sidebar = (props) => (
-  <div id="side_bar" {...props} >
-    <Title htmlFor="job_list" {...props.titleProps}>Jobs</Title>
-    <div>{props.children}</div>
-  </div>
+
+const SidebarButton = (props) => (
+  <li {...propsMergeClassName(props, "sidebar-button")}>{props.children}</li>
 );
+
+class Sidebar extends Component {
+  render() {
+    let newKids = React.Children.map(this.props.children, (child) => {
+      return (<SidebarButton>{child}</SidebarButton>);
+    });
+
+    return (
+      <ul id="side_bar" {...this.props} >
+        {newKids}
+      </ul>
+    );
+  }
+}
 
 const Row = (props) => (
   <div {...propsMergeClassName(props, "row")} >{props.children}</div>
@@ -471,15 +62,25 @@ const Column = (props) => (
   <div {...propsMergeClassName(props, "col")}>{props.children}</div>
 );
 
-const Container = (props) => (
-  <Row>
+const Container = (props) => ( 
+   <Row>
     <Column className="col-md-2 red" id="sidebar">
-      <Sidebar {...props} />
+      <Sidebar {...props}>
+        <SidebarButton target={this.jobPage}>Jobs</SidebarButton>
+        <SidebarButton target={this.candidatesPage}>Candidates</SidebarButton>
+        <SidebarButton target={this.sidebarPage}>Recruiters</SidebarButton>
+      </Sidebar>
     </Column>
     <Column className="col-md-10 blue" id="main_page">
-      <CandidatePage {...props.candidatePageProps}/>
-      <RecruiterPage {...props.recruiterPageProps}/>
-      <JobPage {...props.jobPageProps}/>
+      <CandidatePage {...props.candidatePageProps}
+        ref={(node) => this.candidatePage = node }
+      />
+      <RecruiterPage {...props.recruiterPageProps}
+        ref={(node) => this.recruitersPage = node }
+      />
+      <JobPage {...props.jobPageProps}
+        ref={(node) => this.jobPage = node }
+      />
     </Column>
   </Row>
 );
@@ -488,9 +89,13 @@ const Footer = (props) => (
   <div>Footer {props.name}!</div>
 );
 
+///
+///
+///
+
 render(
-  <Page>
+  <Provider>
     <Container />
-  </Page>,
+  </Provider>,
   document.getElementById('container')
 );
