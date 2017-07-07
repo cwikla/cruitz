@@ -3,16 +3,13 @@ import React, {
   Component
 } from 'react';
 
-import {
-  propsMergeClassName
-} from '../util/util';
-
+import Pyr from '../pyr/pyr';
 
 class Page extends Component {
   render() {
     let myClasses = "page col col-md-12 transition" + (this.props.selected ? " on" : " off");
     return (
-      <div {...propsMergeClassName(this.props, myClasses)}>{this.props.children}</div>
+      <div {...Pyr.Util.propsMergeClassName(this.props, myClasses)}>{this.props.children}</div>
     );
   }
 }

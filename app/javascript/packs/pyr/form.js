@@ -6,19 +6,9 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import {
-  propsMergeClassName,
-  propsRemove
-} from '../util/util';
+import Util from './util';
 
-//import {
-    //render
-//} from 'react-dom';
-
-export const POST = 'POST';
-export const GET = 'GET';
-
-export class PyrForm extends Component {
+class Form extends Component {
   static childContextTypes = {
     model: PropTypes.string,
     errors: PropTypes.object
@@ -76,9 +66,9 @@ export class PyrForm extends Component {
   innerSubmit(data) {
     var self = this;
 
-    $.ajax({
+    $.getJSON({
       type: self.props.method || POST,
-      url: self.props.action,
+      url: self.props.url,
       data: data,
       context: self
     }).done(function(data, textStatus, jaXHR) {
@@ -150,7 +140,7 @@ export class PyrForm extends Component {
   }
 
   render() {
-    let rest = propsRemove(this.props, ["preSubmit", "postSubmit", "model"]);
+    let rest = Util.propsRemove(this.props, ["preSubmit", "postSubmit", "model"]);
 
     return (
       <form ref={(node) => {this.form = node;}} 
@@ -163,7 +153,7 @@ export class PyrForm extends Component {
   }
 }
 
-export class PyrFormGroup extends Component {
+class Group extends Component {
   static childContextTypes = {
     name: PropTypes.string,
     errorString: PropTypes.string
@@ -212,7 +202,7 @@ export class PyrFormGroup extends Component {
   }
 }
 
-export class PyrFormChild extends Component {
+class Child extends Component {
   static contextTypes = {
     name: PropTypes.string,
     model: PropTypes.string,
@@ -234,7 +224,7 @@ export class PyrFormChild extends Component {
 
 
 
-export class PyrFormSubmitButton extends Component {
+class SubmitButton extends Component {
   constructor(props) {
     super(props);
   }
@@ -257,19 +247,19 @@ export class PyrFormSubmitButton extends Component {
   }
 }
 
-export class PyrFormLabel extends PyrFormChild {
+class Label extends Child {
   render() {
     let myProps = {
       htmlFor: this.htmlID()
     };
     //alert(this.props.children);
     return(
-      <label {...myProps} {...propsMergeClassName(this.props,"form-label")}>{this.props.children}</label>
+      <label {...myProps} {...Util.propsMergeClassName(this.props,"form-label")}>{this.props.children}</label>
     );
   }
 }
 
-export class PyrFormTextField extends PyrFormChild {
+class TextField extends Child {
   render() {
     let myProps = { 
       name: this.name(), 
@@ -278,12 +268,12 @@ export class PyrFormTextField extends PyrFormChild {
       "aria-describedby": this.htmlID()
     };
     return(
-      <input {...myProps} {...propsMergeClassName(this.props, "form-control")} />
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
     );
   }
 }
 
-export class PyrFormSelect extends PyrFormChild {
+class Select extends Child {
   render() {
     let myProps = { 
       name: this.name(), 
@@ -291,20 +281,20 @@ export class PyrFormSelect extends PyrFormChild {
       "aria-describedby": this.htmlID()
     };
     return(
-      <select {...myProps} {...propsMergeClassName(this.props, "form-control")} />
+      <select {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
     );
   }
 }
 
-export class PyrFormOption extends PyrFormChild {
+class Option extends Child {
   render() {
     return(
-      <option {...propsMergeClassName(this.props, "form-control")}>{this.props.children}</option>
+      <option {...Util.propsMergeClassName(this.props, "form-control")}>{this.props.children}</option>
     );
   }
 }
 
-export class PyrFormTextArea extends PyrFormChild {
+class TextArea extends Child {
   render() {
     let myProps = { 
       name: this.name(), 
@@ -312,7 +302,11 @@ export class PyrFormTextArea extends PyrFormChild {
       "aria-describedby": this.htmlID()
     };
     return(
-      <textarea {...myProps} {...propsMergeClassName(this.props, "form-control")} />
+      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
     );
   }
 }
+
+const PyrForm = { Form, Group, Child, Label, TextField, Select, Option, TextArea };
+
+export { PyrForm };

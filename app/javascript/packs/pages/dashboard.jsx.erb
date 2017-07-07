@@ -20,68 +20,17 @@ import {
   Provider
 } from 'react-redux';
 
-import {
-  capFirstLetter,
-  childrenWithProps,
-  propsMergeClassName,
-} from '../util/util';
-
-import JobPage, { JobSideButton } from './job_page';
+import Container, { Row, Column } from './container';
+import Sidebar, { SidebarButton } from './side_bar';
+import JobsPage, { JobSideButton } from './jobs/jobs_page';
 import CandidatePage from './candidate_page';
 import RecruiterPage from './recruiter_page';
-
-
-const Title = (props) => (
-  <label {...propsMergeClassName(props, "title")}>{props.children}</label>
-);
-
-
-class SidebarButton extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selected: false
-    };
-
-  }
-
-  render() {
-    let myClass = "sidebar-button" + this.state.selected ? " selected" : "";
-    return(
-      <li {...propsMergeClassName(this.props, myClass)} >{this.props.children}</li>
-    );
-   }
-}
-
-class Sidebar extends Component {
-  render() {
-    //let newKids = React.Children.map(this.props.children, (child) => {
-      //return (barButton>{child}</SidebarButton>);
-    //});
-    let newKids = this.props.children;
-
-    return (
-      <ul id="side-bar" {...this.props} >
-        {newKids}
-      </ul>
-    );
-  }
-}
-
-const Row = (props) => (
-  <div {...propsMergeClassName(props, "row")} >{props.children}</div>
-);
-
-const Column = (props) => (
-  <div {...propsMergeClassName(props, "col")}>{props.children}</div>
-);
 
 const JOBS_PAGE = 'jobs';
 const CANDIDATES_PAGE = 'candidates';
 const RECRUITERS_PAGE = 'recruiters';
 
-class Container extends Component {
+class DashboardContainer extends Container {
   constructor(props) {
     super(props);
 
@@ -115,9 +64,9 @@ class Container extends Component {
           </Sidebar>
         </Column>
         <Column className="col-md-10 blue" id="main_page">
-          <CandidatePage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE}/>
-          <RecruiterPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE}/>
-          <JobPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE}/>
+          <CandidatePage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} setPage={this.setPage.bind(this)}/>
+          <RecruiterPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} setPage={this.setPage.bind(this)}/>
+          <JobsPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE} setPage={this.setPage.bind(this)}/>
         </Column>
       </Row>
     );
@@ -129,12 +78,14 @@ const Footer = (props) => (
 );
 
 ///
-///
+/// 
 ///
 
+let store = createStore((state) => { return state; })
+
 render(
-  <Provider>
-    <Container />
+  <Provider store={store}>
+    <DashboardContainer />
   </Provider>,
   document.getElementById('container')
 );

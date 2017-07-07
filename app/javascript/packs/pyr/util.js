@@ -51,3 +51,13 @@ export function propsMerge(props, moreProps) {
 export function propsMergeClassName(props, className) {
   return propsMerge(props, {className});
 }
+
+const Util = {
+  capFirstLetter,
+  childrenWithProps,
+  propsRemove,
+  propsMerge,
+  propsMergeClassName
+};
+
+export default Util;

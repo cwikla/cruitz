@@ -1,0 +1,206 @@
+<% include Rails.application.routes.url_helpers %>
+<% include Rails.application.helpers %>
+
+import React, { 
+  Component
+} from 'react';
+
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+
+import Page from '../page';
+
+import Pyr from '../../pyr/pyr';
+
+import { 
+  render 
+} from 'react-dom';
+
+class Controller extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {isLoading: false};
+  }
+
+  preSubmit() {
+    this.isLoading();
+    if (this.props.preSubmit) {
+      this.props.preSubmit();
+    }
+  }
+
+  postSubmit() {
+    this.isLoading(false);
+    if (this.props.postSubmit) {
+      this.props.postSubmit();
+    }
+  }
+
+  ajaxError(jaXHR, textStatus, errorThrown) {
+     alert(errorThrown);
+  }
+
+}
+
+const JOBS_URL = "/jobs";
+
+const JobItem = (props) => (
+   <div id="job-{props.job.id}">
+    <h2>{props.job.title}</h2>
+    <h3>Location: {props.job.location}</h3>
+    <h3>Time: {props.job.time_commit}</h3>
+    <p>{props.job.description}</p>
+   </div>
+);
+
+class JobForm extends Component {
+
+  render() {
+    let url = JOBS_URL;
+    if (this.props.jobId){
+      url = url + "/" + this.props.jobId;
+    }
+
+    return (
+      <div id="job-page-form">
+        <Pyr.Form.Form
+          model="Job"
+          url={url}
+          method={this.props.method || Pyr.Form.POST }
+          id="job-form" 
+          ref={(node) => { this.form = node; }} 
+          preSubmit={this.props.preSubmit} 
+          postSubmit={this.props.postSubmit}
+          onSuccess={this.props.onSuccess}
+          onError={this.props.onError}
+        >
+      
+          <Pyr.Form.Group name="title">
+            <Pyr.Form.Label>Title</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder= "Enter job title"/>
+          </Pyr.Form.Group>
+      
+          <Pyr.Form.Group name="location">
+            <Pyr.Form.Label>Location</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
+          </Pyr.Form.Group>
+      
+          <Pyr.Form.Group name="time_commit">
+            <Pyr.Form.Label>Time Requirements</Pyr.Form.Label>
+            <Pyr.Form.Select>
+              <Pyr.Form.Option value="0">Full Time</Pyr.Form.Option>
+              <Pyr.Form.Option value="1">Part Time</Pyr.Form.Option>
+              <Pyr.Form.Option value="2">Contractor</Pyr.Form.Option>
+            </Pyr.Form.Select>
+          </Pyr.Form.Group>
+      
+          <Pyr.Form.Group name="description">
+            <Pyr.Form.Label>Description</Pyr.Form.Label>
+            <Pyr.Form.TextArea placeholder="Enter description" rows="10" />
+          </Pyr.Form.Group>
+      
+        </Pyr.Form.Form>
+      <div className="form-footer">
+        <Pyr.Form.SubmitButton target={this} disabled={this.state.isLoading}>Create</Pyr.Form.SubmitButton>
+      </div>
+      </div>
+    );
+  }
+}
+
+class EditJobPage extends Controller {
+  constructor(props) {
+    super(props);
+
+    this.state = Object.assign({}, this.state, {job: props.job});
+  }
+
+  render() {
+    return (
+      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} jobId={this.state.job.id} method={Pyr.Form.PUT} />
+    );
+  }
+}
+
+class IndexJobPage extends Controller {
+  constructor(props) {
+    super(props);
+
+    let allState = Object.assign({}, this.state, {jobs: null});
+    //alert(JSON.stringify(allState));
+    this.state = allState;
+  }
+
+  getJobs() {
+    $.getJSON({
+      type: Pyr.Form.GET,
+      url: JOBS_URL,
+      context: this
+    }).done(function(data, textStatus, jaXHR) {
+        //alert(JSON.stringify(data));
+        this.setState({jobs: data.jobs});
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    this.getJobs();
+  }
+
+  renderChildren() {
+    //alert(JSON.stringify(this.state.jobs[0]));
+    return (
+      <ul>
+        {this.state.jobs.map((job) => {
+          return (<li key={job.uuid}><JobItem job={job} /></li>);
+        })}
+      </ul>
+     );
+   }
+
+  renderNone() {
+    return (
+      <h2>No Jobs yet</h2>
+    );
+  }
+
+  render() {
+    return(
+      <div id="jobs-page">
+        { this.state.jobs ? this.renderChildren() : this.renderNone() }
+      </div>
+    );
+  }
+}
+
+class NewJobPage extends Controller {
+
+  render() { 
+    return ( 
+      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} />
+    );
+  }
+}
+
+class JobsPage extends Component {
+  render() {
+    let action = this.props.route || "Index";
+    let JobAction = eval(Pyr.Util.capFirstLetter(action) + "JobPage");
+
+    return(
+      <Page id="jobs-page-{action.toLowerCase()}" {...this.props}>
+        <JobAction {...this.props}/>
+      </Page>
+    );
+  }
+}
+
+export const JobSideButton = (props) => (
+  <label {...Pyr.Util.propsMergeClassName(props, "title")}>Jobs</label>
+);
+
+
+export default JobsPage;
+

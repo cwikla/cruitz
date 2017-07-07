@@ -1,0 +1,53 @@
+import React, { 
+  Component
+} from 'react';
+
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import { 
+  render 
+} from 'react-dom';
+
+import {
+  createStore,
+  applyMiddleware
+} from 'redux';
+
+import {
+  Provider
+} from 'react-redux';
+
+import Pyr from '../pyr/pyr';
+
+const Row = (props) => (
+  <div {...Pyr.Util.propsMergeClassName(props, "row")} >{props.children}</div>
+);
+
+const Column = (props) => (
+  <div {...Pyr.Util.propsMergeClassName(props, "col")}>{props.children}</div>
+);
+
+const JOBS_PAGE = 'jobs';
+const CANDIDATES_PAGE = 'candidates';
+const RECRUITERS_PAGE = 'recruiters';
+
+class Container extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      openPage: JOBS_PAGE
+    };
+  }
+
+  setPage(page) {
+    this.setState({openPage: page});
+    //alert(page);
+  }
+}
+
+export default Container;
+export {
+  Row,
+  Column
+};

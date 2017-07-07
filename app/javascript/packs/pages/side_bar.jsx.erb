@@ -1,0 +1,54 @@
+<% include Rails.application.routes.url_helpers %>
+<% include Rails.application.helpers %>
+
+import React, { 
+  Component
+} from 'react';
+
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import { 
+  render 
+} from 'react-dom';
+
+import {
+  createStore,
+  applyMiddleware
+} from 'redux';
+
+import {
+  Provider
+} from 'react-redux';
+
+import Pyr from '../pyr/pyr';
+
+class SidebarButton extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    let myClass = "sidebar-button" + (this.props.selected ? " selected" : "");
+    return(
+      <li {...Pyr.Util.propsMergeClassName(this.props, myClass)} >{this.props.children}</li>
+    );
+   }
+}
+
+class Sidebar extends Component {
+  render() {
+    //let newKids = React.Children.map(this.props.children, (child) => {
+      //return (barButton>{child}</SidebarButton>);
+    //});
+    let newKids = this.props.children;
+
+    return (
+      <ul id="side-bar" {...this.props} >
+        {newKids}
+      </ul>
+    );
+  }
+}
+export default Sidebar;
+export { SidebarButton };
+

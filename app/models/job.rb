@@ -1,4 +1,6 @@
 class Job < ApplicationRecord
+  include Pyr::Base::UuidHelp
+
   belongs_to :user
 
   JOB_FULL_TIME = 0

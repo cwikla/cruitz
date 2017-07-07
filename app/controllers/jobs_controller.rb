@@ -1,5 +1,6 @@
 class JobsController < ApplicationController
   def index
+    render json: {jobs: current_user.jobs}
   end
 
   def new
