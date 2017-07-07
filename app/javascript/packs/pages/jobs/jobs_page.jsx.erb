@@ -67,7 +67,7 @@ class JobForm extends Component {
         <Pyr.Form.Form
           model="Job"
           url={url}
-          method={this.props.method || Pyr.Form.POST }
+          method={this.props.method || Pyr.Method.POST }
           id="job-form" 
           ref={(node) => { this.form = node; }} 
           preSubmit={this.props.preSubmit} 
@@ -118,7 +118,7 @@ class EditJobPage extends Controller {
 
   render() {
     return (
-      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} jobId={this.state.job.id} method={Pyr.Form.PUT} />
+      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} jobId={this.state.job.id} method={Pyr.Method.PUT} />
     );
   }
 }
@@ -134,7 +134,7 @@ class IndexJobPage extends Controller {
 
   getJobs() {
     $.getJSON({
-      type: Pyr.Form.GET,
+      type: Pyr.Method.GET,
       url: JOBS_URL,
       context: this
     }).done(function(data, textStatus, jaXHR) {
