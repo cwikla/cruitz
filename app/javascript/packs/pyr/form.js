@@ -10,23 +10,27 @@ import Util from './util';
 
 class Form extends Component {
   static childContextTypes = {
-    model: PropTypes.string,
-    errors: PropTypes.object
+    controller: PropTypes.string,
+    errors: PropTypes.object,
+    object: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
 
+    //alert("FORM " + props.object.id);
+
     this.state = {
       isLoading: false,
-      errors: null
+      errors: null,
     };
   }
 
   getChildContext() {
     return { 
-      model: this.props.model,
-      errors: this.state.errors 
+      controller: this.props.controller,
+      object: this.props.object,
+      errors: this.state.errors,
     }
   }
 
@@ -140,7 +144,7 @@ class Form extends Component {
   }
 
   render() {
-    let rest = Util.propsRemove(this.props, ["preSubmit", "postSubmit", "model"]);
+    let rest = Util.propsRemove(this.props, ["preSubmit", "postSubmit", "controller", "object", "url", "onSuccess"]);
 
     return (
       <form ref={(node) => {this.form = node;}} 
@@ -205,16 +209,22 @@ class Group extends Component {
 class Child extends Component {
   static contextTypes = {
     name: PropTypes.string,
-    model: PropTypes.string,
+    controller: PropTypes.string,
     errorString: PropTypes.string,
+    object: PropTypes.object,
   }
 
   htmlID() {
-    return (this.context.model.toLowerCase() + "_" + this.context.name.toLowerCase());
+    return (this.context.controller.toLowerCase() + "_" + this.context.name.toLowerCase());
   }
 
   name() {
-    return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
+    return (this.context.controller.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
+  }
+
+  defaultValue() {
+    let val = this.context.object ? this.context.object[this.context.name.toLowerCase()] : "";
+    return val;
   }
 
   hasError() {
@@ -260,6 +270,18 @@ class Label extends Child {
 }
 
 class TextField extends Child {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      value: this.defaultValue()
+    }
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
+  }
+
   render() {
     let myProps = { 
       name: this.name(), 
@@ -267,8 +289,9 @@ class TextField extends Child {
       id: this.htmlID() ,
       "aria-describedby": this.htmlID()
     };
+
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.handleChange} />
     );
   }
 }
@@ -295,6 +318,18 @@ class Option extends Child {
 }
 
 class TextArea extends Child {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      value: this.defaultValue()
+    }
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
+  }
+
   render() {
     let myProps = { 
       name: this.name(), 
@@ -302,11 +337,11 @@ class TextArea extends Child {
       "aria-describedby": this.htmlID()
     };
     return(
-      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
+      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.handleChange}/>
     );
   }
 }
 
-const PyrForm = { Form, Group, Child, Label, TextField, Select, Option, TextArea };
+const PyrForm = { Form, Group, Child, Label, TextField, Select, Option, TextArea, SubmitButton };
 
 export { PyrForm };

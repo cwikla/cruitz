@@ -1,5 +1,8 @@
 class JobSerializer < ActiveModel::Serializer
-  attributes  :id, 
+  
+  attribute :id
+  attributes  :id,
+              :uuid,
               :title, 
 							:description, 
 							:time_commit, 

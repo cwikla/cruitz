@@ -14,6 +14,7 @@ import {
 import classNames from 'classnames';
 
 export function capFirstLetter(string) {
+    string = string.toLowerCase();
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
@@ -34,22 +35,26 @@ export function propsRemove(props, ripOut) {
   return tmp;
 }
 
-export function propsMerge(props, moreProps) {
+export function mergeClassName(a, b) {
+  a = a || "";
+  b = b || "";
+  return classNames(a, b);
+}
+
+export function propsMerge(initProps, props) {
   let result = {};
+  let allClasses = mergeClassName(initProps.className, props.className);
 
-  let propsClassName = props.className || "";
-  let morePropsClassName = moreProps.className || "";
-
+  Object.assign(result, initProps);
   Object.assign(result, props);
-  Object.assign(result, moreProps);
 
-  result.className = classNames(propsClassName, morePropsClassName);
+  result.className = allClasses;
 
   return result;
 }
 
 export function propsMergeClassName(props, className) {
-  return propsMerge(props, {className});
+  return propsMerge({className}, props);
 }
 
 const Util = {
@@ -57,7 +62,8 @@ const Util = {
   childrenWithProps,
   propsRemove,
   propsMerge,
-  propsMergeClassName
+  propsMergeClassName,
+  mergeClassName
 };
 
 export default Util;

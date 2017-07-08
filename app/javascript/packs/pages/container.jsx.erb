@@ -24,7 +24,11 @@ const Row = (props) => (
 );
 
 const Column = (props) => (
-  <div {...Pyr.Util.propsMergeClassName(props, "col")}>{props.children}</div>
+  <div className="A" className="B" {...Pyr.Util.propsMergeClassName(props, "col")}>{props.children}</div>
+);
+
+const ColumnHalf = (props) => (
+  <div {...Pyr.Util.propsMergeClassName(props, "col col-md-6")}>{props.children}</div>
 );
 
 const JOBS_PAGE = 'jobs';
@@ -49,5 +53,6 @@ class Container extends Component {
 export default Container;
 export {
   Row,
-  Column
+  Column,
+  ColumnHalf
 };

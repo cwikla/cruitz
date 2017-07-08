@@ -20,6 +20,13 @@ class JobsController < ApplicationController
     end
   end
 
+  def update
+    @job = current_user.jobs.where(:id => params[:job][:id])
+    @job.update_attributes(job_params)
+    
+  render json: @job
+  end
+
   def lsearch
     result = GeoName.search(params[:term]).map(&:name)
     puts "***** RESULT #{result}"

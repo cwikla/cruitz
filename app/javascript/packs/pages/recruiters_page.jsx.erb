@@ -8,22 +8,18 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
+import Pyr from '../pyr/pyr';
 import Page from './page';
 
-import Pyr from '../pyr/pyr';
-
-import { 
-  render 
-} from 'react-dom';
 
 const AddRecruiterPage = (props) => (
-  <Page id="add-recruiter-page" {...props}>Add a recruiter here</Page>
+  <div id="add-recruiter-page" {...props}>Add a recruiter here</div>
 );
 
-const RecruiterPage = (props) => (
-  <Page id="recruiters-page" {...props}>
+const RecruitersPage = (props) => (
+  <Page id="recruiters-page" {...props} name="Recruiter">
     <AddRecruiterPage {...props}/>
   </Page>
 );
 
-export default RecruiterPage;
+export default RecruitersPage;

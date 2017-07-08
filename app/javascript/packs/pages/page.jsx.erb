@@ -8,11 +8,24 @@ import Pyr from '../pyr/pyr';
 class Page extends Component {
   render() {
     let myClasses = "page col col-md-12 transition" + (this.props.selected ? " on" : " off");
+    //let child = React.cloneElement(React.Children.only(this.props.children), this.props);
+    let allClasses = Pyr.Util.mergeClassName(this.props.className, myClasses);
+    let id = this.props.name.toLowerCase() + "-page";
+
     return (
-      <div {...Pyr.Util.propsMergeClassName(this.props, myClasses)}>{this.props.children}</div>
+      <div className={allClasses} id={id}>{this.props.children}</div>
     );
   }
 }
 
+function sheetName(name, action) {
+  action = action || "Index";
+  let nameAction = Pyr.Util.capFirstLetter(name) + Pyr.Util.capFirstLetter(action) + "Sheet";
+  return nameAction;
+}
+
 export default Page;
+export { 
+  sheetName
+}
 

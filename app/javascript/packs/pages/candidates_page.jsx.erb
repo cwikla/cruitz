@@ -8,24 +8,20 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Page from './page';
-
 import Pyr from '../pyr/pyr';
 
-import { 
-  render 
-} from 'react-dom';
+import Page from './page';
 
 const AddCandidatePage = (props) => (
   <div {...props}>Candidate Page</div>
 );
 
-const CandidatePage = (props) => (
-  <Page id="candidates-page" {...props}>
+const CandidatesPage = (props) => (
+  <Page id="candidates-page-{action.toLowerCase()}" {...props} name="Candidate">
     <AddCandidatePage {...props}/>
   </Page>
 );
 
-export default CandidatePage;
+export default CandidatesPage;
 
 

@@ -23,8 +23,8 @@ import {
 import Container, { Row, Column } from './container';
 import Sidebar, { SidebarButton } from './side_bar';
 import JobsPage, { JobSideButton } from './jobs/jobs_page';
-import CandidatePage from './candidate_page';
-import RecruiterPage from './recruiter_page';
+import CandidatesPage from './candidates_page';
+import RecruitersPage from './recruiters_page';
 
 const JOBS_PAGE = 'jobs';
 const CANDIDATES_PAGE = 'candidates';
@@ -64,9 +64,9 @@ class DashboardContainer extends Container {
           </Sidebar>
         </Column>
         <Column className="col-md-10 blue" id="main_page">
-          <CandidatePage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} setPage={this.setPage.bind(this)}/>
-          <RecruiterPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} setPage={this.setPage.bind(this)}/>
-          <JobsPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE} setPage={this.setPage.bind(this)}/>
+          <JobsPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE} />
+          <CandidatesPage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} />
+          <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
         </Column>
       </Row>
     );

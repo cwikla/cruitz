@@ -1,5 +1,5 @@
-<% include Rails.application.routes.url_helpers %>
-<% include Rails.application.helpers %>
+//<% include Rails.application.routes.url_helpers %>
+//<% include Rails.application.helpers %>
 
 import React, { 
   Component
@@ -8,7 +8,8 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Page from '../page';
+import Page, { sheetName } from '../page';
+import { Row, Column, ColumnHalf } from '../container';
 
 import Pyr from '../../pyr/pyr';
 
@@ -16,7 +17,12 @@ import {
   render 
 } from 'react-dom';
 
-class Controller extends Component {
+
+function ajaxError(jaXHR, textStatus, errorThrown) {
+   alert(errorThrown);
+}
+
+class Sheet extends Component {
   constructor(props) {
     super(props);
 
@@ -37,38 +43,63 @@ class Controller extends Component {
     }
   }
 
-  ajaxError(jaXHR, textStatus, errorThrown) {
-     alert(errorThrown);
-  }
-
 }
 
 const JOBS_URL = "/jobs";
 
-const JobItem = (props) => (
-   <div id="job-{props.job.id}">
-    <h2>{props.job.title}</h2>
-    <h3>Location: {props.job.location}</h3>
-    <h3>Time: {props.job.time_commit}</h3>
-    <p>{props.job.description}</p>
-   </div>
-);
+class JobItem extends Component {
+
+  render() {
+    let id = "job-" + this.props.job.id;
+
+    return (
+      <div id={id}>
+        <h2>{this.props.job.title}</h2>
+        <h3>Location: {this.props.job.location}</h3>
+        <h3>Time: {this.props.job.time_commit}</h3>
+        <p>{this.props.job.description}</p>
+      </div>
+    );
+  }
+}
 
 class JobForm extends Component {
 
-  render() {
-    let url = JOBS_URL;
-    if (this.props.jobId){
-      url = url + "/" + this.props.jobId;
+  methodToName(method) {
+    switch (method) {
+      case Pyr.Method.PUT:
+        return "Update";
+        break
+
+      default:
+        return "Create";
+        break;
     }
+  }
+
+  render() {
+    let key = "job-form";
+    let url = JOBS_URL;
+
+    if (this.props.job){
+      url = url + "/" + this.props.job.id;
+      key = key + "-" + this.props.job.id;
+    }
+
+    let method = this.props.method || Pyr.Method.POST;
+
+    //alert("Render FOrm Job " + this.props.job.id);
+
 
     return (
       <div id="job-page-form">
         <Pyr.Form.Form
-          model="Job"
+          controller="Job"
+          object={this.props.job}
           url={url}
-          method={this.props.method || Pyr.Method.POST }
+          method={method}
           id="job-form" 
+          key={key}
           ref={(node) => { this.form = node; }} 
           preSubmit={this.props.preSubmit} 
           postSubmit={this.props.postSubmit}
@@ -102,59 +133,30 @@ class JobForm extends Component {
       
         </Pyr.Form.Form>
       <div className="form-footer">
-        <Pyr.Form.SubmitButton target={this} disabled={this.state.isLoading}>Create</Pyr.Form.SubmitButton>
+        <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>{this.methodToName(method)}</Pyr.Form.SubmitButton>
       </div>
       </div>
     );
   }
 }
 
-class EditJobPage extends Controller {
-  constructor(props) {
-    super(props);
-
-    this.state = Object.assign({}, this.state, {job: props.job});
-  }
-
+class JobEditSheet extends Sheet {
   render() {
+    //alert("JOB EDIT " + this.props.job.id);
     return (
-      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} jobId={this.state.job.id} method={Pyr.Method.PUT} />
+      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} job={this.props.job} method={Pyr.Method.PUT} isLoading={this.state.isLoading}/>
     );
   }
 }
 
-class IndexJobPage extends Controller {
-  constructor(props) {
-    super(props);
-
-    let allState = Object.assign({}, this.state, {jobs: null});
-    //alert(JSON.stringify(allState));
-    this.state = allState;
-  }
-
-  getJobs() {
-    $.getJSON({
-      type: Pyr.Method.GET,
-      url: JOBS_URL,
-      context: this
-    }).done(function(data, textStatus, jaXHR) {
-        //alert(JSON.stringify(data));
-        this.setState({jobs: data.jobs});
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      ajaxError(jaXHR, textStatus, errorThrown);
-    });
-  }
-
-  componentDidMount() {
-    this.getJobs();
-  }
-
+class JobIndexSheet extends Sheet {
   renderChildren() {
-    //alert(JSON.stringify(this.state.jobs[0]));
+    let self = this;
+    //alert(JSON.stringify(this.props.jobs[0]));
     return (
       <ul>
-        {this.state.jobs.map((job) => {
-          return (<li key={job.uuid}><JobItem job={job} /></li>);
+        {this.props.jobs.map((job) => {
+          return (<li key={job.uuid} onClick={ (e) => { e.preventDefault(); self.props.setSelected(job); } } ><JobItem job={job} /></li>);
         })}
       </ul>
      );
@@ -169,13 +171,31 @@ class IndexJobPage extends Controller {
   render() {
     return(
       <div id="jobs-page">
-        { this.state.jobs ? this.renderChildren() : this.renderNone() }
+        { this.props.jobs ? this.renderChildren() : this.renderNone() }
       </div>
     );
   }
 }
 
-class NewJobPage extends Controller {
+class JobShowSheet extends Sheet {
+  editMe(e) {
+    e.preventDefault();
+    this.props.setAction('Edit');
+  }
+
+  render() {
+    if (!this.props.job) {
+      return (
+          <h2>No Job</h2>
+      );
+    }
+    return(
+      <a onClick={this.editMe.bind(this)}><JobItem job={this.props.job} /></a>
+    );
+  }
+}
+
+class JobNewSheet extends Sheet {
 
   render() { 
     return ( 
@@ -185,22 +205,117 @@ class NewJobPage extends Controller {
 }
 
 class JobsPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selected: null,
+      action: null,
+      jobs: null,
+    };
+  }
+
+  name() {
+    return "Job";
+  }
+
+  setSelected(selected) {
+    //alert("SELECTED " + JSON.stringify(selected));
+    this.setState({selected: selected});
+  }
+
+  setAction(action) {
+    //alert("Set Acxtion" + action);
+    this.setState({action});
+  }
+
+  getJobs() {
+    $.getJSON({
+      type: Pyr.Method.GET,
+      url: JOBS_URL,
+      context: this
+    }).done(function(data, textStatus, jaXHR) {
+        //alert(JSON.stringify(data));
+        let jobs = data.jobs;
+
+        let newState = {jobs};
+
+        if (jobs.length > 0) {
+          newState.selected = jobs[0];
+          //alert(newState.selected);
+        }
+        this.setState(newState);
+
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    this.getJobs();
+  }
+
+  renderItems(props) {
+    let extraClass = "col-md-6";
+
+    if (this.fullDetail) {
+      extraClass = ".hidden-lg";
+    }
+    else if (!this.state.selected) {
+      extraClass = "col-md-12";
+    }
+      
+    return (
+      <ColumnHalf className={extraClass}>
+        <JobIndexSheet {...props} jobs={this.state.jobs} setSelected={this.setSelected.bind(this)}/>
+      </ColumnHalf>
+    );
+  }
+
+  renderDetail(props) {
+    let extraClass = "col-md-6";
+
+    if (this.fullDetail) {
+      extraClass = "col-md-12";
+    }
+    else if (!this.state.selected) {
+      extraClass = ".hidden-lg";
+    }
+
+    let sheet = sheetName(this.name(), this.state.action || "Show");
+    let ActionSheet = eval(sheet);
+
+    //alert("RENDER " + sheet);
+
+    return (
+      <ColumnHalf className={extraClass}>
+        <ActionSheet {...props} jobs={this.state.jobs} job={this.state.selected} setAction={this.setAction.bind(this)}/>
+      </ColumnHalf>
+    );
+  }
+
   render() {
-    let action = this.props.route || "Index";
-    let JobAction = eval(Pyr.Util.capFirstLetter(action) + "JobPage");
+    //alert(JSON.stringify(this.state.selected));
+    
 
     return(
-      <Page id="jobs-page-{action.toLowerCase()}" {...this.props}>
-        <JobAction {...this.props}/>
+      <Page id="{this.name().toLowerCase()}-page-{this.state.action.toLowerCase()}" {...this.props} name={this.name()}>
+        <Row>
+            { this.renderItems(this.props) }
+            { this.renderDetail(this.props) }
+        </Row>
       </Page>
     );
   }
 }
 
-export const JobSideButton = (props) => (
+const JobSideButton = (props) => (
   <label {...Pyr.Util.propsMergeClassName(props, "title")}>Jobs</label>
 );
 
 
 export default JobsPage;
+export {
+  JobSideButton
+}
 
