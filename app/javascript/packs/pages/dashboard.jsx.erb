@@ -1,6 +1,3 @@
-<% include Rails.application.routes.url_helpers %>
-<% include Rails.application.helpers %>
-
 import React, { 
   Component
 } from 'react';
@@ -20,6 +17,8 @@ import {
   Provider
 } from 'react-redux';
 
+import Pyr from '../pyr/pyr';
+
 import Container, { Row, Column } from './container';
 import Sidebar, { SidebarButton } from './side_bar';
 import JobsPage, { JobSideButton } from './jobs/jobs_page';
@@ -30,18 +29,79 @@ const JOBS_PAGE = 'jobs';
 const CANDIDATES_PAGE = 'candidates';
 const RECRUITERS_PAGE = 'recruiters';
 
+const JOBS_URL = "/jobs";
+
+function ajaxError(jaXHR, textStatus, errorThrown) {
+   alert(errorThrown);
+}
+
+function same(a,b) {
+  return a.uuid == b.uuid;
+}
+
 class DashboardContainer extends Container {
   constructor(props) {
     super(props);
 
     this.state = {
-      openPage: JOBS_PAGE
+      openPage: JOBS_PAGE,
+      jobs: []
     };
   }
 
   setPage(page) {
     this.setState({openPage: page});
     //alert(page);
+  }
+
+  getJobs() {
+    $.getJSON({
+      type: Pyr.Method.GET,
+      url: JOBS_URL,
+      context: this
+    }).done(function(data, textStatus, jaXHR) {
+        this.onJobIndex(data.jobs);
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
+
+  componentDidMount() {
+    this.getJobs();
+  }
+
+  onJobIndex(jobs) {
+    this.setState({jobs});
+  }
+
+  same(j1, j2) {
+    return j1.uuid == j2.uuid;
+  }
+
+  onJobCreate(job) {
+    let newJobs = this.state.jobs.slice().push(job);
+    this.onJobIndex(newJobs);
+  }
+
+  onJobUpdate(job) {
+    let newJobs = this.state.jobs.map((item) => {
+      if (same(item, job)) {
+        return job;
+      }
+      return item;
+    });
+    this.onJobIndex(newJobs);
+  }
+
+  onJobDelete(job) {
+    let pos = this.state.jobs.findIndex((item) => {
+       return same(item, job);
+    });
+    if (pos) {
+      let newJobs = this.state.jobs.slice(0, pos) + this.state.jobs.slice(pos+1);
+      this.onJobIndex(newJobs);
+    }
   }
 
   render() {
@@ -64,7 +124,12 @@ class DashboardContainer extends Container {
           </Sidebar>
         </Column>
         <Column className="col-md-10 blue" id="main_page">
-          <JobsPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE} />
+          <JobsPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE} 
+            jobs={this.state.jobs}
+            onJobCreate={this.onJobCreate.bind(this)}
+            onJobUpdate={this.onJobUpdate.bind(this)}
+            onJobDelete={this.onJobDelete.bind(this)}
+          />
           <CandidatesPage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} />
           <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
         </Column>

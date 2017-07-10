@@ -21,7 +21,7 @@ class JobsController < ApplicationController
   end
 
   def update
-    @job = current_user.jobs.where(:id => params[:job][:id])
+    @job = current_user.jobs.where(:id => params[:id]).first
     @job.update_attributes(job_params)
     
   render json: @job

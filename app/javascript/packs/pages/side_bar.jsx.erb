@@ -22,6 +22,27 @@ import {
 
 import Pyr from '../pyr/pyr';
 
+class SidebarSection extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    let newKids = React.Children.map(this.props.children, (child) => {
+      return (<SidebarButton>{child}</SidebarButton>);
+    });
+
+    return (
+      <div className="sidebar-section">
+        <label>{this.props.title}</label>
+        <ul>
+        {newKids}
+        </ul>
+      </div>
+    );
+  }
+}
+
 class SidebarButton extends Component {
   constructor(props) {
     super(props);

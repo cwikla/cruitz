@@ -141,10 +141,20 @@ class JobForm extends Component {
 }
 
 class JobEditSheet extends Sheet {
+  handleSuccess(data, textStatus, jqXHR) {
+    this.props.onJobUpdate(data);
+  }
+
   render() {
     //alert("JOB EDIT " + this.props.job.id);
     return (
-      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} job={this.props.job} method={Pyr.Method.PUT} isLoading={this.state.isLoading}/>
+      <JobForm 
+        preSubmit={this.preSubmit} 
+        postSubmit={this.postSubmit} 
+        job={this.props.job} 
+        onSuccess={this.handleSuccess.bind(this)}
+        method={Pyr.Method.PUT} 
+        isLoading={this.state.isLoading}/>
     );
   }
 }
@@ -211,7 +221,6 @@ class JobsPage extends Component {
     this.state = {
       selected: null,
       action: null,
-      jobs: null,
     };
   }
 
@@ -229,32 +238,6 @@ class JobsPage extends Component {
     this.setState({action});
   }
 
-  getJobs() {
-    $.getJSON({
-      type: Pyr.Method.GET,
-      url: JOBS_URL,
-      context: this
-    }).done(function(data, textStatus, jaXHR) {
-        //alert(JSON.stringify(data));
-        let jobs = data.jobs;
-
-        let newState = {jobs};
-
-        if (jobs.length > 0) {
-          newState.selected = jobs[0];
-          //alert(newState.selected);
-        }
-        this.setState(newState);
-
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      ajaxError(jaXHR, textStatus, errorThrown);
-    });
-  }
-
-  componentDidMount() {
-    this.getJobs();
-  }
-
   renderItems(props) {
     let extraClass = "col-md-6";
 
@@ -267,7 +250,7 @@ class JobsPage extends Component {
       
     return (
       <ColumnHalf className={extraClass}>
-        <JobIndexSheet {...props} jobs={this.state.jobs} setSelected={this.setSelected.bind(this)}/>
+        <JobIndexSheet {...props} jobs={this.props.jobs} setSelected={this.setSelected.bind(this)}/>
       </ColumnHalf>
     );
   }
@@ -289,7 +272,7 @@ class JobsPage extends Component {
 
     return (
       <ColumnHalf className={extraClass}>
-        <ActionSheet {...props} jobs={this.state.jobs} job={this.state.selected} setAction={this.setAction.bind(this)}/>
+        <ActionSheet {...props} jobs={this.props.jobs} job={this.state.selected} setAction={this.setAction.bind(this)}/>
       </ColumnHalf>
     );
   }

@@ -291,7 +291,7 @@ class TextField extends Child {
     };
 
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.handleChange} />
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.handleChange.bind(this)} />
     );
   }
 }
