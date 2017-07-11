@@ -10,36 +10,14 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Page, { sheetName } from '../page';
-import { Row, Column, ColumnHalf } from '../container';
+import { 
+  Row, 
+  Column, 
+  ColumnHalf 
+} from '../container';
 
 import Pyr from '../../pyr/pyr';
-
-function ajaxError(jaXHR, textStatus, errorThrown) {
-   alert(errorThrown);
-}
-
-class Sheet extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {isLoading: false};
-  }
-
-  preSubmit() {
-    this.isLoading();
-    if (this.props.preSubmit) {
-      this.props.preSubmit();
-    }
-  }
-
-  postSubmit() {
-    this.isLoading(false);
-    if (this.props.postSubmit) {
-      this.props.postSubmit();
-    }
-  }
-
-}
+import Sheet, { ajaxError } from '../sheet';
 
 const JOBS_URL = "/jobs";
 
@@ -129,7 +107,13 @@ class CandidateForm extends Component {
 }
 
 class CandidateEditSheet extends Sheet {
-  handleSuccess(data, textStatus, jqXHR) {
+  constructor(props) {
+    super(props);
+
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
     this.props.onCandidateUpdate(data.candidate);
   }
 
@@ -140,7 +124,7 @@ class CandidateEditSheet extends Sheet {
         preSubmit={this.preSubmit} 
         postSubmit={this.postSubmit} 
         candidate={this.props.candidate} 
-        onSuccess={this.handleSuccess.bind(this)}
+        onSuccess={this.onSuccess}
         method={Pyr.Method.PUT} 
         isLoading={this.state.isLoading}/>
     );
@@ -148,13 +132,29 @@ class CandidateEditSheet extends Sheet {
 }
 
 class CandidateIndexSheet extends Sheet {
+  constructor(props) {
+    super(props);
+    this.bindClicks(props.candidates, this.selectCandidate);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    this.bindClicks(nextProps.candidates, this.selectCandidate);
+  }
+
+
+  selectCandidate(candidate, e) {
+    e.preventDefault();
+
+    this.props.onSelectCandidate(candidate);
+  }
+  
   renderChildren() {
     let self = this;
     //alert(JSON.stringify(this.props.candidates[0]));
     return (
       <ul>
-        {this.props.candidates.map((candidate) => {
-          return (<li key={candidate.uuid} onClick={ (e) => { e.preventDefault(); self.props.setSelected(candidate); } } ><CandidateItem candidate={candidate} /></li>);
+        {this.props.candidates.map((candidate, pos) => {
+            return (<li key={candidate.uuid} onClick={this.onClicks[pos]}><CandidateItem candidate={candidate} /></li>);
         })}
       </ul>
      );
@@ -176,9 +176,14 @@ class CandidateIndexSheet extends Sheet {
 }
 
 class CandidateShowSheet extends Sheet {
+  constructor(props) {
+    super(props);
+    this.onClick = this.editMe.bind(this);
+
+  }
   editMe(e) {
     e.preventDefault();
-    this.props.setAction('Edit');
+    this.props.onSetAction('Edit');
   }
 
   render() {
@@ -187,8 +192,9 @@ class CandidateShowSheet extends Sheet {
           <h2>No Candidate</h2>
       );
     }
+    //alert(this.props.candidate.uuid);
     return(
-      <a onClick={this.editMe.bind(this)}><CandidateItem candidate={this.props.candidate} /></a>
+      <a onClick={this.onClick}><CandidateItem candidate={this.props.candidate} /></a>
     );
   }
 }
@@ -211,6 +217,9 @@ class CandidatesPage extends Component {
       action: null,
       job: this.props.job // placeholder until we can fetch the full one
     };
+
+    this.onSelectCandidate = this.selectCandidate.bind(this);
+    this.onSetAction = this.setAction.bind(this);
   }
 
   getJob(jobId) {
@@ -235,6 +244,11 @@ class CandidatesPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+     //alert("Did Update");
+    //alert(this.props.job);
+    if(this.props.job){
+     // alert(this.props.job.uuid);
+    }
     if (this.props.job && (!prevProps.job || (prevProps.job.uuid != this.props.job.uuid))) {
       this.getJob(this.props.job.id);
     }
@@ -244,8 +258,8 @@ class CandidatesPage extends Component {
     return "Candidate";
   }
 
-  setSelected(selected) {
-    //alert("SELECTED " + JSON.stringify(selected));
+  selectCandidate(selected) {
+    //alert("SELECTED " + selected);
     this.setState({selected: selected});
   }
 
@@ -254,7 +268,7 @@ class CandidatesPage extends Component {
     this.setState({action});
   }
 
-  renderItems(props) {
+  renderItems(candidates, props) {
     let extraClass = "col-md-6";
 
     if (this.fullDetail) {
@@ -263,16 +277,17 @@ class CandidatesPage extends Component {
     else if (!this.state.selected) {
       extraClass = "col-md-12";
     }
+
       
     return (
       <ColumnHalf className={extraClass}>
-        <CandidateIndexSheet {...props} candidates={this.state.job ? this.state.job.candidates : []} setSelected={this.setSelected.bind(this)}/>
+        <CandidateIndexSheet {...props} candidates={candidates} onSelectCandidate={this.onSelectCandidate}/>
       </ColumnHalf>
     );
   }
 
-  renderDetail(props) {
-    let extraClass = "col-md-6";
+  renderDetail(candidates, props) {
+    let extraClass = "col-md-6 blue";
 
     if (this.fullDetail) {
       extraClass = "col-md-12";
@@ -281,14 +296,14 @@ class CandidatesPage extends Component {
       extraClass = ".hidden-lg";
     }
 
-    let sheet = sheetName(this.name(), this.state.action || "Index");
+    let sheet = sheetName(this.name(), this.state.action || "Show");
     let ActionSheet = eval(sheet);
 
-    //alert("RENDER " + sheet);
+    //alert(this.state.selected);
 
     return (
       <ColumnHalf className={extraClass}>
-        <ActionSheet {...props} candidates={this.props.candidates} candidate={this.state.selected} setAction={this.setAction.bind(this)}/>
+        <ActionSheet {...props} candidates={candidates} candidate={this.state.selected} onSetAction={this.onSetAction}/>
       </ColumnHalf>
     );
   }
@@ -296,12 +311,13 @@ class CandidatesPage extends Component {
   render() {
     //alert(JSON.stringify(this.state.selected));
     
+    let candidates = this.state.job ? this.state.job.candidates : [];
 
     return(
       <Page id="{this.name().toLowerCase()}-page-{this.state.action.toLowerCase()}" {...this.props} name={this.name()}>
         <Row>
-            { this.renderItems(this.props) }
-            { this.renderDetail(this.props) }
+            { this.renderItems(candidates, this.props) }
+            { this.renderDetail(candidates, this.props) }
         </Row>
       </Page>
     );

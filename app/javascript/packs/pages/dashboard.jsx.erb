@@ -48,6 +48,11 @@ class DashboardContainer extends Container {
       jobs: [],
       selected: null,
     };
+
+    this.onJobIndex = this.jobIndex.bind(this);
+    this.onJobCreate = this.jobCreate.bind(this);
+    this.onJobUpdate = this.jobUpdate.bind(this);
+    this.onJobDelete = this.jobDelete.bind(this);
   }
 
   setPage(page) {
@@ -77,16 +82,16 @@ class DashboardContainer extends Container {
   }
 
 
-  onJobIndex(jobs) {
+  jobIndex(jobs) {
     this.setState({jobs});
   }
 
-  onJobCreate(job) {
+  jobCreate(job) {
     let newJobs = this.state.jobs.slice().push(job);
     this.onJobIndex(newJobs);
   }
 
-  onJobUpdate(job) {
+  jobUpdate(job) {
     let newJobs = this.state.jobs.map((item) => {
       if (same(item, job)) {
         return job;
@@ -96,7 +101,7 @@ class DashboardContainer extends Container {
     this.onJobIndex(newJobs);
   }
 
-  onJobDelete(job) {
+  jobDelete(job) {
     let pos = this.state.jobs.findIndex((item) => {
        return same(item, job);
     });
@@ -142,9 +147,9 @@ class DashboardContainer extends Container {
         <Column className="col-md-10 blue" id="main_page">
           <JobsPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE} 
             jobs={this.state.jobs}
-            onJobCreate={this.onJobCreate.bind(this)}
-            onJobUpdate={this.onJobUpdate.bind(this)}
-            onJobDelete={this.onJobDelete.bind(this)}
+            onJobCreate={this.onJobCreate}
+            onJobUpdate={this.onJobUpdate}
+            onJobDelete={this.onJobDelete}
           />
           <CandidatesPage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} job={this.state.selected}/>
           <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />

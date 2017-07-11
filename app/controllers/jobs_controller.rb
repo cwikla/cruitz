@@ -21,15 +21,14 @@ class JobsController < ApplicationController
   end
 
   def update
-    @job = current_user.jobs.where(:id => params[:id]).first
+    @job = current_user.jobs.find(params[:id])
     @job.update(job_params)
     
     render json: @job
   end
 
   def show
-    result = current_user.jobs.where(:id => params[:id])
-    @job = result.first
+    @job = current_user.jobs.find(params[:id])
 
     render json: @job, cand: params[:cand]
   end
