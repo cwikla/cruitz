@@ -20,9 +20,9 @@ import {
 import Pyr from '../pyr/pyr';
 
 import Container, { Row, Column } from './container';
-import Sidebar, { SidebarButton } from './side_bar';
+import Sidebar, { SidebarSection, SidebarButton } from './side_bar';
 import JobsPage, { JobSideButton } from './jobs/jobs_page';
-import CandidatesPage from './candidates_page';
+import CandidatesPage, {CandidateSideButton} from './jobs/candidates_page';
 import RecruitersPage from './recruiters_page';
 
 const JOBS_PAGE = 'jobs';
@@ -45,7 +45,8 @@ class DashboardContainer extends Container {
 
     this.state = {
       openPage: JOBS_PAGE,
-      jobs: []
+      jobs: [],
+      selected: null,
     };
   }
 
@@ -71,12 +72,13 @@ class DashboardContainer extends Container {
     this.getJobs();
   }
 
-  onJobIndex(jobs) {
-    this.setState({jobs});
-  }
-
   same(j1, j2) {
     return j1.uuid == j2.uuid;
+  }
+
+
+  onJobIndex(jobs) {
+    this.setState({jobs});
   }
 
   onJobCreate(job) {
@@ -104,15 +106,29 @@ class DashboardContainer extends Container {
     }
   }
 
+  selectJob(e, job) {
+    e.preventDefault();
+
+    this.setState({
+      openPage: CANDIDATES_PAGE,
+      selected: job});
+  }
+
   render() {
+    let self = this;
+
+    let jobKids = this.state.jobs.map( (child) => {
+        return (<SidebarButton key={child.uuid} onClick={(e) => self.selectJob(e, child) }>{child.title}</SidebarButton>);
+      }
+    );
+
     return(
       <Row>
         <Column className="col-md-2 red" id="sidebar">
           <Sidebar {...this.props}>
-            <SidebarButton target={this.jobsPage} 
-              selected={this.state.openPage==JOBS_PAGE} 
-              onClick={(e) => {e.preventDefault(); this.setPage(JOBS_PAGE); } }
-            >Jobs</SidebarButton>
+            <SidebarSection>
+              {jobKids}
+            </SidebarSection>
             <SidebarButton 
               selected={this.state.openPage==CANDIDATES_PAGE} 
               onClick={(e) => {e.preventDefault(); this.setPage(CANDIDATES_PAGE); } }
@@ -130,7 +146,7 @@ class DashboardContainer extends Container {
             onJobUpdate={this.onJobUpdate.bind(this)}
             onJobDelete={this.onJobDelete.bind(this)}
           />
-          <CandidatesPage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} />
+          <CandidatesPage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} job={this.state.selected}/>
           <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
         </Column>
       </Row>

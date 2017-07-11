@@ -2,6 +2,8 @@ class Job < ApplicationRecord
   include Pyr::Base::UuidHelp
 
   belongs_to :user
+  has_many :candidates
+  has_many :heads, :through => :candidates
 
   JOB_FULL_TIME = 0
   JOB_PART_TIME = 1

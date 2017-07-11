@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   def index
-    render json: {jobs: current_user.jobs}
+    render json: current_user.jobs.order(:id).all
   end
 
   def new
@@ -22,9 +22,16 @@ class JobsController < ApplicationController
 
   def update
     @job = current_user.jobs.where(:id => params[:id]).first
-    @job.update_attributes(job_params)
+    @job.update(job_params)
     
-  render json: @job
+    render json: @job
+  end
+
+  def show
+    result = current_user.jobs.where(:id => params[:id])
+    @job = result.first
+
+    render json: @job, cand: params[:cand]
   end
 
   def lsearch

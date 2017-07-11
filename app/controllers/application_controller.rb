@@ -1,4 +1,5 @@
 class ApplicationController < Pyr::Base::ApplicationController
+  #include ActionController::Serialization
   protect_from_forgery with: :exception
 
   layout :get_layout

@@ -1,6 +1,7 @@
 <% include Rails.application.routes.url_helpers %>
 <% include Rails.application.helpers %>
 
+
 import React, { 
   Component
 } from 'react';
@@ -12,11 +13,6 @@ import Page, { sheetName } from '../page';
 import { Row, Column, ColumnHalf } from '../container';
 
 import Pyr from '../../pyr/pyr';
-
-import { 
-  render 
-} from 'react-dom';
-
 
 function ajaxError(jaXHR, textStatus, errorThrown) {
    alert(errorThrown);
@@ -47,23 +43,20 @@ class Sheet extends Component {
 
 const JOBS_URL = "/jobs";
 
-class JobItem extends Component {
+class CandidateItem extends Component {
 
   render() {
-    let id = "job-" + this.props.job.id;
+    let id = "candidate-" + this.props.candidate.id;
 
     return (
       <div id={id}>
-        <h2>{this.props.job.title}</h2>
-        <h3>Location: {this.props.job.location}</h3>
-        <h3>Time: {this.props.job.time_commit}</h3>
-        <p>{this.props.job.description}</p>
+        <h2>{this.props.candidate.first_name} {this.props.candidate.last_name}</h2>
       </div>
     );
   }
 }
 
-class JobForm extends Component {
+class CandidateForm extends Component {
 
   methodToName(method) {
     switch (method) {
@@ -78,27 +71,27 @@ class JobForm extends Component {
   }
 
   render() {
-    let key = "job-form";
+    let key = "candidate-form";
     let url = JOBS_URL;
 
-    if (this.props.job){
-      url = url + "/" + this.props.job.id;
-      key = key + "-" + this.props.job.id;
+    if (this.props.candidate){
+      url = url + "/" + this.props.candidate.id;
+      key = key + "-" + this.props.candidate.id;
     }
 
     let method = this.props.method || Pyr.Method.POST;
 
-    //alert("Render FOrm Job " + this.props.job.id);
+    //alert("Render FOrm Candidate " + this.props.candidate.id);
 
 
     return (
-      <div id="job-page-form">
+      <div id="candidate-page-form">
         <Pyr.Form.Form
-          controller="Job"
-          object={this.props.job}
+          controller="Candidate"
+          object={this.props.candidate}
           url={url}
           method={method}
-          id="job-form" 
+          id="candidate-form" 
           key={key}
           ref={(node) => { this.form = node; }} 
           preSubmit={this.props.preSubmit} 
@@ -109,12 +102,7 @@ class JobForm extends Component {
       
           <Pyr.Form.Group name="title">
             <Pyr.Form.Label>Title</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Enter job title"/>
-          </Pyr.Form.Group>
-      
-          <Pyr.Form.Group name="location">
-            <Pyr.Form.Label>Location</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
+            <Pyr.Form.TextField placeholder= "Enter candidate title"/>
           </Pyr.Form.Group>
       
           <Pyr.Form.Group name="time_commit">
@@ -140,18 +128,18 @@ class JobForm extends Component {
   }
 }
 
-class JobEditSheet extends Sheet {
+class CandidateEditSheet extends Sheet {
   handleSuccess(data, textStatus, jqXHR) {
-    this.props.onJobUpdate(data.job);
+    this.props.onCandidateUpdate(data.candidate);
   }
 
   render() {
-    //alert("JOB EDIT " + this.props.job.id);
+    //alert("JOB EDIT " + this.props.candidate.id);
     return (
-      <JobForm 
+      <CandidateForm 
         preSubmit={this.preSubmit} 
         postSubmit={this.postSubmit} 
-        job={this.props.job} 
+        candidate={this.props.candidate} 
         onSuccess={this.handleSuccess.bind(this)}
         method={Pyr.Method.PUT} 
         isLoading={this.state.isLoading}/>
@@ -159,14 +147,14 @@ class JobEditSheet extends Sheet {
   }
 }
 
-class JobIndexSheet extends Sheet {
+class CandidateIndexSheet extends Sheet {
   renderChildren() {
     let self = this;
-    //alert(JSON.stringify(this.props.jobs[0]));
+    //alert(JSON.stringify(this.props.candidates[0]));
     return (
       <ul>
-        {this.props.jobs.map((job) => {
-          return (<li key={job.uuid} onClick={ (e) => { e.preventDefault(); self.props.setSelected(job); } } ><JobItem job={job} /></li>);
+        {this.props.candidates.map((candidate) => {
+          return (<li key={candidate.uuid} onClick={ (e) => { e.preventDefault(); self.props.setSelected(candidate); } } ><CandidateItem candidate={candidate} /></li>);
         })}
       </ul>
      );
@@ -174,58 +162,86 @@ class JobIndexSheet extends Sheet {
 
   renderNone() {
     return (
-      <h2>No Jobs yet</h2>
+      <h2 key="no-cand">No Candidates yet</h2>
     );
   }
 
   render() {
     return(
-      <div id="jobs-page">
-        { this.props.jobs ? this.renderChildren() : this.renderNone() }
+      <div id="candidates-page">
+        { this.props.candidates ? this.renderChildren() : this.renderNone() }
       </div>
     );
   }
 }
 
-class JobShowSheet extends Sheet {
+class CandidateShowSheet extends Sheet {
   editMe(e) {
     e.preventDefault();
     this.props.setAction('Edit');
   }
 
   render() {
-    if (!this.props.job) {
+    if (!this.props.candidate) {
       return (
-          <h2>No Job</h2>
+          <h2>No Candidate</h2>
       );
     }
     return(
-      <a onClick={this.editMe.bind(this)}><JobItem job={this.props.job} /></a>
+      <a onClick={this.editMe.bind(this)}><CandidateItem candidate={this.props.candidate} /></a>
     );
   }
 }
 
-class JobNewSheet extends Sheet {
+class CandidateNewSheet extends Sheet {
 
   render() { 
     return ( 
-      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} />
+      <CandidateForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} />
     );
   }
 }
 
-class JobsPage extends Component {
+class CandidatesPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       selected: null,
       action: null,
+      job: this.props.job // placeholder until we can fetch the full one
     };
   }
 
+  getJob(jobId) {
+    let params = [{"cand": 1}];
+
+    $.getJSON({
+      type: Pyr.Method.GET,
+      url: JOBS_URL + "/" + jobId + "?cand=1",   //+ $.param(params),
+       context: this
+
+    }).done((data, textStatus, jaXHR) => {
+      this.onJobLoad(data.job);
+
+    }).fail((jaXHR, textStatus, errorThrown) => {
+      ajaxError(jaXHR, textStatus, errorThrown);
+
+    });
+  }
+
+  onJobLoad(job) {
+    this.setState({job: job});
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.job && (!prevProps.job || (prevProps.job.uuid != this.props.job.uuid))) {
+      this.getJob(this.props.job.id);
+    }
+  }
+
   name() {
-    return "Job";
+    return "Candidate";
   }
 
   setSelected(selected) {
@@ -250,7 +266,7 @@ class JobsPage extends Component {
       
     return (
       <ColumnHalf className={extraClass}>
-        <JobIndexSheet {...props} jobs={this.props.jobs} setSelected={this.setSelected.bind(this)}/>
+        <CandidateIndexSheet {...props} candidates={this.state.job ? this.state.job.candidates : []} setSelected={this.setSelected.bind(this)}/>
       </ColumnHalf>
     );
   }
@@ -265,14 +281,14 @@ class JobsPage extends Component {
       extraClass = ".hidden-lg";
     }
 
-    let sheet = sheetName(this.name(), this.state.action || "Show");
+    let sheet = sheetName(this.name(), this.state.action || "Index");
     let ActionSheet = eval(sheet);
 
     //alert("RENDER " + sheet);
 
     return (
       <ColumnHalf className={extraClass}>
-        <ActionSheet {...props} jobs={this.props.jobs} job={this.state.selected} setAction={this.setAction.bind(this)}/>
+        <ActionSheet {...props} candidates={this.props.candidates} candidate={this.state.selected} setAction={this.setAction.bind(this)}/>
       </ColumnHalf>
     );
   }
@@ -292,13 +308,13 @@ class JobsPage extends Component {
   }
 }
 
-const JobSideButton = (props) => (
-  <label {...Pyr.Util.propsMergeClassName(props, "title")}>Jobs</label>
+const CandidateSideButton = (props) => (
+  <label {...Pyr.Util.propsMergeClassName(props, "title")}>Candidates</label>
 );
 
 
-export default JobsPage;
+export default CandidatesPage;
 export {
-  JobSideButton
+  CandidateSideButton
 }
 

@@ -75,8 +75,8 @@ class Form extends Component {
       url: self.props.url,
       data: data,
       context: self
-    }).done(function(data, textStatus, jaXHR) {
-      self.ajaxSuccess(data, textStatus, jaXHR);
+    }).done(function(retData, textStatus, jaXHR) {
+      self.ajaxSuccess(retData, textStatus, jaXHR);
     }).fail(function(jaXHR, textStatus, errorThrown) {
       self.ajaxError(jaXHR, textStatus, errorThrown);
     });
