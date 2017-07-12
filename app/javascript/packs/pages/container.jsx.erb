@@ -24,7 +24,7 @@ const Row = (props) => (
 );
 
 const Column = (props) => (
-  <div className="A" className="B" {...Pyr.Util.propsMergeClassName(props, "col")}>{props.children}</div>
+  <div {...Pyr.Util.propsMergeClassName(props, "col")}>{props.children}</div>
 );
 
 const ColumnHalf = (props) => (

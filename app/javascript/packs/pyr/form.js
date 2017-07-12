@@ -24,6 +24,8 @@ class Form extends Component {
       isLoading: false,
       errors: null,
     };
+
+    this.onSubmit = this.submitHandler.bind(this);
   }
 
   getChildContext() {
@@ -35,7 +37,7 @@ class Form extends Component {
   }
 
   setIsLoading(val=true) {
-    let stuff = {isLoading: val};
+    let stuff = { isLoading: val };
     if (val) {
       stuff.errors = null;
     }
@@ -43,10 +45,16 @@ class Form extends Component {
   }
 
   preSubmit() {
+    if (this.props.onPreSubmit) {
+      this.props.onPreSubmit();
+    }
     this.setIsLoading();
   }
 
   postSubmit() {
+    if (this.props.onPostSubmit) {
+      this.props.onPostSubmit();
+    }
     this.setIsLoading(false);
   }
 
@@ -79,11 +87,12 @@ class Form extends Component {
       self.ajaxSuccess(retData, textStatus, jaXHR);
     }).fail(function(jaXHR, textStatus, errorThrown) {
       self.ajaxError(jaXHR, textStatus, errorThrown);
+    }).always(function() {
+      this.postSubmit();
     });
   }
 
   ajaxSuccess(data, textStatus, jqXHR) {
-    this.postSubmit();
     if (this.props.onSuccess) {
       this.props.onSuccess(data, textStatus, jqXHR);
     }
@@ -97,7 +106,6 @@ class Form extends Component {
   }
 
   ajaxError(jqXHR, textStatus, errorThrown) {
-    this.postSubmit();
 
     var data;
 
@@ -138,18 +146,18 @@ class Form extends Component {
     alert('This record is stale. Please refresh before making your updates');
   }
 
-  onSubmitHandler(e) {
+  submitHandler(e) {
     e.preventDefault();
     this.submit();
   }
 
   render() {
-    let rest = Util.propsRemove(this.props, ["preSubmit", "postSubmit", "controller", "object", "url", "onSuccess"]);
+    let rest = Util.propsRemove(this.props, ["onPreSubmit", "onPostSubmit", "controller", "object", "url", "onSuccess"]);
 
     return (
       <form ref={(node) => {this.form = node;}} 
         {...rest}
-        onSubmit={this.onSubmitHandler}
+        onSubmit={this.onSubmit}
       >
         {this.props.children}
       </form>
@@ -237,6 +245,7 @@ class Child extends Component {
 class SubmitButton extends Component {
   constructor(props) {
     super(props);
+    this.onClick = this.onClickHandler.bind(this);
   }
  
   onClickHandler(e) {
@@ -252,7 +261,7 @@ class SubmitButton extends Component {
 
   render() {
     return (
-      <a href="#" className="btn btn-primary" onClick={this.onClickHandler.bind(this)}>{this.props.children}</a>
+      <a href="#" className="btn btn-primary" onClick={this.onClick}>{this.props.children}</a>
     );
   }
 }
@@ -276,6 +285,8 @@ class TextField extends Child {
     this.state = {
       value: this.defaultValue()
     }
+
+    this.onChange = this.handleChange.bind(this);
   }
 
   handleChange(e) {
@@ -291,7 +302,7 @@ class TextField extends Child {
     };
 
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.handleChange.bind(this)} />
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.onChange} />
     );
   }
 }

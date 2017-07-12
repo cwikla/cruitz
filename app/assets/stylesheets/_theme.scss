@@ -28,8 +28,10 @@ $secondary_color_50: rgba(red($secondary_color), green($secondary_color), blue($
 $secondary_light_50: rgba(red($secondary_light), green($secondary_light), blue($secondary_light), 0.5);
 $secondary_dark_50:  rgba(red($secondary_dark), green($secondary_dark), blue($secondary_dark), 0.5);
 
+$sidebar_color: rgba(#444444, 1.0);
+$highlight_color: $primary_color;
+
 body {
-  background-color: #FF0;
 }
 
 hr {
@@ -124,6 +126,32 @@ a:hover {
 .navbar-toggler {
   color: $primary_color !important;
 }
+
 .navbar-toggler:hover {
   color:  $primary_light !important;
+}
+
+#sidebar {
+  background-color: $sidebar_color !important;
+  padding: 0;
+}
+
+.sidebar-header {
+  text-transform: uppercase;
+  background-color: rgba(#777777, 1.0);
+  color: rgba(#FFFFFF, 1.0);
+}
+.sidebar-button {
+  color: rgba(#FFFFFF, 0.75);
+}
+.sidebar-button:hover {
+  color: rgba(#FFFFFF, 0.9);
+}
+.sidebar-button.selected {
+  color: rgba(#FFFFFF, 1.0);
+  background-color: $highlight_color;
+}
+
+#main-page {
+  padding-left: 1em;
 }

@@ -9,7 +9,7 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Page, { sheetName } from '../page';
+import Page from '../page';
 import { 
   Row, 
   Column, 
@@ -17,7 +17,7 @@ import {
 } from '../container';
 
 import Pyr from '../../pyr/pyr';
-import Sheet, { ajaxError } from '../sheet';
+import Sheet, { ajaxError, sheetName } from '../sheet';
 
 const JOBS_URL = "/jobs";
 
@@ -72,8 +72,8 @@ class CandidateForm extends Component {
           id="candidate-form" 
           key={key}
           ref={(node) => { this.form = node; }} 
-          preSubmit={this.props.preSubmit} 
-          postSubmit={this.props.postSubmit}
+          onPreSubmit={this.props.onPreSubmit} 
+          onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
         >
@@ -121,8 +121,8 @@ class CandidateEditSheet extends Sheet {
     //alert("JOB EDIT " + this.props.candidate.id);
     return (
       <CandidateForm 
-        preSubmit={this.preSubmit} 
-        postSubmit={this.postSubmit} 
+        onPreSubmit={this.onPreSubmit} 
+        onPostSubmit={this.onPostSubmit} 
         candidate={this.props.candidate} 
         onSuccess={this.onSuccess}
         method={Pyr.Method.PUT} 
@@ -203,7 +203,7 @@ class CandidateNewSheet extends Sheet {
 
   render() { 
     return ( 
-      <CandidateForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} />
+      <CandidateForm onPreSubmit={this.onPreSubmit} postSubmit={this.postSubmit} />
     );
   }
 }

@@ -8,12 +8,12 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Page, { sheetName } from '../page';
+import Page from '../page';
 import { Row, Column, ColumnHalf } from '../container';
 
 import Pyr from '../../pyr/pyr';
 
-import Sheet, { ajaxError } from '../sheet';
+import Sheet, { ajaxError, sheetName } from '../sheet';
 
 const JOBS_URL = "/jobs";
 
@@ -71,8 +71,8 @@ class JobForm extends Component {
           id="job-form" 
           key={key}
           ref={(node) => { this.form = node; }} 
-          preSubmit={this.props.preSubmit} 
-          postSubmit={this.props.postSubmit}
+          onPreSubmit={this.props.onPreSubmit} 
+          onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
         >
@@ -119,8 +119,8 @@ class JobEditSheet extends Sheet {
     //alert("JOB EDIT " + this.props.job.id);
     return (
       <JobForm 
-        preSubmit={this.preSubmit} 
-        postSubmit={this.postSubmit} 
+        onPreSubmit={this.onPreSubmit} 
+        onPostSubmit={this.onPostSubmit} 
         job={this.props.job} 
         onSuccess={this.success.bind(this)}
         method={Pyr.Method.PUT} 
@@ -200,7 +200,7 @@ class JobNewSheet extends Sheet {
 
   render() { 
     return ( 
-      <JobForm preSubmit={this.preSubmit} postSubmit={this.postSubmit} />
+      <JobForm onPreSubmit={this.onPreSubmit} postSubmit={this.onPostSubmit} />
     );
   }
 }

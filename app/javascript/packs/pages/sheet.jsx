@@ -17,6 +17,8 @@ class Sheet extends Component {
     };
 
     this.onClicks = [];
+    this.onPreSubmit = this.preSubmit.bind(this);
+    this.onPostSubmit = this.postSubmit.bind(this);
   }
 
   bindClicks(items, f) {
@@ -27,20 +29,24 @@ class Sheet extends Component {
   }
 
   preSubmit() {
-    this.isLoading();
-    if (this.props.preSubmit) {
-      this.props.preSubmit();
-    }
+    this.setState({
+      isLoading: true
+    });
   }
 
   postSubmit() {
-    this.isLoading(false);
-    if (this.props.postSubmit) {
-      this.props.postSubmit();
-    }
+    this.setState({
+      isLoading: false
+    });
   }
-
 }
 
+function sheetName(name, action) {
+  action = action || "Index";
+  let nameAction = Pyr.Util.capFirstLetter(name) + Pyr.Util.capFirstLetter(action) + "Sheet";
+  return nameAction;
+}
+
+
 export default Sheet;
-export { ajaxError };
+export { ajaxError, sheetName };

@@ -20,7 +20,7 @@ import {
 import Pyr from '../pyr/pyr';
 
 import Container, { Row, Column } from './container';
-import Sidebar, { SidebarSection, SidebarButton } from './side_bar';
+import Sidebar from './side_bar';
 import JobsPage, { JobSideButton } from './jobs/jobs_page';
 import CandidatesPage, {CandidateSideButton} from './jobs/candidates_page';
 import RecruitersPage from './recruiters_page';
@@ -46,7 +46,7 @@ class DashboardContainer extends Container {
     this.state = {
       openPage: JOBS_PAGE,
       jobs: [],
-      selected: null,
+      job: null,
     };
 
     this.onJobIndex = this.jobIndex.bind(this);
@@ -72,7 +72,6 @@ class DashboardContainer extends Container {
     });
   }
 
-
   componentDidMount() {
     this.getJobs();
   }
@@ -80,7 +79,6 @@ class DashboardContainer extends Container {
   same(j1, j2) {
     return j1.uuid == j2.uuid;
   }
-
 
   jobIndex(jobs) {
     this.setState({jobs});
@@ -116,42 +114,49 @@ class DashboardContainer extends Container {
 
     this.setState({
       openPage: CANDIDATES_PAGE,
-      selected: job});
+      job: job
+    });
   }
 
   render() {
     let self = this;
 
     let jobKids = this.state.jobs.map( (child) => {
-        return (<SidebarButton key={child.uuid} onClick={(e) => self.selectJob(e, child) }>{child.title}</SidebarButton>);
+        return (<Sidebar.Button 
+                  key={child.uuid} 
+                  selected={this.state.job && same(this.state.job, child)} 
+                  onClick={(e) => self.selectJob(e, child) }>{child.title}</Sidebar.Button>
+        );
       }
     );
 
+    let title = this.state.job ? this.state.job.title : "Jobs";
+
     return(
+
       <Row>
-        <Column className="col-md-2 red" id="sidebar">
-          <Sidebar {...this.props}>
-            <SidebarSection>
-              {jobKids}
-            </SidebarSection>
-            <SidebarButton 
-              selected={this.state.openPage==CANDIDATES_PAGE} 
-              onClick={(e) => {e.preventDefault(); this.setPage(CANDIDATES_PAGE); } }
-            >Candidates</SidebarButton>
-            <SidebarButton
-              selected={this.state.openPage==RECRUITERS_PAGE} 
+        <Column className="col-md-2" id="sidebar">
+          <Sidebar.Main {...this.props}>
+            <Sidebar.Section selected={this.state.job} id="sidebar-jobs">
+              <Sidebar.Header>Jobs</Sidebar.Header>
+              <Sidebar.Menu>{jobKids}</Sidebar.Menu>
+            </Sidebar.Section>
+            <Sidebar.Header id="sidebar-recruiters"
               onClick={(e) => {e.preventDefault(); this.setPage(RECRUITERS_PAGE); } }
-            >Recruiters</SidebarButton>
-          </Sidebar>
+            >Recruiters</Sidebar.Header>
+          </Sidebar.Main>
         </Column>
-        <Column className="col-md-10 blue" id="main_page">
-          <JobsPage {...this.props.jobsPageProps} selected={this.state.openPage==JOBS_PAGE} 
+        <Column className="col-md-10" id="main-page">
+          <Sidebar.Header>{title}</Sidebar.Header>
+          <JobsPage 
+             {...this.props.jobsPageProps} 
+            selected={this.state.openPage==JOBS_PAGE} 
             jobs={this.state.jobs}
             onJobCreate={this.onJobCreate}
             onJobUpdate={this.onJobUpdate}
             onJobDelete={this.onJobDelete}
           />
-          <CandidatesPage {...this.props.candidatesPageProps} selected={this.state.openPage==CANDIDATES_PAGE} job={this.state.selected}/>
+          <CandidatesPage {...this.props.candidatePageProps} job={this.state.job} selected={this.state.openPage==CANDIDATES_PAGE} />
           <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
         </Column>
       </Row>

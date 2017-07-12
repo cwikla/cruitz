@@ -22,7 +22,7 @@ import {
 
 import Pyr from '../pyr/pyr';
 
-class SidebarButton extends Component {
+class Button extends Component {
   constructor(props) {
     super(props);
   }
@@ -30,47 +30,53 @@ class SidebarButton extends Component {
   render() {
     let myClass = "sidebar-button" + (this.props.selected ? " selected" : "");
     return(
-      <li {...Pyr.Util.propsMergeClassName(this.props, myClass)} >{this.props.children}</li>
+      <li {...Pyr.Util.propsMergeClassName(this.props, myClass)} ><span className="name">{this.props.children}</span></li>
     );
    }
 }
 
-class SidebarSection extends Component {
+class Section extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    //let newKids = React.Children.map(this.props.children, (child) => {
-      //return (<SidebarButton>{child}</SidebarButton>);
-    //});
-    let newKids = this.props.children;
-
     return (
-      <div className="sidebar-section">
-        <label>{this.props.title}</label>
-        <ul>
-        {newKids}
-        </ul>
+      <div {...Pyr.Util.propsMergeClassName(this.props, "")}>
+        {this.props.children}
       </div>
     );
   }
 }
 
-class Sidebar extends Component {
+const Header = (props) => (
+   <label {...Pyr.Util.propsMergeClassName(props, "sidebar-header")}>{props.children}</label>
+);
+
+const Menu = (props) => (
+  <ul {...Pyr.Util.propsMergeClassName(props, "sidebar-menu")}>
+    {props.children}
+   </ul>
+);
+
+class Main extends Component {
   render() {
-    //let newKids = React.Children.map(this.props.children, (child) => {
-      //return (barButton>{child}</SidebarButton>);
-    //});
     let newKids = this.props.children;
 
     return (
-      <ul id="side-bar" {...this.props} >
+      <div id="sidebar-main" {...Pyr.Util.propsMergeClassName(this.props, "sidebar-main")} >
         {newKids}
-      </ul>
+      </div>
     );
   }
 }
-export default Sidebar;
-export { SidebarSection, SidebarButton };
 
+const Sidebar = {
+  Main,
+  Menu,
+  Header, 
+  Section,
+  Button
+};
+
+export default Sidebar;

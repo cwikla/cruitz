@@ -12,22 +12,19 @@ main {
 .dashboard {
   overflow-y: hidden;
   position: relative;
-  background-color: #F88;
   margin-bottom: -9999px;
   padding-bottom: 9999px;
 
-  .main_page {
+  #main-page, #sidebar, #sidebar-main {
     height: 100%;
     margin-bottom: -9999px;
     padding-bottom: 9999px;
-    background-color: #987654;
   }
 
   .row {
     height: 100%;
     margin-bottom: -9999px;
     padding-bottom: 9999px;
-    background-color: #987654;
   }
   .row > [class*='col-'] {
     height: 100%;
