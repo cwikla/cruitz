@@ -148,7 +148,7 @@ class DashboardContainer extends Container {
 
     let jobKids = this.state.jobs.map( (child) => {
         return (<Sidebar.Button 
-                  className=""
+                  className="flx-none"
                   key={child.uuid} 
                   selected={this.state.job && same(this.state.job, child)} 
                   onClick={(e) => self.selectJob(e, child) }>{child.title}</Sidebar.Button>
@@ -162,8 +162,12 @@ class DashboardContainer extends Container {
       <div className="flx-row-stretch flx-1">
         <Sidebar.Main {...this.props} className="col col-md-2 flx-col-stretch flx-1">
           <Sidebar.Header className="">Jobs</Sidebar.Header>
-          <Sidebar.Menu className="flx-1">{jobKids}</Sidebar.Menu>
-          <Sidebar.Section selected={this.state.job} id="sidebar-recruiters" className="flx-1">
+          <div className="flx-col-stretch flx-1">
+            <ul className="flx-1">
+              {jobKids}
+            </ul>
+          </div>
+          <Sidebar.Section selected={this.state.job} id="sidebar-recruiters" className="">
           <Sidebar.Header id="sidebar-recruiters"
             onClick={(e) => {e.preventDefault(); this.setPage(RECRUITERS_PAGE); } }
           >Recruiters</Sidebar.Header>
