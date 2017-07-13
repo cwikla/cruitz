@@ -1,0 +1,25 @@
+<% include Rails.application.routes.url_helpers %>
+<% include Rails.application.helpers %>
+
+import React, { 
+  Component
+} from 'react';
+
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+
+import Pyr from '../pyr/pyr';
+import Page from './page';
+
+
+const AddSettingPage = (props) => (
+  <div id="add-setting-page" {...props}>Add a setting here</div>
+);
+
+const SettingsPage = (props) => (
+  <Page id="settings-page" {...props} name="Setting">
+    <AddSettingPage {...props}/>
+  </Page>
+);
+
+export default SettingsPage;

@@ -10,20 +10,15 @@
 }
 
 .sidebar-header {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.0rem;
   width: 100%;
-  padding-left: 0.5rem;
   padding-right: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  line-height: 1.5rem;
 
-  text-transform: uppercase;
-  background-color: $sidebar-header-background-color;
-  color: $sidebar-header-color;
-  border-style: solid;
-  border-color: $sidebar-header-background-color;
-  border-width: 1px 0 1px 0;
+  //text-transform: uppercase;
+  color: rgba($sidebar-header-color, 0.75);
 }
 
 .sidebar-button {
@@ -31,33 +26,27 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 0.875rem;
-  font-weight: 400;
+  font-size: 1.0rem;
   padding-right: 0.5rem;
-  line-height: 1.25rem;
-  padding-left: 1.5rem;
+  // line-height: 1.25rem;
+  padding-left: 0.5rem;
 
   color: rgba(#FFFFFF, 0.75);
 }
 
-.sidebar-button:before {
-  content: "\f003";
-  font-family: FontAwesome;
-  display: inline-block;
-  margin-left: -1.0rem; /* same as padding-left set on li */
-  width: 1.0rem; /* same as padding-left set on li */
-}
-
 .sidebar-menu {
-  padding-top: 0.5rem;
+  line-height: 1.5rem;
 }
 
+.sidebar-header:hover {
+  color: $hover_color;
+}
 
 .sidebar-button:hover {
-  color: $highlight_color;
+  color: $hover_color;
 }
 .sidebar-button.selected {
-  color: rgba(#FFFFFF, 1.0);
+  color: $selected_color;
   background-color: $highlight_color;
 }
 
@@ -72,5 +61,9 @@
     border-style: solid;
     border-color: $sidebar-header-background-color;
     border-width: 1px 0 1px 0;
+    padding: 0.5rem;
   }
+}
+.page {
+  padding-top: 1rem;
 }

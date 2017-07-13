@@ -24,11 +24,14 @@ import Sidebar from './side_bar';
 import JobsPage, { JobSideButton } from './jobs/jobs_page';
 import CandidatesPage, {CandidateSideButton} from './jobs/candidates_page';
 import RecruitersPage from './recruiters_page';
+import SettingsPage from './settings_page';
+import MessagesPage from './messages_page';
 
-const JOBS_PAGE = 'jobs';
-const CANDIDATES_PAGE = 'candidates';
-const RECRUITERS_PAGE = 'recruiters';
-const SETTINGS_PAGE = 'settings';
+const JOBS_PAGE = 'Jobs';
+const CANDIDATES_PAGE = 'Candidates';
+const RECRUITERS_PAGE = 'Recruiters';
+const SETTINGS_PAGE = 'Settings';
+const MESSAGES_PAGE = 'Messages';
 
 const JOBS_URL = "/jobs";
 
@@ -54,13 +57,21 @@ class DashboardContainer extends Container {
     this.onJobCreate = this.jobCreate.bind(this);
     this.onJobUpdate = this.jobUpdate.bind(this);
     this.onJobDelete = this.jobDelete.bind(this);
+
+    this.setPageMessages = this.setPage.bind(this, MESSAGES_PAGE);
+    this.setPageJobs = this.setPage.bind(this, JOBS_PAGE);
+    this.setPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
+    this.setPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
+    this.setPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
   }
 
   title() {
     return (this.state.openPage == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : "Jobs") : this.state.openPage;
   }
 
-  setPage(page) {
+  setPage(page, e) {
+    e.preventDefault();
+
     this.setState({openPage: page});
     //alert(page);
   }
@@ -163,25 +174,39 @@ class DashboardContainer extends Container {
 
     return(
       <div className="flx-row-stretch flx-1">
-        <Sidebar.Main {...this.props} className="col col-md-2 flx-col-stretch flx-1">
-          <Sidebar.Header className="">Jobs</Sidebar.Header>
+        <Sidebar.Main {...this.props} className="col col-md-2 flx-col-stretch flx-1 p-2">
+          <Sidebar.Header 
+            id="sidebar-messages"
+            icon="envelope-o"
+            onClick={this.setPageMessages}
+            >All Messages</Sidebar.Header>
+          <Sidebar.Header 
+            id="sidebar-jobs" 
+            icon="plus"
+            onClick={this.setPageJobs}
+          >Jobs</Sidebar.Header>
           <div className="flx-col-stretch flx-1">
             <Sidebar.Menu>
               {jobKids}
             </Sidebar.Menu>
           </div>
           <Sidebar.Section selected={this.state.job} id="sidebar-recruiters" className="">
-          <Sidebar.Header id="sidebar-recruiters"
-            onClick={(e) => {e.preventDefault(); this.setPage(RECRUITERS_PAGE); } }
+          <Sidebar.Header 
+            id="sidebar-recruiters"
+            icon="users"
+            onClick={this.setPageRecruiters}
           >Recruiters</Sidebar.Header>
-          <Sidebar.Header id="sidebar-settings"
-            onClick={(e) => {e.preventDefault(); this.setPage(SETTINGS_PAGE); } }
+          <Sidebar.Header 
+            id="sidebar-settings"
+            icon="gear"
+            onClick={this.setPageSettings}
           >Settings</Sidebar.Header>
           </Sidebar.Section>
         </Sidebar.Main>
         <main className="col col-md-10 offset-md-2 m-0 p-0 flx-col-stretch flx-1 sidebar-main-page" id="sidebar-main-page">
           <Sidebar.Header>{sidebarTitle}</Sidebar.Header>
           <div className="flx-col-stretch flx-1">
+            <MessagesPage {...this.props.messagePageProps} selected={this.state.openPage==MESSAGES_PAGE} />
             <JobsPage 
                {...this.props.jobsPageProps} 
               selected={this.state.openPage==JOBS_PAGE} 
@@ -192,6 +217,7 @@ class DashboardContainer extends Container {
             />
             <CandidatesPage {...this.props.candidatePageProps} job={this.state.job} selected={this.state.openPage==CANDIDATES_PAGE} />
             <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
+            <SettingsPage {...this.props.settingsPageProps} selected={this.state.openPage==SETTINGS_PAGE} />
           </div>
         </main>
       </div>

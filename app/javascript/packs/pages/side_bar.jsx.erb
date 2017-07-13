@@ -49,9 +49,25 @@ class Section extends Component {
   }
 }
 
-const Header = (props) => (
-   <label {...Pyr.Util.propsMergeClassName(props, "sidebar-header")}>{props.children}</label>
-);
+class Header extends Component {
+  renderIcon() {
+    let iconName = this.props.icon ? "fa fa-" + this.props.icon : null;
+    if (!iconName) {
+      return null;
+    }
+    else {
+      return (
+        <i className={iconName}/> 
+      );
+    }
+  }
+
+  render() {
+    return (
+      <div {...Pyr.Util.propsMergeClassName(this.props, "sidebar-header")}>{this.renderIcon()} {this.props.children}</div>
+    );
+  }
+}
 
 const Menu = (props) => (
   <ul {...Pyr.Util.propsMergeClassName(props, "sidebar-menu flx-1")}>

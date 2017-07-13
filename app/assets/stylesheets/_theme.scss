@@ -12,7 +12,7 @@
  *
  */
 
-$primary_color: rgba(#0097a7, 1.0);
+$primary_color: rgba(#61909c, 1.0);
 $primary_light: rgba(#56c8d8, 1.0);
 $primary_dark:  rgba(#006978, 1.0);
 
@@ -28,11 +28,16 @@ $secondary_color_50: rgba(red($secondary_color), green($secondary_color), blue($
 $secondary_light_50: rgba(red($secondary_light), green($secondary_light), blue($secondary_light), 0.5);
 $secondary_dark_50:  rgba(red($secondary_dark), green($secondary_dark), blue($secondary_dark), 0.5);
 
-$highlight_color: $primary_color;
+$white_color: rgba(#FFFFFF, 1.0);
+$black_color: rgba(#FFFFFF, 1.0);
 
-$sidebar_color: rgba(#333333, 1.0);
+$highlight_color: $secondary_dark;
+$hover_color: $white_color;
+$selected_color: $white_color;
+
+$sidebar_color: $primary_color; //rgba(#9c7361, 1.0);
 $sidebar-header-background-color: $primary_color;
-$sidebar-header-color: rgba(#FFFFFF, 1.0);
+$sidebar-header-color: $white_color;
 
 body {
 }
@@ -122,7 +127,6 @@ a:hover {
 }
 
 .navbar {
-  line-height: 1rem;
   font-size: 1rem;
   padding: 0.35rem;
 }

@@ -1,0 +1,25 @@
+<% include Rails.application.routes.url_helpers %>
+<% include Rails.application.helpers %>
+
+import React, { 
+  Component
+} from 'react';
+
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+
+import Pyr from '../pyr/pyr';
+import Page from './page';
+
+
+const AddMessagesPage = (props) => (
+  <div id="add-messages-page" {...props}>Add a messages here</div>
+);
+
+const MessagesPage = (props) => (
+  <Page id="messages-page" {...props} name="Messages">
+    <AddMessagesPage {...props}/>
+  </Page>
+);
+
+export default MessagesPage;
