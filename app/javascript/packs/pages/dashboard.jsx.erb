@@ -101,7 +101,9 @@ class DashboardContainer extends Container {
   }
 
   jobCreate(job) {
-    let newJobs = this.state.jobs.slice().push(job);
+    let newJobs = (this.state.jobs || []).slice();
+    newJobs.push(job);
+
     this.onJobIndex(newJobs);
   }
 
@@ -182,9 +184,9 @@ class DashboardContainer extends Container {
             >All Messages</Sidebar.Header>
           <Sidebar.Header 
             id="sidebar-jobs" 
-            icon="plus"
+            icon="plus-circle"
             onClick={this.setPageJobs}
-          >Jobs</Sidebar.Header>
+          >Jobs ({this.state.jobs.length})</Sidebar.Header>
           <div className="flx-col-stretch flx-1">
             <Sidebar.Menu>
               {jobKids}

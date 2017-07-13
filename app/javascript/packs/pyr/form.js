@@ -335,6 +335,8 @@ class TextArea extends Child {
     this.state = {
       value: this.defaultValue()
     }
+
+    this.onChange = this.handleChange.bind(this);
   }
 
   handleChange(e) {
@@ -348,7 +350,7 @@ class TextArea extends Child {
       "aria-describedby": this.htmlID()
     };
     return(
-      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.handleChange}/>
+      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.onChange}/>
     );
   }
 }

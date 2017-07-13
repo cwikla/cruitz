@@ -8,13 +8,13 @@ class JobsController < ApplicationController
   end
 
   def create
-   request.headers.each do |k,v|
-     puts "HEADER: #{k} => #{v}"
-   end
+    request.headers.each do |k,v|
+      puts "HEADER: #{k} => #{v}"
+    end
 
     @job = current_user.jobs.build(job_params)
     if @job.save
-      resp = @job
+      return render json: @job
     else
       return render_create_error json: @job
     end
@@ -22,9 +22,11 @@ class JobsController < ApplicationController
 
   def update
     @job = current_user.jobs.find(params[:id])
-    @job.update(job_params)
-    
-    render json: @job
+    if @job.update(job_params)
+      return render json: @job
+    else
+      return render_create_error json: @job
+    end
   end
 
   def show

@@ -111,6 +111,11 @@ class JobForm extends Component {
 }
 
 class JobEditSheet extends Sheet {
+  constructor(props) {
+    super(props);
+    this.onSuccess = this.success.bind(this);
+  }
+
   success(data, textStatus, jqXHR) {
     this.props.onJobUpdate(data.job);
   }
@@ -122,7 +127,7 @@ class JobEditSheet extends Sheet {
         onPreSubmit={this.onPreSubmit} 
         onPostSubmit={this.onPostSubmit} 
         job={this.props.job} 
-        onSuccess={this.success.bind(this)}
+        onSuccess={this.onSuccess}
         method={Pyr.Method.PUT} 
         isLoading={this.state.isLoading}/>
     );
@@ -140,7 +145,7 @@ class JobIndexSheet extends Sheet {
     //alert("SET SELECTED");
     e.preventDefault();
 
-    this.props.setSelected(job);
+    this.props.onSetSelected(job);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -197,10 +202,22 @@ class JobShowSheet extends Sheet {
 }
 
 class JobNewSheet extends Sheet {
+  constructor(props) {
+    super(props);
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
+    this.props.onJobCreate(data.job);
+  }
 
   render() { 
     return ( 
-      <JobForm onPreSubmit={this.onPreSubmit} postSubmit={this.onPostSubmit} />
+      <JobForm 
+        onPreSubmit={this.onPreSubmit} 
+        onPostSubmit={this.onPostSubmit} 
+        onSuccess={this.onSuccess}
+      />
     );
   }
 }
@@ -212,7 +229,11 @@ class JobsPage extends Component {
     this.state = {
       selected: null,
       action: null,
+      fullDetail: true
     };
+
+    this.onSetSelected = this.setSelected.bind(this);
+    this.onSetAction = this.setAction.bind(this);
   }
 
   name() {
@@ -232,8 +253,8 @@ class JobsPage extends Component {
   renderItems(props) {
     let extraClass = "col-md-6";
 
-    if (this.fullDetail) {
-      extraClass = "hidden-xs";
+    if (this.state.fullDetail) {
+      extraClass = "hidden-xs-up";
     }
     else if (!this.state.selected) {
       extraClass = "col-md-12";
@@ -241,7 +262,7 @@ class JobsPage extends Component {
       
     return (
       <ColumnHalf className={extraClass}>
-        <JobIndexSheet {...props} jobs={this.props.jobs} setSelected={this.setSelected.bind(this)}/>
+        <JobIndexSheet {...props} jobs={this.props.jobs} onSetSelected={this.onSetSelected}/>
       </ColumnHalf>
     );
   }
@@ -249,21 +270,21 @@ class JobsPage extends Component {
   renderDetail(props) {
     let extraClass = "col-md-6";
 
-    if (this.fullDetail) {
+    if (this.state.fullDetail) {
       extraClass = "col-md-12";
     }
     else if (!this.state.selected) {
-      extraClass = "hidden-lg";
+      extraClass = "hidden-xs-up";
     }
 
-    let sheet = sheetName(this.name(), this.state.action || "Show");
+    let sheet = sheetName(this.name(), this.state.action || "New");
     let ActionSheet = eval(sheet);
 
     //alert("RENDER " + sheet);
 
     return (
       <ColumnHalf className={extraClass}>
-        <ActionSheet {...props} jobs={this.props.jobs} job={this.state.selected} onSetAction={this.setAction.bind(this)}/>
+        <ActionSheet {...props} jobs={this.props.jobs} job={this.state.selected} onSetAction={this.onSetAction}/>
       </ColumnHalf>
     );
   }
