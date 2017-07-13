@@ -4,15 +4,25 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
+.sidebar {
+  background-color: $sidebar_color !important;
+  padding: 0;
+}
+
 .sidebar-header {
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: 500;
   width: 100%;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  text-transform: uppercase;
+  background-color: rgba(#777777, 1.0);
+  color: rgba(#FFFFFF, 1.0);
 }
+
 .sidebar-button {
   display: block;
   text-overflow: ellipsis;
@@ -22,13 +32,66 @@
   font-weight: 400;
   padding-right: 0.5rem;
   line-height: 1.25rem;
+
+  color: rgba(#FFFFFF, 0.75);
   span {
-    margin-left: 1em;
+    margin-left: 1rem;
   }
 }
 
-.sidebar-main {
-  padding: 0;
-  margin: 0;
+.sidebar-button:hover {
+  color: rgba(#FFFFFF, 0.9);
+}
+.sidebar-button.selected {
+  color: rgba(#FFFFFF, 1.0);
+  background-color: $highlight_color;
+}
+
+.flx-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flx-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flx-stretch {
+  width: 100%;
+  height: 100%;
+
+  justify-content: flex-start; /* align items in Main Axis */
+  align-items: stretch; /* align items in Cross Axis */
+  align-content: stretch; /* Extra space in Cross Axis */
+
+}
+
+.flx-col-stretch {
+  @extend .flx-col;
+  @extend .flx-stretch;
+
+  overflow: scroll;
+}
+
+.flx-row-stretch {
+  @extend .flx-row;
+  @extend .flx-stretch;
+}
+
+.flx-1 {
+  flex: 1;
+}
+
+.flx-2 {
+  flex: 2;
+}
+
+.flx-3 {
+  flex: 3;
+}
+
+.flx-4 {
+  flex: 4;
 }
 

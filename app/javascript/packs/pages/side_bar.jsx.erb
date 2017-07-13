@@ -62,9 +62,10 @@ const Menu = (props) => (
 class Main extends Component {
   render() {
     let newKids = this.props.children;
+    let classes = "sidebar";
 
     return (
-      <div id="sidebar-main" {...Pyr.Util.propsMergeClassName(this.props, "sidebar-main")} >
+      <div id="sidebar" {...Pyr.Util.propsMergeClassName(this.props, classes)} >
         {newKids}
       </div>
     );

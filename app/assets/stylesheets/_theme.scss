@@ -118,9 +118,17 @@ a:hover {
   background-color: $primary_color;
 }
 
-.navbar-brand {
+.navbar {
+  line-height: 1rem;
+  font-size: 1rem;
+  padding: 0.35rem;
+}
+
+.navbar-brand, .navbar-toggler {
   color: $primary_color !important;
-  font-size: 1.2em;
+  padding: 0;
+  font-size: 1rem;
+  margin: 0;
 }
 
 .navbar-toggler {
@@ -131,27 +139,6 @@ a:hover {
   color:  $primary_light !important;
 }
 
-#sidebar {
-  background-color: $sidebar_color !important;
+.nav-link {
   padding: 0;
-}
-
-.sidebar-header {
-  text-transform: uppercase;
-  background-color: rgba(#777777, 1.0);
-  color: rgba(#FFFFFF, 1.0);
-}
-.sidebar-button {
-  color: rgba(#FFFFFF, 0.75);
-}
-.sidebar-button:hover {
-  color: rgba(#FFFFFF, 0.9);
-}
-.sidebar-button.selected {
-  color: rgba(#FFFFFF, 1.0);
-  background-color: $highlight_color;
-}
-
-#main-page {
-  padding-left: 1em;
 }

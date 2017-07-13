@@ -31,12 +31,22 @@
 
 @import "sidebar";
 
+#container {
+  margin: 0;
+  padding: 0;
+}
+
 .nav-tabs {
   box-shadow: none;
 }
 
 .navbar {
   box-shadow: none;
+}
+
+#main-nav-line {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .btn-action, .btn-primary {
@@ -72,5 +82,12 @@
 .off {
   opacity: 0.0;
   display: none;
+}
+
+*, *:before, *:after
+{
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 

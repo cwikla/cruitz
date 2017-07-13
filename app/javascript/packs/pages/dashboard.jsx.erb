@@ -19,7 +19,7 @@ import {
 
 import Pyr from '../pyr/pyr';
 
-import Container, { Row, Column } from './container';
+import Container, { Row, Column, ColumnHalf } from './container';
 import Sidebar from './side_bar';
 import JobsPage, { JobSideButton } from './jobs/jobs_page';
 import CandidatesPage, {CandidateSideButton} from './jobs/candidates_page';
@@ -28,6 +28,7 @@ import RecruitersPage from './recruiters_page';
 const JOBS_PAGE = 'jobs';
 const CANDIDATES_PAGE = 'candidates';
 const RECRUITERS_PAGE = 'recruiters';
+const SETTINGS_PAGE = 'settings';
 
 const JOBS_URL = "/jobs";
 
@@ -118,11 +119,36 @@ class DashboardContainer extends Container {
     });
   }
 
+  render_old() {
+    return (
+      <div className="red flx-row flx-stretch s1">
+        <div className="flx-1 flx-col flx-stretch cyan">
+          <div className="flx-1 flx-col flx-stretch green">
+            <div className="flx-1 flx-row flx-stretch pink">
+              <ColumnHalf className="white">
+                One
+              </ColumnHalf>
+              <ColumnHalf className="blue">
+                Two
+              </ColumnHalf>
+            </div>
+          </div>
+        </div>
+        <div className="flx-1 flx-col flx-stretch grey">
+          <div className="yellow flx-1">
+            Bye
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     let self = this;
 
     let jobKids = this.state.jobs.map( (child) => {
         return (<Sidebar.Button 
+                  className=""
                   key={child.uuid} 
                   selected={this.state.job && same(this.state.job, child)} 
                   onClick={(e) => self.selectJob(e, child) }>{child.title}</Sidebar.Button>
@@ -133,20 +159,20 @@ class DashboardContainer extends Container {
     let title = this.state.job ? this.state.job.title : "Jobs";
 
     return(
-
-      <Row>
-        <Column className="col-md-2" id="sidebar">
-          <Sidebar.Main {...this.props}>
-            <Sidebar.Section selected={this.state.job} id="sidebar-jobs">
-              <Sidebar.Header>Jobs</Sidebar.Header>
-              <Sidebar.Menu>{jobKids}</Sidebar.Menu>
-            </Sidebar.Section>
-            <Sidebar.Header id="sidebar-recruiters"
-              onClick={(e) => {e.preventDefault(); this.setPage(RECRUITERS_PAGE); } }
-            >Recruiters</Sidebar.Header>
-          </Sidebar.Main>
-        </Column>
-        <Column className="col-md-10" id="main-page">
+      <div className="flx-row-stretch flx-1">
+        <Sidebar.Main {...this.props} className="col col-md-2 flx-col-stretch flx-1">
+          <Sidebar.Header className="">Jobs</Sidebar.Header>
+          <Sidebar.Menu className="flx-1">{jobKids}</Sidebar.Menu>
+          <Sidebar.Section selected={this.state.job} id="sidebar-recruiters" className="flx-1">
+          <Sidebar.Header id="sidebar-recruiters"
+            onClick={(e) => {e.preventDefault(); this.setPage(RECRUITERS_PAGE); } }
+          >Recruiters</Sidebar.Header>
+          <Sidebar.Header id="sidebar-settings"
+            onClick={(e) => {e.preventDefault(); this.setPage(SETTINGS_PAGE); } }
+          >Settings</Sidebar.Header>
+          </Sidebar.Section>
+        </Sidebar.Main>
+        <main className="col col-md-10 offset-md-2 m-0 p-0 flx-col-stretch flx-1" id="main-page">
           <Sidebar.Header>{title}</Sidebar.Header>
           <JobsPage 
              {...this.props.jobsPageProps} 
@@ -158,8 +184,8 @@ class DashboardContainer extends Container {
           />
           <CandidatesPage {...this.props.candidatePageProps} job={this.state.job} selected={this.state.openPage==CANDIDATES_PAGE} />
           <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
-        </Column>
-      </Row>
+        </main>
+      </div>
     );
   }
 }
@@ -178,5 +204,5 @@ render(
   <Provider store={store}>
     <DashboardContainer />
   </Provider>,
-  document.getElementById('container')
+  document.getElementById('react-container')
 );

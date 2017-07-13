@@ -272,7 +272,7 @@ class CandidatesPage extends Component {
     let extraClass = "col-md-6";
 
     if (this.fullDetail) {
-      extraClass = ".hidden-lg";
+      extraClass = "hidden-xs";
     }
     else if (!this.state.selected) {
       extraClass = "col-md-12";
@@ -287,13 +287,13 @@ class CandidatesPage extends Component {
   }
 
   renderDetail(candidates, props) {
-    let extraClass = "col-md-6 blue";
+    let extraClass = "col-md-6";
 
     if (this.fullDetail) {
       extraClass = "col-md-12";
     }
     else if (!this.state.selected) {
-      extraClass = ".hidden-lg";
+      extraClass = "hidden-xs";
     }
 
     let sheet = sheetName(this.name(), this.state.action || "Show");

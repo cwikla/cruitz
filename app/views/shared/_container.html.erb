@@ -1,13 +1,10 @@
-  <hr class="mt-0 mb-0 nav-line"/>
+<% if user_signed_in? %>
+  <div class="flx-row flx-stretch flx-1" id="react-container">
+      <%= yield %>
+  </div>
+<%= javascript_pack_tag "pages/#{params[:controller]}" %>
 
-  <% if user_signed_in? %>
-    <div class="container-fluid <%= params[:controller] %>" id="container">
-    </div>
-  <% else %>
-    <%= yield %>
-  <% end %>
+<% else %>
 
-
-  <% if user_signed_in? %>
-      <%= javascript_pack_tag "pages/#{params[:controller]}" %>
-  <% end %>
+  <%= yield %>
+<% end %>

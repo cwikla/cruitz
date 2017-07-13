@@ -233,7 +233,7 @@ class JobsPage extends Component {
     let extraClass = "col-md-6";
 
     if (this.fullDetail) {
-      extraClass = ".hidden-lg";
+      extraClass = "hidden-xs";
     }
     else if (!this.state.selected) {
       extraClass = "col-md-12";
@@ -253,7 +253,7 @@ class JobsPage extends Component {
       extraClass = "col-md-12";
     }
     else if (!this.state.selected) {
-      extraClass = ".hidden-lg";
+      extraClass = "hidden-lg";
     }
 
     let sheet = sheetName(this.name(), this.state.action || "Show");
