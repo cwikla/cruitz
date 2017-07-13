@@ -56,6 +56,10 @@ class DashboardContainer extends Container {
     this.onJobDelete = this.jobDelete.bind(this);
   }
 
+  title() {
+    return (this.state.openPage == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : "Jobs") : this.state.openPage;
+  }
+
   setPage(page) {
     this.setState({openPage: page});
     //alert(page);
@@ -148,7 +152,6 @@ class DashboardContainer extends Container {
 
     let jobKids = this.state.jobs.map( (child) => {
         return (<Sidebar.Button 
-                  className="flx-none"
                   key={child.uuid} 
                   selected={this.state.job && same(this.state.job, child)} 
                   onClick={(e) => self.selectJob(e, child) }>{child.title}</Sidebar.Button>
@@ -156,7 +159,7 @@ class DashboardContainer extends Container {
       }
     );
 
-    let title = this.state.job ? this.state.job.title : "Jobs";
+    let sidebarTitle = this.title();
 
     return(
       <div className="flx-row-stretch flx-1">
@@ -176,18 +179,20 @@ class DashboardContainer extends Container {
           >Settings</Sidebar.Header>
           </Sidebar.Section>
         </Sidebar.Main>
-        <main className="col col-md-10 offset-md-2 m-0 p-0 flx-col-stretch flx-1" id="main-page">
-          <Sidebar.Header>{title}</Sidebar.Header>
-          <JobsPage 
-             {...this.props.jobsPageProps} 
-            selected={this.state.openPage==JOBS_PAGE} 
-            jobs={this.state.jobs}
-            onJobCreate={this.onJobCreate}
-            onJobUpdate={this.onJobUpdate}
-            onJobDelete={this.onJobDelete}
-          />
-          <CandidatesPage {...this.props.candidatePageProps} job={this.state.job} selected={this.state.openPage==CANDIDATES_PAGE} />
-          <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
+        <main className="col col-md-10 offset-md-2 m-0 p-0 flx-col-stretch flx-1 sidebar-main-page" id="sidebar-main-page">
+          <Sidebar.Header>{sidebarTitle}</Sidebar.Header>
+          <div className="flx-col-stretch flx-1">
+            <JobsPage 
+               {...this.props.jobsPageProps} 
+              selected={this.state.openPage==JOBS_PAGE} 
+              jobs={this.state.jobs}
+              onJobCreate={this.onJobCreate}
+              onJobUpdate={this.onJobUpdate}
+              onJobDelete={this.onJobDelete}
+            />
+            <CandidatesPage {...this.props.candidatePageProps} job={this.state.job} selected={this.state.openPage==CANDIDATES_PAGE} />
+            <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
+          </div>
         </main>
       </div>
     );

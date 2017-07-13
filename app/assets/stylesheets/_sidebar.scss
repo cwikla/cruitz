@@ -19,8 +19,8 @@
   padding-bottom: 0.5rem;
 
   text-transform: uppercase;
-  background-color: rgba(#777777, 1.0);
-  color: rgba(#FFFFFF, 1.0);
+  background-color: $sidebar-header-background-color;
+  color: $sidebar-header-color;
 }
 
 .sidebar-button {
@@ -60,4 +60,14 @@
 
 .sidebar label {
   margin: 0;
+}
+
+.sidebar-main-page {
+  .sidebar-header {
+    color: $sidebar-header-background-color;
+    background-color: $sidebar-header-color;
+    border-style: solid;
+    border-color: $sidebar-header-background-color;
+    border-width: 1px 0 1px 0;
+  }
 }
