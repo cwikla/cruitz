@@ -163,9 +163,9 @@ class DashboardContainer extends Container {
         <Sidebar.Main {...this.props} className="col col-md-2 flx-col-stretch flx-1">
           <Sidebar.Header className="">Jobs</Sidebar.Header>
           <div className="flx-col-stretch flx-1">
-            <ul className="flx-1">
+            <Sidebar.Menu>
               {jobKids}
-            </ul>
+            </Sidebar.Menu>
           </div>
           <Sidebar.Section selected={this.state.job} id="sidebar-recruiters" className="">
           <Sidebar.Header id="sidebar-recruiters"

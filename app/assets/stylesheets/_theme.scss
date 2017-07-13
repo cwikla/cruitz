@@ -28,7 +28,7 @@ $secondary_color_50: rgba(red($secondary_color), green($secondary_color), blue($
 $secondary_light_50: rgba(red($secondary_light), green($secondary_light), blue($secondary_light), 0.5);
 $secondary_dark_50:  rgba(red($secondary_dark), green($secondary_dark), blue($secondary_dark), 0.5);
 
-$sidebar_color: rgba(#444444, 1.0);
+$sidebar_color: rgba(#333333, 1.0);
 $highlight_color: $primary_color;
 
 body {
@@ -142,3 +142,4 @@ a:hover {
 .nav-link {
   padding: 0;
 }
+
