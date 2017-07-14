@@ -24,7 +24,7 @@ const Row = (props) => (
 );
 
 const Column = (props) => (
-  <div {...Pyr.Util.propsMergeClassName(props, "col")}>{props.children}</div>
+  <div {...Pyr.Util.propsMergeClassName(props, "col col-md-12")}>{props.children}</div>
 );
 
 const ColumnHalf = (props) => (
@@ -44,7 +44,10 @@ class Container extends Component {
     };
   }
 
-  setPage(page) {
+  setPage(page, e) {
+    if (e) {
+      e.preventDefault();
+    }
     this.setState({openPage: page});
     //alert(page);
   }

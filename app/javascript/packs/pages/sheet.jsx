@@ -41,12 +41,18 @@ class Sheet extends Component {
   }
 }
 
-function sheetName(name, action) {
+function sheetComponent(name, action) {
   action = action || "Index";
   let nameAction = Pyr.Util.capFirstLetter(name) + Pyr.Util.capFirstLetter(action) + "Sheet";
   return nameAction;
 }
 
+function sheetID(name, action) {
+  action = action || "Index";
+  let idName = name.toLowerCase() + "sheet" + action.toLowerCase();
+  return idName;
+}
+
 
 export default Sheet;
-export { ajaxError, sheetName };
+export { ajaxError, sheetComponent, sheetID };

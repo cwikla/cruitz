@@ -13,7 +13,7 @@ import { Row, Column, ColumnHalf } from '../container';
 
 import Pyr from '../../pyr/pyr';
 
-import Sheet, { ajaxError, sheetName } from '../sheet';
+import Sheet, { ajaxError, sheetComponent, sheetID } from '../sheet';
 
 const JOBS_URL = "/jobs";
 
@@ -62,7 +62,7 @@ class JobForm extends Component {
 
 
     return (
-      <div id="job-page-form">
+      <div className="form-parent">
         <Pyr.Form.Form
           controller="Job"
           object={this.props.job}
@@ -171,7 +171,7 @@ class JobIndexSheet extends Sheet {
 
   render() {
     return(
-      <div id="jobs-page">
+      <div className="index-sheet">
         { this.props.jobs ? this.renderChildren() : this.renderNone() }
       </div>
     );
@@ -192,11 +192,15 @@ class JobShowSheet extends Sheet {
   render() {
     if (!this.props.job) {
       return (
-          <h2>No Job</h2>
+          <div className="show-sheet">
+            <h2>No Job</h2>
+          </div>
       );
     }
     return(
-      <a onClick={this.onClick}><JobItem job={this.props.job} /></a>
+      <div className="show-sheet">
+        <a onClick={this.onClick}><JobItem job={this.props.job} /></a>
+      </div>
     );
   }
 }
@@ -277,7 +281,7 @@ class JobsPage extends Component {
       extraClass = "hidden-xs-up";
     }
 
-    let sheet = sheetName(this.name(), this.state.action || "New");
+    let sheet = sheetComponent(this.name(), this.state.action || "New");
     let ActionSheet = eval(sheet);
 
     //alert("RENDER " + sheet);
@@ -291,10 +295,11 @@ class JobsPage extends Component {
 
   render() {
     //alert(JSON.stringify(this.state.selected));
-    
+
+    let sid = sheetID(this.name(), this.state.action);
 
     return(
-      <Page id="{this.name().toLowerCase()}-page-{this.state.action.toLowerCase()}" {...this.props} name={this.name()}>
+      <Page id={sid} name="jobs" selected={this.props.selected}>
         <Row>
             { this.renderItems(this.props) }
             { this.renderDetail(this.props) }

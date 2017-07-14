@@ -17,13 +17,39 @@ import {
 } from '../container';
 
 import Pyr from '../../pyr/pyr';
-import Sheet, { ajaxError, sheetName } from '../sheet';
+import Sheet, { ajaxError, sheetComponent, sheetID } from '../sheet';
 
 const JOBS_URL = "/jobs";
 
 class CandidateItem extends Component {
 
   render() {
+    let id = "candidate-" + this.props.candidate.id;
+
+    return (
+      <div className="candidate-item" id={id}>
+        <Row>
+          <Column className="name"><label>Name:</label> This is the name {this.props.candidate.uuid}</Column>
+        </Row>
+        <Row>
+          <ColumnHalf className="phone-number"><label>PhoneNumber:</label> 4158675309</ColumnHalf>
+          <ColumnHalf className="email"><label>Email:</label> asdf@cwikla.com</ColumnHalf>
+        </Row>
+        <Row>
+          <Column className="description">This is the description</Column>
+        </Row>
+        <Row>
+           <ColumnHalf className=""><span className="btn btn-primary">Accept</span></ColumnHalf>
+           <ColumnHalf className=""><span className="btn blue">Reject</span></ColumnHalf>
+        </Row>
+        <Row className="recruiter-info">
+          <Column>Interesting stuff about the recruiter goes here!</Column>
+        </Row>
+      </div>
+    );
+  }
+
+  render_old() {
     let id = "candidate-" + this.props.candidate.id;
 
     return (
@@ -63,7 +89,7 @@ class CandidateForm extends Component {
 
 
     return (
-      <div id="candidate-page-form">
+      <div className="form-parent">
         <Pyr.Form.Form
           controller="Candidate"
           object={this.props.candidate}
@@ -98,9 +124,9 @@ class CandidateForm extends Component {
           </Pyr.Form.Group>
       
         </Pyr.Form.Form>
-      <div className="form-footer">
-        <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>{this.methodToName(method)}</Pyr.Form.SubmitButton>
-      </div>
+        <div className="form-footer">
+          <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>{this.methodToName(method)}</Pyr.Form.SubmitButton>
+        </div>
       </div>
     );
   }
@@ -168,7 +194,7 @@ class CandidateIndexSheet extends Sheet {
 
   render() {
     return(
-      <div id="candidates-page">
+      <div className="index-sheet">
         { this.props.candidates ? this.renderChildren() : this.renderNone() }
       </div>
     );
@@ -189,12 +215,16 @@ class CandidateShowSheet extends Sheet {
   render() {
     if (!this.props.candidate) {
       return (
+        <div className="show-sheet">
           <h2>No Candidate</h2>
+        </div>
       );
     }
     //alert(this.props.candidate.uuid);
     return(
-      <a onClick={this.onClick}><CandidateItem candidate={this.props.candidate} /></a>
+      <div className="show-sheet">
+        <a onClick={this.onClick}><CandidateItem candidate={this.props.candidate} /></a>
+      </div>
     );
   }
 }
@@ -213,9 +243,10 @@ class CandidatesPage extends Component {
     super(props);
 
     this.state = {
-      selected: null,
+      candidate: null,
       action: null,
-      job: this.props.job // placeholder until we can fetch the full one
+      job: this.props.job, // placeholder until we can fetch the full one
+      fullDetail: false
     };
 
     this.onSelectCandidate = this.selectCandidate.bind(this);
@@ -258,9 +289,9 @@ class CandidatesPage extends Component {
     return "Candidate";
   }
 
-  selectCandidate(selected) {
-    //alert("SELECTED " + selected);
-    this.setState({selected: selected});
+  selectCandidate(candidate) {
+    //alert("SELECTED " + candidate);
+    this.setState({candidate: candidate});
   }
 
   setAction(action) {
@@ -271,14 +302,13 @@ class CandidatesPage extends Component {
   renderItems(candidates, props) {
     let extraClass = "col-md-6";
 
-    if (this.fullDetail) {
+    if (this.state.fullDetail) {
       extraClass = "hidden-xs";
     }
-    else if (!this.state.selected) {
+    else if (!this.state.candidate) {
       extraClass = "col-md-12";
     }
 
-      
     return (
       <ColumnHalf className={extraClass}>
         <CandidateIndexSheet {...props} candidates={candidates} onSelectCandidate={this.onSelectCandidate}/>
@@ -289,32 +319,32 @@ class CandidatesPage extends Component {
   renderDetail(candidates, props) {
     let extraClass = "col-md-6";
 
-    if (this.fullDetail) {
+    if (this.state.fullDetail) {
       extraClass = "col-md-12";
     }
-    else if (!this.state.selected) {
+    else if (!this.state.candidate) {
       extraClass = "hidden-xs";
     }
 
-    let sheet = sheetName(this.name(), this.state.action || "Show");
+    let sheet = sheetComponent(this.name(), this.state.action || "Show");
     let ActionSheet = eval(sheet);
-
-    //alert(this.state.selected);
 
     return (
       <ColumnHalf className={extraClass}>
-        <ActionSheet {...props} candidates={candidates} candidate={this.state.selected} onSetAction={this.onSetAction}/>
+        <ActionSheet {...props} candidates={candidates} candidate={this.state.candidate} onSetAction={this.onSetAction}/>
       </ColumnHalf>
     );
   }
 
   render() {
-    //alert(JSON.stringify(this.state.selected));
+    //alert(JSON.stringify(this.state.candidate));
     
     let candidates = this.state.job ? this.state.job.candidates : [];
 
+    let sid = sheetID(this.name(), this.state.action);
+
     return(
-      <Page id="{this.name().toLowerCase()}-page-{this.state.action.toLowerCase()}" {...this.props} name={this.name()}>
+      <Page id={sid} name="candidates" selected={this.props.selected}>
         <Row>
             { this.renderItems(candidates, this.props) }
             { this.renderDetail(candidates, this.props) }

@@ -7,9 +7,13 @@ import Pyr from '../pyr/pyr';
 
 class Page extends Component {
   render() {
+    if (this.props.selected == undefined) {
+      alert("If you don't send in selected you won't see shit!");
+    }
     let myClasses = "page col col-md-12 transition" + (this.props.selected ? " on" : " off");
     //let child = React.cloneElement(React.Children.only(this.props.children), this.props);
     let allClasses = Pyr.Util.mergeClassName(this.props.className, myClasses);
+
     let id = this.props.name.toLowerCase() + "-page";
 
     return (

@@ -43,7 +43,7 @@ function same(a,b) {
   return a.uuid == b.uuid;
 }
 
-class DashboardContainer extends Container {
+class DashboardContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -58,22 +58,24 @@ class DashboardContainer extends Container {
     this.onJobUpdate = this.jobUpdate.bind(this);
     this.onJobDelete = this.jobDelete.bind(this);
 
-    this.setPageMessages = this.setPage.bind(this, MESSAGES_PAGE);
-    this.setPageJobs = this.setPage.bind(this, JOBS_PAGE);
-    this.setPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
-    this.setPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
-    this.setPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
+    this.onSetPageMessages = this.setPage.bind(this, MESSAGES_PAGE);
+    this.onSetPageJobs = this.setPage.bind(this, JOBS_PAGE);
+    this.onSetPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
+    this.onSetPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
+    this.onSetPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
   }
 
   title() {
-    return (this.state.openPage == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : "Jobs") : this.state.openPage;
+    return (this.state.openPage == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : JOBS_PAGE) : this.state.openPage;
   }
 
   setPage(page, e) {
-    e.preventDefault();
+    //alert(page);
+    if (e) {
+      e.preventDefault();
+    }
 
     this.setState({openPage: page});
-    //alert(page);
   }
 
   getJobs() {
@@ -128,7 +130,10 @@ class DashboardContainer extends Container {
   }
 
   selectJob(e, job) {
-    e.preventDefault();
+    //alert("SELECT JOB");
+    if (e) {
+      e.preventDefault();
+    }
 
     this.setState({
       openPage: CANDIDATES_PAGE,
@@ -136,6 +141,7 @@ class DashboardContainer extends Container {
     });
   }
 
+/*
   render_old() {
     return (
       <div className="red flx-row flx-stretch s1">
@@ -159,6 +165,7 @@ class DashboardContainer extends Container {
       </div>
     );
   }
+*/
 
   render() {
     let self = this;
@@ -174,18 +181,20 @@ class DashboardContainer extends Container {
 
     let sidebarTitle = this.title();
 
+    //alert(this.state.openPage == CANDIDATES_PAGE);
+
     return(
       <div className="flx-row-stretch flx-1">
         <Sidebar.Main {...this.props} className="col col-md-2 flx-col-stretch flx-1 p-2">
           <Sidebar.Header 
             id="sidebar-messages"
             icon="envelope-o"
-            onClick={this.setPageMessages}
+            onClick={this.onSetPageMessages}
             >All Messages</Sidebar.Header>
           <Sidebar.Header 
             id="sidebar-jobs" 
             icon="plus-circle"
-            onClick={this.setPageJobs}
+            onClick={this.onSetPageJobs}
           >Jobs ({this.state.jobs.length})</Sidebar.Header>
           <div className="flx-col-stretch flx-1">
             <Sidebar.Menu>
@@ -196,12 +205,12 @@ class DashboardContainer extends Container {
           <Sidebar.Header 
             id="sidebar-recruiters"
             icon="users"
-            onClick={this.setPageRecruiters}
+            onClick={this.onSetPageRecruiters}
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
             id="sidebar-settings"
             icon="gear"
-            onClick={this.setPageSettings}
+            onClick={this.onSetPageSettings}
           >Settings</Sidebar.Header>
           </Sidebar.Section>
         </Sidebar.Main>
