@@ -160,11 +160,13 @@ class CandidateEditSheet extends Sheet {
 class CandidateIndexSheet extends Sheet {
   constructor(props) {
     super(props);
-    this.bindClicks(props.candidates, this.selectCandidate);
+  //  this.bindClicks(props.candidates, this.selectCandidate);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    this.bindClicks(nextProps.candidates, this.selectCandidate);
+    if (this.props.candidates != nextProps.candidates) {
+      this.bindClicks(nextProps.candidates, this.selectCandidate);
+    }
   }
 
 

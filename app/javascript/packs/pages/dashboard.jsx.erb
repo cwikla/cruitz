@@ -53,6 +53,8 @@ class DashboardContainer extends Component {
       job: null,
     };
 
+    this.onJobClicks = [];
+
     this.onJobIndex = this.jobIndex.bind(this);
     this.onJobCreate = this.jobCreate.bind(this);
     this.onJobUpdate = this.jobUpdate.bind(this);
@@ -74,8 +76,11 @@ class DashboardContainer extends Component {
     if (e) {
       e.preventDefault();
     }
-
-    this.setState({openPage: page});
+  
+    this.setState({
+      job: null,
+      openPage: page
+    });
   }
 
   getJobs() {
@@ -96,6 +101,19 @@ class DashboardContainer extends Component {
 
   same(j1, j2) {
     return j1.uuid == j2.uuid;
+  }
+
+  bindClicks(jobs, f) {
+    this.onJobClicks = [];
+    for(let item of jobs) {
+      this.onJobClicks.push(f.bind(this, item));
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.jobs != nextState.jobs) {
+      this.bindClicks(nextState.jobs, this.selectJob);
+    }
   }
 
   jobIndex(jobs) {
@@ -129,7 +147,7 @@ class DashboardContainer extends Component {
     }
   }
 
-  selectJob(e, job) {
+  selectJob(job, e) {
     //alert("SELECT JOB");
     if (e) {
       e.preventDefault();
@@ -167,55 +185,72 @@ class DashboardContainer extends Component {
   }
 */
 
-  render() {
+  renderSideBar() {
     let self = this;
 
-    let jobKids = this.state.jobs.map( (child) => {
+    let jobKids = this.state.jobs.map( (child, pos) => {
         return (<Sidebar.Button 
                   key={child.uuid} 
                   selected={this.state.job && same(this.state.job, child)} 
-                  onClick={(e) => self.selectJob(e, child) }>{child.title}</Sidebar.Button>
+                  onClick={this.onJobClicks[pos]}>#{child.id} <span className="hidden-sm-down">{child.title}</span></Sidebar.Button>
         );
       }
     );
 
-    let sidebarTitle = this.title();
 
-    //alert(this.state.openPage == CANDIDATES_PAGE);
-
-    return(
-      <div className="flx-row-stretch flx-1">
-        <Sidebar.Main {...this.props} className="col col-md-2 flx-col-stretch flx-1 p-2">
+    return (
+        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col-stretch flx-1">
           <Sidebar.Header 
-            id="sidebar-messages"
+            id="messages"
             icon="envelope-o"
             onClick={this.onSetPageMessages}
-            >All Messages</Sidebar.Header>
+            selected={this.state.openPage==MESSAGES_PAGE}
+            >Messages</Sidebar.Header>
+
           <Sidebar.Header 
-            id="sidebar-jobs" 
-            icon="plus-circle"
+            id="jobs" 
+            icon="bullseye"
             onClick={this.onSetPageJobs}
+            selected={this.state.openPage==JOBS_PAGE}
           >Jobs ({this.state.jobs.length})</Sidebar.Header>
-          <div className="flx-col-stretch flx-1">
+
+          <Sidebar.Header
+            className="hidden-md-up"
+            id="per-jobs"
+            icon="hashtag"
+            onClick={this.onSetPageCandidates}
+            selected={!!this.state.job}
+          />
+          <div className="flx-col-stretch flx-1 hidden-sm-down">
             <Sidebar.Menu>
               {jobKids}
             </Sidebar.Menu>
           </div>
-          <Sidebar.Section selected={this.state.job} id="sidebar-recruiters" className="">
+
           <Sidebar.Header 
-            id="sidebar-recruiters"
+            id="recruiters"
             icon="users"
             onClick={this.onSetPageRecruiters}
+            selected={this.state.openPage==RECRUITERS_PAGE}
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
-            id="sidebar-settings"
+            id="settings"
             icon="gear"
             onClick={this.onSetPageSettings}
+            selected={this.state.openPage==SETTINGS_PAGE}
           >Settings</Sidebar.Header>
-          </Sidebar.Section>
         </Sidebar.Main>
-        <main className="col col-md-10 offset-md-2 m-0 p-0 flx-col-stretch flx-1 sidebar-main-page" id="sidebar-main-page">
-          <Sidebar.Header>{sidebarTitle}</Sidebar.Header>
+    );
+  }
+
+  renderMain() {
+    let mainTitle = this.title();
+    return (
+        <main 
+          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col-stretch flx-1 main-page" 
+          id="main-page"
+        >
+          <div className="main-title">{mainTitle}</div>
           <div className="flx-col-stretch flx-1">
             <MessagesPage {...this.props.messagePageProps} selected={this.state.openPage==MESSAGES_PAGE} />
             <JobsPage 
@@ -231,6 +266,16 @@ class DashboardContainer extends Component {
             <SettingsPage {...this.props.settingsPageProps} selected={this.state.openPage==SETTINGS_PAGE} />
           </div>
         </main>
+    );
+  }
+
+  render() {
+    //alert(this.state.openPage == CANDIDATES_PAGE);
+
+    return(
+      <div className="flx-row-stretch flx-1">
+        { this.renderSideBar() }
+        { this.renderMain() }
       </div>
     );
   }

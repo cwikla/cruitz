@@ -9,10 +9,16 @@
   padding: 0;
 }
 
+.sidebar {
+  .inner {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
 .sidebar-header {
   font-size: 1.0rem;
   width: 100%;
-  padding-right: 0.5rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
   line-height: 1.5rem;
@@ -27,9 +33,11 @@
   overflow: hidden;
   white-space: nowrap;
   font-size: 1.0rem;
-  padding-right: 0.5rem;
-  // line-height: 1.25rem;
-  padding-left: 0.5rem;
+  //padding-right: 0.5rem;
+  //padding-left: 0.5rem;
+  .inner {
+    padding-left: 1.0rem;
+  }
 
   color: rgba(#FFFFFF, 0.75);
 }
@@ -45,9 +53,10 @@
 .sidebar-button:hover {
   color: $hover_color;
 }
-.sidebar-button.selected {
+.sidebar-button.selected, .sidebar-header.selected {
   color: $selected_color;
-  background-color: $highlight_color;
+  background-color: rgba($highlight_color, 1.0);
+  font-weight: 500;
 }
 
 .sidebar label {
@@ -61,6 +70,5 @@
     border-style: solid;
     border-color: $sidebar-header-background-color;
     border-width: 1px 0 1px 0;
-    padding: 0.5rem;
   }
 }

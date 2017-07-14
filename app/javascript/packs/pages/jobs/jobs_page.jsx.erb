@@ -149,7 +149,9 @@ class JobIndexSheet extends Sheet {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    this.bindClicks(nextProps.jobs, this.setSelected);
+    if (this.props.jobs != nextProps.jobs) {
+      this.bindClicks(nextProps.jobs, this.setSelected);
+    }
   }
 
   renderChildren() {

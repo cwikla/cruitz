@@ -30,23 +30,9 @@ class Button extends Component {
   render() {
     let myClass = "sidebar-button" + (this.props.selected ? " selected" : "");
     return(
-      <li {...Pyr.Util.propsMergeClassName(this.props, myClass)} ><span className="name">{this.props.children}</span></li>
+      <li {...Pyr.Util.propsMergeClassName(this.props, myClass)} ><span className="inner"><span className="name">{this.props.children}</span></span></li>
     );
    }
-}
-
-class Section extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div {...Pyr.Util.propsMergeClassName(this.props, "")}>
-        {this.props.children}
-      </div>
-    );
-  }
 }
 
 class Header extends Component {
@@ -63,11 +49,14 @@ class Header extends Component {
   }
 
   render() {
+    let myClass = "sidebar-header" + (this.props.selected ? " selected" : "");
+
     return (
-      <div {...Pyr.Util.propsMergeClassName(this.props, "sidebar-header")}>{this.renderIcon()} {this.props.children}</div>
+      <div {...Pyr.Util.propsMergeClassName(this.props, myClass)}><span className="inner">{this.renderIcon()} <span className="hidden-sm-down">{this.props.children}</span></span></div>
     );
   }
 }
+
 
 const Menu = (props) => (
   <ul {...Pyr.Util.propsMergeClassName(props, "sidebar-menu flx-1")}>
@@ -92,7 +81,6 @@ const Sidebar = {
   Main,
   Menu,
   Header, 
-  Section,
   Button
 };
 
