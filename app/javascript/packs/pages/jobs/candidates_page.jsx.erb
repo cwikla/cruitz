@@ -12,7 +12,7 @@ import ReactDOM from 'react-dom';
 import Page from '../page';
 import { 
   Row, 
-  Column, 
+  ColumnFull, 
   ColumnHalf 
 } from '../container';
 
@@ -29,21 +29,21 @@ class CandidateItem extends Component {
     return (
       <div className="candidate-item" id={id}>
         <Row>
-          <Column className="name"><label>Name:</label> This is the name {this.props.candidate.uuid}</Column>
+          <ColumnFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel> This is the name {this.props.candidate.uuid}</ColumnFull>
         </Row>
         <Row>
-          <ColumnHalf className="phone-number"><label>PhoneNumber:</label> 4158675309</ColumnHalf>
-          <ColumnHalf className="email"><label>Email:</label> asdf@cwikla.com</ColumnHalf>
+          <ColumnHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel> 4158675309</ColumnHalf>
+          <ColumnHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel> asdf@cwikla.com</ColumnHalf>
         </Row>
         <Row>
-          <Column className="description">This is the description</Column>
+          <ColumnHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Google</ColumnHalf>
+          <ColumnHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</ColumnHalf>
         </Row>
         <Row>
-           <ColumnHalf className=""><span className="btn btn-primary">Accept</span></ColumnHalf>
-           <ColumnHalf className=""><span className="btn blue">Reject</span></ColumnHalf>
+          <ColumnFull className="description">This is the description</ColumnFull>
         </Row>
         <Row className="recruiter-info">
-          <Column>Interesting stuff about the recruiter goes here!</Column>
+          <ColumnFull>Interesting stuff about the recruiter goes here!</ColumnFull>
         </Row>
       </div>
     );
@@ -206,7 +206,7 @@ class CandidateIndexSheet extends Sheet {
 class CandidateShowSheet extends Sheet {
   constructor(props) {
     super(props);
-    this.onClick = this.editMe.bind(this);
+    this.onClick = this.props.onUnselectCandidate;
 
   }
   editMe(e) {
@@ -218,14 +218,15 @@ class CandidateShowSheet extends Sheet {
     if (!this.props.candidate) {
       return (
         <div className="show-sheet">
-          <h2>No Candidate</h2>
+          <h2 key="no-candidate">No Candidate?</h2>
         </div>
       );
     }
     //alert(this.props.candidate.uuid);
     return(
       <div className="show-sheet">
-        <a onClick={this.onClick}><CandidateItem candidate={this.props.candidate} /></a>
+        <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div>
+        <CandidateItem candidate={this.props.candidate} />
       </div>
     );
   }
@@ -252,6 +253,7 @@ class CandidatesPage extends Component {
     };
 
     this.onSelectCandidate = this.selectCandidate.bind(this);
+    this.onUnselectCandidate = this.selectCandidate.bind(this, null);
     this.onSetAction = this.setAction.bind(this);
   }
 
@@ -305,7 +307,10 @@ class CandidatesPage extends Component {
     let extraClass = "col-md-6";
 
     if (this.state.fullDetail) {
-      extraClass = "hidden-xs";
+      extraClass = "hidden-xs-up";
+    }
+    else if (this.state.candidate) {
+      extraClass = extraClass + " hidden-xs-down";
     }
     else if (!this.state.candidate) {
       extraClass = "col-md-12";
@@ -325,7 +330,7 @@ class CandidatesPage extends Component {
       extraClass = "col-md-12";
     }
     else if (!this.state.candidate) {
-      extraClass = "hidden-xs";
+      extraClass = "hidden-xs-up";
     }
 
     let sheet = sheetComponent(this.name(), this.state.action || "Show");
@@ -333,7 +338,7 @@ class CandidatesPage extends Component {
 
     return (
       <ColumnHalf className={extraClass}>
-        <ActionSheet {...props} candidates={candidates} candidate={this.state.candidate} onSetAction={this.onSetAction}/>
+        <ActionSheet {...props} candidates={candidates} candidate={this.state.candidate} onSetAction={this.onSetAction} onUnselectCandidate={this.onUnselectCandidate}/>
       </ColumnHalf>
     );
   }

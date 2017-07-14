@@ -235,7 +235,7 @@ class JobsPage extends Component {
     this.state = {
       selected: null,
       action: null,
-      fullDetail: true
+      fullDetail: false
     };
 
     this.onSetSelected = this.setSelected.bind(this);
@@ -283,7 +283,7 @@ class JobsPage extends Component {
       extraClass = "hidden-xs-up";
     }
 
-    let sheet = sheetComponent(this.name(), this.state.action || "New");
+    let sheet = sheetComponent(this.name(), this.state.action || "Show");
     let ActionSheet = eval(sheet);
 
     //alert("RENDER " + sheet);

@@ -33,11 +33,22 @@ $black_color: rgba(#FFFFFF, 1.0);
 
 $highlight_color: $secondary_dark;
 $hover_color: $white_color;
+$hover_background_color: rgba(#FFF, 0.2);
 $selected_color: $white_color;
+$selected_background_color: $highlight_color;
 
-$sidebar_color: $primary_color; //rgba(#9c7361, 1.0);
-$sidebar-header-background-color: $primary_color;
-$sidebar-header-color: $white_color;
+$light_white: rgba(#FFF, 0.85);
+
+$navbar_color: $white_color;
+$navbar_background_color: $primary_color;
+$navbar_menu_color: $light_white;
+$navbar_hover_color: $hover_color;
+$navbar_border_color: $white_color;
+
+$sidebar_color: $light_white;
+$sidebar_backround_color: $primary_color; //rgba(#9c7361, 1.0);
+$sidebar_header_background_color: $primary_color;
+$sidebar_header_color: $white_color;
 
 body {
 }
@@ -98,14 +109,6 @@ a:hover {
   color: $primary_color !important;
 }
 
-.nav-link, .nav-icon:focus {
-  outline: none;
-}
-
-.nav-link:hover, .nav-icon:hover {
-  color:  $primary_light !important;
-}
-
 .trans-50 {
   background-color: rgba($primary_color, 0.45);
 }
@@ -124,29 +127,5 @@ a:hover {
 
 .modal-backdrop {
   background-color: $primary_color;
-}
-
-.navbar {
-  font-size: 1rem;
-  padding: 0.35rem;
-}
-
-.navbar-brand, .navbar-toggler {
-  color: $primary_color !important;
-  padding: 0;
-  font-size: 1rem;
-  margin: 0;
-}
-
-.navbar-toggler {
-  color: $primary_color !important;
-}
-
-.navbar-toggler:hover {
-  color:  $primary_light !important;
-}
-
-.nav-link {
-  padding: 0;
 }
 

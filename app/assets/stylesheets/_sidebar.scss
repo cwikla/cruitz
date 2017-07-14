@@ -5,7 +5,7 @@
  */
 
 .sidebar {
-  background-color: $sidebar_color !important;
+  background-color: $sidebar_backround_color !important;
   padding: 0;
 }
 
@@ -24,7 +24,7 @@
   line-height: 1.5rem;
 
   //text-transform: uppercase;
-  color: rgba($sidebar-header-color, 0.75);
+  color: $sidebar_color;
 }
 
 .sidebar-button {
@@ -39,7 +39,7 @@
     padding-left: 1.0rem;
   }
 
-  color: rgba(#FFFFFF, 0.75);
+  color: $sidebar_color;
 }
 
 .sidebar-menu {
@@ -48,14 +48,16 @@
 
 .sidebar-header:hover {
   color: $hover_color;
+  background-color: $hover_background_color;
 }
 
 .sidebar-button:hover {
   color: $hover_color;
+  background-color: $hover_background_color;
 }
 .sidebar-button.selected, .sidebar-header.selected {
   color: $selected_color;
-  background-color: rgba($highlight_color, 1.0);
+  background-color: $selected_background_color;
   font-weight: 500;
 }
 
@@ -63,12 +65,3 @@
   margin: 0;
 }
 
-.sidebar-main-page {
-  .sidebar-header {
-    color: $sidebar-header-background-color;
-    background-color: $sidebar-header-color;
-    border-style: solid;
-    border-color: $sidebar-header-background-color;
-    border-width: 1px 0 1px 0;
-  }
-}

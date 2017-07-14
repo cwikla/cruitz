@@ -48,9 +48,9 @@ class DashboardContainer extends Component {
     super(props);
 
     this.state = {
-      openPage: JOBS_PAGE,
+      openPage: CANDIDATES_PAGE,
       jobs: [],
-      job: null,
+      job: (this.props.jobs ? this.props.jobs[0] : null)
     };
 
     this.onJobClicks = [];
@@ -68,7 +68,7 @@ class DashboardContainer extends Component {
   }
 
   title() {
-    return (this.state.openPage == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : JOBS_PAGE) : this.state.openPage;
+    return (this.state.openPage == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.openPage;
   }
 
   setPage(page, e) {
@@ -76,7 +76,7 @@ class DashboardContainer extends Component {
     if (e) {
       e.preventDefault();
     }
-  
+
     this.setState({
       job: null,
       openPage: page
@@ -117,7 +117,9 @@ class DashboardContainer extends Component {
   }
 
   jobIndex(jobs) {
-    this.setState({jobs});
+    this.setState({
+      jobs
+    });
   }
 
   jobCreate(job) {
@@ -261,7 +263,7 @@ class DashboardContainer extends Component {
               onJobUpdate={this.onJobUpdate}
               onJobDelete={this.onJobDelete}
             />
-            <CandidatesPage {...this.props.candidatePageProps} job={this.state.job} selected={this.state.openPage==CANDIDATES_PAGE} />
+            <CandidatesPage {...this.props.candidatePageProps} job={this.state.job || (this.state.jobs ? this.state.jobs[0] : nul)} selected={this.state.openPage==CANDIDATES_PAGE} />
             <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
             <SettingsPage {...this.props.settingsPageProps} selected={this.state.openPage==SETTINGS_PAGE} />
           </div>

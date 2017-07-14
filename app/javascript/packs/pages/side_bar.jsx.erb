@@ -37,22 +37,20 @@ class Button extends Component {
 
 class Header extends Component {
   renderIcon() {
-    let iconName = this.props.icon ? "fa fa-" + this.props.icon : null;
-    if (!iconName) {
+    if (!this.props.icon) {
       return null;
     }
-    else {
-      return (
-        <i className={iconName}/> 
-      );
-    }
+
+    return (
+      <Pyr.Icon name={this.props.icon}/>
+    );
   }
 
   render() {
     let myClass = "sidebar-header" + (this.props.selected ? " selected" : "");
 
     return (
-      <div {...Pyr.Util.propsMergeClassName(this.props, myClass)}><span className="inner">{this.renderIcon()} <span className="hidden-sm-down">{this.props.children}</span></span></div>
+      <div {...Pyr.Util.propsMergeClassName(this.props, myClass)}><span className="inner">{this.renderIcon()} <Pyr.SmallLabel>{this.props.children}</Pyr.SmallLabel></span></div>
     );
   }
 }
