@@ -8,26 +8,27 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Page from '../page';
-import { Row, Column, ColumnHalf } from '../container';
-
 import Pyr from '../../pyr/pyr';
 
-import Sheet, { ajaxError, sheetComponent, sheetID } from '../sheet';
+import { Row, Column, ColumnHalf } from '../container';
+import Page from '../page';
+import Sheet from '../sheet';
+
 
 const JOBS_URL = "/jobs";
 
 class JobItem extends Component {
 
   render() {
-    let id = "job-" + this.props.job.id;
+    let job = this.props.job;
+    let id = "job-" + job.id;
 
     return (
       <div id={id}>
-        <h2>{this.props.job.title}</h2>
-        <h3>Location: {this.props.job.location}</h3>
-        <h3>Time: {this.props.job.time_commit}</h3>
-        <p>{this.props.job.description}</p>
+        <h2>{job.title}</h2>
+        <h3>Location: {job.location}</h3>
+        <h3>Time: {job.time_commit}</h3>
+        <p>{job.description}</p>
       </div>
     );
   }
@@ -51,21 +52,21 @@ class JobForm extends Component {
     let key = "job-form";
     let url = JOBS_URL;
 
-    if (this.props.job){
-      url = url + "/" + this.props.job.id;
-      key = key + "-" + this.props.job.id;
+    if (this.props.selected){
+      url = url + "/" + this.props.selected.id;
+      key = key + "-" + this.props.selected.id;
     }
 
     let method = this.props.method || Pyr.Method.POST;
 
-    //alert("Render FOrm Job " + this.props.job.id);
+    //alert("Render FOrm Job " + this.props.selected.id);
 
 
     return (
       <div className="form-parent">
         <Pyr.Form.Form
           controller="Job"
-          object={this.props.job}
+          object={this.props.selected}
           url={url}
           method={method}
           id="job-form" 
@@ -110,7 +111,7 @@ class JobForm extends Component {
   }
 }
 
-class JobEditSheet extends Sheet {
+class EditSheet extends Sheet {
   constructor(props) {
     super(props);
     this.onSuccess = this.success.bind(this);
@@ -121,12 +122,12 @@ class JobEditSheet extends Sheet {
   }
 
   render() {
-    //alert("JOB EDIT " + this.props.job.id);
+    //alert("JOB EDIT " + this.props.selected.id);
     return (
       <JobForm 
         onPreSubmit={this.onPreSubmit} 
         onPostSubmit={this.onPostSubmit} 
-        job={this.props.job} 
+        job={this.props.selected} 
         onSuccess={this.onSuccess}
         method={Pyr.Method.PUT} 
         isLoading={this.state.isLoading}/>
@@ -134,22 +135,20 @@ class JobEditSheet extends Sheet {
   }
 }
 
-class JobIndexSheet extends Sheet {
+class IndexSheet extends Sheet {
   constructor(props) {
     super(props);
-  
-    //this.bindClicks(props.jobs, this.setSelected);
   }
 
   setSelected(job, e) {
     //alert("SET SELECTED");
     e.preventDefault();
 
-    this.props.onSetSelected(job);
+    this.props.onSelect(job);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.jobs != nextProps.jobs) {
+    if (this.props.tems != nextProps.jobs) {
       this.bindClicks(nextProps.jobs, this.setSelected);
     }
   }
@@ -180,7 +179,7 @@ class JobIndexSheet extends Sheet {
   }
 }
 
-class JobShowSheet extends Sheet {
+class ShowSheet extends Sheet {
   constructor(props) {
     super(props);
     this.onClick = this.editMe.bind(this);
@@ -188,11 +187,11 @@ class JobShowSheet extends Sheet {
 
   editMe(e) {
     e.preventDefault();
-    this.props.onSetAction('Edit');
+    this.props.onAction('Edit');
   }
 
   render() {
-    if (!this.props.job) {
+    if (!this.props.selected) {
       return (
           <div className="show-sheet">
             <h2>No Job</h2>
@@ -201,13 +200,13 @@ class JobShowSheet extends Sheet {
     }
     return(
       <div className="show-sheet">
-        <a onClick={this.onClick}><JobItem job={this.props.job} /></a>
+        <a onClick={this.onClick}><JobItem job={this.props.selected} /></a>
       </div>
     );
   }
 }
 
-class JobNewSheet extends Sheet {
+class NewSheet extends Sheet {
   constructor(props) {
     super(props);
     this.onSuccess = this.success.bind(this);
@@ -228,96 +227,37 @@ class JobNewSheet extends Sheet {
   }
 }
 
-class JobsPage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selected: null,
-      action: null,
-      fullDetail: false
-    };
-
-    this.onSetSelected = this.setSelected.bind(this);
-    this.onSetAction = this.setAction.bind(this);
-  }
-
+class JobsPage extends Page {
   name() {
-    return "Job";
+    return "Jobs"
   }
 
-  setSelected(selected) {
-    //alert("SELECTED " + JSON.stringify(selected));
-    this.setState({selected: selected});
-  }
-
-  setAction(action) {
-    //alert("Set Acxtion" + action);
-    this.setState({action});
-  }
-
-  renderItems(props) {
-    let extraClass = "col-md-6";
-
-    if (this.state.fullDetail) {
-      extraClass = "hidden-xs-up";
-    }
-    else if (!this.state.selected) {
-      extraClass = "col-md-12";
-    }
-      
+  indexSheet() {
     return (
-      <ColumnHalf className={extraClass}>
-        <JobIndexSheet {...props} jobs={this.props.jobs} onSetSelected={this.onSetSelected}/>
-      </ColumnHalf>
+      <IndexSheet
+        {...this.props}
+        jobs={this.props.items}
+        onSelect={this.onSelect}
+      />
     );
   }
 
-  renderDetail(props) {
-    let extraClass = "col-md-6";
-
-    if (this.state.fullDetail) {
-      extraClass = "col-md-12";
-    }
-    else if (!this.state.selected) {
-      extraClass = "hidden-xs-up";
-    }
-
-    let sheet = sheetComponent(this.name(), this.state.action || "Show");
+  actionSheet(action) {
+    let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    //alert("RENDER " + sheet);
-
     return (
-      <ColumnHalf className={extraClass}>
-        <ActionSheet {...props} jobs={this.props.jobs} job={this.state.selected} onSetAction={this.onSetAction}/>
-      </ColumnHalf>
+      <ActionSheet
+        {...this.props}
+        jobs={this.props.items}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnaction={this.onUnaction}
+      />
     );
+
   }
 
-  render() {
-    //alert(JSON.stringify(this.state.selected));
-
-    let sid = sheetID(this.name(), this.state.action);
-
-    return(
-      <Page id={sid} name="jobs" selected={this.props.selected}>
-        <Row>
-            { this.renderItems(this.props) }
-            { this.renderDetail(this.props) }
-        </Row>
-      </Page>
-    );
-  }
 }
-
-const JobSideButton = (props) => (
-  <label {...Pyr.Util.propsMergeClassName(props, "title")}>Jobs</label>
-);
-
 
 export default JobsPage;
-export {
-  JobSideButton
-}
-

@@ -10,16 +10,54 @@ import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
 import Page from './page';
+import Sheet from './sheet';
 
+class IndexSheet extends Sheet {
+  render() {
+    return (
+      <h2>Messages Index Sheet</h2>
+    );
+  }
+}
 
-const AddMessagesPage = (props) => (
-  <div id="add-messages-page" {...props}>Add a messages here</div>
-);
+class ShowSheet extends Sheet {
+  render() {
+    return (
+      <h2>Messages Show Sheet</h2>
+    );
+  }
+}
 
-const MessagesPage = (props) => (
-  <Page id="messages-page" {...props} name="Messages">
-    <AddMessagesPage {...props}/>
-  </Page>
-);
+class MessagesPage extends Page {
+  name() {
+    return "Messages";
+  }
+
+  indexSheet() {
+    return (
+      <IndexSheet 
+        {...this.props} 
+        items={this.items()} 
+        onSelect={this.onSelect} 
+      />
+    );
+  }
+  
+  actionSheet(action) {
+    let sheet = Sheet.sheetComponent(action || "Show");
+    let ActionSheet = eval(sheet);
+
+    return (
+      <ActionSheet 
+        {...this.props}
+        items={this.items()}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnaction={this.onUnsaction}
+      />
+    );
+    
+  }
+}
 
 export default MessagesPage;

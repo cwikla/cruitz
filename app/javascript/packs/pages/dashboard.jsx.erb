@@ -21,7 +21,7 @@ import Pyr from '../pyr/pyr';
 
 import Container, { Row, Column, ColumnHalf } from './container';
 import Sidebar from './side_bar';
-import JobsPage, { JobSideButton } from './jobs/jobs_page';
+import JobsPage from './jobs/jobs_page';
 import CandidatesPage, {CandidateSideButton} from './jobs/candidates_page';
 import RecruitersPage from './recruiters_page';
 import SettingsPage from './settings_page';
@@ -34,10 +34,6 @@ const SETTINGS_PAGE = 'Settings';
 const MESSAGES_PAGE = 'Messages';
 
 const JOBS_URL = "/jobs";
-
-function ajaxError(jaXHR, textStatus, errorThrown) {
-   alert(errorThrown);
-}
 
 function same(a,b) {
   return a.uuid == b.uuid;
@@ -91,7 +87,7 @@ class DashboardContainer extends Component {
     }).done(function(data, textStatus, jaXHR) {
         this.onJobIndex(data.jobs);
     }).fail(function(jaXHR, textStatus, errorThrown) {
-      ajaxError(jaXHR, textStatus, errorThrown);
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
     });
   }
 
@@ -221,7 +217,7 @@ class DashboardContainer extends Component {
             id="per-jobs"
             icon="hashtag"
             onClick={this.onSetPageCandidates}
-            selected={!!this.state.job}
+            selected={this.state.job != null}
           />
           <div className="flx-col-stretch flx-1 hidden-sm-down">
             <Sidebar.Menu>
@@ -254,18 +250,28 @@ class DashboardContainer extends Component {
         >
           <div className="main-title">{mainTitle}</div>
           <div className="flx-col-stretch flx-1">
-            <MessagesPage {...this.props.messagePageProps} selected={this.state.openPage==MESSAGES_PAGE} />
+            <MessagesPage {...this.props.messagePageProps} showing={this.state.openPage==MESSAGES_PAGE} />
             <JobsPage 
                {...this.props.jobsPageProps} 
-              selected={this.state.openPage==JOBS_PAGE} 
-              jobs={this.state.jobs}
+              showing={this.state.openPage==JOBS_PAGE} 
+              items={this.state.jobs}
               onJobCreate={this.onJobCreate}
               onJobUpdate={this.onJobUpdate}
               onJobDelete={this.onJobDelete}
             />
-            <CandidatesPage {...this.props.candidatePageProps} job={this.state.job || (this.state.jobs ? this.state.jobs[0] : nul)} selected={this.state.openPage==CANDIDATES_PAGE} />
-            <RecruitersPage {...this.props.recruiterPageProps} selected={this.state.openPage==RECRUITERS_PAGE} />
-            <SettingsPage {...this.props.settingsPageProps} selected={this.state.openPage==SETTINGS_PAGE} />
+            <CandidatesPage 
+              {...this.props.candidatePageProps} 
+              job={this.state.job || (this.state.jobs ? this.state.jobs[0] : nul)} 
+              showing={this.state.openPage==CANDIDATES_PAGE} 
+            />
+            <RecruitersPage 
+              {...this.props.recruiterPageProps} 
+              showing={this.state.openPage==RECRUITERS_PAGE} 
+            />
+            <SettingsPage 
+              {...this.props.settingsPageProps} 
+              showing={this.state.openPage==SETTINGS_PAGE} 
+            />
           </div>
         </main>
     );

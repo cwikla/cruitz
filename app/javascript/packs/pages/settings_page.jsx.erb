@@ -10,16 +10,54 @@ import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
 import Page from './page';
+import Sheet from './sheet';
 
+class IndexSheet extends Sheet {
+  render() {
+    return (
+      <h2>Settings Index Sheet</h2>
+    );
+  }
+}
 
-const AddSettingPage = (props) => (
-  <div id="add-setting-page" {...props}>Add a setting here</div>
-);
+class ShowSheet extends Sheet {
+  render() {
+    return (
+      <h2>Settings Show Sheet</h2>
+    );
+  }
+}
 
-const SettingsPage = (props) => (
-  <Page id="settings-page" {...props} name="Setting">
-    <AddSettingPage {...props}/>
-  </Page>
-);
+class SettingsPage extends Page {
+  name() {
+    return "Settings";
+  }
+
+  indexSheet() {
+    return (
+      <IndexSheet 
+        {...this.props} 
+        items={this.items()} 
+        onSelect={this.onSelect} 
+      />
+    );
+  }
+  
+  actionSheet(action) {
+    let sheet = Sheet.sheetComponent(action || "Show");
+    let ActionSheet = eval(sheet);
+
+    return (
+      <ActionSheet 
+        {...this.props}
+        items={this.items()}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnaction={this.onUnaction}
+      />
+    );
+    
+  }
+}
 
 export default SettingsPage;

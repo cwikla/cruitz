@@ -4,10 +4,6 @@ import React, {
 
 import Pyr from '../pyr/pyr';
 
-function ajaxError(jaXHR, textStatus, errorThrown) {
-   alert(errorThrown);
-}
-
 class Sheet extends Component {
   constructor(props) {
     super(props);
@@ -39,20 +35,22 @@ class Sheet extends Component {
       isLoading: false
     });
   }
+
 }
 
-function sheetComponent(name, action) {
+function sheetComponent(action) {
   action = action || "Index";
-  let nameAction = Pyr.Util.capFirstLetter(name) + Pyr.Util.capFirstLetter(action) + "Sheet";
+  let nameAction = Pyr.Util.capFirstLetter(action) + "Sheet";
   return nameAction;
 }
 
 function sheetID(name, action) {
   action = action || "Index";
-  let idName = name.toLowerCase() + "sheet" + action.toLowerCase();
+  let idName = "sheet" + action.toLowerCase();
   return idName;
 }
 
+Sheet.sheetComponent = sheetComponent;
+Sheet.sheetID = sheetID;
 
 export default Sheet;
-export { ajaxError, sheetComponent, sheetID };

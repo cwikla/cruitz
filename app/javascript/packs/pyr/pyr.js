@@ -13,6 +13,11 @@ const DELETE = 'DELETE';
 
 const Method = { POST, PUT, GET, DELETE };
 
+function ajaxError(jaXHR, textStatus, errorThrown) {
+   alert(errorThrown);
+}
+
+
 class Icon extends Component {
   render() {
     let name = "fa fa-" + this.props.name;
@@ -27,6 +32,7 @@ const SmallLabel = (props) => (
 );
 
 const Pyr = { 
+  ajaxError,
   Icon,
   SmallLabel,
   Form, 

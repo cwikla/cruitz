@@ -5,19 +5,150 @@ import React, {
 
 import Pyr from '../pyr/pyr';
 
+import { 
+  Row,
+  ColumnHalf,
+} from './container';
+
 class Page extends Component {
-  render() {
-    if (this.props.selected == undefined) {
-      alert("If you don't send in selected you won't see shit!");
+  getInitState(props) {
+    return {
+      action: null,
+      selected: null,
+      fullDetail: false
+    };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = this.getInitState(props);
+
+    this.onSelect = this.setSelected.bind(this);
+    this.onUnselect = this.setSelected.bind(this, null);
+
+    this.onAction = this.setAction.bind(this);
+    this.onUnaction = this.setAction.bind(this, null);
+  }
+
+  name() {
+    let fullName = this.constructor.name;
+    let pos = fullName.search("Page");
+    if (pos == -1) {
+      alert("page.jsx: You need to define a name cuz you didn't name your subclass *Page");
     }
-    let myClasses = "page col col-md-12 transition" + (this.props.selected ? " on" : " off");
+    let name = fullName.substring(0, pos-1);
+    return name;
+  }
+
+  items() {
+    return null;
+  }
+
+////// COPY ME INTO SUBCLASS //////
+
+  indexSheet() {
+    alert("page.jsx: IF YOU ARE SEEING THIS, COPY THESE INTO SUBCLASS");
+
+    return (
+      <IndexSheet 
+        {...this.props} 
+        items={this.items()}
+        onSelect={this.onSelect} 
+      />
+    );
+  }
+
+  actionSheet(action) {
+    alert("page.jsx: IF YOU ARE SEEING THIS, COPY THESE INTO SUBCLASS");
+
+    let sheet = Sheet.sheetComponent(action || "Show");
+    let ActionSheet = eval(sheet);
+
+    return (
+      <ActionSheet 
+        {...this.props}
+        items={this.items()}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnsetAction={this.onUnsetAction}
+      />
+    );
+   
+  }
+
+///// END ////
+
+
+  setSelected(selected) {
+    //alert("SELECTED " + JSON.stringify(selected));
+    this.setState({selected: selected});
+  }
+
+  setAction(action) {
+    //alert("Set Acxtion" + action);
+    this.setState({action});
+  }
+
+  renderIndexSheet() {
+    let extraClass = "col-md-6";
+
+    if (this.state.fullDetail) {
+      extraClass = "hidden-xs-up";
+    }
+    else if (this.state.selected) {
+      extraClass = extraClass + " hidden-xs-down";
+    }
+    else if (!this.state.selected) {
+      extraClass = "col-md-12";
+    }
+
+    return (
+      <ColumnHalf className={extraClass}>
+        {this.indexSheet()}
+      </ColumnHalf>
+    );
+  }
+
+  renderActionSheet() {
+    let extraClass = "col-md-6";
+
+    if (this.state.fullDetail) {
+      extraClass = "col-md-12";
+    }
+    else if (!this.state.selected) {
+      extraClass = "hidden-xs-up";
+    }
+
+    return (
+      <ColumnHalf className={extraClass}>
+        {this.actionSheet(this.state.action)}
+      </ColumnHalf>
+    );
+  }
+
+
+  render() {
+    if (this.props.showing == undefined) {
+      alert("If you don't send in showing you won't see shit!");
+    }
+    if (!this.props.showing) {
+      return null;
+    }
+
+    let myClasses = "page col col-md-12 transition" + (this.props.showing ? " on" : " off");
     //let child = React.cloneElement(React.Children.only(this.props.children), this.props);
     let allClasses = Pyr.Util.mergeClassName(this.props.className, myClasses);
 
-    let id = this.props.name.toLowerCase() + "-page";
+    let id = this.name().toLowerCase() + "-page";
 
     return (
-      <div className={allClasses} id={id}>{this.props.children}</div>
+      <div className={allClasses} id={id}>
+        <Row>
+          {this.renderIndexSheet()}
+          {this.renderActionSheet()}
+        </Row>
+      </div>
     );
   }
 }

@@ -10,16 +10,54 @@ import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
 import Page from './page';
+import Sheet from './sheet';
 
+class IndexSheet extends Sheet {
+  render() {
+    return (
+      <h2>Recruiters Index Sheet</h2>
+    );
+  }
+}
 
-const AddRecruiterPage = (props) => (
-  <div id="add-recruiter-page" {...props}>Add a recruiter here</div>
-);
+class ShowSheet extends Sheet {
+  render() {
+    return (
+      <h2>Recruiters Show Sheet</h2>
+    );
+  }
+}
 
-const RecruitersPage = (props) => (
-  <Page id="recruiters-page" {...props} name="Recruiter">
-    <AddRecruiterPage {...props}/>
-  </Page>
-);
+class RecruitersPage extends Page {
+  name() {
+    return "Recruiters";
+  }
+
+  indexSheet() {
+    return (
+      <IndexSheet 
+        {...this.props} 
+        items={this.items()} 
+        onSelect={this.onSelect} 
+      />
+    );
+  }
+  
+  actionSheet(action) {
+    let sheet = Sheet.sheetComponent(action || "Show");
+    let ActionSheet = eval(sheet);
+
+    return (
+      <ActionSheet 
+        {...this.props}
+        items={this.items()}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnaction={this.onUnaction}
+      />
+    );
+    
+  }
+}
 
 export default RecruitersPage;
