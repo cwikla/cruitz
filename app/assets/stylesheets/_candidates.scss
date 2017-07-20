@@ -1,30 +1,20 @@
+@import "theme_2";
 
 #candidates-page .index-sheet {
-  border-width: 0px 0 0px 1px;
-  border-color: $primary-color;
 }
 
 .candidate-item {
-  font-size: 1rem;
   padding: 0rem 1rem 0rem 1rem;
-
-  .lock {
-    padding: 0rem 0.5rem 0rem 0rem;
-    margin-left: -1rem;
-  }
-
-  label {
-    font-size: 1rem;
-    margin-bottom: 0;
-  }
-  .row {
-    line-height: 1.5rem;
-  }
-  .col {
-    border: 1px #555 solid;
-  }
-  padding-bottom: 1.5rem;
+  border-width: 4px;
+  border-color: rgba(#ffffff, 0.0);
+  border-style: solid;
 }
+
 .candidate-item:hover {
-     background-color: $hover_background_color;
-  }
+  border-color: $primary_color;
+  background-color: $hover_background_color;
+}
+
+.candidate-item.selected {
+  border-color: $selected_background_color;
+}

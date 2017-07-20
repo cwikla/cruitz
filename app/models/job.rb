@@ -1,6 +1,9 @@
 class Job < ApplicationRecord
   include Pyr::Base::UuidHelp
 
+  acts_as_simple_cache
+  acts_as_paranoid
+
   belongs_to :user
   has_many :candidates
   has_many :heads, :through => :candidates
@@ -16,6 +19,10 @@ class Job < ApplicationRecord
 
   include Pyr::Base::SimpleCache
   acts_as_simple_cache
+
+  def to_s
+    "#{id}:#{self.title}"
+  end
 
   def self.open
     self.where.not(closed_at: nil)

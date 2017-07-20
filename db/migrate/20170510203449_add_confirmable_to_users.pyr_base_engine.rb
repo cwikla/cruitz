@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20140225201128)
-class AddConfirmableToUsers < ActiveRecord::Migration
+class AddConfirmableToUsers < ActiveRecord::Migration[5.1]
   # Note: You can't use change, as User.update_all with fail in the down migration
   def unused_change
     add_column :users, :confirmed_at, :timestamp

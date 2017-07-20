@@ -12,7 +12,7 @@
  *
  */
 
-@import "application";
+@import "theme_2";
 
 .boardroom {
   background: url('/assets/images/boardroom.jpg') no-repeat center center;
@@ -24,3 +24,13 @@
   background-color: $primary_color;
 }
 
+.jumbotron {
+  border-radius: 0;
+
+  margin: 0;
+  padding-top: 10rem;
+}
+
+.container {
+  margin-top: 2rem;
+}

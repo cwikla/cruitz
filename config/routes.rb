@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :candidates
   resources :heads
   resources :jobs
+  resources :messages
+
   #namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api' }, path: '/' do
       #scope module: :v1 do
       #end

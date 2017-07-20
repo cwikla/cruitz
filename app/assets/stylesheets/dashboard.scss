@@ -1,35 +1,18 @@
-
 html, body {
   height: 100%
 }
 
-main-old {
-  min-height: 100%;
-  overflow-y: hidden;
-  position: relative;
-}
+@import "theme_2";
+@import "sidebar";
+@import "candidates";
 
-.dashboard-old {
-  overflow-y: hidden;
-  position: relative;
-  margin-bottom: -9999px;
-  padding-bottom: 9999px;
-
-  #main-page, #sidebar, #sidebar-main {
-    height: 100%;
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
+.navbar {
+  .nav-title {
+    color: $navbar_menu_color !important;
+    font-size: 1.25rem;
+    margin: 0;
+    padding-left: 0.25rem;
   }
-
-  .row {
-    height: 100%;
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
-  }
-  .row > [class*='col-'] {
-    height: 100%;
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
-  }
-
+  margin: 0;
+  padding-left: 1rem;
 }

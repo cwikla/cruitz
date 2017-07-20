@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20130904194945)
-class CreateApiKeys < ActiveRecord::Migration
+class CreateApiKeys < ActiveRecord::Migration[5.1]
   def change
     create_table :api_keys do |t|
       t.timestamps

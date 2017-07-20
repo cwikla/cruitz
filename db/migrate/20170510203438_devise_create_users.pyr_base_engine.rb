@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20130104180401)
-class DeviseCreateUsers < ActiveRecord::Migration
+class DeviseCreateUsers < ActiveRecord::Migration[5.1]
   def change
     create_table(:users) do |t|
       ## Database authenticatable

@@ -1,4 +1,4 @@
-class AddClosedToJobs < ActiveRecord::Migration[5.0]
+class AddClosedToJobs < ActiveRecord::Migration[5.1]
   def change
     add_column :jobs, :closed_at, :timestamp
     add_column :jobs, :closed_reason, :integer

@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20140217231011)
-class CreateAuthTokens < ActiveRecord::Migration
+class CreateAuthTokens < ActiveRecord::Migration[5.1]
   def up
     create_table :auth_tokens do |t|
       t.timestamps

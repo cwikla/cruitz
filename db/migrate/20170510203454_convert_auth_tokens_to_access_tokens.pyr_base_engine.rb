@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20150717234114)
-class ConvertAuthTokensToAccessTokens < ActiveRecord::Migration
+class ConvertAuthTokensToAccessTokens < ActiveRecord::Migration[5.1]
   def up
     remove_index :auth_tokens, [:token, :user_id]
 

@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20150915010224)
-class CreatePyrBaseMagicKeys < ActiveRecord::Migration
+class CreatePyrBaseMagicKeys < ActiveRecord::Migration[5.1]
   def change
     create_table :pyr_base_magic_keys do |t|
       t.timestamps

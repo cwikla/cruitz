@@ -1,5 +1,5 @@
 # This migration comes from pyr_async_engine (originally 20131108213407)
-class CreateAsyncQueues < ActiveRecord::Migration
+class CreateAsyncQueues < ActiveRecord::Migration[5.1]
   def change
     create_table :async_queues do |t|
       t.timestamps

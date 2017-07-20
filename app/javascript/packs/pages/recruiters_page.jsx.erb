@@ -12,28 +12,44 @@ import Pyr from '../pyr/pyr';
 import Page from './page';
 import Sheet from './sheet';
 
-class IndexSheet extends Sheet {
+class RecruiterItem extends Component {
   render() {
     return (
-      <h2>Recruiters Index Sheet</h2>
+      <h3>Check it out, I'm a recruiter</h3>
     );
   }
 }
 
-class ShowSheet extends Sheet {
-  render() {
-    return (
-      <h2>Recruiters Show Sheet</h2>
-    );
+class IndexSheet extends Sheet.Index {
+  renderItem() {
+    return (<RecruiterItem />);
+  }
+
+  key(item) {
+    return RecruitersPage.key(item);
+  }
+}
+
+class ShowSheet extends Sheet.Show {
+  renderItem() {
+    return (<RecruiterItem />);
+  }
+
+  key(item) {
+    return RecruitersPage.key(item);
   }
 }
 
 class RecruitersPage extends Page {
+  getItems() {
+    // FIXME
+  }
+
   indexSheet() {
     return (
       <IndexSheet 
         {...this.props} 
-        items={this.items()} 
+        items={this.state.items} 
         onSelect={this.onSelect} 
       />
     );
@@ -46,7 +62,7 @@ class RecruitersPage extends Page {
     return (
       <ActionSheet 
         {...this.props}
-        items={this.items()}
+        items={this.state.items}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
@@ -55,5 +71,9 @@ class RecruitersPage extends Page {
     
   }
 }
+function key(item) {
+  return item.uuid;
+}
+RecruitersPage.key = key;
 
 export default RecruitersPage;

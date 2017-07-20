@@ -12,7 +12,7 @@ import Pyr from '../pyr/pyr';
 import Page from './page';
 import Sheet from './sheet';
 
-class IndexSheet extends Sheet {
+class IndexSheet extends Sheet.Base {
   render() {
     return (
       <h2>Settings Index Sheet</h2>
@@ -20,7 +20,7 @@ class IndexSheet extends Sheet {
   }
 }
 
-class ShowSheet extends Sheet {
+class ShowSheet extends Sheet.Base {
   render() {
     return (
       <h2>Settings Show Sheet</h2>
@@ -29,11 +29,15 @@ class ShowSheet extends Sheet {
 }
 
 class SettingsPage extends Page {
+  getItems() {
+    // FIXME
+  }
+
   indexSheet() {
     return (
       <IndexSheet 
         {...this.props} 
-        items={this.items()} 
+        items={this.state.items}
         onSelect={this.onSelect} 
       />
     );
@@ -46,7 +50,7 @@ class SettingsPage extends Page {
     return (
       <ActionSheet 
         {...this.props}
-        items={this.items()}
+        items={this.state.items}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnaction={this.onUnaction}

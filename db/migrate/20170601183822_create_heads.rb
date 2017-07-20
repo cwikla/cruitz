@@ -4,7 +4,7 @@ class CreateHeads < ActiveRecord::Migration[5.0]
       t.timestamps
       t.timestamp :deleted_at
 
-      t.integer :recruiter_id, :null => false
+      t.integer :user_id, :null => false
 
       t.string :first_name
 			t.string :last_name
@@ -12,6 +12,9 @@ class CreateHeads < ActiveRecord::Migration[5.0]
 			t.string :phone_number
     end
 
-    add_index :heads, [:recruiter_id]
+    add_index :heads, [:user_id]
+    add_index :heads, [:email]
+    add_index :heads, [:phone_number]
+    add_index :heads, [:last_name, :first_name]
   end
 end

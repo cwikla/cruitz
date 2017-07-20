@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170706230947) do
+ActiveRecord::Schema.define(version: 20170719163359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "access_tokens", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "access_tokens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.integer "user_id", null: false
     t.string "token", limit: 64, null: false
@@ -27,17 +27,17 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.index ["token"], name: "index_access_tokens_on_token", unique: true
   end
 
-  create_table "api_keys", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "api_keys", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "api_key", null: false
     t.string "secret", null: false
     t.index ["api_key"], name: "index_api_keys_on_api_key", unique: true
   end
 
-  create_table "async_queues", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "async_queues", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.datetime "queued_at"
     t.datetime "started_at"
@@ -79,12 +79,15 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.integer "recruiter_id", null: false
+    t.integer "user_id", null: false
     t.string "first_name"
     t.string "last_name"
     t.string "email"
     t.string "phone_number"
-    t.index ["recruiter_id"], name: "index_heads_on_recruiter_id"
+    t.index ["email"], name: "index_heads_on_email"
+    t.index ["last_name", "first_name"], name: "index_heads_on_last_name_and_first_name"
+    t.index ["phone_number"], name: "index_heads_on_phone_number"
+    t.index ["user_id"], name: "index_heads_on_user_id"
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|
@@ -105,9 +108,29 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.index ["uuid"], name: "index_jobs_on_uuid", unique: true
   end
 
-  create_table "pyr_base_magic_keys", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "messages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.datetime "read_at"
+    t.integer "user_id", null: false
+    t.integer "from_user_id", null: false
+    t.integer "job_id", null: false
+    t.integer "candidate_id"
+    t.integer "root_message_id"
+    t.integer "parent_message_id"
+    t.text "title"
+    t.text "body"
+    t.index ["candidate_id"], name: "index_messages_on_candidate_id"
+    t.index ["from_user_id", "job_id", "candidate_id"], name: "index_messages_on_from_user_id_and_job_id_and_candidate_id"
+    t.index ["job_id"], name: "index_messages_on_job_id"
+    t.index ["root_message_id"], name: "index_messages_on_root_message_id"
+    t.index ["user_id", "job_id", "candidate_id"], name: "index_messages_on_user_id_and_job_id_and_candidate_id"
+  end
+
+  create_table "pyr_base_magic_keys", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.string "magic_key", null: false
     t.integer "user_id", null: false
@@ -132,44 +155,6 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.index ["postal_code", "country"], name: "index_pyr_geo_caches_on_postal_code_and_country"
   end
 
-  create_table "pyr_geo_cities", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "iso_country", limit: 2, null: false
-    t.string "city_normalized", null: false
-    t.string "city", null: false
-    t.integer "region", null: false
-    t.integer "population", default: 0
-    t.decimal "latitude", precision: 9, scale: 6, null: false
-    t.decimal "longitude", precision: 9, scale: 6, null: false
-    t.index ["iso_country", "city", "population"], name: "index_pyr_geo_cities_on_iso_country_and_city_and_population"
-    t.index ["latitude", "longitude", "iso_country", "city"], name: "gc_llic_idx"
-  end
-
-  create_table "pyr_geo_names", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "iso_country", limit: 2, null: false
-    t.string "postal_code", limit: 20
-    t.string "name", null: false
-    t.string "admin_name_1", limit: 100
-    t.string "admin_code_1", limit: 20
-    t.string "admin_name_2", limit: 100
-    t.string "admin_code_2", limit: 20
-    t.string "admin_name_3", limit: 100
-    t.string "admin_code_3", limit: 20
-    t.decimal "latitude", precision: 9, scale: 6, null: false
-    t.decimal "longitude", precision: 9, scale: 6, null: false
-    t.decimal "cluster_latitude", precision: 9, scale: 6
-    t.decimal "cluster_longitude", precision: 9, scale: 6
-    t.integer "accuracy"
-    t.index ["cluster_latitude", "cluster_longitude", "iso_country", "name"], name: "pyr_geo_ccllin_idx"
-    t.index ["cluster_latitude", "cluster_longitude", "iso_country", "postal_code"], name: "pyr_geo_ccllip_idx"
-    t.index ["iso_country", "name", "postal_code"], name: "index_pyr_geo_names_on_iso_country_and_name_and_postal_code"
-    t.index ["iso_country", "postal_code"], name: "index_pyr_geo_names_on_iso_country_and_postal_code"
-    t.index ["latitude", "longitude", "iso_country", "name"], name: "pyr_geo_llin_idx"
-  end
-
   create_table "ratings", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -179,16 +164,16 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.index ["user_id", "recruiter_id"], name: "index_ratings_on_user_id_and_recruiter_id"
   end
 
-  create_table "sessions", id: :serial, force: :cascade do |t|
+  create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id"
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "encrypted_password", null: false
     t.string "reset_password_token"
@@ -203,8 +188,8 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "roles_mask"
     t.integer "admin_roles_mask"
     t.datetime "deleted_at"
@@ -218,7 +203,7 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.string "twitter_id"
     t.boolean "anon", default: true, null: false
     t.integer "employer_id"
-    t.integer "recruiter_id"
+    t.integer "is_recruiter", default: 0
     t.string "first_name"
     t.string "last_name"
     t.string "jti", null: false
@@ -227,9 +212,9 @@ ActiveRecord::Schema.define(version: 20170706230947) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["employer_id"], name: "index_users_on_employer_id"
     t.index ["facebook_id"], name: "index_users_on_facebook_id", unique: true
+    t.index ["is_recruiter"], name: "index_users_on_is_recruiter"
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["last_name", "first_name"], name: "index_users_on_last_name_and_first_name"
-    t.index ["recruiter_id"], name: "index_users_on_recruiter_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["twitter_id"], name: "index_users_on_twitter_id"
     t.index ["unconfirmed_email"], name: "index_users_on_unconfirmed_email"

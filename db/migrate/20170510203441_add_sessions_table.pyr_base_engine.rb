@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20130121231849)
-class AddSessionsTable < ActiveRecord::Migration
+class AddSessionsTable < ActiveRecord::Migration[5.1]
   def change
     create_table :sessions do |t|
       t.string :session_id, :null => false

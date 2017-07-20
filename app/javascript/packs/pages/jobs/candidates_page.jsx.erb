@@ -25,36 +25,38 @@ class CandidateItem extends Component {
 
   render() {
     let id = "candidate-" + this.props.candidate.id;
+    let classes = "candidate-item card";
+
+    if (this.props.selected) {
+       classes = classes + " selected";
+    }
+
+    let fullName = this.props.candidate.first_name + " " + this.props.candidate.last_name;
+    let phoneNumber = this.props.candidate.phone_number || "No Phone";
+    let email = this.props.candidate.email || "No Email";
+    let description = this.props.candidate.description || "No Description";
 
     return (
-      <div className="candidate-item" id={id}>
-        <Row>
-          <ColumnFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel> This is the name {this.props.candidate.uuid}</ColumnFull>
-        </Row>
-        <Row>
-          <ColumnHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel> 4158675309</ColumnHalf>
-          <ColumnHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel> asdf@cwikla.com</ColumnHalf>
-        </Row>
-        <Row>
-          <ColumnHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Google</ColumnHalf>
-          <ColumnHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</ColumnHalf>
-        </Row>
-        <Row>
-          <ColumnFull className="description">This is the description</ColumnFull>
-        </Row>
-        <Row className="recruiter-info">
-          <ColumnFull>Interesting stuff about the recruiter goes here!</ColumnFull>
-        </Row>
-      </div>
-    );
-  }
-
-  render_old() {
-    let id = "candidate-" + this.props.candidate.id;
-
-    return (
-      <div id={id}>
-        <h2>{this.props.candidate.first_name} {this.props.candidate.last_name}</h2>
+      <div className={classes} id={id}>
+        <div className="card-block">
+          <Row className="card-title">
+            <ColumnFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="card-text">{fullName}</span></ColumnFull>
+          </Row>
+          <Row>
+            <ColumnHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel><span className="card-text">{phoneNumber}</span></ColumnHalf>
+            <ColumnHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel>{email}</ColumnHalf>
+          </Row>
+          <Row>
+            <ColumnHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Hmmmmmm</ColumnHalf>
+            <ColumnHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</ColumnHalf>
+          </Row>
+          <Row>
+            <ColumnFull className="description">{description}</ColumnFull>
+          </Row>
+          <Row className="recruiter-info">
+            <ColumnFull>Interesting stuff about the recruiter goes here!</ColumnFull>
+          </Row>
+        </div>
       </div>
     );
   }
@@ -80,7 +82,7 @@ class CandidateForm extends Component {
 
     if (this.props.candidate){
       url = url + "/" + this.props.candidate.id;
-      key = key + "-" + this.props.candidate.id;
+      key = CandidatesPage.key(this.props.candidate);
     }
 
     let method = this.props.method || Pyr.Method.POST;
@@ -132,18 +134,12 @@ class CandidateForm extends Component {
   }
 }
 
-class EditSheet extends Sheet {
-  constructor(props) {
-    super(props);
-
-    this.onSuccess = this.success.bind(this);
+class EditSheet extends Sheet.Edit {
+  formPluck(data) {
+    return data.candidate;
   }
 
-  success(data, textStatus, jqXHR) {
-    this.props.onCandidateUpdate(data.candidate);
-  }
-
-  render() {
+  renderForm() {
     //alert("JOB EDIT " + this.props.candidate.id);
     return (
       <CandidateForm 
@@ -157,83 +153,32 @@ class EditSheet extends Sheet {
   }
 }
 
-class IndexSheet extends Sheet {
+class IndexSheet extends Sheet.Index {
   constructor(props) {
     super(props);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.props.candidates != nextProps.candidates) {
-      this.bindClicks(nextProps.candidates, this.selectCandidate);
-    }
+  key(item) {
+    return CandidatesPage.key(item);
   }
 
-
-  selectCandidate(candidate, e) {
-    e.preventDefault();
-
-    this.props.onSelect(candidate);
-  }
-  
-  renderChildren() {
-    let self = this;
-    //alert(JSON.stringify(this.props.candidates[0]));
-    return (
-      <ul>
-        {this.props.candidates.map((candidate, pos) => {
-            return (<li key={candidate.uuid} onClick={this.onClicks[pos]}><CandidateItem candidate={candidate} /></li>);
-        })}
-      </ul>
-     );
-   }
-
-  renderNone() {
-    return (
-      <h2 key="no-cand">No Candidates yet</h2>
-    );
-  }
-
-  render() {
-    return(
-      <div className="index-sheet">
-        { this.props.candidates ? this.renderChildren() : this.renderNone() }
-      </div>
-    );
+  renderItem(item, isSelected) {
+    return (<CandidateItem candidate={item} selected={isSelected} />);
   }
 }
 
-class ShowSheet extends Sheet {
-  constructor(props) {
-    super(props);
-    this.onClick = this.props.onUnselect;
-
-  }
-  editMe(e) {
-    e.preventDefault();
-    this.props.onAction('Edit');
+class ShowSheet extends Sheet.Show {
+  key(item) {
+    return CandidatesPage.key(item);
   }
 
-  render() {
-    if (!this.props.selected) {
-      return (
-        <div className="show-sheet">
-          <h2 key="no-candidate">No Candidate?</h2>
-        </div>
-      );
-    }
-    //alert(this.props.selected.uuid);
-    return(
-      <div className="show-sheet">
-        <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div>
-        <CandidateItem candidate={this.props.selected} />
-      </div>
-    );
+  renderItem(item, isSelected) {
+    return (<CandidateItem candidate={item} selected={isSelected} />);
   }
 }
 
-class NewSheet extends Sheet {
-
-  render() { 
+class New extends Sheet.Base {
+  renderForm() { 
     return ( 
       <CandidateForm onPreSubmit={this.onPreSubmit} postSubmit={this.postSubmit} />
     );
@@ -254,8 +199,9 @@ class CandidatesPage extends Page {
     return (
       <IndexSheet
         {...this.props}
-        candidates={candidates}
+        items={candidates}
         onSelect={this.onSelect}
+        selected={this.state.selected}
       />
     );
   }
@@ -267,7 +213,7 @@ class CandidatesPage extends Page {
     return (
       <ActionSheet
         {...this.props}
-        candidates={this.props.items}
+        items={this.props.items}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
@@ -278,7 +224,9 @@ class CandidatesPage extends Page {
 
   }
 
-
+  getItems() {
+    // nothing to see here, loaded with job
+  }
 
   getJob(jobId) {
     let params = [{"cand": 1}];
@@ -305,12 +253,19 @@ class CandidatesPage extends Page {
      //alert("Did Update");
     //alert(this.props.job);
     if(this.props.job){
-     // alert(this.props.job.uuid);
+     //alert(this.props.job.uuid);
     }
     if (this.props.job && (!prevProps.job || (prevProps.job.uuid != this.props.job.uuid))) {
       this.getJob(this.props.job.id);
     }
   }
 }
+
+function key(item) {
+  return "candidate-" + item.id;
+}
+
+CandidatesPage.key = key;
+
 
 export default CandidatesPage;

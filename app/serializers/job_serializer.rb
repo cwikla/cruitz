@@ -4,9 +4,14 @@ class JobSerializer < ActiveModel::Serializer
               :title, 
 							:description, 
 							:time_commit, 
-							:location
+							:location,
+              :candidate_count
 
   has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
+
+  def candidate_count
+    object.candidates.count
+  end
 
   def should_cand?
     return instance_options[:cand]

@@ -12,28 +12,71 @@ import Pyr from '../pyr/pyr';
 import Page from './page';
 import Sheet from './sheet';
 
-class IndexSheet extends Sheet {
+const MESSAGES_URL = "/messages";
+
+class MessageItem extends Component {
+
   render() {
     return (
-      <h2>Messages Index Sheet</h2>
+       <h3>This is a message item</h3>
     );
   }
 }
 
-class ShowSheet extends Sheet {
-  render() {
-    return (
-      <h2>Messages Show Sheet</h2>
-    );
+class IndexSheet extends Sheet.Index {
+  key(a) {
+    return MessagesPage.key(a)
+  }
+
+  renderItem() {
+    return ( <MessageItem /> );
+  }
+}
+
+class ShowSheet extends Sheet.Show {
+  key(a) {
+    return MessagesPage.key(a)
+  }
+
+  renderItem() {
+    return ( <MessageItem /> );
   }
 }
 
 class MessagesPage extends Page {
+  constructor(props) {
+    super(props);
+
+    this.onMessagesIndex = this.onMessages.bind(this);
+  }
+
+  key(a) {
+    return "message" + "-" + a.id;
+  }
+
+  onMessages(messages) {
+    this.setState({
+      items: messages
+    });
+  }
+
+  getItems() {
+    $.getJSON({
+      type: Pyr.Method.GET,
+      url: MESSAGES_URL,
+      context: this
+    }).done(function(data, textStatus, jaXHR) {
+        this.onMessagesIndex(data.messages);
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
   indexSheet() {
     return (
       <IndexSheet 
         {...this.props} 
-        items={this.items()} 
+        items={this.state.items} 
         onSelect={this.onSelect} 
       />
     );
@@ -46,7 +89,7 @@ class MessagesPage extends Page {
     return (
       <ActionSheet 
         {...this.props}
-        items={this.items()}
+        items={this.state.items}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnaction={this.onUnsaction}
@@ -55,5 +98,10 @@ class MessagesPage extends Page {
     
   }
 }
+
+function key(item) {
+  return "message-" + item.id;
+}
+MessagesPage.key = key;
 
 export default MessagesPage;

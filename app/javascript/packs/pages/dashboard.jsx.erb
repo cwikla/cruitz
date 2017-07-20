@@ -19,10 +19,16 @@ import {
 
 import Pyr from '../pyr/pyr';
 
-import Container, { Row, Column, ColumnHalf } from './container';
+import Container, { 
+  Row, 
+  Column, 
+  ColumnHalf, 
+  ColumnFull 
+} from './container';
+
 import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
-import CandidatesPage, {CandidateSideButton} from './jobs/candidates_page';
+import CandidatesPage from './jobs/candidates_page';
 import RecruitersPage from './recruiters_page';
 import SettingsPage from './settings_page';
 import MessagesPage from './messages_page';
@@ -38,6 +44,27 @@ const JOBS_URL = "/jobs";
 function same(a,b) {
   return a.uuid == b.uuid;
 }
+
+class JobTitle extends Component {
+  render() {
+    return (
+      <div className="job-title">
+        <Row>
+          <ColumnFull><span className="title">{this.props.job.title}</span></ColumnFull>
+        </Row>
+        <Row>
+          <ColumnHalf>Candidates: <span>()</span></ColumnHalf>
+          <ColumnHalf>Created: <span>{this.props.job.created_at}</span></ColumnHalf>
+        </Row>
+        <Row>
+          <ColumnHalf>Search: <span>[         ]</span></ColumnHalf>
+          <ColumnHalf>Filter: <span>[ ]</span></ColumnHalf>
+        </Row>
+      </div>
+    );
+  }
+}
+
 
 class DashboardContainer extends Component {
   constructor(props) {
@@ -146,7 +173,7 @@ class DashboardContainer extends Component {
   }
 
   selectJob(job, e) {
-    //alert("SELECT JOB");
+    // alert("SELECT JOB");
     if (e) {
       e.preventDefault();
     }
@@ -155,6 +182,37 @@ class DashboardContainer extends Component {
       openPage: CANDIDATES_PAGE,
       job: job
     });
+  }
+
+  renderSearch() {
+    let controller = this.state.openPage;
+    let url = "/search/" + this.state.openPage.toLowerCase();
+
+    return (
+      <Pyr.Form.Form
+        controller={this.state.openPage}
+        url={url}
+        id="search-form"
+        ref={(node) => {this.form = node;}}
+      >
+        <Pyr.Form.Group name="search">
+          <Pyr.Form.TextField placeholder="Search..."/>
+        </Pyr.Form.Group>
+      </Pyr.Form.Form>
+    );
+  }
+
+  renderNav() {
+    return (
+       <Row className="navbar flx-row-stretch p-0 m-0 align-items-center">
+          <Column className="col offset-1 offset-sm-1 offset-md-2 col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
+            <label className="nav-title">{this.state.openPage}</label>
+          </Column>
+          <Column className="col col-10 col-sm-10 col-md-8 navbar-nav">
+            <span className="nav-item ml-auto">{this.renderSearch()}</span>
+          </Column>
+        </Row>
+    );
   }
 
 /*
@@ -190,17 +248,17 @@ class DashboardContainer extends Component {
         return (<Sidebar.Button 
                   key={child.uuid} 
                   selected={this.state.job && same(this.state.job, child)} 
-                  onClick={this.onJobClicks[pos]}>#{child.id} <span className="hidden-sm-down">{child.title}</span></Sidebar.Button>
+                  onClick={this.onJobClicks[pos]}>({child.candidate_count || 0}) <span className="hidden-sm-down">{child.title}</span></Sidebar.Button>
         );
       }
     );
 
 
     return (
-        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col-stretch flx-1">
+        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col-stretch flx-1 z-depth-1">
           <Sidebar.Header 
             id="messages"
-            icon="envelope-o"
+            icon="envelope-open-o"
             onClick={this.onSetPageMessages}
             selected={this.state.openPage==MESSAGES_PAGE}
             >Messages</Sidebar.Header>
@@ -241,6 +299,22 @@ class DashboardContainer extends Component {
     );
   }
 
+  renderBlurb(title) {
+    return null;
+
+    if (this.state.job && this.state.openPage == CANDIDATES_PAGE) {
+      return (
+        <div className="main-blurb hidden-sm-down">
+          <JobTitle job={this.state.job} />
+        </div>
+      );
+    }
+
+    return (
+      <div className="main-blurb hidden-sm-down">{title}</div>
+    );
+  }
+
   renderMain() {
     let mainTitle = this.title();
     return (
@@ -248,20 +322,21 @@ class DashboardContainer extends Component {
           className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col-stretch flx-1 main-page" 
           id="main-page"
         >
-          <div className="main-title">{mainTitle}</div>
+          {this.renderBlurb(mainTitle)}
           <div className="flx-col-stretch flx-1">
             <MessagesPage {...this.props.messagePageProps} showing={this.state.openPage==MESSAGES_PAGE} />
             <JobsPage 
                {...this.props.jobsPageProps} 
-              showing={this.state.openPage==JOBS_PAGE} 
+              showing={this.state.openPage==JOBS_PAGE}
               items={this.state.jobs}
+              selected={this.state.job}
               onJobCreate={this.onJobCreate}
               onJobUpdate={this.onJobUpdate}
               onJobDelete={this.onJobDelete}
             />
             <CandidatesPage 
               {...this.props.candidatePageProps} 
-              job={this.state.job || (this.state.jobs ? this.state.jobs[0] : nul)} 
+              job={this.state.job || (this.state.jobs ? this.state.jobs[0] : null)} 
               showing={this.state.openPage==CANDIDATES_PAGE} 
             />
             <RecruitersPage 
@@ -281,10 +356,13 @@ class DashboardContainer extends Component {
     //alert(this.state.openPage == CANDIDATES_PAGE);
 
     return(
-      <div className="flx-row-stretch flx-1">
-        { this.renderSideBar() }
-        { this.renderMain() }
-      </div>
+      <Column className="flx-col-stretch flx-1 p-0 m-0">
+        { this.renderNav() }
+        <div className="flx-row-stretch flx-1">
+          { this.renderSideBar() }
+          { this.renderMain() }
+        </div>
+      </Column>
     );
   }
 }

@@ -6,6 +6,11 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
+const POST = 'POST';
+const PUT = 'PUT';
+const GET = 'GET';
+const DELETE = 'DELETE';
+
 import Util from './util';
 
 class Form extends Component {
@@ -357,4 +362,4 @@ class TextArea extends Child {
 
 const PyrForm = { Form, Group, Child, Label, TextField, Select, Option, TextArea, SubmitButton };
 
-export { PyrForm };
+export { PyrForm, POST, GET, PUT, DELETE };

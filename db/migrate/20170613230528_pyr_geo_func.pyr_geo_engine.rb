@@ -1,5 +1,5 @@
 # This migration comes from pyr_geo_engine (originally 20151218014224)
-class PyrGeoFunc < ActiveRecord::Migration
+class PyrGeoFunc < ActiveRecord::Migration[5.1]
   def up
     execute <<CMD
 -- Haversine Formula based pyr_geo_distance in miles (constant is diameter of Earth in miles)

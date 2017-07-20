@@ -1,5 +1,5 @@
 # This migration comes from pyr_geo_engine (originally 20130313205246)
-class CreateGeoCaches < ActiveRecord::Migration
+class CreateGeoCaches < ActiveRecord::Migration[4.2]
   def change
     create_table(:pyr_geo_caches) do |t|
       t.timestamps

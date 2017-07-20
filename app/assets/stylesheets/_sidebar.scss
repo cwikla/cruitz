@@ -5,8 +5,9 @@
  */
 
 .sidebar {
-  background-color: $sidebar_backround_color !important;
+  background-color: $sidebar_background_color !important;
   padding: 0;
+  margin-right: 1px;
 }
 
 .sidebar {
@@ -17,7 +18,7 @@
 }
 
 .sidebar-header {
-  font-size: 1.0rem;
+  font-size: $sidebar_font_size;
   width: 100%;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -25,6 +26,10 @@
 
   //text-transform: uppercase;
   color: $sidebar_color;
+
+  label {
+    font-size: $sidebar_font_size;
+  }
 }
 
 .sidebar-button {
@@ -32,8 +37,8 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 1.0rem;
-  //padding-right: 0.5rem;
+  font-size: $sidebar_font_size;
+  padding-right: 0.5rem;
   //padding-left: 0.5rem;
   .inner {
     padding-left: 1.0rem;
@@ -47,13 +52,13 @@
 }
 
 .sidebar-header:hover {
-  color: $hover_color;
-  background-color: $hover_background_color;
+  color: $sidebar_hover_color;
+  background-color: $sidebar_hover_background_color;
 }
 
 .sidebar-button:hover {
-  color: $hover_color;
-  background-color: $hover_background_color;
+  color: $sidebar_hover_color;
+  background-color: $sidebar_hover_background_color;
 }
 .sidebar-button.selected, .sidebar-header.selected {
   color: $selected_color;

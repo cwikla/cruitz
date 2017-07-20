@@ -1,5 +1,23 @@
-@import "sidebar";
-@import "candidates";
+html, body {
+  background-color: $light_gray_color;
+  line-height: 1.5rem;
+}
+
+hr {
+  color: $primary_color !important;
+}
+
+a {
+  color: $primary_color !important;
+}
+a:hover {
+  color: $primary_light_color !important;
+}
+
+label {
+  margin: 0;
+  padding: 0;
+}
 
 @include media-breakpoint-down(xs) {
   .hide-below-xs {
@@ -13,7 +31,7 @@
   }
 }
 @include media-breakpoint-down(md) {
-  .hide-below_md {
+  .hide-below-md {
     display: none;
   }
 }
@@ -30,9 +48,27 @@
   }
 }
 
-.btn-action, .btn-primary {
-  box-shadow: none;
+.no-gutters {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
+
+.sheet.index {
+  margin-left: 0;
+  margin-right: 0;
+  padding-right: 0;
+  padding-left: 0.25rem;
+}
+
+.sheet.action {
+  background-color: $hover_background_color;
+}
+
+//.btn-action, .btn-primary {
+  //box-shadow: none;
+//}
 
 .card-icon {
   padding: 1.25rem;
@@ -65,11 +101,94 @@
   display: none;
 }
 
+.fa2 {
+  color: $primary_color !important;
+}
+
+.footer {
+  background-color: $primary_color;
+  color: #fff;
+}
+
+.bg-primary {
+  background-color: $primary_color !important;
+}
+
+.btn-primary {
+  background-color: $secondary_color !important;
+  border-color: $secondary_color !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: lighten($secondary_color, 5%) !important;
+  color: #fff !important;
+}
+
+.btn-action {
+  background-color: $secondary_color !important;
+  border-color: $secondary_color !important;
+  color: #fff;
+}
+
+.btn-action:hover, .btn-action:focus, .btn-action:active {
+  background-color: lighten($secondary_color, 5%) !important;
+}
+
+.btn-outline-action {
+  background-color: #fff;
+  border-color: $secondary_color !important;
+  color: $secondary_color;
+}
+
+
+.text-primary {
+  color: $primary_color !important;
+}
+
+.trans-25 {
+  background-color: rgba($primary_color, 0.25);
+}
+
+.trans-50 {
+  background-color: rgba($primary_color, 0.45);
+}
+
+.trans-75 {
+  background-color: rgba($primary_color, 0.75);
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.modal-backdrop {
+  background-color: $primary_color;
+}
+
+
 .navbar {
-  background-color: $navbar_background_color !important;
   font-size: 1rem;
-  padding: 0.5rem;
-  border-bottom: 1px $navbar_border_color solid;
+  background-color: $navbar_background_color !important;
+  margin-bottom: 0px;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  z-index: 100;
+  font-weight: 300;
+  min-height: 3.5rem;
+  height: 3.5rem;
+
+}
+
+.user-signed-in {
+  .pyr-navbar {
+    background-color: #F00 !important; 
+    display: none;
+  }
 }
 
 .navbar-brand {
@@ -82,6 +201,7 @@
     color: $navbar_color !important;
     font-weight: bold;
 }
+
 
 .navbar-toggler {
   color: $navbar_menu_color !important;
@@ -112,13 +232,8 @@
   padding: 0;
 }
 
-.main-title {
-  line-height: 1.5rem;
-  padding: 0.25rem 0.5rem 0.25rem 1rem;
-  border-bottom: 1px $primary_color solid;
-  color: $primary_color;
+.page {
 }
-
 
 #container {
   margin: 0;
@@ -129,15 +244,18 @@
   box-shadow: none;
 }
 
-.navbar {
-  box-shadow: none;
-}
+//.navbar {
+//  box-shadow: none;
+//}
 
 #main-nav-line {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.index-sheet {
-  border-right: 1px $primary_color solid;
+.main-blurb {
+  padding: 1rem 2rem 1rem 2rem;
+  min-height: 10rem;
+  background-color: $primary_light_color;
+  color: $white_color;
 }

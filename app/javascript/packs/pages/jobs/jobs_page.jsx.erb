@@ -20,7 +20,7 @@ const JOBS_URL = "/jobs";
 class JobItem extends Component {
 
   render() {
-    let job = this.props.job;
+    let job = this.props.selected;
     let id = "job-" + job.id;
 
     return (
@@ -111,17 +111,12 @@ class JobForm extends Component {
   }
 }
 
-class EditSheet extends Sheet {
-  constructor(props) {
-    super(props);
-    this.onSuccess = this.success.bind(this);
-  }
-
+class EditSheet extends Sheet.Edit {
   success(data, textStatus, jqXHR) {
     this.props.onJobUpdate(data.job);
   }
 
-  render() {
+  renderForm() {
     //alert("JOB EDIT " + this.props.selected.id);
     return (
       <JobForm 
@@ -135,88 +130,37 @@ class EditSheet extends Sheet {
   }
 }
 
-class IndexSheet extends Sheet {
-  constructor(props) {
-    super(props);
+class IndexSheet extends Sheet.Index {
+  key(job) {
+    return JobsPage.key(job);
   }
 
-  setSelected(job, e) {
-    //alert("SET SELECTED");
-    e.preventDefault();
-
-    this.props.onSelect(job);
+  renderItem(job, isSelected) {
+    return (<JobItem job={job} selected={isSelected}/>)
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.props.tems != nextProps.jobs) {
-      this.bindClicks(nextProps.jobs, this.setSelected);
-    }
-  }
-
-  renderChildren() {
-    let self = this;
-    return (
-      <ul>
-        {this.props.jobs.map((job, pos) => {
-          return (<li key={job.uuid} onClick={this.onClicks[pos] } ><JobItem job={job} /></li>);
-        })}
-      </ul>
-     );
-   }
-
-  renderNone() {
-    return (
-      <h2>No Jobs yet</h2>
-    );
-  }
-
-  render() {
-    return(
-      <div className="index-sheet">
-        { this.props.jobs ? this.renderChildren() : this.renderNone() }
-      </div>
-    );
+  key(job) {
+    return JobsPage.key(job);
   }
 }
 
-class ShowSheet extends Sheet {
-  constructor(props) {
-    super(props);
-    this.onClick = this.editMe.bind(this);
+class ShowSheet extends Sheet.Show {
+  key(job) {
+    return JobsPage.key(job);
   }
 
-  editMe(e) {
-    e.preventDefault();
-    this.props.onAction('Edit');
-  }
-
-  render() {
-    if (!this.props.selected) {
-      return (
-          <div className="show-sheet">
-            <h2>No Job</h2>
-          </div>
-      );
-    }
-    return(
-      <div className="show-sheet">
-        <a onClick={this.onClick}><JobItem job={this.props.selected} /></a>
-      </div>
-    );
+  renderItem(job, isSelected) {
+    return (<JobItem job={job} selected={isSelected}/>)
   }
 }
 
-class NewSheet extends Sheet {
-  constructor(props) {
-    super(props);
-    this.onSuccess = this.success.bind(this);
-  }
+class NewSheet extends Sheet.New {
 
   success(data, textStatus, jqXHR) {
     this.props.onJobCreate(data.job);
   }
 
-  render() { 
+  renderForm() { 
     return ( 
       <JobForm 
         onPreSubmit={this.onPreSubmit} 
@@ -228,6 +172,10 @@ class NewSheet extends Sheet {
 }
 
 class JobsPage extends Page {
+  getItems() {
+    // nothing to see here
+  }
+
   indexSheet() {
     return (
       <IndexSheet
@@ -255,5 +203,11 @@ class JobsPage extends Page {
   }
 
 }
+
+function key(item) {
+  return item.uuid;
+}
+JobsPage.key = key;
+ 
 
 export default JobsPage;

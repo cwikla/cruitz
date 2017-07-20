@@ -14,6 +14,7 @@ class Page extends Component {
   getInitState(props) {
     return {
       action: null,
+      items: [],
       selected: null,
       fullDetail: false
     };
@@ -29,6 +30,8 @@ class Page extends Component {
 
     this.onAction = this.setAction.bind(this);
     this.onUnaction = this.setAction.bind(this, null);
+
+    this.onItems = this.setItems.bind(this);
   }
 
   name() {
@@ -41,8 +44,12 @@ class Page extends Component {
     return name;
   }
 
-  items() {
-    return null;
+  getItems() {
+    alert("Page:getItems needs to be implemented");
+  }
+
+  componentDidMount() {
+    this.getItems();
   }
 
 ////// COPY ME INTO SUBCLASS //////
@@ -53,8 +60,9 @@ class Page extends Component {
     return (
       <IndexSheet 
         {...this.props} 
-        items={this.items()}
+        items={this.state.items}
         onSelect={this.onSelect} 
+        onItems={this.onItems}
       />
     );
   }
@@ -68,10 +76,12 @@ class Page extends Component {
     return (
       <ActionSheet 
         {...this.props}
-        items={this.items()}
+        items={this.state.items}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnsetAction={this.onUnsetAction}
+        onSelect={this.onSelect} 
+        onItems={this.onItems}
       />
     );
    
@@ -79,10 +89,17 @@ class Page extends Component {
 
 ///// END ////
 
+  setItems(items) {
+    this.setState({ 
+      items
+    });
+  }
 
   setSelected(selected) {
     //alert("SELECTED " + JSON.stringify(selected));
-    this.setState({selected: selected});
+    this.setState({
+      selected
+    });
   }
 
   setAction(action) {
@@ -103,6 +120,8 @@ class Page extends Component {
       extraClass = "col-md-12";
     }
 
+    extraClass = extraClass + " sheet index";
+
     return (
       <ColumnHalf className={extraClass}>
         {this.indexSheet()}
@@ -110,7 +129,15 @@ class Page extends Component {
     );
   }
 
+  renderNoSheet() {
+    return null;
+  }
+
   renderActionSheet() {
+    if (!this.state.selected) {
+      return this.renderNoSheet();
+    }
+
     let extraClass = "col-md-6";
 
     if (this.state.fullDetail) {
@@ -119,6 +146,8 @@ class Page extends Component {
     else if (!this.state.selected) {
       extraClass = "hidden-xs-up";
     }
+
+    extraClass = extraClass + " sheet action " + this.state.action;
 
     return (
       <ColumnHalf className={extraClass}>
@@ -136,7 +165,7 @@ class Page extends Component {
       return null;
     }
 
-    let myClasses = "page col col-md-12 transition" + (this.props.showing ? " on" : " off");
+    let myClasses = "page col-md-12 transition" + (this.props.showing ? " on" : " off");
     //let child = React.cloneElement(React.Children.only(this.props.children), this.props);
     let allClasses = Pyr.Util.mergeClassName(this.props.className, myClasses);
 
@@ -144,7 +173,7 @@ class Page extends Component {
 
     return (
       <div className={allClasses} id={id}>
-        <Row>
+        <Row className="">
           {this.renderIndexSheet()}
           {this.renderActionSheet()}
         </Row>

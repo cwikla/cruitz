@@ -1,5 +1,5 @@
 # This migration comes from pyr_base_engine (originally 20151007174829)
-class AddIssuedAtToMagicKeys < ActiveRecord::Migration
+class AddIssuedAtToMagicKeys < ActiveRecord::Migration[5.1]
   def up
     add_column :pyr_base_magic_keys, :issued_at, :timestamp
 
