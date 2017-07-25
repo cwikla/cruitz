@@ -232,7 +232,8 @@ label {
   padding: 0;
 }
 
-.page {
+.page .row {
+  padding-left: 0;
 }
 
 #container {
@@ -259,3 +260,12 @@ label {
   background-color: $primary_light_color;
   color: $white_color;
 }
+
+.card {
+  line-height: 1.2rem;
+}
+
+.message-item {
+  padding: 1rem 0.5rem 1rem 0.5rem;
+}
+

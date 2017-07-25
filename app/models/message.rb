@@ -29,11 +29,21 @@ class Message < ApplicationRecord
   end
 
   def self.thread_for_message(message)
-    Message.where(id: message.root_message_id).or(Message.where(root_message_id: message.root_message_id)).order(:id)
+    if message.root_message_id
+      q = Message.where(root_message_id: message.root_message_id).or(Message.where(id: message.root_message_id))
+    else
+      q = Message.where(root_message_id: message.id).or(Message.where(id: message.id))
+    end
+
+    return q.order(:id)
   end
 
   def self.thread_for_candidate(candidate)
     Message.where(candidate_id: candidate.id).order(:id)
+  end
+
+  def thread()
+    self.class.thread_for_message(self)
   end
 
     private

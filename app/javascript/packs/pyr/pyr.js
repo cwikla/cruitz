@@ -1,17 +1,39 @@
 
 import React, {
-  Component
+  Component as ReactComponent
 } from 'react';
 
-import { PyrForm as Form, POST, PUT, GET, DELETE } from "./form";
+import { 
+  PyrForm as Form, 
+  POST, 
+  PUT, 
+  GET, 
+  DELETE 
+} from "./form";
+
 import Util from './util';
 
-const Method = { POST, PUT, GET, DELETE };
+const Method = { 
+  POST, 
+  PUT, 
+  GET, 
+  DELETE 
+};
 
 function ajaxError(jaXHR, textStatus, errorThrown) {
    alert(errorThrown);
 }
 
+class Component extends ReactComponent {
+  getInitState(props) {
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = this.getInitState(props);
+  }
+}
 
 class Icon extends Component {
   render() {
@@ -28,6 +50,7 @@ const SmallLabel = (props) => (
 
 const Pyr = { 
   ajaxError,
+  Component,
   Icon,
   SmallLabel,
   Form, 

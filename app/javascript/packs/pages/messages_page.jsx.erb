@@ -17,47 +17,107 @@ const MESSAGES_URL = "/messages";
 class MessageItem extends Component {
 
   render() {
+    let message = this.props.message;
+
     return (
-       <h3>This is a message item</h3>
+       <div className="message-item">
+        <h4>{message.id}:{message.title}:{message.root_message_id}:{message.parent_message_id}</h4>
+        <div>{message.body}</div>
+      </div>
     );
   }
 }
 
 class IndexSheet extends Sheet.Index {
+  constr
   key(a) {
     return MessagesPage.key(a)
   }
 
-  renderItem() {
-    return ( <MessageItem /> );
+  renderItem(message, isSelected) {
+    return ( <MessageItem message={message} isSelected={isSelected}/> );
+  }
+
+  componentDidMount() {
+    this.props.getItems();
   }
 }
 
 class ShowSheet extends Sheet.Show {
+  getInitState(props) {
+    return { 
+      thread: null
+    };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.onMessageDetails = this.messageDetails.bind(this);
+  }
+
   key(a) {
     return MessagesPage.key(a)
   }
 
-  renderItem() {
-    return ( <MessageItem /> );
+  messageDetails(message, thread) {
+    //alert(JSON.stringify(thread));
+    // FIXME ignore message, we already have it in props.selected - FOR NOW ;)
+    this.setState({
+      thread
+    });
+  }
+
+  getMessage(mid) {
+    let url =  MESSAGES_URL + "/" + mid;
+    //alert(url);
+    $.getJSON({
+      type: Pyr.Method.GET,
+      url: url,
+      context: this
+
+    }).done(function(data, textStatus, jaXHR) {
+     this.onMessageDetails(data.message, data.thread);
+   
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    if (this.props.selected) {
+      this.getMessage(this.props.selected.id);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.selected && (this.props.selected.id != prevProps.selected.id)) {
+      this.getMessage(this.props.selected.id);
+    }
+  }
+
+
+  renderItem(message, isSelected) {
+    if (!this.state.thread || this.state.thread.length <= 1) {
+      return ( <MessageItem message={message} isSelected={isSelected}/> );
+    }
+
+    let thid = "thread-" + this.props.selected.root_message_id;
+
+    return (
+      <div id={thid} className="message-thread">
+        { this.state.thread.map((msg, pos) => {
+            return ( <MessageItem message={msg} isSelected={msg.id == this.props.selected.id} key={thid+"-"+msg.id}/> );
+          })
+        }
+      </div>
+    );
   }
 }
 
 class MessagesPage extends Page {
-  constructor(props) {
-    super(props);
-
-    this.onMessagesIndex = this.onMessages.bind(this);
-  }
-
   key(a) {
     return "message" + "-" + a.id;
-  }
-
-  onMessages(messages) {
-    this.setState({
-      items: messages
-    });
   }
 
   getItems() {
@@ -65,8 +125,10 @@ class MessagesPage extends Page {
       type: Pyr.Method.GET,
       url: MESSAGES_URL,
       context: this
+
     }).done(function(data, textStatus, jaXHR) {
-        this.onMessagesIndex(data.messages);
+        this.onItems(data.messages);
+
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
     });
@@ -76,8 +138,13 @@ class MessagesPage extends Page {
     return (
       <IndexSheet 
         {...this.props} 
-        items={this.state.items} 
-        onSelect={this.onSelect} 
+        items={this.state.items}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnaction={this.onUnaction}
+        onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
+        getItems={this.getItems}
       />
     );
   }
@@ -85,6 +152,8 @@ class MessagesPage extends Page {
   actionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
+
+    //alert("actionSheet: " + this.state.selected.id);
 
     return (
       <ActionSheet 

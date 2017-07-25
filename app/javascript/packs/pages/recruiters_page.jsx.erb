@@ -20,23 +20,24 @@ class RecruiterItem extends Component {
   }
 }
 
+
 class IndexSheet extends Sheet.Index {
-  renderItem() {
-    return (<RecruiterItem />);
+  key(a) {
+    return RecruitersPage.key(a)
   }
 
-  key(item) {
-    return RecruitersPage.key(item);
+  renderItem() {
+    return ( <RecruiterItem /> );
   }
 }
 
 class ShowSheet extends Sheet.Show {
-  renderItem() {
-    return (<RecruiterItem />);
+  key(a) {
+    return RecruitersPage.key(a)
   }
 
-  key(item) {
-    return RecruitersPage.key(item);
+  renderItem() {
+    return ( <RecruiterItem /> );
   }
 }
 

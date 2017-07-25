@@ -31,8 +31,13 @@ class MessagesController < ApplicationController
 
   def show
     @message = current_user.messages.find(params[:id])
+    @thread = nil
 
-    render json: @message, cand: params[:cand]
+    if @message
+      @thread = @message.thread()
+    end
+
+    render json: {message: @message, thread: @thread }
   end
 
   def lsearch

@@ -10,7 +10,7 @@ import {
   ColumnHalf,
 } from './container';
 
-class Page extends Component {
+class Page extends Pyr.Component {
   getInitState(props) {
     return {
       action: null,
@@ -32,6 +32,7 @@ class Page extends Component {
     this.onUnaction = this.setAction.bind(this, null);
 
     this.onItems = this.setItems.bind(this);
+    this.getItems = this.getItems.bind(this);
   }
 
   name() {
@@ -48,10 +49,6 @@ class Page extends Component {
     alert("Page:getItems needs to be implemented");
   }
 
-  componentDidMount() {
-    this.getItems();
-  }
-
 ////// COPY ME INTO SUBCLASS //////
 
   indexSheet() {
@@ -60,9 +57,13 @@ class Page extends Component {
     return (
       <IndexSheet 
         {...this.props} 
-        items={this.state.items}
-        onSelect={this.onSelect} 
-        onItems={this.onItems}
+        items={this.props.items}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnaction={this.onUnaction}
+        onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
+
       />
     );
   }
@@ -120,7 +121,7 @@ class Page extends Component {
       extraClass = "col-md-12";
     }
 
-    extraClass = extraClass + " sheet index";
+    extraClass = extraClass + " sheet index flx-col-stretch flx-1";
 
     return (
       <ColumnHalf className={extraClass}>
@@ -172,12 +173,10 @@ class Page extends Component {
     let id = this.name().toLowerCase() + "-page";
 
     return (
-      <div className={allClasses} id={id}>
-        <Row className="">
+        <Row className="flx-row-stretch flx-1 no-gutters" id={id}>
           {this.renderIndexSheet()}
           {this.renderActionSheet()}
         </Row>
-      </div>
     );
   }
 }

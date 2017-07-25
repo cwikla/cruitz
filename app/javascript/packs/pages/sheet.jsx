@@ -4,23 +4,28 @@ import React, {
 
 import Pyr from '../pyr/pyr';
 
-class Base extends Component {
+class Base extends Pyr.Component {
+  getInitState(props) {
+    return  {
+      isLoading: false
+    };
+  }
   constructor(props) {
     super(props);
 
-    this.state = {
-      isLoading: false
-    };
+    this.state = this.getInitState(props);
 
-    this.onClicks = [];
+    this.onClicks = {};
     this.onPreSubmit = this.preSubmit.bind(this);
     this.onPostSubmit = this.postSubmit.bind(this);
   }
 
   bindClicks(items, f) {
-    this.onClicks = [];
+    let self = this;
+    this.onClicks = {};
+
     for(let item of items) {
-      this.onClicks.push(f.bind(this, item));
+      this.onClicks[this.key(item)] = f.bind(this, item);
     }
   }
 
@@ -34,10 +39,6 @@ class Base extends Component {
     this.setState({
       isLoading: false
     });
-  }
-
-  formPluck(data) {
-    alert("Sheet:Base If you are seeing this, you need to implement formPluck!");
   }
 
   same(a,b) {
@@ -87,9 +88,12 @@ function sheetID(name, action) {
 class Index extends Base {
   constructor(props) {
     super(props);
+
+    this.bindClicks(this.props.items, this.setSelected);
   }
 
   setSelected(item, e) {
+    //alert("SELECTED: " + item.id);
     if (e) {
       e.preventDefault()
     }
@@ -112,7 +116,7 @@ class Index extends Base {
           return (
             <li 
               key={this.key(item)} 
-              onClick={this.onClicks[pos] } 
+              onClick={this.onClicks[this.key(item)] } 
             >{this.renderItem(item, isSelected)}</li>);
         })}
       </ul>
