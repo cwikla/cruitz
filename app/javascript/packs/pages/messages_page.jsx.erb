@@ -21,7 +21,8 @@ class MessageItem extends Component {
 
     return (
        <div className="message-item">
-        <h4>{message.id}:{message.title}:{message.root_message_id}:{message.parent_message_id}</h4>
+        <h4>ID:{message.id}:ROOT:{message.root_message_id}:PARENT:{message.parent_message_id}:JOB:{message.job_id}</h4>
+        <h4>{message.title}</h4>
         <div>{message.body}</div>
       </div>
     );
@@ -29,9 +30,16 @@ class MessageItem extends Component {
 }
 
 class IndexSheet extends Sheet.Index {
-  constr
   key(a) {
     return MessagesPage.key(a)
+  }
+
+  renderHeader() {
+    return (
+      <Pyr.Grid.Row>
+        <Pyr.Grid.ColFull className="blue"><h2 className="red">This is my header</h2></Pyr.Grid.ColFull>
+      </Pyr.Grid.Row>
+    );
   }
 
   renderItem(message, isSelected) {
@@ -54,6 +62,39 @@ class ShowSheet extends Sheet.Show {
     super(props);
 
     this.onMessageDetails = this.messageDetails.bind(this);
+  }
+
+  renderHeader() {
+    let jobID = this.props.selected.job_id;
+    let job = this.props.jobs.find( (x) => x.id == jobID ) // FIXME
+
+    if (!job) {
+      return null;
+    }
+
+    let id ="job-header-" + job.id;
+    let title = job.title;
+    let responseCount = 11;
+    let createdAt = "Today";
+
+    return (
+      <div className="job-header">
+        <div className>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColFull className="name col col-md-12"><span className="">{job.id}:{title}</span></Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColHalf id="response-count">{responseCount}</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf id="created-at">{createdAt}</Pyr.Grid.ColHalf>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row id="message-bar">
+            <Pyr.Grid.ColThird id="sort" className="sort">[Sort]</Pyr.Grid.ColThird>
+            <Pyr.Grid.ColThird id="search" className="search">Search( )</Pyr.Grid.ColThird>
+            <Pyr.Grid.ColThird id="edit">Edit Link</Pyr.Grid.ColThird>
+          </Pyr.Grid.Row>
+        </div>
+      </div>
+    );
   }
 
   key(a) {
@@ -116,6 +157,13 @@ class ShowSheet extends Sheet.Show {
 }
 
 class MessagesPage extends Page {
+  getInitState(props) {
+    let state = super.getInitState();
+
+    //state.fullDetail = true;
+    return state;
+  }
+
   key(a) {
     return "message" + "-" + a.id;
   }

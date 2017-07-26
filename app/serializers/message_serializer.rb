@@ -4,7 +4,8 @@ class MessageSerializer < ActiveModel::Serializer
     :body,
     :parent_message_id,
     :root_message_id,
-    :thread_count
+    :thread_count,
+    :job_id
 
   def thread_count
     object.thread.count()

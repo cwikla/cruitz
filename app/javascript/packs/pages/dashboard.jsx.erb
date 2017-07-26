@@ -1,5 +1,5 @@
-import React, { 
-  Component
+import React, {
+  Component,
 } from 'react';
 
 import PropTypes from 'prop-types';
@@ -9,22 +9,10 @@ import {
 } from 'react-dom';
 
 import {
-  createStore,
-  applyMiddleware
-} from 'redux';
-
-import {
   Provider
 } from 'react-redux';
 
 import Pyr from '../pyr/pyr';
-
-import Container, { 
-  Row, 
-  Column, 
-  ColumnHalf, 
-  ColumnFull 
-} from './container';
 
 import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
@@ -40,6 +28,7 @@ const SETTINGS_PAGE = 'Settings';
 const MESSAGES_PAGE = 'Messages';
 
 const JOBS_URL = "/jobs";
+const USERS_URL = "/users";
 
 function same(a,b) {
   return a.uuid == b.uuid;
@@ -49,24 +38,24 @@ class JobTitle extends Component {
   render() {
     return (
       <div className="job-title">
-        <Row>
-          <ColumnFull><span className="title">{this.props.job.title}</span></ColumnFull>
-        </Row>
-        <Row>
-          <ColumnHalf>Candidates: <span>()</span></ColumnHalf>
-          <ColumnHalf>Created: <span>{this.props.job.created_at}</span></ColumnHalf>
-        </Row>
-        <Row>
-          <ColumnHalf>Search: <span>[         ]</span></ColumnHalf>
-          <ColumnHalf>Filter: <span>[ ]</span></ColumnHalf>
-        </Row>
+        <Pyr.Grid.Row>
+          <Pyr.Grid.ColFull><span className="title">{this.props.job.title}</span></Pyr.Grid.ColFull>
+        </Pyr.Grid.Row>
+        <Pyr.Grid.Row>
+          <Pyr.Grid.ColHalf>Candidates: <span>()</span></Pyr.Grid.ColHalf>
+          <Pyr.Grid.ColHalf>Created: <span>{this.props.job.created_at}</span></Pyr.Grid.ColHalf>
+        </Pyr.Grid.Row>
+        <Pyr.Grid.Row>
+          <Pyr.Grid.ColHalf>Search: <span>[         ]</span></Pyr.Grid.ColHalf>
+          <Pyr.Grid.ColHalf>Filter: <span>[ ]</span></Pyr.Grid.ColHalf>
+        </Pyr.Grid.Row>
       </div>
     );
   }
 }
 
 
-class DashboardContainer extends Component {
+class Dashboard extends Pyr.UserComponent {
   constructor(props) {
     super(props);
 
@@ -88,6 +77,10 @@ class DashboardContainer extends Component {
     this.onSetPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
     this.onSetPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
     this.onSetPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
+  }
+
+  userChange(user) {
+    alert("New User:" + JSON.stringify(user));
   }
 
   title() {
@@ -204,14 +197,14 @@ class DashboardContainer extends Component {
 
   renderNav() {
     return (
-       <Row className="navbar flx-row-stretch p-0 m-0 align-items-center">
-          <Column className="col offset-1 offset-sm-1 offset-md-2 col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
+       <Pyr.Grid.Row className="navbar flx-row-stretch p-0 m-0 align-items-center">
+          <Pyr.Grid.Col className="col offset-1 offset-sm-1 offset-md-2 col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
             <label className="nav-title">{this.state.openPage}</label>
-          </Column>
-          <Column className="col col-10 col-sm-10 col-md-8 navbar-nav">
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-8 navbar-nav">
             <span className="nav-item ml-auto">{this.renderSearch()}</span>
-          </Column>
-        </Row>
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
     );
   }
 
@@ -222,12 +215,12 @@ class DashboardContainer extends Component {
         <div className="flx-1 flx-col flx-stretch cyan">
           <div className="flx-1 flx-col flx-stretch green">
             <div className="flx-1 flx-row flx-stretch pink">
-              <ColumnHalf className="white">
+              <Pyr.Grid.ColHalf className="white">
                 One
-              </ColumnHalf>
-              <ColumnHalf className="blue">
+              </Pyr.Grid.ColHalf>
+              <Pyr.Grid.ColHalf className="blue">
                 Two
-              </ColumnHalf>
+              </Pyr.Grid.ColHalf>
             </div>
           </div>
         </div>
@@ -324,11 +317,18 @@ class DashboardContainer extends Component {
         >
           {this.renderBlurb(mainTitle)}
           <div className="flx-col-stretch flx-1">
-            <MessagesPage {...this.props.messagePageProps} showing={this.state.openPage==MESSAGES_PAGE} />
+            <MessagesPage 
+              {...this.props.messagePageProps} 
+              job={this.state.job}
+              jobs={this.state.jobs}
+              showing={this.state.openPage==MESSAGES_PAGE} 
+            />
             <JobsPage 
                {...this.props.jobsPageProps} 
               showing={this.state.openPage==JOBS_PAGE}
               items={this.state.jobs}
+              job={this.state.job}
+              jobs={this.state.jobs}
               selected={this.state.job}
               onJobCreate={this.onJobCreate}
               onJobUpdate={this.onJobUpdate}
@@ -336,7 +336,8 @@ class DashboardContainer extends Component {
             />
             <CandidatesPage 
               {...this.props.candidatePageProps} 
-              job={this.state.job || (this.state.jobs ? this.state.jobs[0] : null)} 
+              job={this.state.job}
+              jobs={this.state.jobs}
               showing={this.state.openPage==CANDIDATES_PAGE} 
             />
             <RecruitersPage 
@@ -356,13 +357,13 @@ class DashboardContainer extends Component {
     //alert(this.state.openPage == CANDIDATES_PAGE);
 
     return(
-      <Column className="flx-col-stretch flx-1 p-0 m-0">
+      <Pyr.Grid.Col className="flx-col-stretch flx-1 p-0 m-0">
         { this.renderNav() }
         <div className="flx-row-stretch flx-1">
           { this.renderSideBar() }
           { this.renderMain() }
         </div>
-      </Column>
+      </Pyr.Grid.Col>
     );
   }
 }
@@ -375,11 +376,9 @@ const Footer = (props) => (
 /// 
 ///
 
-let store = createStore((state) => { return state; })
-
-render(
-  <Provider store={store}>
-    <DashboardContainer />
-  </Provider>,
-  document.getElementById('react-container')
+render (
+  <Pyr.UserProvider>
+    <Dashboard />
+  </Pyr.UserProvider>,
+   document.getElementById('react-container')
 );

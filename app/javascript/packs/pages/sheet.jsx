@@ -4,7 +4,7 @@ import React, {
 
 import Pyr from '../pyr/pyr';
 
-class Base extends Pyr.Component {
+class Base extends Component {
   getInitState(props) {
     return  {
       isLoading: false
@@ -71,6 +71,20 @@ class Base extends Pyr.Component {
     );
   }
 
+  renderHeader() {
+    return null;
+  }
+
+  render() {
+    return (
+      <div className="sheet">
+        {this.renderHeader()}
+        {this.renderInner()}
+      </div>
+    );
+
+  }
+
 }
 
 function sheetComponent(action) {
@@ -123,9 +137,9 @@ class Index extends Base {
      );
    }
 
-  render() {
-    return(
-      <div className="sheet index-sheet">
+  renderInner() {
+    return (
+      <div className="inner">
         { this.props.items ? this.renderChildren() : this.renderNone() }
       </div>
     );
@@ -146,19 +160,17 @@ class Show extends Base {
     this.props.onAction('Edit');
   }
 
-  render() {
+  renderInner() {
     let noKey = "no-" + this.constructor.name.toLowerCase();
 
     if (!this.props.selected) {
       return (
-        <div className="">
           <h2 key={noKey}>Nothing to Show?</h2>
-        </div>
       );
     }
 
     return (
-      <div className="sheet show-sheet">
+      <div className="inner">
         <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div>
         {this.renderItem(this.props.selected, false) }
       </div>

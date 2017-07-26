@@ -5,12 +5,7 @@ import React, {
 
 import Pyr from '../pyr/pyr';
 
-import { 
-  Row,
-  ColumnHalf,
-} from './container';
-
-class Page extends Pyr.Component {
+class Page extends Component {
   getInitState(props) {
     return {
       action: null,
@@ -63,7 +58,7 @@ class Page extends Pyr.Component {
         onUnaction={this.onUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-
+        job={this.props.job}
       />
     );
   }
@@ -83,9 +78,14 @@ class Page extends Pyr.Component {
         onUnsetAction={this.onUnsetAction}
         onSelect={this.onSelect} 
         onItems={this.onItems}
+        job={this.props.job}
       />
     );
    
+  }
+
+  showActionSheet() {
+    return !!this.state.selected;
   }
 
 ///// END ////
@@ -111,22 +111,24 @@ class Page extends Pyr.Component {
   renderIndexSheet() {
     let extraClass = "col-md-6";
 
-    if (this.state.fullDetail) {
-      extraClass = "hidden-xs-up";
+    if (this.showActionSheet()) {
+      if (this.state.fullDetail) {
+        extraClass = "hidden-xs-up";
+      }
+      else {
+        extraClass = extraClass + " hidden-xs-down";
+      }
     }
-    else if (this.state.selected) {
-      extraClass = extraClass + " hidden-xs-down";
-    }
-    else if (!this.state.selected) {
+    else {
       extraClass = "col-md-12";
     }
 
     extraClass = extraClass + " sheet index flx-col-stretch flx-1";
 
     return (
-      <ColumnHalf className={extraClass}>
+      <Pyr.Grid.ColHalf className={extraClass}>
         {this.indexSheet()}
-      </ColumnHalf>
+      </Pyr.Grid.ColHalf>
     );
   }
 
@@ -151,10 +153,14 @@ class Page extends Pyr.Component {
     extraClass = extraClass + " sheet action " + this.state.action;
 
     return (
-      <ColumnHalf className={extraClass}>
+      <Pyr.Grid.ColHalf className={extraClass}>
         {this.actionSheet(this.state.action)}
-      </ColumnHalf>
+      </Pyr.Grid.ColHalf>
     );
+  }
+
+  renderHeader() {
+    return null;
   }
 
 
@@ -173,10 +179,11 @@ class Page extends Pyr.Component {
     let id = this.name().toLowerCase() + "-page";
 
     return (
-        <Row className="flx-row-stretch flx-1 no-gutters" id={id}>
+        <Pyr.Grid.Row className="flx-row-stretch flx-1 no-gutters" id={id}>
+          {this.renderHeader()}
           {this.renderIndexSheet()}
           {this.renderActionSheet()}
-        </Row>
+        </Pyr.Grid.Row>
     );
   }
 }

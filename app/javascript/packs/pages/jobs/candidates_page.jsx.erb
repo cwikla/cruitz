@@ -10,16 +10,43 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Page from '../page';
-import { 
-  Row, 
-  ColumnFull, 
-  ColumnHalf 
-} from '../container';
 
 import Pyr from '../../pyr/pyr';
 import Sheet from '../sheet';
 
 const JOBS_URL = "/jobs";
+
+class CandidateHeader extends Component {
+  render() {
+    if (!this.props.candidate) {
+      return null;
+    }
+
+    let id ="job-header-" + this.props.candidate.id;
+    let title = this.props.candidate.title;
+    let responseCount = 11;
+    let createdAt = "Today";
+
+    return (
+      <div className="job-header card">
+        <div className="card-block">
+          <Pyr.Grid.Row className="card-title">
+            <Pyr.Grid.ColFull className="name col col-md-12"><span className="card-text">{title}</span></Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColHalf id="response-count">{responseCount}</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf id="created-at">{createdAt}</Pyr.Grid.ColHalf>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row id="candidate-bar">
+            <Pyr.Grid.ColThird id="sort" className="sort">[Sort]</Pyr.Grid.ColThird>
+            <Pyr.Grid.ColThird id="search" className="search">Search( )</Pyr.Grid.ColThird>
+            <Pyr.Grid.ColThird id="edit">Edit Link</Pyr.Grid.ColThird>
+          </Pyr.Grid.Row>
+        </div>
+      </div>
+    );
+  }
+}
 
 class CandidateItem extends Component {
 
@@ -39,23 +66,23 @@ class CandidateItem extends Component {
     return (
       <div className={classes} id={id}>
         <div className="card-block">
-          <Row className="card-title">
-            <ColumnFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="card-text">{fullName}</span></ColumnFull>
-          </Row>
-          <Row>
-            <ColumnHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel><span className="card-text">{phoneNumber}</span></ColumnHalf>
-            <ColumnHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel>{email}</ColumnHalf>
-          </Row>
-          <Row>
-            <ColumnHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Hmmmmmm</ColumnHalf>
-            <ColumnHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</ColumnHalf>
-          </Row>
-          <Row>
-            <ColumnFull className="description">{description}</ColumnFull>
-          </Row>
-          <Row className="recruiter-info">
-            <ColumnFull>Interesting stuff about the recruiter goes here!</ColumnFull>
-          </Row>
+          <Pyr.Grid.Row className="card-title">
+            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="card-text">{fullName}</span></Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel><span className="card-text">{phoneNumber}</span></Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel>{email}</Pyr.Grid.ColHalf>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Hmmmmmm</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</Pyr.Grid.ColHalf>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColFull className="description">{description}</Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row className="recruiter-info">
+            <Pyr.Grid.ColFull>Interesting stuff about the recruiter goes here!</Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
         </div>
       </div>
     );

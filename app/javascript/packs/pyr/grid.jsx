@@ -1,21 +1,8 @@
-import React, { 
+
+import React, {
   Component
 } from 'react';
-
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import { 
-  render 
-} from 'react-dom';
-
-import {
-  createStore,
-  applyMiddleware
-} from 'redux';
-
-import {
-  Provider
-} from 'react-redux';
 
 import Pyr from '../pyr/pyr';
 
@@ -26,41 +13,32 @@ const Row = (props) => (
 const Column = (props) => (
   <div {...Pyr.Util.propsMergeClassName(props, "col")}>{props.children}</div>
 );
+const Col = Column;
 
 const ColumnHalf = (props) => (
   <div {...Pyr.Util.propsMergeClassName(props, "col col-md-6")}>{props.children}</div>
 );
+const ColHalf = ColumnHalf;
+
+const ColumnThird = (props) => (
+  <div {...Pyr.Util.propsMergeClassName(props, "col col-md-4")}>{props.children}</div>
+);
+const ColThird = ColumnThird;
 
 const ColumnFull = (props) => (
   <div {...Pyr.Util.propsMergeClassName(props, "col col-md-12")}>{props.children}</div>
 );
+const ColFull = ColumnFull;
 
-const JOBS_PAGE = 'jobs';
-const CANDIDATES_PAGE = 'candidates';
-const RECRUITERS_PAGE = 'recruiters';
-
-class Container extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      openPage: JOBS_PAGE
-    };
-  }
-
-  setPage(page, e) {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({openPage: page});
-    //alert(page);
-  }
-}
-
-export default Container;
-export {
+const Grid = {
   Row,
+  Col,
   Column,
+  ColHalf,
   ColumnHalf,
+  ColFull,
   ColumnFull,
+  ColThird,
+  ColumnThird,
 };
+export default Grid;
