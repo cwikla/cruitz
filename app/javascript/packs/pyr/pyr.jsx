@@ -39,7 +39,7 @@ class Icon extends Component {
 
 class SmallLabel extends Component {
   render() {
-    return (<label {...Util.propsMergeClassName(this.props, "hidden-sm-down")}>{this.props.children}</label>);
+    return (<label {...Util.propsMergeClassName(this.props, "small-label hidden-sm-down")}>{this.props.children}</label>);
   }
 }
 
@@ -53,7 +53,11 @@ class UserComponent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, prevContext) {
-    if (prevContext.user && this.context.user) {
+    let prevID = prevContext.user ? prevContext.user.id : null;
+    let id = this.context.user ? this.context.user.id : null;
+
+    if (prevID != id) {
+      //alert(prevID + " => " + id);
       this.userChange(this.context.user);
     }
   }
@@ -75,14 +79,22 @@ class UserProvider extends Component {
     this.state =  {
       user: null
     };
+
   }
 
   componentDidMount() {
+    // This is being called twice - saw some notes about it being because it's DEV
+
     this.getSelf();
+  }
+
+  componentWillUnmount() {
   }
 
   getSelf() {
     let self = this;
+
+    //alert("GET SELF CALLED");
 
     $.getJSON({
       type: Pyr.Method.GET,

@@ -7,12 +7,37 @@ html, body {
 @import "candidates";
 
 .navbar {
-  .nav-title {
-    color: $navbar_menu_color !important;
-    font-size: 1.25rem;
-    margin: 0;
-    padding-left: 0.25rem;
-  }
   margin: 0;
   padding-left: 1rem;
+
+  .form-group {
+    margin: 0;
+    padding: 0;
+
+    input {
+      border-color: $navbar_menu_color !important;
+    }
+  }
+
+  .small-label, .fa, .form-control {
+    color: $navbar_menu_color !important;
+    font-size: 1rem;
+   }
+
+  .nav-item {
+    margin: 0;
+    padding-left: 0.5rem;
+  }
+
+  input[type=text] {
+    color: $navbar_menu_color !important;
+    font-size: 1rem;
+    width: 20rem;
+    display: inline-block;
+  }
+
+  input::placeholder {
+    color: rgba($navbar_menu_color, 0.5);
+    font-size: 1rem;
+  }
 }

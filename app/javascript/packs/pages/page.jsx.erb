@@ -5,20 +5,24 @@ import React, {
 
 import Pyr from '../pyr/pyr';
 
+const SHOW_ACTION = "Show";
+
 class Page extends Component {
   getInitState(props) {
-    return {
-      action: null,
-      items: [],
-      selected: null,
-      fullDetail: false
-    };
+    return {};
   }
 
   constructor(props) {
     super(props);
 
-    this.state = this.getInitState(props);
+    let myState = {
+      action: null,
+      items: [],
+      selected: null,
+      fullDetail: false,
+    };
+
+    this.state = Object.assign(myState, this.getInitState(props));
 
     this.onSelect = this.setSelected.bind(this);
     this.onUnselect = this.setSelected.bind(this, null);
@@ -66,7 +70,7 @@ class Page extends Component {
   actionSheet(action) {
     alert("page.jsx: IF YOU ARE SEEING THIS, COPY THESE INTO SUBCLASS");
 
-    let sheet = Sheet.sheetComponent(action || "Show");
+    let sheet = Sheet.sheetComponent(action || SHOW_ACTION);
     let ActionSheet = eval(sheet);
 
     return (
@@ -75,7 +79,7 @@ class Page extends Component {
         items={this.state.items}
         selected={this.state.selected}
         onAction={this.onAction}
-        onUnsetAction={this.onUnsetAction}
+        onUnaction={this.onUnaction}
         onSelect={this.onSelect} 
         onItems={this.onItems}
         job={this.props.job}
@@ -85,7 +89,7 @@ class Page extends Component {
   }
 
   showActionSheet() {
-    return !!this.state.selected;
+    return !!this.state.action;
   }
 
 ///// END ////
@@ -99,7 +103,8 @@ class Page extends Component {
   setSelected(selected) {
     //alert("SELECTED " + JSON.stringify(selected));
     this.setState({
-      selected
+      selected,
+      action: SHOW_ACTION
     });
   }
 
@@ -113,7 +118,7 @@ class Page extends Component {
 
     if (this.showActionSheet()) {
       if (this.state.fullDetail) {
-        extraClass = "hidden-xs-up";
+        extraClass = "hidden";
       }
       else {
         extraClass = extraClass + " hidden-xs-down";
@@ -137,7 +142,7 @@ class Page extends Component {
   }
 
   renderActionSheet() {
-    if (!this.state.selected) {
+    if (!this.showActionSheet()) {
       return this.renderNoSheet();
     }
 
@@ -145,9 +150,6 @@ class Page extends Component {
 
     if (this.state.fullDetail) {
       extraClass = "col-md-12";
-    }
-    else if (!this.state.selected) {
-      extraClass = "hidden-xs-up";
     }
 
     extraClass = extraClass + " sheet action " + this.state.action;
@@ -171,10 +173,6 @@ class Page extends Component {
     if (!this.props.showing) {
       return null;
     }
-
-    let myClasses = "page col-md-12 transition" + (this.props.showing ? " on" : " off");
-    //let child = React.cloneElement(React.Children.only(this.props.children), this.props);
-    let allClasses = Pyr.Util.mergeClassName(this.props.className, myClasses);
 
     let id = this.name().toLowerCase() + "-page";
 

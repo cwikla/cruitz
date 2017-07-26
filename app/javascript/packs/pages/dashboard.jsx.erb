@@ -29,6 +29,7 @@ const MESSAGES_PAGE = 'Messages';
 
 const JOBS_URL = "/jobs";
 const USERS_URL = "/users";
+const SEARCH_URL = "/search";
 
 function same(a,b) {
   return a.uuid == b.uuid;
@@ -53,6 +54,10 @@ class JobTitle extends Component {
     );
   }
 }
+
+const UserLabel = (props) => (
+  <div className="nav-item"><Pyr.Icon name="user" /> <Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel></div>
+);
 
 
 class Dashboard extends Pyr.UserComponent {
@@ -80,7 +85,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   userChange(user) {
-    alert("New User:" + JSON.stringify(user));
+    console.log("User Change: " + JSON.stringify(user));
   }
 
   title() {
@@ -179,9 +184,10 @@ class Dashboard extends Pyr.UserComponent {
 
   renderSearch() {
     let controller = this.state.openPage;
-    let url = "/search/" + this.state.openPage.toLowerCase();
+    let url = SEARCH_URL + "/" + this.state.openPage.toLowerCase();
 
     return (
+      <div>
       <Pyr.Form.Form
         controller={this.state.openPage}
         url={url}
@@ -189,20 +195,24 @@ class Dashboard extends Pyr.UserComponent {
         ref={(node) => {this.form = node;}}
       >
         <Pyr.Form.Group name="search">
-          <Pyr.Form.TextField placeholder="Search..."/>
+          <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..."/>
         </Pyr.Form.Group>
       </Pyr.Form.Form>
+      </div>
     );
   }
 
   renderNav() {
     return (
        <Pyr.Grid.Row className="navbar flx-row-stretch p-0 m-0 align-items-center">
-          <Pyr.Grid.Col className="col offset-1 offset-sm-1 offset-md-2 col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
-            <label className="nav-title">{this.state.openPage}</label>
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
+            <UserLabel user={this.context.user} />
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
+            <Pyr.SmallLabel className="nav-item">{this.state.openPage}</Pyr.SmallLabel>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-8 navbar-nav">
-            <span className="nav-item ml-auto">{this.renderSearch()}</span>
+            <div className="nav-item ml-auto">{this.renderSearch()}</div>
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
     );

@@ -53,15 +53,22 @@ class IndexSheet extends Sheet.Index {
 
 class ShowSheet extends Sheet.Show {
   getInitState(props) {
-    return { 
-      thread: null
-    };
+    return Object.assign(super.getInitState(props), { thread: null });
   }
 
   constructor(props) {
     super(props);
 
     this.onMessageDetails = this.messageDetails.bind(this);
+    this.onBack = this.back.bind(this);
+  }
+
+  back(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onUnaction();
   }
 
   renderHeader() {
@@ -88,6 +95,7 @@ class ShowSheet extends Sheet.Show {
             <Pyr.Grid.ColHalf id="created-at">{createdAt}</Pyr.Grid.ColHalf>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row id="message-bar">
+            <Pyr.Grid.ColThird id="sort" className="sort"><a href="#" onClick={this.onBack}>Back</a></Pyr.Grid.ColThird>
             <Pyr.Grid.ColThird id="sort" className="sort">[Sort]</Pyr.Grid.ColThird>
             <Pyr.Grid.ColThird id="search" className="search">Search( )</Pyr.Grid.ColThird>
             <Pyr.Grid.ColThird id="edit">Edit Link</Pyr.Grid.ColThird>
@@ -158,10 +166,7 @@ class ShowSheet extends Sheet.Show {
 
 class MessagesPage extends Page {
   getInitState(props) {
-    let state = super.getInitState();
-
-    //state.fullDetail = true;
-    return state;
+    return Object.assign(super.getInitState(props), { fullDetail: true });
   }
 
   key(a) {
@@ -209,7 +214,7 @@ class MessagesPage extends Page {
         items={this.state.items}
         selected={this.state.selected}
         onAction={this.onAction}
-        onUnaction={this.onUnsaction}
+        onUnaction={this.onUnaction}
       />
     );
     

@@ -6,14 +6,13 @@ import Pyr from '../pyr/pyr';
 
 class Base extends Component {
   getInitState(props) {
-    return  {
-      isLoading: false
-    };
+    return  {};
   }
+
   constructor(props) {
     super(props);
 
-    this.state = this.getInitState(props);
+    this.state = Object.assign({ isLoading: false}, this.getInitState(props));
 
     this.onClicks = {};
     this.onPreSubmit = this.preSubmit.bind(this);

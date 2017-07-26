@@ -88,8 +88,8 @@ label {
 
 
 .transition {
-  transition: all .25s ease-in;  
-  transition-property: opacity, display;
+  -webkit-transition: opacity 3s;
+  transition: opacity 3s;
 }
 
 .on {

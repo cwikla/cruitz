@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def me
-    render json: {user: current_user}
+    render json: current_user
   end
 
   private

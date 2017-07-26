@@ -209,11 +209,11 @@ class New extends Sheet.Base {
 }
 
 class CandidatesPage extends Page {
-  getInitState() {
-    return Object.assign(super.getInitState(), {
-      job: this.props.job, // placeholder until we can fetch the full one
+  getInitState(props) {
+    return {
+      job: props.job, // placeholder until we can fetch the full one
       fullDetail: false
-    });
+    };
   }
 
   indexSheet() {
