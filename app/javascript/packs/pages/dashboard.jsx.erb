@@ -65,9 +65,10 @@ class Dashboard extends Pyr.UserComponent {
     super(props);
 
     this.state = {
-      openPage: CANDIDATES_PAGE,
+      openPage: MESSAGES_PAGE,
       jobs: [],
-      job: (this.props.jobs ? this.props.jobs[0] : null)
+      job: (this.props.jobs ? this.props.jobs[0] : null),
+      loading: true,
     };
 
     this.onJobClicks = [];
@@ -82,6 +83,8 @@ class Dashboard extends Pyr.UserComponent {
     this.onSetPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
     this.onSetPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
     this.onSetPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
+
+    this.onLoading = this.setLoading.bind(this);
   }
 
   userChange(user) {
@@ -104,11 +107,17 @@ class Dashboard extends Pyr.UserComponent {
     });
   }
 
+  setLoading(loading=true) {
+    //alert("SETLOADIN: " + loading);
+    this.setState({loading});
+  }
+
   getJobs() {
-    $.getJSON({
+    Pyr.getJSON({
       type: Pyr.Method.GET,
       url: JOBS_URL,
-      context: this
+      context: this,
+      loading: this.onLoading,
     }).done(function(data, textStatus, jaXHR) {
         this.onJobIndex(data.jobs);
     }).fail(function(jaXHR, textStatus, errorThrown) {
@@ -365,6 +374,14 @@ class Dashboard extends Pyr.UserComponent {
 
   render() {
     //alert(this.state.openPage == CANDIDATES_PAGE);
+
+    if (this.state.loading) {
+      return (
+        <Pyr.Grid.Col className="flx-col-stretch flx-1 p-0 m-0"> // React went bonkers changing the top level dude
+          <div className="loading" />
+        </Pyr.Grid.Col>
+      );
+    }
 
     return(
       <Pyr.Grid.Col className="flx-col-stretch flx-1 p-0 m-0">

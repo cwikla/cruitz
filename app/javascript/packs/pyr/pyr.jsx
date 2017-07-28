@@ -28,6 +28,36 @@ function ajaxError(jaXHR, textStatus, errorThrown) {
    alert(errorThrown);
 }
 
+function getJSON(stuff) {
+  stuff = Object.assign({
+    dataType: "json",
+    type: GET,
+  }, stuff);
+
+  let onLoading = stuff.loading ? stuff.loading : null;
+
+  let oldBeforeSend = stuff.beforeSend;
+  let beforeSend = (jqXHR, settings) => {
+    if (oldBeforeSend) {
+      oldBeforeSend(jqXHR, settings);
+    }
+    if (onLoading) {
+      onLoading();
+    }
+  };
+
+  stuff.beforeSend = beforeSend;
+    
+  return $.getJSON(
+    stuff
+  )
+  .always(() => {
+    if (onLoading) {
+      onLoading(false);
+    }
+  });
+}
+
 class Icon extends Component {
   render() {
     let name = "fa fa-" + this.props.name;
@@ -116,6 +146,7 @@ class UserProvider extends Component {
 
 const Pyr = { 
   ajaxError,
+  getJSON,
   Grid,
   UserProvider,
   UserComponent,

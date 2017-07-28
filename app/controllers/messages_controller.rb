@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   def index
-    render json: (params[:sent] ? current_user.sent_messages : current_user.messages).order(:id).all
+    render json: current_user.messages #(params[:sent] ? current_user.sent_messages : current_user.messages).order(:id)
   end
 
   def new

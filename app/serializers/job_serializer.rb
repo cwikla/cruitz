@@ -5,7 +5,8 @@ class JobSerializer < ActiveModel::Serializer
 							:description, 
 							:time_commit, 
 							:location,
-              :candidate_count
+              :candidate_count,
+              :user_id
 
   has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
 

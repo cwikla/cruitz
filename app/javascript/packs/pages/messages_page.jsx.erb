@@ -9,12 +9,14 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
+const Grid = Pyr.Grid;
+
 import Page from './page';
 import Sheet from './sheet';
 
 const MESSAGES_URL = "/messages";
 
-class MessageItem extends Component {
+class MessageItem_old extends Component {
 
   render() {
     let message = this.props.message;
@@ -24,6 +26,37 @@ class MessageItem extends Component {
         <h4>ID:{message.id}:ROOT:{message.root_message_id}:PARENT:{message.parent_message_id}:JOB:{message.job_id}</h4>
         <h4>{message.title}</h4>
         <div>{message.body}</div>
+      </div>
+    );
+  }
+}
+
+class MessageItem extends Component {
+  render() {
+    let message = this.props.message;
+    let icon = message.candidate ? message.candidate.first_name : "Q&A";
+
+    return (
+      <div className="message-item">
+          <Grid.Row> 
+            <Grid.Column className="col-1 red">
+              {icon}
+            </Grid.Column>
+            <Grid.Column className="col-9 blue">
+              {message.job.title}
+            </Grid.Column>
+            <Grid.Column className="col-2 red">
+              {message.created_at}
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row> 
+            <Grid.Column className="col-1 red">
+              Icon/Avatar
+            </Grid.Column>
+            <Grid.Column className="col-11 blue">
+              {message.title}
+            </Grid.Column>
+          </Grid.Row>
       </div>
     );
   }
@@ -47,8 +80,11 @@ class IndexSheet extends Sheet.Index {
   }
 
   componentDidMount() {
-    this.props.getItems();
+    if (!this.props.items) {
+      this.props.getItems(this.onLoading);
+    }
   }
+
 }
 
 class ShowSheet extends Sheet.Show {
@@ -120,11 +156,10 @@ class ShowSheet extends Sheet.Show {
   getMessage(mid) {
     let url =  MESSAGES_URL + "/" + mid;
     //alert(url);
-    $.getJSON({
-      type: Pyr.Method.GET,
+    Pyr.getJSON({
       url: url,
-      context: this
-
+      context: this,
+      loading: this.onLoading
     }).done(function(data, textStatus, jaXHR) {
      this.onMessageDetails(data.message, data.thread);
    
@@ -166,21 +201,49 @@ class ShowSheet extends Sheet.Show {
 
 class MessagesPage extends Page {
   getInitState(props) {
-    return Object.assign(super.getInitState(props), { fullDetail: true });
+    return Object.assign(super.getInitState(props), { 
+      fullDetail: true,
+    });
   }
 
   key(a) {
     return "message" + "-" + a.id;
   }
 
-  getItems() {
-    $.getJSON({
-      type: Pyr.Method.GET,
-      url: MESSAGES_URL,
-      context: this
+/* FIXME
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.jobs != prevProps.jobs) {
+      let jobs = this.props.jobs || [];
+      this.setState({
+      });
+    }
+  }
+*/
 
+  mapItems(messages) {
+    let jobs = this.props.jobs;
+    let jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
+
+    for(let m of messages) {
+      console.log("MESSAGE: " + JSON.stringify(m));
+    }
+
+    let newMessages = messages.map((msg, pos) => {
+      let job = jobMap[msg.job_id]; // FIXME, if job not here go fetch it
+      let tmp = Object.assign({}, msg, {job});
+      return tmp;
+    });
+
+    this.onItems(newMessages);
+  }
+
+  getItems(onLoading) {
+    Pyr.getJSON({
+      url: MESSAGES_URL,
+      context: this,
+      loading: onLoading,
     }).done(function(data, textStatus, jaXHR) {
-        this.onItems(data.messages);
+        this.mapItems(data.messages);
 
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);

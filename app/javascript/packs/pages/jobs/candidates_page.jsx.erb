@@ -254,10 +254,10 @@ class CandidatesPage extends Page {
   getJob(jobId) {
     let params = [{"cand": 1}];
 
-    $.getJSON({
-      type: Pyr.Method.GET,
+    Pyr.getJSON({
       url: JOBS_URL + "/" + jobId + "?cand=1",   //+ $.param(params),
-       context: this
+      context: this,
+      loading: this.onLoading,
 
     }).done((data, textStatus, jaXHR) => {
       this.onJobLoad(data.job);

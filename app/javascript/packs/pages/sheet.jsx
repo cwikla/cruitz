@@ -15,28 +15,24 @@ class Base extends Component {
     this.state = Object.assign({ isLoading: false}, this.getInitState(props));
 
     this.onClicks = {};
-    this.onPreSubmit = this.preSubmit.bind(this);
-    this.onPostSubmit = this.postSubmit.bind(this);
+    this.onLoading = this.setLoading.bind(this);
+    this.onLoaded = this.setLoading.bind(this, false);
   }
 
   bindClicks(items, f) {
     let self = this;
     this.onClicks = {};
 
-    for(let item of items) {
-      this.onClicks[this.key(item)] = f.bind(this, item);
+    if (items) {
+      for(let item of items) {
+        this.onClicks[this.key(item)] = f.bind(this, item);
+      }
     }
   }
 
-  preSubmit() {
+  setLoading(val=true) {
     this.setState({
-      isLoading: true
-    });
-  }
-
-  postSubmit() {
-    this.setState({
-      isLoading: false
+      isLoading: val
     });
   }
 
@@ -75,6 +71,10 @@ class Base extends Component {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (<div className="loading" />);
+    }
+
     return (
       <div className="sheet">
         {this.renderHeader()}
@@ -122,9 +122,11 @@ class Index extends Base {
 
   renderChildren() {
     let self = this;
+    let items = this.props.items || [];
+
     return (
       <ul>
-        {this.props.items.map((item, pos) => {
+        {items.map((item, pos) => {
           let isSelected = this.same(item, this.props.selected);
           return (
             <li 
