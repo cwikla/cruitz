@@ -31,7 +31,9 @@ export function friendlyDate(date) {
   }
   
   let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
-  return date.toLocaleString("en-US", options);
+  return (
+    <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", options)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
+  );
 }
 
 export function capFirstLetter(string) {

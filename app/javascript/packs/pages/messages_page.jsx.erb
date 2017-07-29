@@ -60,7 +60,7 @@ class ThreadItem extends Component {
     return (
       <div className={allClass} id={id}>
         <div className={justify + " created-at"}>
-          <span className="">{Pyr.Util.friendlyDate(message.created_at)}</span>
+          {Pyr.Util.friendlyDate(message.created_at)}
         </div>
         <div className={justify}>
           { leftIcon }
