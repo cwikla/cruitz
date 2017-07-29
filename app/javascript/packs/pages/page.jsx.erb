@@ -130,7 +130,7 @@ class Page extends Component {
       extraClass = "col-md-12";
     }
 
-    extraClass = extraClass + " sheet index flx-col-stretch flx-1";
+    extraClass = extraClass + " index flx-col-stretch flx-1";
 
     return (
       <Pyr.Grid.ColHalf className={extraClass}>
@@ -154,7 +154,8 @@ class Page extends Component {
       extraClass = "col-md-12";
     }
 
-    extraClass = extraClass + " sheet action " + this.state.action;
+    extraClass = extraClass + " action " + this.state.action;
+    extraClass = extraClass.toLowerCase();
 
     return (
       <Pyr.Grid.ColHalf className={extraClass}>

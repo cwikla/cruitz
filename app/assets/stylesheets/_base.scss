@@ -276,3 +276,60 @@ label {
   padding: 0rem 0rem 0.5rem 0rem;
 }
 
+$icon_width: 6;
+
+.action.show .sheet {
+  .col, .row {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .thread-item {
+    padding: 1rem 0 1rem 0;
+    margin: 0rem 1rem 0 1rem;
+
+    .created-at {
+      font-size: 0.85rem;
+      padding-left: #{$icon_width+3}rem;
+      padding-right: #{$icon_width+3}rem;
+      color: $gray_color;
+    }
+
+    .icon {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      font-size: 0.8rem;
+      img {
+        width: #{$icon_width}rem;
+        height: #{$icon_width}rem;
+        border-radius: 50%;
+      }
+    }
+     .content {
+       padding: 1rem;
+       border-radius: 25px;
+    }
+  }
+
+  .thread-item.mine {
+    .content {
+      background-color: rgba($primary_light_color, 0.5);
+    }
+    padding-right: #{$icon_width + 2}rem;
+  }
+
+  .thread-item.yours {
+    .content {
+      background-color: rgba($secondary_light_color, 0.5);
+    }
+    padding-left: #{$icon_width + 2}rem;
+  }
+
+  .job-header {
+    padding: 3rem;
+    font-size: 3rem;
+    color: white;
+    background-color: $secondary_navbar_background_color;
+  }
+}

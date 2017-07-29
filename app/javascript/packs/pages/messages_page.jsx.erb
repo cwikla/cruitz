@@ -16,47 +16,111 @@ import Sheet from './sheet';
 
 const MESSAGES_URL = "/messages";
 
-class MessageItem_old extends Component {
+const icons = ["emilia", "snow", "sophie"];
+
+function getIcon(uid) {
+  let pos = uid % icons.length;
+  return "/assets/images/thrones/" + icons[pos] + ".jpeg";
+}
+
+class ThreadItem extends Component {
+  static contextTypes = {
+    user: PropTypes.object
+  }
+
+  renderIcon(message) {
+    let icon = getIcon(message.from_user.id);
+
+    return (
+      <div className="flex-column icon justify-content-center align-self-center">
+        <div><img src={icon}/></div>
+        <div className="align-self-center">{message.from_user.first_name}</div>
+      </div>
+    );
+  }
 
   render() {
     let message = this.props.message;
+    let job = this.props.job;
+
+    let mine = (message.from_user.id == this.context.user.id);
+    let ownerClass = (mine ? "mine" : "yours");
+
+    let id = "thread-" + message.id;
+    let allClass = "thread-item " + ownerClass;
+
+    let leftIcon = mine ? this.renderIcon(message) : null;
+    let rightIcon = mine ? null : this.renderIcon(message);
+
+    let justify = "flx-row flx-1";
+    if (!mine) {
+      justify = justify + " justify-content-end";
+    }
 
     return (
-       <div className="message-item">
-        <h4>ID:{message.id}:ROOT:{message.root_message_id}:PARENT:{message.parent_message_id}:JOB:{message.job_id}</h4>
-        <h4>{message.title}</h4>
-        <div>{message.body}</div>
+      <div className={allClass} id={id}>
+        <div className={justify + " created-at"}>
+          <span className="">{Pyr.Util.friendlyDate(message.created_at)}</span>
+        </div>
+        <div className={justify}>
+          { leftIcon }
+          <div className="flx-col justify-content-center">
+            <div className={" content flx-0"}>{message.body}</div>
+          </div>
+          { rightIcon }
+        </div>
       </div>
     );
   }
 }
 
 class MessageItem extends Component {
+  static contextTypes = {
+    user: PropTypes.object
+  }
+
   render() {
     let message = this.props.message;
+    //console.log(JSON.stringify(message));
+
+    let job = this.props.job;
     let icon = message.candidate ? message.candidate.first_name : "Q&A";
 
+    let mine = (message.from_user.id == this.context.user.id);
+    let ownerClass = (mine ? "mine" : "yours");
+
+    let id = "message-" + message.id;
+
+    let allClass = "message-item " + ownerClass;
+
     return (
-      <div className="message-item">
+      <div className={allClass} id={id}>
+        <Grid.Column>
           <Grid.Row> 
-            <Grid.Column className="col-1 red">
+            <Grid.Column className="col-1">
               {icon}
             </Grid.Column>
-            <Grid.Column className="col-9 blue">
-              {message.job.title}
+            <Grid.Column className="col-9">
+              {job.title}
             </Grid.Column>
-            <Grid.Column className="col-2 red">
-              {message.created_at}
+            <Grid.Column className="col-2">
+              {Pyr.Util.friendlyDate(message.created_at)}
             </Grid.Column>
           </Grid.Row>
           <Grid.Row> 
-            <Grid.Column className="col-1 red">
+            <Grid.Column className="col-1">
               Icon/Avatar
             </Grid.Column>
-            <Grid.Column className="col-11 blue">
+            <Grid.Column className="col-11">
               {message.title}
             </Grid.Column>
           </Grid.Row>
+          <Grid.Row> 
+            <Grid.ColumnFull>
+              {message.body}
+            </Grid.ColumnFull>
+          </Grid.Row>
+        </Grid.Column>
       </div>
     );
   }
@@ -69,14 +133,18 @@ class IndexSheet extends Sheet.Index {
 
   renderHeader() {
     return (
-      <Pyr.Grid.Row>
-        <Pyr.Grid.ColFull className="blue"><h2 className="red">This is my header</h2></Pyr.Grid.ColFull>
-      </Pyr.Grid.Row>
+      <div>
+        <h2 className="red">This is my header</h2>
+      </div>
     );
   }
 
   renderItem(message, isSelected) {
-    return ( <MessageItem message={message} isSelected={isSelected}/> );
+    if (!message.thread) {
+      return null;
+    }
+
+    return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
   }
 
   componentDidMount() {
@@ -109,11 +177,7 @@ class ShowSheet extends Sheet.Show {
 
   renderHeader() {
     let jobID = this.props.selected.job_id;
-    let job = this.props.jobs.find( (x) => x.id == jobID ) // FIXME
-
-    if (!job) {
-      return null;
-    }
+    let job = this.props.jobMap[jobID];
 
     let id ="job-header-" + job.id;
     let title = job.title;
@@ -121,22 +185,8 @@ class ShowSheet extends Sheet.Show {
     let createdAt = "Today";
 
     return (
-      <div className="job-header">
-        <div className>
-          <Pyr.Grid.Row>
-            <Pyr.Grid.ColFull className="name col col-md-12"><span className="">{job.id}:{title}</span></Pyr.Grid.ColFull>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf id="response-count">{responseCount}</Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf id="created-at">{createdAt}</Pyr.Grid.ColHalf>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row id="message-bar">
-            <Pyr.Grid.ColThird id="sort" className="sort"><a href="#" onClick={this.onBack}>Back</a></Pyr.Grid.ColThird>
-            <Pyr.Grid.ColThird id="sort" className="sort">[Sort]</Pyr.Grid.ColThird>
-            <Pyr.Grid.ColThird id="search" className="search">Search( )</Pyr.Grid.ColThird>
-            <Pyr.Grid.ColThird id="edit">Edit Link</Pyr.Grid.ColThird>
-          </Pyr.Grid.Row>
-        </div>
+      <div className="job-header flx-row justify-content-center">
+        <span>{title}</span>
       </div>
     );
   }
@@ -183,7 +233,7 @@ class ShowSheet extends Sheet.Show {
 
   renderItem(message, isSelected) {
     if (!this.state.thread || this.state.thread.length <= 1) {
-      return ( <MessageItem message={message} isSelected={isSelected}/> );
+      return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
     }
 
     let thid = "thread-" + this.props.selected.root_message_id;
@@ -191,7 +241,8 @@ class ShowSheet extends Sheet.Show {
     return (
       <div id={thid} className="message-thread">
         { this.state.thread.map((msg, pos) => {
-            return ( <MessageItem message={msg} isSelected={msg.id == this.props.selected.id} key={thid+"-"+msg.id}/> );
+            //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
+            return ( <ThreadItem message={msg} threaded job={this.props.jobMap[message.job_id]} isSelected={msg.id == this.props.selected.id} key={thid+"-"+msg.id}/> );
           })
         }
       </div>
@@ -206,31 +257,48 @@ class MessagesPage extends Page {
     });
   }
 
+  constructor(props) {
+    super(props);
+
+    let jobs = this.props.jobs || [];
+    this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
+
+  }
+
   key(a) {
     return "message" + "-" + a.id;
   }
 
-/* FIXME
   componentDidUpdate(prevProps, prevState) {
     if (this.props.jobs != prevProps.jobs) {
       let jobs = this.props.jobs || [];
-      this.setState({
-      });
+      this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
     }
   }
-*/
 
   mapItems(messages) {
-    let jobs = this.props.jobs;
-    let jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
 
-    for(let m of messages) {
-      console.log("MESSAGE: " + JSON.stringify(m));
-    }
+    let threads = messages.reduce((m,o) => {
+      let threadId = o.root_message_id || o.id;
+
+      if (!o.root_message_id && !m[o.id]) {
+        m[o.id] = o;
+      }
+      else {
+        if (!m[o.root_message_id] || m[o.root_message_id].id < o.id) {
+          m[o.root_message_id] = o;
+        }
+      }
+      return m;
+    }, {});
+
 
     let newMessages = messages.map((msg, pos) => {
-      let job = jobMap[msg.job_id]; // FIXME, if job not here go fetch it
-      let tmp = Object.assign({}, msg, {job});
+      let job = this.jobMap[msg.job_id]; // FIXME, if job not here go fetch it
+
+      let rootId = msg.root_message_id || msg.id;
+
+      let tmp = Object.assign({}, msg, {job: job, thread: (threads[rootId].id == msg.id)});
       return tmp;
     });
 
@@ -255,6 +323,7 @@ class MessagesPage extends Page {
       <IndexSheet 
         {...this.props} 
         items={this.state.items}
+        jobMap={this.jobMap}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
@@ -275,6 +344,7 @@ class MessagesPage extends Page {
       <ActionSheet 
         {...this.props}
         items={this.state.items}
+        jobMap={this.jobMap}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnaction={this.onUnaction}

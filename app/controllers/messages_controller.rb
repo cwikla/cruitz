@@ -37,7 +37,10 @@ class MessagesController < ApplicationController
       @thread = @message.thread()
     end
 
-    render json: {message: @message, thread: @thread }
+    mjson = MessageSerializer.new(@message)
+    tjson = ActiveModel::Serializer::ArraySerializer.new(@thread)
+
+    render json: {message: mjson, thread: tjson}
   end
 
   def lsearch

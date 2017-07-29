@@ -76,7 +76,7 @@ class Base extends Component {
     }
 
     return (
-      <div className="sheet">
+      <div className="sheet flx-col-stretch flx-1">
         {this.renderHeader()}
         {this.renderInner()}
       </div>
@@ -201,7 +201,7 @@ class New extends FormBase {
 
   render() {
     return (
-      <div className="sheet new-sheet">
+      <div className="new">
         { this.renderForm() }
       </div>
     );
@@ -214,7 +214,7 @@ class Edit extends FormBase {
   }
 
   render() {
-    <div className="sheet edit-sheet">
+    <div className="edit">
       { this.renderForm() }
     </div>
   }
