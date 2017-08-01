@@ -165,7 +165,7 @@ const ShowHeader = (props) => (
 class ShowFooter extends Component {
   render() {
     return (
-      <div className="message-footer">
+      <div className="message-footer z-depth-1">
         <Pyr.Form.Form
           controller="message"
           url={MESSAGES_URL + "/" + this.props.message.id}
