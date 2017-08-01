@@ -44,6 +44,8 @@ class MessagesController < ApplicationController
     mjson = MessageSerializer.new(@message)
     tjson = ActiveModel::Serializer::ArraySerializer.new(@thread)
 
+    ReadThreadJob.mark(@thread)
+
     render json: {message: mjson, thread: tjson}
   end
 

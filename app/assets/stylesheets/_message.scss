@@ -18,7 +18,7 @@ $icon_width: 6;
   }
 
   .thread-item {
-    padding: 1rem 0 1rem 0;
+    padding: 0.5rem 0 0.5rem 0;
     margin: 0rem 1rem 0 1rem;
 
     .created-at {
@@ -39,23 +39,22 @@ $icon_width: 6;
       }
     }
      .content {
-       padding: 1rem;
-       border-radius: 25px;
+       padding: 0.75rem;
+       border-radius: 20px;
     }
-  }
 
-  .thread-item.mine {
-    .content {
-      background-color: rgba($primary_light_color, 0.5);
+    &.mine {
+      .content {
+        background-color: rgba($primary_light_color, 0.5);
+      }
+      padding-right: #{$icon_width + 2}rem;
     }
-    padding-right: #{$icon_width + 2}rem;
-  }
-
-  .thread-item.yours {
-    .content {
-      background-color: rgba($secondary_light_color, 0.5);
+    &.yours {
+      .content {
+        background-color: rgba($secondary_light_color, 0.5);
+      }
+      padding-left: #{$icon_width + 2}rem;
     }
-    padding-left: #{$icon_width + 2}rem;
   }
 
   .message-header {

@@ -10,7 +10,8 @@ class MessageSerializer < ActiveModel::Serializer
     :user,
     :from_user,
     :created_at,
-    :updated_at
+    :updated_at,
+    :read_at
 
   def created_at
     object.created_at.in_time_zone.iso8601 if object.created_at

@@ -19,21 +19,27 @@ export function friendlyDate(date) {
   
   let diff = (now - date); // to seconds
 
+  if (diff >= TWO_DAYS) {
+    let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+    return (
+      <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", options)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
+    );
+  }
+
+  var result = null;
+  if (diff < ONE_MINUTE) {
+    result = "Moments ago";
+  } else
   if (diff < ONE_HOUR) {
-    diff = (diff / 60 / 60) + " minutes ago";
-  }
+    result = Math.floor(diff / ONE_MINUTE) + " minutes ago";
+  } else
   if (diff < ONE_DAY) {
-    return date.toLocaleString("en-US", {hour: 'numeric', minute: 'numeric'});
+    result = "Today at " + date.toLocaleString("en-US", {hour: 'numeric', minute: 'numeric'});
   }
-  else
-  if (diff < TWO_DAYS) {
-    return "Yesterday at " + date.toLocaleString("en-US", {hour: 'numeric', minute: 'numeric'});
-  }
+  result = result || "Yesterday at " + date.toLocaleString("en-US", {hour: 'numeric', minute: 'numeric'});
+
+  return (<span className="friendly-date">{result}</span>);
   
-  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
-  return (
-    <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", options)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
-  );
 }
 
 export function capFirstLetter(string) {

@@ -374,10 +374,11 @@ class Dashboard extends Pyr.UserComponent {
 
   render() {
     //alert(this.state.openPage == CANDIDATES_PAGE);
+    // React went bonkers changing the top level dude
 
     if (this.state.loading) {
       return (
-        <Pyr.Grid.Col className="flx-col-stretch flx-1 p-0 m-0"> // React went bonkers changing the top level dude
+        <Pyr.Grid.Col className="flx-col-stretch flx-1 p-0 m-0"> 
           <div className="loading" />
         </Pyr.Grid.Col>
       );

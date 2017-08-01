@@ -23,6 +23,14 @@ function getIcon(uid) {
   return "/assets/images/thrones/" + icons[pos] + ".jpeg";
 }
 
+function MID(message) {
+  return "message-" + message.id;
+}
+
+function THREAD_ID(message) {
+  return "thread-item-" + message.id;
+}
+
 class ThreadItem extends Component {
   static contextTypes = {
     user: PropTypes.object
@@ -43,11 +51,12 @@ class ThreadItem extends Component {
     let message = this.props.message;
     let job = this.props.job;
 
-    let mine = (message.from_user.id == this.context.user.id);
+    let mine = message.mine;
     let ownerClass = (mine ? "mine" : "yours");
 
-    let id = "thread-item-" + message.id;
+    let id = THREAD_ID(message);
     let allClass = "thread-item " + ownerClass;
+    allClass = allClass + ((!message.mine && !message.read_at) ? " unread red" : "");
 
     let leftIcon = mine ? this.renderIcon(message) : null;
     let rightIcon = mine ? null : this.renderIcon(message);
@@ -60,7 +69,7 @@ class ThreadItem extends Component {
     return (
       <div className={allClass} id={id}>
         <div className={justify + " created-at"}>
-          {Pyr.Util.friendlyDate(message.created_at)}
+          <Pyr.MagicDate date={message.created_at} />
         </div>
         <div className={justify}>
           { leftIcon }
@@ -89,7 +98,7 @@ class MessageItem extends Component {
     let mine = (message.from_user.id == this.context.user.id);
     let ownerClass = (mine ? "mine" : "yours");
 
-    let id = "message-" + message.id;
+    let id = MID(message);
 
     let allClass = "message-item " + ownerClass;
 
@@ -104,7 +113,7 @@ class MessageItem extends Component {
               {job.title}
             </Grid.Column>
             <Grid.Column className="col-2">
-              {Pyr.Util.friendlyDate(message.created_at)}
+              <Pyr.MagicDate date={message.created_at} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row> 
@@ -131,14 +140,6 @@ class IndexSheet extends Sheet.Index {
     return MessagesPage.key(a)
   }
 
-  renderHeader() {
-    return (
-      <div>
-        <h2 className="red">This is my header</h2>
-      </div>
-    );
-  }
-
   renderItem(message, isSelected) {
     if (!message.thread) {
       return null;
@@ -163,6 +164,9 @@ const ShowHeader = (props) => (
 );
 
 class ShowFooter extends Component {
+  componentDidMount() {
+  }
+
   render() {
     return (
       <div className="message-footer z-depth-1">
@@ -176,7 +180,11 @@ class ShowFooter extends Component {
         >
           <div className="flx-row">
             <Pyr.Form.Group name="body" className="flx-1">
-              <Pyr.Form.TextField placeholder="Reply..."/>
+              <Pyr.Form.TextField 
+                placeholder="Reply..."
+                ref={(node) => this.textField = node}
+                autoFocus
+              />
             </Pyr.Form.Group> 
             <Pyr.Form.SubmitButton target={this}>Reply</Pyr.Form.SubmitButton>
           </div>
@@ -187,6 +195,10 @@ class ShowFooter extends Component {
 }
 
 class ShowSheet extends Sheet.Show {
+  static contextTypes = {
+    user: PropTypes.object
+  }
+
   getInitState(props) {
     return Object.assign(super.getInitState(props), { thread: null });
   }
@@ -197,6 +209,17 @@ class ShowSheet extends Sheet.Show {
     this.onMessageDetails = this.messageDetails.bind(this);
     this.onBack = this.back.bind(this);
     this.onSuccess = this.success.bind(this);
+    //this.onScroll = this.scroll.bind(this);
+  }
+
+  scroll(e) {
+    console.log("******************************");
+    console.log("ScrollHeight " + $(this.scroller)[0].scrollHeight);
+    console.log("TopScrolled " + $(this.scroller)[0].scrollTop);
+    console.log("OffsetScrolled " + $(this.scroller).offset().top);
+    console.log("FirstScrolled " + $(this.scroller).children(":first").offset().top);
+
+    console.log("thread-item-17929 " + $("#thread-item-17929").offset().top);
   }
 
   back(e) {
@@ -207,13 +230,30 @@ class ShowSheet extends Sheet.Show {
     this.props.onUnaction();
   }
 
+  threadExtra(thread) {
+    let all = [];
+    let userId = this.context.user.id;
+
+    thread.map((item, pos) => {
+      let tmp = Object.assign({}, item);
+      tmp.mine = (item.from_user.id == userId);
+      all.push(tmp);
+    });
+
+    return all;
+  }
+
+  setThread(thread) {
+    this.setState({
+      thread: this.threadExtra(thread)
+    });
+  }
+
   success(data, textStatus, jqXHR) {
     let thread = this.state.thread || [];
     thread = thread.concat(data.message);
 
-    this.setState({
-      thread
-    });
+    this.setThread(thread);
   }
 
   render() {
@@ -225,11 +265,16 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <div className="sheet flx-col-stretch flx-1">
-        <div id="message-show" className="flx-1 flx-col scroll">
-          <ShowHeader 
-            onBack={this.onBack}
-            title={title}
-          />
+        <ShowHeader 
+          onBack={this.onBack}
+          title={title}
+        />
+        <div 
+          ref={(node) => this.scroller = (node)}
+          id="message-show" 
+          className="flx-1 flx-col scroll" 
+          onScroll={this.onScroll}
+        >
           {this.renderInner()}
         </div>
         <ShowFooter 
@@ -249,9 +294,7 @@ class ShowSheet extends Sheet.Show {
   messageDetails(message, thread) {
     //alert(JSON.stringify(thread));
     // FIXME ignore message, we already have it in props.selected - FOR NOW ;)
-    this.setState({
-      thread
-    });
+    this.setThread(thread);
   }
 
   getMessage(mid) {
@@ -275,23 +318,71 @@ class ShowSheet extends Sheet.Show {
     }
   }
 
+  top(item) {
+    let $parent = $(item).parent();
+    let $scroll = $(this.scroller);
+
+    let top = $(item).offset().top;
+
+    console.log("TOP: " + $(item).attr("id") + " => " + top);
+    //while($parent.attr("id") != "message-show") {
+    while($parent.attr("id") != $scroll.attr("id")) {
+      console.log("TOP: " + $parent.attr("id") + " => " + top);
+      top = top - $parent.offset().top;
+
+      $parent = $parent.parent();
+      console.log("PARENT IS NOW: " + $parent.attr("id"));
+    }
+
+    return top;
+  }
+
+  firstUnread() {
+    let messages = this.state.thread;
+
+    let pos = messages.reduce((result, m, index) => {
+      if (m.mine || m.read_at) {
+        return index;
+      }
+      return result;
+    }, 0);
+    //console.log("READ POS: " + pos);
+    return messages[pos];
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.props.selected && (this.props.selected.id != prevProps.selected.id)) {
       this.getMessage(this.props.selected.id);
     }
     let oldLength = prevState.thread ? prevState.thread.length : 0;
     let newLength = this.state.thread ? this.state.thread.length : 0;
-    console.log(oldLength + " => " + newLength);
+
+    console.log("UPDATE: " + oldLength + " => " + newLength);
+
     if (oldLength != newLength) {
-      if (oldLength != 0) {
-        $("#message-show").stop().animate({
-          scrollTop: $("#message-show")[0].scrollHeight
-        }, 800);
-      } else {
-          $("#message-show").stop().scrollTop($("#message-show")[0].scrollHeight);
-      }
-  
+      this.scrollToLastRead(oldLength == 0);
     }
+  }
+
+  scrollToLastRead(firstUnread=false) {
+    if (!firstUnread) {
+      console.log("Scroll To Bottom");
+      $(this.scroller).stop().animate({
+        scrollTop: this.scroller.scrollHeight
+      }, 800);
+      return;
+    }
+
+    let topMessage = this.firstUnread();
+    let mid = THREAD_ID(topMessage);
+
+    let $item = $("#" + mid);
+    let $scroll = $(this.scroller);
+
+    let showTop = this.scroller.scrollHeight;
+    let top = this.top($item) + $scroll.offset().top + $item.height();
+
+    $scroll.stop().scrollTop(top);
   }
 
 
@@ -304,9 +395,15 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <div id={thid} className="message-thread flx-1">
-        { this.state.thread.map((msg, pos) => {
+        { 
+          this.state.thread.map((msg, pos) => {
             //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
-            return ( <ThreadItem message={msg} threaded job={this.props.jobMap[message.job_id]} isSelected={msg.id == this.props.selected.id} key={thid+"-"+msg.id}/> );
+            return ( <ThreadItem message={msg} 
+                      threaded 
+                      job={this.props.jobMap[message.job_id]} 
+                      isSelected={msg.id == this.props.selected.id} 
+                      key={thid+"-"+msg.id}/> 
+            );
           })
         }
       </div>

@@ -92,7 +92,7 @@ class Form extends Component {
       if (self.props.reset) {
         //$("#" + $(self.form).attr("id")).trigger("reset");
         $(this.form).trigger("reset");
-        console.log("TRIGGER");
+        //console.log("TRIGGER");
       }
     }).done(function(retData, textStatus, jaXHR) {
       self.ajaxSuccess(retData, textStatus, jaXHR);

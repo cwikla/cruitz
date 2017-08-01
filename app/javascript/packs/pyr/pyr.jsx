@@ -58,18 +58,56 @@ function getJSON(stuff) {
   });
 }
 
-class Icon extends Component {
-  render() {
-    let name = "fa fa-" + this.props.name;
-    return (
-      <i {...Util.propsMergeClassName(this.props, name)}/>
-    );
-  }
-}
+const Icon = (props) => (
+  <i {...Util.propsMergeClassName(props, "fa fa-" + props.name)}/>
+);
 
-class SmallLabel extends Component {
+const SmallLabel = (props) => (
+    <label {...Util.propsMergeClassName(props, "small-label hidden-sm-down")}>{props.children}</label>
+);
+
+class MagicDate extends Component {
+  constructor(props) {
+    super(props);
+    this.onUpdateMe = this.updateMe.bind(this);
+
+    this.state = {
+      currentTime: new Date()
+    };
+
+    this.interval = null;
+  }
+
+  componentDidMount() {
+    if (!this.interval) {
+      this.interval = setInterval(() => this.onUpdateMe(true), (60 - (new Date()).getSeconds()) * 1000);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.interval) {
+      let tmp = this.interval;
+      this.interval = null;
+      clearInterval(tmp);
+    }
+  }
+
+  updateMe(first=false) {
+    if (first) {
+      clearInterval(this.interval);
+      this.interval = setInterval(this.onUpdateMe, 60 * 1000);
+    }
+    this.setState({
+      currentTime: new Date()
+    });
+  }
+
   render() {
-    return (<label {...Util.propsMergeClassName(this.props, "small-label hidden-sm-down")}>{this.props.children}</label>);
+    let value = Util.friendlyDate(this.props.date);
+
+    return (
+      <span>{ value }</span>
+    );
   }
 }
 
@@ -155,5 +193,6 @@ const Pyr = {
   Form, 
   Util,
   Method,
+  MagicDate
 };
 export default Pyr;
