@@ -55,6 +55,7 @@ class MessageSerializer < ActiveModel::Serializer
     if object.candidate
       candy = object.candidate
       result = { 
+        id: candy.head.id,
         first_name: candy.head.first_name,
         last_name: candy.head.last_name
       }

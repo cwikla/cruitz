@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170719163359) do
+ActiveRecord::Schema.define(version: 20170801002859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20170719163359) do
     t.datetime "deleted_at"
     t.integer "head_id", null: false
     t.integer "job_id", null: false
+    t.datetime "unlocked_at"
     t.index ["head_id"], name: "index_candidates_on_head_id"
     t.index ["job_id"], name: "index_candidates_on_job_id"
   end
@@ -120,7 +121,7 @@ ActiveRecord::Schema.define(version: 20170719163359) do
     t.integer "root_message_id"
     t.integer "parent_message_id"
     t.text "title"
-    t.text "body"
+    t.text "body", null: false
     t.index ["candidate_id"], name: "index_messages_on_candidate_id"
     t.index ["from_user_id", "job_id", "candidate_id"], name: "index_messages_on_from_user_id_and_job_id_and_candidate_id"
     t.index ["job_id"], name: "index_messages_on_job_id"

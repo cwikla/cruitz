@@ -12,7 +12,11 @@ class MessagesController < ApplicationController
       puts "HEADER: #{k} => #{v}"
     end
 
-    @message = current_user.messages.build(message_params)
+    @parentMessage = Message.message_for_user(current_user, params[:id])
+
+    @message = @parentMessage.reply_from(current_user)
+    @message.body = message_params[:body].blank? ? nil : message_params[:body]
+    
     if @message.save
       return render json: @message
     else
@@ -52,6 +56,6 @@ class MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:title, :description, :location, :time_commit)
+    params.require(:message).permit(:body)
   end
 end

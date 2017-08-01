@@ -16,7 +16,7 @@ import Sheet from './sheet';
 
 const MESSAGES_URL = "/messages";
 
-const icons = ["emilia", "snow", "sophie"];
+const icons = ["emilia", "snow", "sophie", "thetick"];
 
 function getIcon(uid) {
   let pos = uid % icons.length;
@@ -46,7 +46,7 @@ class ThreadItem extends Component {
     let mine = (message.from_user.id == this.context.user.id);
     let ownerClass = (mine ? "mine" : "yours");
 
-    let id = "thread-" + message.id;
+    let id = "thread-item-" + message.id;
     let allClass = "thread-item " + ownerClass;
 
     let leftIcon = mine ? this.renderIcon(message) : null;
@@ -155,6 +155,37 @@ class IndexSheet extends Sheet.Index {
 
 }
 
+const ShowHeader = (props) => (
+      <div className="message-header">
+          <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
+          <div className="align-self-center title">{props.title}</div>
+      </div>
+);
+
+class ShowFooter extends Component {
+  render() {
+    return (
+      <div className="message-footer">
+        <Pyr.Form.Form
+          controller="message"
+          url={MESSAGES_URL + "/" + this.props.message.id}
+          id={"thread-form" + "-" + this.props.message.id}
+          onSuccess={this.props.onSuccess}
+          ref={(node) => this.form = node}
+          reset
+        >
+          <div className="flx-row">
+            <Pyr.Form.Group name="body" className="flx-1">
+              <Pyr.Form.TextField placeholder="Reply..."/>
+            </Pyr.Form.Group> 
+            <Pyr.Form.SubmitButton target={this}>Reply</Pyr.Form.SubmitButton>
+          </div>
+        </Pyr.Form.Form>
+      </div>
+    );
+  }
+}
+
 class ShowSheet extends Sheet.Show {
   getInitState(props) {
     return Object.assign(super.getInitState(props), { thread: null });
@@ -165,6 +196,7 @@ class ShowSheet extends Sheet.Show {
 
     this.onMessageDetails = this.messageDetails.bind(this);
     this.onBack = this.back.bind(this);
+    this.onSuccess = this.success.bind(this);
   }
 
   back(e) {
@@ -175,21 +207,40 @@ class ShowSheet extends Sheet.Show {
     this.props.onUnaction();
   }
 
-  renderHeader() {
-    let jobID = this.props.selected.job_id;
-    let job = this.props.jobMap[jobID];
+  success(data, textStatus, jqXHR) {
+    let thread = this.state.thread || [];
+    thread = thread.concat(data.message);
 
-    let id ="job-header-" + job.id;
-    let title = job.title;
-    let responseCount = 11;
-    let createdAt = "Today";
+    this.setState({
+      thread
+    });
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      return (<div className="loading" />);
+    }
+
+    let title = this.props.selected.job.title; // FIXME
 
     return (
-      <div className="job-header flx-row justify-content-center">
-        <span>{title}</span>
+      <div className="sheet flx-col-stretch flx-1">
+        <div id="message-show" className="flx-1 flx-col scroll">
+          <ShowHeader 
+            onBack={this.onBack}
+            title={title}
+          />
+          {this.renderInner()}
+        </div>
+        <ShowFooter 
+          message={this.props.selected}
+          onSuccess={this.onSuccess}
+        />
       </div>
     );
+
   }
+
 
   key(a) {
     return MessagesPage.key(a)
@@ -228,6 +279,19 @@ class ShowSheet extends Sheet.Show {
     if (this.props.selected && (this.props.selected.id != prevProps.selected.id)) {
       this.getMessage(this.props.selected.id);
     }
+    let oldLength = prevState.thread ? prevState.thread.length : 0;
+    let newLength = this.state.thread ? this.state.thread.length : 0;
+    console.log(oldLength + " => " + newLength);
+    if (oldLength != newLength) {
+      if (oldLength != 0) {
+        $("#message-show").stop().animate({
+          scrollTop: $("#message-show")[0].scrollHeight
+        }, 800);
+      } else {
+          $("#message-show").stop().scrollTop($("#message-show")[0].scrollHeight);
+      }
+  
+    }
   }
 
 
@@ -239,7 +303,7 @@ class ShowSheet extends Sheet.Show {
     let thid = "thread-" + this.props.selected.root_message_id;
 
     return (
-      <div id={thid} className="message-thread">
+      <div id={thid} className="message-thread flx-1">
         { this.state.thread.map((msg, pos) => {
             //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
             return ( <ThreadItem message={msg} threaded job={this.props.jobMap[message.job_id]} isSelected={msg.id == this.props.selected.id} key={thid+"-"+msg.id}/> );

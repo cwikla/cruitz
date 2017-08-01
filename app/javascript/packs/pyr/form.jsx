@@ -72,7 +72,7 @@ class Form extends Component {
       return;
     }
 
-    let $item = $(ReactDOM.findDOMNode(this));
+    let $item = $(this.form);
     let data = $item.serialize();
 
     this.preSubmit();
@@ -87,12 +87,22 @@ class Form extends Component {
       url: self.props.url,
       data: data,
       context: self
+
+    }).done(function(retData, textStatus, jaXHR) {
+      if (self.props.reset) {
+        //$("#" + $(self.form).attr("id")).trigger("reset");
+        $(this.form).trigger("reset");
+        console.log("TRIGGER");
+      }
     }).done(function(retData, textStatus, jaXHR) {
       self.ajaxSuccess(retData, textStatus, jaXHR);
+
     }).fail(function(jaXHR, textStatus, errorThrown) {
       self.ajaxError(jaXHR, textStatus, errorThrown);
+
     }).always(function() {
       this.postSubmit();
+
     });
   }
 
@@ -151,12 +161,15 @@ class Form extends Component {
   }
 
   submitHandler(e) {
-    e.preventDefault();
-    this.submit();
+    //alert("submit handler");
+    if (e) {
+      e.preventDefault();
+    }
+    this.submit(e);
   }
 
   render() {
-    let rest = Util.propsRemove(this.props, ["onPreSubmit", "onPostSubmit", "controller", "object", "url", "onSuccess"]);
+    let rest = Util.propsRemove(this.props, ["reset", "onPreSubmit", "onPostSubmit", "controller", "object", "url", "onSuccess", "onError"]);
 
     return (
       <form ref={(node) => {this.form = node;}} 
@@ -207,11 +220,12 @@ class Group extends Component {
 
   render() { 
     let className = "form-group";
-  if (this.state.errorString) {
-    className += " error";
-      }
+    if (this.state.errorString) {
+      className += " error";
+    }
+
     return (
-      <div className={className}>
+      <div {...Util.propsMergeClassName(this.props,className)}>
         {this.props.children}
       </div>
     );
@@ -227,16 +241,11 @@ class Child extends Component {
   }
 
   htmlID() {
-    return (this.context.controller.toLowerCase() + "_" + this.context.name.toLowerCase());
+    return (this.context.controller.toLowerCase() + "-" + this.context.name.toLowerCase());
   }
 
   name() {
     return (this.context.controller.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
-  }
-
-  defaultValue() {
-    let val = this.context.object ? this.context.object[this.context.name.toLowerCase()] : "";
-    return val;
   }
 
   hasError() {
@@ -254,18 +263,22 @@ class SubmitButton extends Component {
  
   onClickHandler(e) {
     //alert("CLICK");
-    e.preventDefault();
-
     if (this.props.target) {
+      if (e) {
+        e.preventDefault();
+      }
       //alert(this.props.target.form.constructor.name);
       this.props.target.form.submit();
     }
-
   }
 
   render() {
     return (
-      <a href="#" className="btn btn-primary" onClick={this.onClick}>{this.props.children}</a>
+      <a href="#" 
+        ref={(node) => this.button = node}
+        className="btn btn-primary" 
+        onClick={this.onClick}>{this.props.children}
+      </a>
     );
   }
 }
@@ -283,20 +296,6 @@ class Label extends Child {
 }
 
 class TextField extends Child {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      value: this.defaultValue()
-    }
-
-    this.onChange = this.handleChange.bind(this);
-  }
-
-  handleChange(e) {
-    this.setState({value: e.target.value});
-  }
-
   render() {
     let myProps = { 
       name: this.name(), 
@@ -306,7 +305,7 @@ class TextField extends Child {
     };
 
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.onChange} />
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
     );
   }
 }
@@ -332,21 +331,21 @@ class Option extends Child {
   }
 }
 
+class Hidden extends Child {
+  render() {
+    let myProps = { 
+      name: this.name(), 
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID()
+    };
+
+    return(
+      <input type="hidden" {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
+    );
+  }
+}
+
 class TextArea extends Child {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      value: this.defaultValue()
-    }
-
-    this.onChange = this.handleChange.bind(this);
-  }
-
-  handleChange(e) {
-    this.setState({value: e.target.value});
-  }
-
   render() {
     let myProps = { 
       name: this.name(), 
@@ -354,11 +353,28 @@ class TextArea extends Child {
       "aria-describedby": this.htmlID()
     };
     return(
-      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} value={this.state.value} onChange={this.onChange}/>
+      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
     );
   }
 }
 
-const PyrForm = { Form, Group, Child, Label, TextField, Select, Option, TextArea, SubmitButton };
+const PyrForm = { 
+  Form, 
+  Group, 
+  Child, 
+  Label, 
+  TextField, 
+  Select, 
+  Option, 
+  TextArea, 
+  SubmitButton, 
+  Hidden 
+};
 
-export { PyrForm, POST, GET, PUT, DELETE };
+export { 
+  PyrForm, 
+  POST, 
+  GET, 
+  PUT, 
+  DELETE 
+};

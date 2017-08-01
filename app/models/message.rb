@@ -18,6 +18,7 @@ class Message < ApplicationRecord
 
   def reply_from(from_user)
     to_user_id = (from_user.id == self.user_id ? self.from_user_id : self.user_id)
+
     Message.new(
       root_message_id: self.root_message_id || self.id,
       job_id: self.job_id,
@@ -26,6 +27,12 @@ class Message < ApplicationRecord
       user_id: to_user_id,
       from_user_id: from_user.id
     )
+  end
+
+  def self.message_for_user(user, mid)
+    message = user.messages.find(mid)
+    message ||= user.sent_messages.find(mid)
+    return message
   end
 
   def self.thread_for_message(message)
@@ -50,7 +57,7 @@ class Message < ApplicationRecord
 
     def on_before_create
       if !self.title
-        self.title = "RE: " + self.parent_message.title if self.parent_message_id
+        self.title = self.parent_message.title if self.parent_message_id
         self.title ||= "(No Subject)"
       end
 

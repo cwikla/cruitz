@@ -260,7 +260,7 @@ class Dashboard extends Pyr.UserComponent {
         return (<Sidebar.Button 
                   key={child.uuid} 
                   selected={this.state.job && same(this.state.job, child)} 
-                  onClick={this.onJobClicks[pos]}>({child.candidate_count || 0}) <span className="hidden-sm-down">{child.title}</span></Sidebar.Button>
+                  onClick={this.onJobClicks[pos]}><span className="hidden-sm-down">{child.title} ({child.candidate_count || 0})</span></Sidebar.Button>
         );
       }
     );
@@ -289,7 +289,7 @@ class Dashboard extends Pyr.UserComponent {
             onClick={this.onSetPageCandidates}
             selected={this.state.job != null}
           />
-          <div className="flx-col-stretch hidden-sm-down">
+          <div className="flx-col-stretch scroll hidden-sm-down">
             <Sidebar.Menu>
               {jobKids}
             </Sidebar.Menu>

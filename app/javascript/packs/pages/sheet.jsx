@@ -70,6 +70,10 @@ class Base extends Component {
     return null;
   }
 
+  renderFooter() {
+    return null;
+  }
+
   render() {
     if (this.state.isLoading) {
       return (<div className="loading" />);
@@ -79,6 +83,7 @@ class Base extends Component {
       <div className="sheet flx-col-stretch flx-1">
         {this.renderHeader()}
         {this.renderInner()}
+        {this.renderFooter()}
       </div>
     );
 
@@ -140,7 +145,7 @@ class Index extends Base {
 
   renderInner() {
     return (
-      <div className="inner">
+      <div className="inner flx-col-stretch flx-1">
         { this.props.items ? this.renderChildren() : this.renderNone() }
       </div>
     );
@@ -171,7 +176,7 @@ class Show extends Base {
     }
 
     return (
-      <div className="inner">
+      <div className="inner flx-col-stretch flx-1">
         <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div>
         {this.renderItem(this.props.selected, false) }
       </div>

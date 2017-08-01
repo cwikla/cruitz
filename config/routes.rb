@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   resources :candidates
   resources :heads
   resources :jobs
+
+  post 'messages/:id' => 'messages#create'
   resources :messages
 
   #namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api' }, path: '/' do
