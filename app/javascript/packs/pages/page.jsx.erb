@@ -29,7 +29,7 @@ class Page extends Component {
     //this.onSetAction = this.setAction.bind(this);
     //this.onSetUnaction = this.setAction.bind(this, null);
 
-    this.onItems = this.setItems.bind(this);
+    this.onSetItems = this.setItems.bind(this);
     this.getItems = this.getItems.bind(this);
   }
 
@@ -80,7 +80,7 @@ class Page extends Component {
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect} 
-        onItems={this.onItems}
+        onSetItems={this.onSetItems}
         loading={this.state.loading}
         job={this.props.job}
         jobs={this.props.jobs}

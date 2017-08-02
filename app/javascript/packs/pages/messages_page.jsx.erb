@@ -262,6 +262,9 @@ class ShowSheet extends Sheet.Show {
     thread = thread.concat(data.message);
 
     this.setThread(thread);
+    let l = this.props.items.slice();
+    l.push(data.message);
+    this.props.onSetItems(l);
   }
 
   render() {
@@ -431,7 +434,7 @@ class MessagesPage extends Page {
 
     let jobs = this.props.jobs || [];
     this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
-
+    this.onSetItems = this.setItems.bind(this);
   }
 
   key(a) {
@@ -471,7 +474,13 @@ class MessagesPage extends Page {
       return tmp;
     });
 
-    this.onItems(newMessages);
+    return newMessages;
+
+  }
+
+  setItems(items) {
+    items = this.mapItems(items);
+    super.setItems(items);
   }
 
   getItems(onLoading) {
@@ -480,7 +489,7 @@ class MessagesPage extends Page {
       context: this,
       loading: onLoading,
     }).done(function(data, textStatus, jaXHR) {
-        this.mapItems(data.messages);
+        this.onSetItems(data.messages);
 
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
@@ -515,6 +524,7 @@ class MessagesPage extends Page {
         items={this.state.items}
         jobMap={this.jobMap}
         selected={this.state.selected}
+        onSetItems={this.onSetItems}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
       />
