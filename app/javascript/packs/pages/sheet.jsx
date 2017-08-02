@@ -145,7 +145,7 @@ class Index extends Base {
 
   renderInner() {
     return (
-      <div className="inner flx-col-stretch flx-1">
+      <div className="inner flx-col-stretch flx-1 scroll">
         { this.props.items ? this.renderChildren() : this.renderNone() }
       </div>
     );

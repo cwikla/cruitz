@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
   def index
-    render json: current_user.messages #(params[:sent] ? current_user.sent_messages : current_user.messages).order(:id)
+    mjson = Message.compress(Message.all_messages_for(current_user))
+    render json: mjson
   end
 
   def new
@@ -34,7 +35,7 @@ class MessagesController < ApplicationController
   end
 
   def show
-    @message = current_user.messages.find(params[:id])
+    @message = Message.all_messages_for(current_user).find(params[:id])
     @thread = nil
 
     if @message

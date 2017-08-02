@@ -10,8 +10,17 @@ $icon_width: 6;
     line-height: 1.5rem;
   }
 
+  .message-item {
+    padding: 0.5rem 0 0.5rem 0;
+    border-bottom: 3px groove rgba(green, 0.7);
+
+    .summary {
+      text-overflow: ellipses;
+    }
+  }
+
   .new-candidate, .candidate {
-    background-color: green; // $secondary_navbar_background_color;
+    background-color: rgba(green, 0.5); // $secondary_navbar_background_color;
     color: white;
   }
 }

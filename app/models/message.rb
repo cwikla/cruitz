@@ -29,6 +29,10 @@ class Message < ApplicationRecord
     )
   end
 
+  def self.all_messages_for(user)
+    Message.where("user_id = ? or from_user_id = ?", user.id, user.id)
+  end
+
   def self.message_for_user(user, mid)
     message = user.messages.find(mid)
     message ||= user.sent_messages.find(mid)
@@ -47,6 +51,22 @@ class Message < ApplicationRecord
 
   def self.thread_for_candidate(candidate)
     Message.where(candidate_id: candidate.id).order(:id)
+  end
+
+  def self.compress(messages)
+    all = []
+    roots = {}
+
+    messages.each do |x|
+      key = x.root_message_id || x.id
+      roots[key] ||= x
+      roots[key] = x if roots[key].id < x.id
+    end
+
+    all = roots.values()
+    all = all.sort_by(&:id)
+
+    return all
   end
 
   def thread()

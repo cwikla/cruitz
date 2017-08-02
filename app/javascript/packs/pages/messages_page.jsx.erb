@@ -78,7 +78,7 @@ class ThreadItem extends Component {
         <div className={justify}>
           { leftIcon }
           <div className="flx-col justify-content-center">
-            <div className={" content flx-0"}>{message.body}</div>
+            <div className={" content flx-0"}>{id}-{message.body}</div>
           </div>
           { rightIcon }
         </div>
@@ -125,22 +125,17 @@ class MessageItem extends Component {
             <Grid.Column className="col-9">
               <NewCandidateHeader job={job} />
             </Grid.Column>
-            <Grid.Column className="col-3">
+            <Grid.Column className="col-3 created-at">
               <Pyr.MagicDate date={message.created_at} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row> 
-            <Grid.Column className="col-1">
-              Icon/Avatar
+            <Grid.Column className="col-1 avatar">
+              {id}
             </Grid.Column>
-            <Grid.Column className="col-11">
-              {message.title}
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row> 
-            <Grid.ColumnFull>
+            <Grid.Column className="col-11 summary">
               {message.body}
-            </Grid.ColumnFull>
+            </Grid.Column>
           </Grid.Row>
         </Grid.Column>
       </div>
@@ -331,7 +326,7 @@ class ShowSheet extends Sheet.Show {
     }
   }
 
-  top(item) {
+  topPos(item) {
     let $parent = $(item).parent();
     let $scroll = $(this.scroller);
 
@@ -393,7 +388,7 @@ class ShowSheet extends Sheet.Show {
     let $scroll = $(this.scroller);
 
     let showTop = this.scroller.scrollHeight;
-    let top = this.top($item) + $scroll.offset().top + $item.height();
+    let top = this.topPos($item) + $scroll.offset().top + $item.height();
 
     $scroll.stop().scrollTop(top);
   }
