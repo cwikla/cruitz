@@ -80,8 +80,16 @@ class MagicDate extends Component {
     this.interval = null;
   }
 
+  tooOld(date) {
+    date = new Date(date); // in case it's a string
+    let now = new Date();
+
+    let diff = (now - date); // to seconds
+    return diff >= (1000 * 60 * 60 * 24 * 2); // OLDER THAN 2 DAYS
+  }
+
   componentDidMount() {
-    if (!this.interval) {
+    if (!this.tooOld(this.props.date) && !this.interval) {
       this.interval = setInterval(() => this.onUpdateMe(true), (60 - (new Date()).getSeconds()) * 1000);
     }
   }
@@ -97,7 +105,9 @@ class MagicDate extends Component {
   updateMe(first=false) {
     if (first) {
       clearInterval(this.interval);
-      this.interval = setInterval(this.onUpdateMe, 60 * 1000);
+      if (!this.tooOld(this.props.date)) {
+        this.interval = setInterval(this.onUpdateMe, 60 * 1000);
+      }
     }
     this.setState({
       currentTime: new Date()
@@ -105,7 +115,7 @@ class MagicDate extends Component {
   }
 
   render() {
-    let value = Util.friendlyDate(this.props.date);
+    let value = Util.friendlyDate(this.props.date, this.props.longOnly);
 
     return (
       <span>{ value }</span>

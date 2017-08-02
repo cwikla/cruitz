@@ -125,7 +125,7 @@ class MessageItem extends Component {
             <Grid.Column className="col-9">
               <NewCandidateHeader job={job} />
             </Grid.Column>
-            <Grid.Column className="col-3 created-at">
+            <Grid.Column className="col-3 created-at text-right">
               <Pyr.MagicDate date={message.created_at} />
             </Grid.Column>
           </Grid.Row>
@@ -134,7 +134,7 @@ class MessageItem extends Component {
               {id}
             </Grid.Column>
             <Grid.Column className="col-11 summary">
-              {message.body}
+              {Pyr.Util.summarize(message.body, 300)}
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>

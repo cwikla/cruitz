@@ -56,14 +56,34 @@ function ClassNames(...args) {
   return new ClassNamesObj(...args);
 }
 
-export function friendlyDate(date) {
+function summarize(arg, maxLength=300, ellipses=true) {
+  if (arg.length <= maxLength) {
+    return arg;
+  }
+  
+  let cut = new RegExp(/\s/, "gi");
+  
+  arg = arg.slice(0, maxLength-3); // For ellipses
+  let pieces = arg.split(cut);
+  pieces = pieces.slice(0, pieces.length-1);
+  let result = pieces.join(" ");
+
+  if (result.length < maxLength/3) { // too small
+    result = arg.slice(0, maxLength/2);
+  }
+  result = result + "...";
+
+  return result;
+}
+
+function friendlyDate(date, longOnly=false) {
 
   date = new Date(date); // in case it's a string
   let now = new Date();
   
   let diff = (now - date); // to seconds
 
-  if (diff >= TWO_DAYS) {
+  if ((diff >= TWO_DAYS) || longOnly) {
     let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
     return (
       <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", options)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
@@ -86,12 +106,12 @@ export function friendlyDate(date) {
   
 }
 
-export function capFirstLetter(string) {
+function capFirstLetter(string) {
     string = string.toLowerCase();
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function childrenWithProps(children, props, kidType) {
+function childrenWithProps(children, props, kidType) {
   return React.Children.map(children, (child) => {
     if (!kidType || child.type == kidType) {
       return React.cloneElement(child, props);
@@ -100,7 +120,7 @@ export function childrenWithProps(children, props, kidType) {
   });
 }
 
-export function propsRemove(props, ripOut) {
+function propsRemove(props, ripOut) {
   let tmp = Object.assign({}, props);
   ripOut.forEach((a) => {
     delete tmp[a];
@@ -108,7 +128,7 @@ export function propsRemove(props, ripOut) {
   return tmp;
 }
 
-export function propsMerge(initProps, props) {
+function propsMerge(initProps, props) {
   let result = {};
   let allClasses = ClassNames(initProps.className, props.className);
 
@@ -120,12 +140,13 @@ export function propsMerge(initProps, props) {
   return result;
 }
 
-export function propsMergeClassName(props, className) {
+function propsMergeClassName(props, className) {
   return propsMerge({className}, props);
 }
 
 const Util = {
   ClassNames,
+  summarize,
   friendlyDate,
   capFirstLetter,
   childrenWithProps,
