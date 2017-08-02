@@ -13,6 +13,8 @@ import {
 } from "./form";
 
 import Util from './util';
+const ClassNames = Util.ClassNames;
+
 import Grid from './grid';
 
 const Method = { 
@@ -193,6 +195,7 @@ const Pyr = {
   Form, 
   Util,
   Method,
-  MagicDate
+  MagicDate,
+  ClassNames
 };
 export default Pyr;

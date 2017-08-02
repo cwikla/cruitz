@@ -219,9 +219,9 @@ class Group extends Component {
   }
 
   render() { 
-    let className = "form-group";
+    let className = Util.ClassNames("form-group");
     if (this.state.errorString) {
-      className += " error";
+      className.push("error");
     }
 
     return (

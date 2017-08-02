@@ -12,6 +12,8 @@ import ReactDOM from 'react-dom';
 import Page from '../page';
 
 import Pyr from '../../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
+
 import Sheet from '../sheet';
 
 const JOBS_URL = "/jobs";
@@ -52,10 +54,10 @@ class CandidateItem extends Component {
 
   render() {
     let id = "candidate-" + this.props.candidate.id;
-    let classes = "candidate-item card";
+    let classes = ClassNames("candidate-item card");
 
     if (this.props.selected) {
-       classes = classes + " selected";
+       classes.push("selected");
     }
 
     let fullName = this.props.candidate.first_name + " " + this.props.candidate.last_name;

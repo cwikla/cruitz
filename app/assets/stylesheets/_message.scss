@@ -4,7 +4,19 @@ $icon_width: 6;
   padding: 0rem 0rem 0.5rem 0rem;
 }
 
-.action.show .sheet {
+.index .sheet {
+  .header {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+  }
+
+  .new-candidate, .candidate {
+    background-color: green; // $secondary_navbar_background_color;
+    color: white;
+  }
+}
+
+.show .sheet {
   .col, .row {
     margin-left: 0;
     margin-right: 0;

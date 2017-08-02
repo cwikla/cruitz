@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
+
 const Grid = Pyr.Grid;
 
 import Page from './page';
@@ -55,20 +57,22 @@ class ThreadItem extends Component {
     let ownerClass = (mine ? "mine" : "yours");
 
     let id = THREAD_ID(message);
-    let allClass = "thread-item " + ownerClass;
-    allClass = allClass + ((!message.mine && !message.read_at) ? " unread red" : "");
+    let allClass = ClassNames("thread-item", ownerClass);
+    if (!message.mine && !message.read_at) {
+      allClass.push("unread red");
+    }
 
     let leftIcon = mine ? this.renderIcon(message) : null;
     let rightIcon = mine ? null : this.renderIcon(message);
 
-    let justify = "flx-row flx-1";
+    let justify = ClassNames("flx-row flx-1");
     if (!mine) {
-      justify = justify + " justify-content-end";
+      justify.push("justify-content-end");
     }
 
     return (
       <div className={allClass} id={id}>
-        <div className={justify + " created-at"}>
+        <div className={justify.concat("created-at")}>
           <Pyr.MagicDate date={message.created_at} />
         </div>
         <div className={justify}>
@@ -82,6 +86,18 @@ class ThreadItem extends Component {
     );
   }
 }
+
+const NewCandidateHeader = (props) => (
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message"])}>New Candidate: <span>{props.job.title}</span></div>
+);
+
+const CandidateHeader = (props) => (
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message"])}>Candidate: <span>{props.job.title}</span></div>
+);
+
+const JobQuestionHeader = (props) => (
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message"])}>Question: <span>{props.job.title}</span></div>
+);
 
 class MessageItem extends Component {
   static contextTypes = {
@@ -100,19 +116,16 @@ class MessageItem extends Component {
 
     let id = MID(message);
 
-    let allClass = "message-item " + ownerClass;
+    let allClass = ClassNames("message-item new-candidate ", ownerClass);
 
     return (
       <div className={allClass} id={id}>
         <Grid.Column>
           <Grid.Row> 
-            <Grid.Column className="col-1">
-              {icon}
-            </Grid.Column>
             <Grid.Column className="col-9">
-              {job.title}
+              <NewCandidateHeader job={job} />
             </Grid.Column>
-            <Grid.Column className="col-2">
+            <Grid.Column className="col-3">
               <Pyr.MagicDate date={message.created_at} />
             </Grid.Column>
           </Grid.Row>

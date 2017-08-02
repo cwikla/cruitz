@@ -5,12 +5,56 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import classNames from 'classnames';
-
 const ONE_MINUTE = (60 * 1000);
 const ONE_HOUR = (ONE_MINUTE * 60);
 const ONE_DAY = (ONE_HOUR * 24);
 const TWO_DAYS = (ONE_DAY * 2);
+
+class ClassNamesObj  {
+  constructor(...args) {
+    this.arr = [];
+    this.push(...args);
+  }
+  
+  push(...args) {
+    for(let val of args) {
+      this.innerPush(val);
+    }
+    return this;
+  }
+
+  concat(...args) {
+    return new ClassNamesObj(this.arr).push(...args);
+  }
+
+  innerPush(val) {
+    if (typeof val == 'string') {
+      val = val.split(" ");
+    }
+    if (!Array.isArray(val)) {
+      val = [ val ];
+    }
+    val = val.slice();
+    this.arr = this.arr.concat(val);
+    return this;
+  }
+  
+  toString() {
+    return this.arr.join(" ");
+  }
+  
+  classes() {
+    return this.toString();
+  }
+  
+  clear() {
+    this.arr = [];
+  }
+}
+
+function ClassNames(...args) {
+  return new ClassNamesObj(...args);
+}
 
 export function friendlyDate(date) {
 
@@ -64,20 +108,14 @@ export function propsRemove(props, ripOut) {
   return tmp;
 }
 
-export function mergeClassName(a, b) {
-  a = a || "";
-  b = b || "";
-  return classNames(a, b);
-}
-
 export function propsMerge(initProps, props) {
   let result = {};
-  let allClasses = mergeClassName(initProps.className, props.className);
+  let allClasses = ClassNames(initProps.className, props.className);
 
   Object.assign(result, initProps);
   Object.assign(result, props);
 
-  result.className = allClasses;
+  result.className = allClasses.classes();
 
   return result;
 }
@@ -87,13 +125,13 @@ export function propsMergeClassName(props, className) {
 }
 
 const Util = {
+  ClassNames,
   friendlyDate,
   capFirstLetter,
   childrenWithProps,
   propsRemove,
   propsMerge,
   propsMergeClassName,
-  mergeClassName
 };
 
 export default Util;
