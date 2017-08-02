@@ -235,7 +235,7 @@ class ShowSheet extends Sheet.Show {
       e.preventDefault();
     }
 
-    this.props.onUnaction();
+    this.props.onSetUnaction();
   }
 
   threadExtra(thread) {
@@ -494,8 +494,8 @@ class MessagesPage extends Page {
         items={this.state.items}
         jobMap={this.jobMap}
         selected={this.state.selected}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         getItems={this.getItems}
@@ -515,8 +515,8 @@ class MessagesPage extends Page {
         items={this.state.items}
         jobMap={this.jobMap}
         selected={this.state.selected}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
       />
     );
     

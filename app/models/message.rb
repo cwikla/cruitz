@@ -29,13 +29,12 @@ class Message < ApplicationRecord
     )
   end
 
-  def self.all_messages_for(user)
+  def self.all_for(user)
     Message.where("user_id = ? or from_user_id = ?", user.id, user.id)
   end
 
-  def self.message_for_user(user, mid)
-    message = user.messages.find(mid)
-    message ||= user.sent_messages.find(mid)
+  def self.for(user, mid)
+    message = all_for(user).where(:id => mid).first
     return message
   end
 

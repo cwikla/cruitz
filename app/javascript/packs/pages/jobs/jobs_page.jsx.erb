@@ -174,7 +174,7 @@ class NewSheet extends Sheet.New {
 
 class JobsPage extends Page {
   getItems() {
-    // nothing to see here
+    return this.props.jobs;
   }
 
   indexSheet() {
@@ -183,6 +183,8 @@ class JobsPage extends Page {
         {...this.props}
         jobs={this.props.items}
         onSelect={this.onSelect}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
       />
     );
   }
@@ -196,8 +198,8 @@ class JobsPage extends Page {
         {...this.props}
         jobs={this.props.items}
         selected={this.state.selected}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
       />
     );
 

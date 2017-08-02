@@ -16,6 +16,9 @@ class User < ApplicationRecord
 
   belongs_to :company
 
+  def find_message(x)
+    find_safe(x).where("user_id = ? or from_user_id = ?", self.id, self.id)
+  end
 
   def self.is_recruiter
      where(is_recruiter: true)

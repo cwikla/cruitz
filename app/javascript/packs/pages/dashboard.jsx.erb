@@ -27,12 +27,13 @@ const RECRUITERS_PAGE = 'Recruiters';
 const SETTINGS_PAGE = 'Settings';
 const MESSAGES_PAGE = 'Messages';
 
+
 const JOBS_URL = "/jobs";
 const USERS_URL = "/users";
 const SEARCH_URL = "/search";
 
 function same(a,b) {
-  return a.uuid == b.uuid;
+  return a.id == b.id;
 }
 
 class JobTitle extends Component {
@@ -65,7 +66,8 @@ class Dashboard extends Pyr.UserComponent {
     super(props);
 
     this.state = {
-      openPage: MESSAGES_PAGE,
+      page: MESSAGES_PAGE,
+      action: null,
       jobs: [],
       job: (this.props.jobs ? this.props.jobs[0] : null),
       loading: true,
@@ -83,6 +85,8 @@ class Dashboard extends Pyr.UserComponent {
     this.onSetPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
     this.onSetPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
     this.onSetPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
+    this.onSetAction = this.setAction.bind(this);
+    this.onSetUnaction = this.setAction.bind(this, null);
 
     this.onLoading = this.setLoading.bind(this);
   }
@@ -92,7 +96,17 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   title() {
-    return (this.state.openPage == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.openPage;
+    return (this.state.page == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.page;
+  }
+
+  setAction(action, e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.setState({
+      action
+    });
   }
 
   setPage(page, e) {
@@ -101,10 +115,17 @@ class Dashboard extends Pyr.UserComponent {
       e.preventDefault();
     }
 
-    this.setState({
-      job: null,
-      openPage: page
-    });
+    let newState = {};
+
+    if (page != this.state.page) {
+      newState.action = null;
+      newState.job = null;
+    }
+
+    this.setState(Object.assign(newState, {
+        page
+      })
+    );
   }
 
   setLoading(loading=true) {
@@ -130,7 +151,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   same(j1, j2) {
-    return j1.uuid == j2.uuid;
+    return j1.id == j2.id;
   }
 
   bindClicks(jobs, f) {
@@ -186,19 +207,19 @@ class Dashboard extends Pyr.UserComponent {
     }
 
     this.setState({
-      openPage: CANDIDATES_PAGE,
+      page: CANDIDATES_PAGE,
       job: job
     });
   }
 
   renderSearch() {
-    let controller = this.state.openPage;
-    let url = SEARCH_URL + "/" + this.state.openPage.toLowerCase();
+    let controller = this.state.page;
+    let url = SEARCH_URL + "/" + this.state.page.toLowerCase();
 
     return (
       <div>
       <Pyr.Form.Form
-        controller={this.state.openPage}
+        controller={this.state.page}
         url={url}
         id="search-form"
         ref={(node) => {this.form = node;}}
@@ -218,7 +239,7 @@ class Dashboard extends Pyr.UserComponent {
             <UserLabel user={this.context.user} />
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
-            <Pyr.SmallLabel className="nav-item">{this.state.openPage}</Pyr.SmallLabel>
+            <Pyr.SmallLabel className="nav-item">{this.state.page}</Pyr.SmallLabel>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-8 navbar-nav">
             <div className="nav-item ml-auto">{this.renderSearch()}</div>
@@ -272,14 +293,14 @@ class Dashboard extends Pyr.UserComponent {
             id="messages"
             icon="envelope-open-o"
             onClick={this.onSetPageMessages}
-            selected={this.state.openPage==MESSAGES_PAGE}
+            selected={this.state.page==MESSAGES_PAGE}
             >Messages</Sidebar.Header>
 
           <Sidebar.Header 
             id="jobs" 
             icon="bullseye"
             onClick={this.onSetPageJobs}
-            selected={this.state.openPage==JOBS_PAGE}
+            selected={this.state.page==JOBS_PAGE}
           >Jobs ({this.state.jobs.length})</Sidebar.Header>
 
           <Sidebar.Header
@@ -299,13 +320,13 @@ class Dashboard extends Pyr.UserComponent {
             id="recruiters"
             icon="users"
             onClick={this.onSetPageRecruiters}
-            selected={this.state.openPage==RECRUITERS_PAGE}
+            selected={this.state.page==RECRUITERS_PAGE}
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
             id="settings"
             icon="gear"
             onClick={this.onSetPageSettings}
-            selected={this.state.openPage==SETTINGS_PAGE}
+            selected={this.state.page==SETTINGS_PAGE}
           >Settings</Sidebar.Header>
         </Sidebar.Main>
     );
@@ -314,7 +335,7 @@ class Dashboard extends Pyr.UserComponent {
   renderBlurb(title) {
     return null;
 
-    if (this.state.job && this.state.openPage == CANDIDATES_PAGE) {
+    if (this.state.job && this.state.page == CANDIDATES_PAGE) {
       return (
         <div className="main-blurb hidden-sm-down">
           <JobTitle job={this.state.job} />
@@ -329,6 +350,15 @@ class Dashboard extends Pyr.UserComponent {
 
   renderMain() {
     let mainTitle = this.title();
+    let pageProps = {
+      action: this.state.action,
+      jobs: this.state.jobs,
+      job: this.state.job,
+
+      onSetAction: this.onSetAction,
+      onSetUnaction: this.onSetUnaction
+    };
+
     return (
         <main 
           className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col-stretch flx-1 main-page" 
@@ -338,34 +368,32 @@ class Dashboard extends Pyr.UserComponent {
           <div className="flx-col-stretch flx-1">
             <MessagesPage 
               {...this.props.messagePageProps} 
-              job={this.state.job}
-              jobs={this.state.jobs}
-              showing={this.state.openPage==MESSAGES_PAGE} 
+              {...pageProps}
+              showing={this.state.page==MESSAGES_PAGE} 
             />
             <JobsPage 
-               {...this.props.jobsPageProps} 
-              showing={this.state.openPage==JOBS_PAGE}
-              items={this.state.jobs}
-              job={this.state.job}
-              jobs={this.state.jobs}
-              selected={this.state.job}
+              {...this.props.jobsPageProps} 
+              {...pageProps}
+              showing={this.state.page==JOBS_PAGE}
               onJobCreate={this.onJobCreate}
               onJobUpdate={this.onJobUpdate}
               onJobDelete={this.onJobDelete}
+              items={this.state.jobs}
             />
             <CandidatesPage 
               {...this.props.candidatePageProps} 
-              job={this.state.job}
-              jobs={this.state.jobs}
-              showing={this.state.openPage==CANDIDATES_PAGE} 
+              {...pageProps}
+              showing={this.state.page==CANDIDATES_PAGE} 
             />
             <RecruitersPage 
               {...this.props.recruiterPageProps} 
-              showing={this.state.openPage==RECRUITERS_PAGE} 
+              {...pageProps}
+              showing={this.state.page==RECRUITERS_PAGE} 
             />
             <SettingsPage 
               {...this.props.settingsPageProps} 
-              showing={this.state.openPage==SETTINGS_PAGE} 
+              {...pageProps}
+              showing={this.state.page==SETTINGS_PAGE} 
             />
           </div>
         </main>
@@ -373,7 +401,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   render() {
-    //alert(this.state.openPage == CANDIDATES_PAGE);
+    //alert(this.state.page == CANDIDATES_PAGE);
     // React went bonkers changing the top level dude
 
     if (this.state.loading) {

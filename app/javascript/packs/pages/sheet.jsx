@@ -99,7 +99,7 @@ function sheetComponent(action) {
 
 function sheetID(name, action) {
   action = action || "Index";
-  let idName = "sheet" + action.toLowerCase();
+  let idName = "sheet" + "-" + action.toLowerCase();
   return idName;
 }
 
@@ -125,9 +125,13 @@ class Index extends Base {
     }
   }
 
+  sortItems(items) {
+    return items.sort((x, y) => y.id - x.id);
+  }
+
   renderChildren() {
     let self = this;
-    let items = this.props.items || [];
+    let items = this.sortItems(this.props.items) || [];
 
     return (
       <ul>
@@ -163,7 +167,7 @@ class Show extends Base {
     if (e) {  
       e.preventDefault();
     }
-    this.props.onAction('Edit');
+    this.props.onSetAction('Edit');
   }
 
   renderInner() {

@@ -16,7 +16,6 @@ class Page extends Component {
     super(props);
 
     let myState = {
-      action: null,
       items: null,
       selected: null,
       fullDetail: false,
@@ -27,8 +26,8 @@ class Page extends Component {
     this.onSelect = this.setSelected.bind(this);
     this.onUnselect = this.setSelected.bind(this, null);
 
-    this.onAction = this.setAction.bind(this);
-    this.onUnaction = this.setAction.bind(this, null);
+    //this.onSetAction = this.setAction.bind(this);
+    //this.onSetUnaction = this.setAction.bind(this, null);
 
     this.onItems = this.setItems.bind(this);
     this.getItems = this.getItems.bind(this);
@@ -57,13 +56,13 @@ class Page extends Component {
       <IndexSheet 
         {...this.props} 
         items={this.props.items}
-        selected={this.state.selected}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         loading={this.state.loading}
         job={this.props.job}
+        jobs={this.props.jobs}
       />
     );
   }
@@ -78,20 +77,20 @@ class Page extends Component {
       <ActionSheet 
         {...this.props}
         items={this.state.items}
-        selected={this.state.selected}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect} 
         onItems={this.onItems}
         loading={this.state.loading}
         job={this.props.job}
+        jobs={this.props.jobs}
       />
     );
    
   }
 
   showActionSheet() {
-    return !!this.state.action;
+    return !!this.props.action;
   }
 
 ///// END ////
@@ -105,12 +104,12 @@ class Page extends Component {
   setSelected(selected) {
     //alert("SELECTED " + JSON.stringify(selected));
     this.setState({
-      selected,
-      action: SHOW_ACTION
+      selected
     });
+    this.props.onSetAction(SHOW_ACTION);
   }
 
-  setAction(action) {
+  setActionOld(action) {
     //alert("Set Acxtion" + action);
     this.setState({action});
   }
@@ -154,12 +153,12 @@ class Page extends Component {
       extraClass = "col-md-12";
     }
 
-    extraClass = extraClass + " action " + this.state.action;
+    extraClass = extraClass + " action " + this.props.action;
     extraClass = extraClass.toLowerCase();
 
     return (
       <Pyr.Grid.ColHalf className={extraClass}>
-        {this.actionSheet(this.state.action)}
+        {this.actionSheet(this.props.action)}
       </Pyr.Grid.ColHalf>
     );
   }

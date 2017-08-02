@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   def index
-    mjson = Message.compress(Message.all_messages_for(current_user))
+    mjson = Message.compress(Message.all_for(current_user))
     render json: mjson
   end
 
@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
       puts "HEADER: #{k} => #{v}"
     end
 
-    @parentMessage = Message.message_for_user(current_user, params[:id])
+    @parentMessage = Message.for(current_user, params[:id])
 
     @message = @parentMessage.reply_from(current_user)
     @message.body = message_params[:body].blank? ? nil : message_params[:body]
@@ -26,7 +26,7 @@ class MessagesController < ApplicationController
   end
 
   def update
-    @message = current_user.messages.find(params[:id])
+    @message = Message.for(current_user, params[:id])
     if @message.update(message_params)
       return render json: @message
     else
@@ -35,7 +35,7 @@ class MessagesController < ApplicationController
   end
 
   def show
-    @message = Message.all_messages_for(current_user).find(params[:id])
+    @message = Message.for(current_user, params[:id])
     @thread = nil
 
     if @message
