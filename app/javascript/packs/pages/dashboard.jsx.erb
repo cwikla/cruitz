@@ -73,7 +73,7 @@ class Dashboard extends Pyr.UserComponent {
       loading: true,
     };
 
-    this.onJobClicks = [];
+    this.onJobClicks = {};
 
     this.onJobIndex = this.jobIndex.bind(this);
     this.onJobCreate = this.jobCreate.bind(this);
@@ -155,9 +155,9 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   bindClicks(jobs, f) {
-    this.onJobClicks = [];
+    this.onJobClicks = {};
     for(let item of jobs) {
-      this.onJobClicks.push(f.bind(this, item));
+      this.onJobClicks[item.id] = f.bind(this, item);
     }
   }
 
@@ -281,7 +281,7 @@ class Dashboard extends Pyr.UserComponent {
         return (<Sidebar.Button 
                   key={child.uuid} 
                   selected={this.state.job && same(this.state.job, child)} 
-                  onClick={this.onJobClicks[pos]}><span className="hidden-sm-down">{child.title} ({child.candidate_count || 0})</span></Sidebar.Button>
+                  onClick={this.onJobClicks[child.id]}><span className="hidden-sm-down">{child.title} ({child.candidate_count || 0})</span></Sidebar.Button>
         );
       }
     );
