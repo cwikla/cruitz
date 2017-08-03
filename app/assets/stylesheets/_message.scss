@@ -19,10 +19,14 @@ $icon_width: 6;
     }
   }
 
-  .new-candidate, .candidate {
-    background-color: rgba(green, 0.5); // $secondary_navbar_background_color;
+  .candidate {
+    background-color: rgba(green, 0.25); // $secondary_navbar_background_color;
     color: white;
+    &.unread {
+      background-color: rgba(yellow, 0.75); // $secondary_navbar_background_color;
+    }
   }
+
 }
 
 .show .sheet {

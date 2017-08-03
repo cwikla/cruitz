@@ -116,7 +116,11 @@ class MessageItem extends Component {
 
     let id = MID(message);
 
-    let allClass = ClassNames("message-item new-candidate ", ownerClass);
+    let allClass = ClassNames("message-item candidate ", ownerClass);
+
+    if (!mine && !message.read_at) {
+      allClass.push("unread");
+    }
 
     return (
       <div className={allClass} id={id}>
@@ -245,6 +249,7 @@ class ShowSheet extends Sheet.Show {
     thread.map((item, pos) => {
       let tmp = Object.assign({}, item);
       tmp.mine = (item.from_user.id == userId);
+      tmp.read_at = new Date(); // got it so pretend it's been read, server is updating
       all.push(tmp);
     });
 
@@ -255,6 +260,7 @@ class ShowSheet extends Sheet.Show {
     this.setState({
       thread: this.threadExtra(thread)
     });
+
   }
 
   success(data, textStatus, jqXHR) {
@@ -262,9 +268,20 @@ class ShowSheet extends Sheet.Show {
     thread = thread.concat(data.message);
 
     this.setThread(thread);
-    let l = this.props.items.slice();
-    l.push(data.message);
-    this.props.onSetItems(l);
+
+    let itemDict = this.props.items.reduce((results, item) => {
+      results[item.id] = item;
+      return results;
+    }, {} );
+
+    for(let item of thread) {
+      if (itemDict[item.id]) {
+        console.log("Replacing: " + item.id);
+      }
+      itemDict[item.id] = item;
+    }
+
+    this.props.onSetItems(Object.values(itemDict));
   }
 
   render() {
@@ -494,6 +511,11 @@ class MessagesPage extends Page {
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
     });
+  }
+
+  setSelected(selected) {
+    selected.read_at = new Date();
+    super.setSelected(selected);
   }
 
   indexSheet() {
