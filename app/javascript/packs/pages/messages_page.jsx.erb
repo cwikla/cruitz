@@ -247,13 +247,11 @@ class ShowSheet extends Sheet.Show {
     let userId = this.context.user.id;
 
     thread.map((item, pos) => {
-      let tmp = Object.assign({}, item);
-      tmp.mine = (item.from_user.id == userId);
-      tmp.read_at = new Date(); // got it so pretend it's been read, server is updating
-      all.push(tmp);
+      item.mine = (item.from_user.id == userId);
+      item.read_at = new Date(); // got it so pretend it's been read, server is updating
     });
 
-    return all;
+    return thread;
   }
 
   setThread(thread) {
