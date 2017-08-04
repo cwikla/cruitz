@@ -3,11 +3,13 @@ import React, {
   Component
 } from 'react';
 
+import PropTypes from 'prop-types';
+
 import Pyr from '../pyr/pyr';
 
 const SHOW_ACTION = "Show";
 
-class Page extends Component {
+class Page extends Pyr.UserComponent {
   getInitState(props) {
     return {};
   }

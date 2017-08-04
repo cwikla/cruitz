@@ -136,7 +136,7 @@ class UserComponent extends Component {
     let prevID = prevContext.user ? prevContext.user.id : null;
     let id = this.context.user ? this.context.user.id : null;
 
-    if (prevID != id) {
+    if (prevID != id && this.userChange) {
       //alert(prevID + " => " + id);
       this.userChange(this.context.user);
     }

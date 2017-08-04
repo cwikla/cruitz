@@ -2,9 +2,14 @@ import React, {
   Component
 } from 'react';
 
+import PropTypes from 'prop-types';
+
 import Pyr from '../pyr/pyr';
 
-class Base extends Component {
+class Item extends Pyr.UserComponent {
+}
+
+class Base extends Pyr.UserComponent {
   getInitState(props) {
     return  {};
   }
@@ -234,6 +239,7 @@ const Sheet = {
   sheetComponent,
   sheetID,
   Base,
+  Item,
   Index,
   Show,
   New, 

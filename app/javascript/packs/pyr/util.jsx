@@ -76,34 +76,74 @@ function summarize(arg, maxLength=300, ellipses=true) {
   return result;
 }
 
+function isToday(date, offsetDays=0) {
+  let start = new Date();
+  if (offsetDays) {
+    start = new Date(start.getTime() - (offsetDays * 86400000));
+  }
+  start.setHours(0, 0, 0, 0);
+
+  let end = new Date(start);
+  end.setHours(23, 59, 59, 999);
+
+  return ((date.getTime() >= start.getTime()) && (date.getTime() <= end.getTime()));
+}
+
+function isYesterday(date) {
+  return isToday(date, 1);
+}
+
 function friendlyDate(date, longOnly=false) {
 
   date = new Date(date); // in case it's a string
   let now = new Date();
   
   let diff = (now - date); // to seconds
-
-  if ((diff >= TWO_DAYS) || longOnly) {
-    let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
-    return (
-      <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", options)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
-    );
+  let longOptions = { weekday: 'short', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+  if (now.getYear() != date.getYear()) {
+    longOptions.year = 'numeric';
   }
 
-  var result = null;
-  if (diff < ONE_MINUTE) {
-    result = "Moments ago";
-  } else
-  if (diff < ONE_HOUR) {
-    result = Math.floor(diff / ONE_MINUTE) + " minutes ago";
-  } else
-  if (diff < ONE_DAY) {
-    result = "Today at " + date.toLocaleString("en-US", {hour: 'numeric', minute: 'numeric'});
-  }
-  result = result || "Yesterday at " + date.toLocaleString("en-US", {hour: 'numeric', minute: 'numeric'});
+  let timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+  if (!longOnly) {
+    var result = null;
+    if (diff < ONE_HOUR) {
 
-  return (<span className="friendly-date">{result}</span>);
-  
+      if (diff < ONE_MINUTE) {
+        result = "Moments ago";
+
+      } else {
+
+        result = Math.floor(diff / ONE_MINUTE) + " minutes ago";
+      }
+
+      return (
+        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleString("en-US", timeOptions)}}</span></span>
+      );
+    } 
+    else if (isToday(date)) {
+      result = "Today at " + date.toLocaleString("en-US", timeOptions);
+
+      timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+
+      return (
+        <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", timeOptions)}</span><span className="hidden-md-up">{result}</span></span>
+      );
+
+    } else if (isYesterday(date)) {
+
+      result = "Yesterday at " + date.toLocaleString("en-US", timeOptions);
+
+      return (
+        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
+      );
+    }
+  }
+
+
+  return (
+    <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", longOptions)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
+  );
 }
 
 function capFirstLetter(string) {

@@ -5,7 +5,6 @@ import React, {
   Component
 } from 'react';
 
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
@@ -33,11 +32,7 @@ function THREAD_ID(message) {
   return "thread-item-" + message.id;
 }
 
-class ThreadItem extends Component {
-  static contextTypes = {
-    user: PropTypes.object
-  }
-
+class ThreadItem extends Sheet.Item {
   renderIcon(message) {
     let icon = getIcon(message.from_user.id);
 
@@ -87,34 +82,25 @@ class ThreadItem extends Component {
   }
 }
 
-const NewCandidateHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message"])}>New Candidate: <span>{props.job.title}</span></div>
-);
-
 const CandidateHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message"])}>Candidate: <span>{props.job.title}</span></div>
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}Candidate: <span>{props.job.title}</span></div>
 );
 
 const JobQuestionHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message"])}>Question: <span>{props.job.title}</span></div>
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}Q&amp;A: <span>{props.job.title}</span></div>
 );
 
-class MessageItem extends Component {
-  static contextTypes = {
-    user: PropTypes.object
-  }
+class MessageItem extends Sheet.Item {
 
   render() {
     let message = this.props.message;
     //console.log(JSON.stringify(message));
 
     let job = this.props.job;
-    let icon = message.candidate ? message.candidate.first_name : "Q&A";
-
-    let mine = (message.from_user.id == this.context.user.id);
-    let ownerClass = (mine ? "mine" : "yours");
-
     let id = MID(message);
+
+    let mine = message.mine;
+    let ownerClass = (mine ? "mine" : "yours");
 
     let allClass = ClassNames("message-item candidate ", ownerClass);
 
@@ -122,12 +108,16 @@ class MessageItem extends Component {
       allClass.push("unread");
     }
 
+    if (message.is_root) {
+      allClass.push("new");
+    }
+
     return (
       <div className={allClass} id={id}>
         <Grid.Column>
           <Grid.Row> 
             <Grid.Column className="col-9">
-              <NewCandidateHeader job={job} />
+              <CandidateHeader job={job} isNew={message.is_root}/>
             </Grid.Column>
             <Grid.Column className="col-3 created-at text-right">
               <Pyr.MagicDate date={message.created_at} />
@@ -153,10 +143,6 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(message, isSelected) {
-    if (!message.thread) {
-      return null;
-    }
-
     return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
   }
 
@@ -207,10 +193,6 @@ class ShowFooter extends Component {
 }
 
 class ShowSheet extends Sheet.Show {
-  static contextTypes = {
-    user: PropTypes.object
-  }
-
   getInitState(props) {
     return Object.assign(super.getInitState(props), { thread: null });
   }
@@ -247,6 +229,7 @@ class ShowSheet extends Sheet.Show {
     let userId = this.context.user.id;
 
     thread.map((item, pos) => {
+      item.is_root = !item.root_message_id;
       item.mine = (item.from_user.id == userId);
       item.read_at = new Date(); // got it so pretend it's been read, server is updating
     });
@@ -463,38 +446,28 @@ class MessagesPage extends Page {
     }
   }
 
-  mapItems(messages) {
+  reduceItems(messages) { // throw out all but the last from the thread
 
-    let threads = messages.reduce((m,o) => {
-      let threadId = o.root_message_id || o.id;
+    let threads = messages.reduce((mmap, msg) => {
+      let threadId = msg.root_message_id || msg.id;
 
-      if (!o.root_message_id && !m[o.id]) {
-        m[o.id] = o;
+      if (!mmap[threadId] || mmap[threadId].id < msg.id) {
+
+        let job = this.jobMap[msg.job_id]; // FIXME, if job not here go fetch it
+        let mine = (msg.from_user.id == this.context.user.id);
+        let is_root = !msg.root_message_id;
+
+        mmap[threadId] = Object.assign({}, msg, { job, mine, is_root});
       }
-      else {
-        if (!m[o.root_message_id] || m[o.root_message_id].id < o.id) {
-          m[o.root_message_id] = o;
-        }
-      }
-      return m;
+      return mmap;
     }, {});
 
-
-    let newMessages = messages.map((msg, pos) => {
-      let job = this.jobMap[msg.job_id]; // FIXME, if job not here go fetch it
-
-      let rootId = msg.root_message_id || msg.id;
-
-      let tmp = Object.assign({}, msg, {job: job, thread: (threads[rootId].id == msg.id)});
-      return tmp;
-    });
-
-    return newMessages;
+    return Object.values(threads);
 
   }
 
   setItems(items) {
-    items = this.mapItems(items);
+    items = this.reduceItems(items);
     super.setItems(items);
   }
 
