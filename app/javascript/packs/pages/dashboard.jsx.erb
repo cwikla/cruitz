@@ -71,6 +71,7 @@ class Dashboard extends Pyr.UserComponent {
       jobs: [],
       job: (this.props.jobs ? this.props.jobs[0] : null),
       loading: true,
+      buttonItemCount: {}
     };
 
     this.onJobClicks = {};
@@ -87,6 +88,7 @@ class Dashboard extends Pyr.UserComponent {
     this.onSetPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
     this.onSetAction = this.setAction.bind(this);
     this.onSetUnaction = this.setAction.bind(this, null);
+    this.onSetButtonCount = this.setButtonCount.bind(this);
 
     this.onLoading = this.setLoading.bind(this);
   }
@@ -97,6 +99,15 @@ class Dashboard extends Pyr.UserComponent {
 
   title() {
     return (this.state.page == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.page;
+  }
+
+  setButtonCount(page, count=0) {
+    let buttonItemCount = Object.assign({}, this.state.buttonItemCount);
+    buttonItemCount[page] = count;
+
+    this.setState({
+      buttonItemCount
+    });
   }
 
   setAction(action, e) {
@@ -168,7 +179,11 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   jobIndex(jobs) {
+    let buttonItemCount = Object.assign({}, this.state.buttonItemCount);
+    buttonItemCount[JOBS_PAGE] = jobs.length;
+
     this.setState({
+      buttonItemCount,
       jobs
     });
   }
@@ -294,6 +309,7 @@ class Dashboard extends Pyr.UserComponent {
             icon="envelope-open-o"
             onClick={this.onSetPageMessages}
             selected={this.state.page==MESSAGES_PAGE}
+            itemCount={this.state.buttonItemCount[MESSAGES_PAGE] || 0}
             >Messages</Sidebar.Header>
 
           <Sidebar.Header 
@@ -301,7 +317,8 @@ class Dashboard extends Pyr.UserComponent {
             icon="bullseye"
             onClick={this.onSetPageJobs}
             selected={this.state.page==JOBS_PAGE}
-          >Jobs ({this.state.jobs.length})</Sidebar.Header>
+            itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
+          >Jobs</Sidebar.Header>
 
           <Sidebar.Header
             className="hidden-md-up"
@@ -320,6 +337,7 @@ class Dashboard extends Pyr.UserComponent {
             id="recruiters"
             icon="users"
             onClick={this.onSetPageRecruiters}
+            itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
             selected={this.state.page==RECRUITERS_PAGE}
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 

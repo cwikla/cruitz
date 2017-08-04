@@ -87,7 +87,7 @@ const CandidateHeader = (props) => (
 );
 
 const JobQuestionHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}Q&amp;A: <span>{props.job.title}</span></div>
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>Q&amp;A: <span>{props.job.title}</span></div>
 );
 
 class MessageItem extends Sheet.Item {
@@ -112,12 +112,14 @@ class MessageItem extends Sheet.Item {
       allClass.push("new");
     }
 
+    let Header = message.candidate ? CandidateHeader : JobQuestionHeader
+
     return (
       <div className={allClass} id={id}>
         <Grid.Column>
-          <Grid.Row> 
+          <Grid.Row className="title"> 
             <Grid.Column className="col-9">
-              <CandidateHeader job={job} isNew={message.is_root}/>
+              <Header job={job} isNew={message.is_root}/>
             </Grid.Column>
             <Grid.Column className="col-3 created-at text-right">
               <Pyr.MagicDate date={message.created_at} />
@@ -125,7 +127,7 @@ class MessageItem extends Sheet.Item {
           </Grid.Row>
           <Grid.Row> 
             <Grid.Column className="col-1 avatar">
-              {id}
+              {id}:{message.root_message_id}
             </Grid.Column>
             <Grid.Column className="col-11 summary">
               {Pyr.Util.summarize(message.body, 300)}

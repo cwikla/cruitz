@@ -118,7 +118,7 @@ function friendlyDate(date, longOnly=false) {
       }
 
       return (
-        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleString("en-US", timeOptions)}}</span></span>
+        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleString("en-US", timeOptions)}</span></span>
       );
     } 
     else if (isToday(date)) {
@@ -127,7 +127,7 @@ function friendlyDate(date, longOnly=false) {
       timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
 
       return (
-        <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", timeOptions)}</span><span className="hidden-md-up">{result}</span></span>
+        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleString("en-US", timeOptions)}</span></span>
       );
 
     } else if (isYesterday(date)) {

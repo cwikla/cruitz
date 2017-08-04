@@ -1,7 +1,7 @@
 $icon_width: 6;
 
 .message-item {
-  padding: 0rem 0rem 0.5rem 0rem;
+  padding: 0.5rem 0rem 0.5rem 0rem;
 }
 
 .index .sheet {
@@ -12,22 +12,25 @@ $icon_width: 6;
 
   .message-item {
     padding: 0.5rem 0 0.5rem 0;
-    border-bottom: 3px groove rgba(green, 0.7);
+    border-bottom: 3px groove rgba(white, 0.7);
 
     .summary {
       text-overflow: ellipses;
     }
-  }
 
-  .candidate {
-    background-color: rgba(green, 0.25); // $secondary_navbar_background_color;
-    color: white;
+    color: $gray_color;
+
     &.unread {
-      background-color: rgba(yellow, 0.75); // $secondary_navbar_background_color;
+      background-color: rgba($primary_color, 0.05);
+      color: black;
+      font-weight: 500;
+
+      .title {
+      }
     }
   }
-
 }
+
 
 .show .sheet {
   .col, .row {

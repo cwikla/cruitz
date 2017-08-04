@@ -85,7 +85,7 @@ class MagicDate extends Component {
     let now = new Date();
 
     let diff = (now - date); // to seconds
-    return diff >= (1000 * 60 * 60 * 24 * 2); // OLDER THAN 2 DAYS
+    return diff >= (1000 * 60 * 60 * 1); // OLDER THAN 1 HOUR
   }
 
   componentDidMount() {
