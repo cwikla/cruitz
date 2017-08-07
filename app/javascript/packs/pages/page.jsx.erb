@@ -6,6 +6,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import Pyr from '../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
 
 const SHOW_ACTION = "Show";
 
@@ -117,21 +118,21 @@ class Page extends Pyr.UserComponent {
   }
 
   renderIndexSheet() {
-    let extraClass = "col-md-6";
+    let extraClass = ClassNames("col-md-6");
 
     if (this.showActionSheet()) {
       if (this.state.fullDetail) {
-        extraClass = "hidden";
+        extraClass.reset("hidden");
       }
       else {
-        extraClass = extraClass + " hidden-xs-down";
+        extraClass.push("hidden-xs-down");
       }
     }
     else {
-      extraClass = "col-md-12";
+      extraClass.reset("col-md-12");
     }
 
-    extraClass = extraClass + " index flx-col-stretch flx-1";
+    extraClass = extraClass.push(" index flx-col-stretch flx-1");
 
     return (
       <Pyr.Grid.ColHalf className={extraClass}>
@@ -149,14 +150,13 @@ class Page extends Pyr.UserComponent {
       return this.renderNoSheet();
     }
 
-    let extraClass = "col-md-6";
+    let extraClass = ClassNames("col-md-6");
 
     if (this.state.fullDetail) {
-      extraClass = "col-md-12";
+      extraClass.reset("col-md-12");
     }
 
-    extraClass = extraClass + " action " + this.props.action;
-    extraClass = extraClass.toLowerCase();
+    extraClass = extraClass.push("action").push(this.props.action.toLowerCase());
 
     return (
       <Pyr.Grid.ColHalf className={extraClass}>

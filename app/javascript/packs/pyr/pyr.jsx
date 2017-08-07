@@ -60,6 +60,10 @@ function getJSON(stuff) {
   });
 }
 
+const Loading = (props) => (
+  <div className="loading" />
+);
+
 const Icon = (props) => (
   <i {...Util.propsMergeClassName(props, "fa fa-" + props.name)}/>
 );
@@ -206,6 +210,7 @@ const Pyr = {
   Util,
   Method,
   MagicDate,
-  ClassNames
+  ClassNames,
+  Loading
 };
 export default Pyr;

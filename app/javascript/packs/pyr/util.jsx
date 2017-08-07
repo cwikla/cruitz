@@ -49,6 +49,11 @@ class ClassNamesObj  {
   
   clear() {
     this.arr = [];
+    return this;
+  }
+
+  reset(...args) {
+    return this.clear().push(...args);
   }
 }
 

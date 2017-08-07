@@ -21,7 +21,7 @@ const JOBS_URL = "/jobs";
 class CandidateHeader extends Component {
   render() {
     if (!this.props.candidate) {
-      return null;
+      return <Pyr.Loading />
     }
 
     let id ="job-header-" + this.props.candidate.id;

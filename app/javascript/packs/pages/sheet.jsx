@@ -81,7 +81,7 @@ class Base extends Pyr.UserComponent {
 
   render() {
     if (this.state.isLoading) {
-      return (<div className="loading" />);
+      return (<Pyr.Loading />);
     }
 
     return (

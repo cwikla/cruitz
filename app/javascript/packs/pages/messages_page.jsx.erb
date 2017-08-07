@@ -269,7 +269,7 @@ class ShowSheet extends Sheet.Show {
 
   render() {
     if (this.state.isLoading) {
-      return (<div className="loading" />);
+      return (<Pyr.Loading />);
     }
 
     let title = this.props.selected.job.title; // FIXME
@@ -398,8 +398,8 @@ class ShowSheet extends Sheet.Show {
 
 
   renderItem(message, isSelected) {
-    if (!this.state.thread || this.state.thread.length <= 1) {
-      return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
+    if (!this.state.thread || this.state.thread.length < 1) {
+      return (<Pyr.Loading />);
     }
 
     let thid = "thread-" + this.props.selected.root_message_id;
@@ -410,7 +410,6 @@ class ShowSheet extends Sheet.Show {
           this.state.thread.map((msg, pos) => {
             //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
             return ( <ThreadItem message={msg} 
-                      threaded 
                       job={this.props.jobMap[message.job_id]} 
                       isSelected={msg.id == this.props.selected.id} 
                       key={thid+"-"+msg.id}/> 
