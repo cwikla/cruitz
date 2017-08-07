@@ -32,15 +32,22 @@ function THREAD_ID(message) {
   return "thread-item-" + message.id;
 }
 
+const Icon = (props) => (
+  <div className="flex-column icon justify-content-center align-self-center">
+    <div><img src={props.icon}/></div>
+    <div className="align-self-center">{props.firstName}</div>
+  </div>
+);
+
 class ThreadItem extends Sheet.Item {
   renderIcon(message) {
     let icon = getIcon(message.from_user.id);
 
     return (
-      <div className="flex-column icon justify-content-center align-self-center">
-        <div><img src={icon}/></div>
-        <div className="align-self-center">{message.from_user.first_name}</div>
-      </div>
+      <Icon 
+        icon={icon}
+        firstName={message.from_user.first_name}
+      />
     );
   }
 
@@ -156,12 +163,77 @@ class IndexSheet extends Sheet.Index {
 
 }
 
-const ShowHeader = (props) => (
-      <div className="message-header">
-          <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
-          <div className="align-self-center title">{props.title}</div>
+class ShowQAHeader extends Component {
+  render() {
+    let message = this.props.message;
+
+    return (
+      <div className="qa-header">
+          <div className="align-self-center title">{message.job.title} Questions & Answers</div>
+          <div className="from">{message.from_user.first_name} has asked a question about your job posting</div>
+          <div className="body">{message.body}</div>
+          <div className="align-self-left back"><a href="#" onClick={this.props.onBack}>Back</a></div>
       </div>
+    );
+  }
+}
+
+const ShowMessageHeader = (props) => (
+  <div className="message-header">
+      <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
+      <div className="align-self-center title">{props.title}</div>
+  </div>
 );
+
+class ShowHeader extends Component {
+  render() {
+    if (!this.props.message) {
+      return null;
+    }
+
+
+    return (this.props.message.candidate ? <ShowMessageHeader {...this.props}/> : <ShowQAHeader {...this.props}/>);
+  }
+}
+
+class ShowInner extends Component {
+  render() {
+    return (
+      <div 
+        ref={(node) => this.scrollerOld = (node)}
+        id="message-show" 
+        className="flx-1 flx-col scroll" 
+        onScroll={this.props.onScroll}
+      >
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+class ShowThread extends Component {
+  render() {
+    return (
+      <div className="sheet flx-col-stretch flx-1">
+        <ShowHeader 
+          message={this.props.message}
+          onBack={this.props.onBack}
+          title={this.props.title}
+        />
+        <ShowInner
+          onScroll={this.props.onScroll}
+        >
+          {this.props.children}
+        </ShowInner>
+      
+        <ShowFooter 
+          message={this.props.message}
+          onSuccess={this.props.onSuccess}
+        />
+      </div>
+    );
+  }
+}
 
 class ShowFooter extends Component {
   componentDidMount() {
@@ -206,6 +278,12 @@ class ShowSheet extends Sheet.Show {
     this.onBack = this.back.bind(this);
     this.onSuccess = this.success.bind(this);
     //this.onScroll = this.scroll.bind(this);
+  }
+
+  scroller() {
+    let $item = $("#message-show")[0];
+    return $item;
+    //return this.inner.scroller;
   }
 
   scroll(e) {
@@ -274,27 +352,20 @@ class ShowSheet extends Sheet.Show {
 
     let title = this.props.selected.job.title; // FIXME
 
-    return (
-      <div className="sheet flx-col-stretch flx-1">
-        <ShowHeader 
-          onBack={this.onBack}
+    if (true) { //this.props.message.candidate) {
+      return(
+        <ShowThread
+          ref={(node) => this.inner = node}
           title={title}
-        />
-        <div 
-          ref={(node) => this.scroller = (node)}
-          id="message-show" 
-          className="flx-1 flx-col scroll" 
-          onScroll={this.onScroll}
+          message={this.props.selected}
+          onBack={this.onBack}
+          onScroll={this.props.onScroll}
+          onSuccess={this.onSuccess}
         >
           {this.renderInner()}
-        </div>
-        <ShowFooter 
-          message={this.props.selected}
-          onSuccess={this.onSuccess}
-        />
-      </div>
-    );
-
+        </ShowThread>
+      );
+    }
   }
 
 
@@ -331,7 +402,7 @@ class ShowSheet extends Sheet.Show {
 
   topPos(item) {
     let $parent = $(item).parent();
-    let $scroll = $(this.scroller);
+    let $scroll = $(this.scroller());
 
     let top = $(item).offset().top;
 
@@ -376,10 +447,13 @@ class ShowSheet extends Sheet.Show {
   }
 
   scrollToLastRead(firstUnread=false) {
+    console.log("SCROLL TO LAST");
+
     if (!firstUnread) {
       console.log("Scroll To Bottom");
-      $(this.scroller).stop().animate({
-        scrollTop: this.scroller.scrollHeight
+      console.log("Scroll Height: " + this.scroller().scrollHeight);
+      $(this.scroller()).stop().animate({
+        scrollTop: this.scroller().scrollHeight
       }, 800);
       return;
     }
@@ -388,9 +462,9 @@ class ShowSheet extends Sheet.Show {
     let mid = THREAD_ID(topMessage);
 
     let $item = $("#" + mid);
-    let $scroll = $(this.scroller);
+    let $scroll = $(this.scroller());
 
-    let showTop = this.scroller.scrollHeight;
+    let showTop = this.scroller().scrollHeight;
     let top = this.topPos($item) + $scroll.offset().top + $item.height();
 
     $scroll.stop().scrollTop(top);

@@ -85,6 +85,26 @@ $icon_width: 6;
     }
   }
 
+  .qa-header {
+    color: #000;
+    background-color: rgba($secondary_light_color, 0.25);
+    padding: 3rem;
+
+    .title {
+      font-size: 3rem;
+      line-height: 3rem;
+      text-align: center;
+    }
+    .from {
+      padding: 3rem;
+    }
+    .body {
+      padding: 3rem;
+      border-radius: 20px;
+      background-color: rgba($secondary_light_color, 0.5);
+    }
+  }
+
   .message-header {
     color: white;
     background-color: $secondary_navbar_background_color;
@@ -93,6 +113,7 @@ $icon_width: 6;
       padding: 3rem;
       font-size: 3rem;
       line-height: 3rem;
+      text-align: center;
     }
   }
 
