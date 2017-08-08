@@ -185,19 +185,9 @@ const ShowMessageHeader = (props) => (
   </div>
 );
 
-class ShowHeader extends Component {
-  render() {
-    if (!this.props.message) {
-      return null;
-    }
-
-
-    return (this.props.message.candidate ? <ShowMessageHeader {...this.props}/> : <ShowQAHeader {...this.props}/>);
-  }
-}
-
 class ShowInner extends Component {
   render() {
+    console.log("SHOW INNNER!");
     return (
       <div 
         ref={(node) => this.scrollerOld = (node)}
@@ -211,11 +201,35 @@ class ShowInner extends Component {
   }
 }
 
+class ShowQA extends Component {
+  render() {
+    return (
+      <div className="sheet flx-col-stretch flx-1">
+        <ShowQAHeader 
+          message={this.props.message}
+          onBack={this.props.onBack}
+          title={this.props.title}
+        />
+        <ShowInner
+          onScroll={this.props.onScroll}
+        >
+          {this.props.children}
+        </ShowInner>
+      
+        <ShowFooter 
+          message={this.props.message}
+          onSuccess={this.props.onSuccess}
+        />
+      </div>
+    );
+  }
+}
+
 class ShowThread extends Component {
   render() {
     return (
       <div className="sheet flx-col-stretch flx-1">
-        <ShowHeader 
+        <ShowMessageHeader 
           message={this.props.message}
           onBack={this.props.onBack}
           title={this.props.title}
@@ -281,8 +295,9 @@ class ShowSheet extends Sheet.Show {
   }
 
   scroller() {
-    let $item = $("#message-show")[0];
-    return $item;
+    let item = $("#message-show")[0];
+    console.log("SCROLLER: " + item);
+    return item;
     //return this.inner.scroller;
   }
 
@@ -346,15 +361,15 @@ class ShowSheet extends Sheet.Show {
   }
 
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading || !this.props.selected) {
       return (<Pyr.Loading />);
     }
 
     let title = this.props.selected.job.title; // FIXME
 
-    if (true) { //this.props.message.candidate) {
-      return(
-        <ShowThread
+    if (!this.props.selected.candidate) {
+      return (
+        <ShowQA
           ref={(node) => this.inner = node}
           title={title}
           message={this.props.selected}
@@ -363,9 +378,22 @@ class ShowSheet extends Sheet.Show {
           onSuccess={this.onSuccess}
         >
           {this.renderInner()}
-        </ShowThread>
+        </ShowQA>
       );
     }
+
+    return(
+      <ShowThread
+        ref={(node) => this.inner = node}
+        title={title}
+        message={this.props.selected}
+        onBack={this.onBack}
+        onScroll={this.props.onScroll}
+        onSuccess={this.onSuccess}
+      >
+        {this.renderInner()}
+      </ShowThread>
+    );
   }
 
 
