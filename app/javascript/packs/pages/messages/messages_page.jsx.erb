@@ -7,95 +7,22 @@ import React, {
 
 import ReactDOM from 'react-dom';
 
-import Pyr from '../pyr/pyr';
+import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
-
 const Grid = Pyr.Grid;
+import Page from '../page';
+import Sheet from '../sheet';
+import UserIcon from '../../util/icon';
 
-import Page from './page';
-import Sheet from './sheet';
+import MessageThread, { MessageThreadHeader } from './message_thread';
+import MessageQA, { MessageQAHeader } from './message_qa';
 
 const MESSAGES_URL = "/messages";
 
-const icons = ["emilia", "snow", "sophie", "thetick"];
-
-function getIcon(uid) {
-  let pos = uid % icons.length;
-  return "/assets/images/thrones/" + icons[pos] + ".jpeg";
-}
 
 function MID(message) {
   return "message-" + message.id;
 }
-
-function THREAD_ID(message) {
-  return "thread-item-" + message.id;
-}
-
-const Icon = (props) => (
-  <div className="flex-column icon justify-content-center align-self-center">
-    <div><img src={props.icon}/></div>
-    <div className="align-self-center">{props.firstName}</div>
-  </div>
-);
-
-class ThreadItem extends Sheet.Item {
-  renderIcon(message) {
-    let icon = getIcon(message.from_user.id);
-
-    return (
-      <Icon 
-        icon={icon}
-        firstName={message.from_user.first_name}
-      />
-    );
-  }
-
-  render() {
-    let message = this.props.message;
-    let job = this.props.job;
-
-    let mine = message.mine;
-    let ownerClass = (mine ? "mine" : "yours");
-
-    let id = THREAD_ID(message);
-    let allClass = ClassNames("thread-item", ownerClass);
-    if (!message.mine && !message.read_at) {
-      allClass.push("unread red");
-    }
-
-    let leftIcon = mine ? this.renderIcon(message) : null;
-    let rightIcon = mine ? null : this.renderIcon(message);
-
-    let justify = ClassNames("flx-row flx-1");
-    if (!mine) {
-      justify.push("justify-content-end");
-    }
-
-    return (
-      <div className={allClass} id={id}>
-        <div className={justify.concat("created-at")}>
-          <Pyr.MagicDate date={message.created_at} />
-        </div>
-        <div className={justify}>
-          { leftIcon }
-          <div className="flx-col justify-content-center">
-            <div className={" content flx-0"}>{id}-{message.body}</div>
-          </div>
-          { rightIcon }
-        </div>
-      </div>
-    );
-  }
-}
-
-const CandidateHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}Candidate: <span>{props.job.title}</span></div>
-);
-
-const JobQuestionHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>Q&amp;A: <span>{props.job.title}</span></div>
-);
 
 class MessageItem extends Sheet.Item {
 
@@ -119,7 +46,7 @@ class MessageItem extends Sheet.Item {
       allClass.push("new");
     }
 
-    let Header = message.candidate ? CandidateHeader : JobQuestionHeader
+    let Header = message.candidate ? MessageThreadHeader : MessageQAHeader;
 
     return (
       <div className={allClass} id={id}>
@@ -163,118 +90,56 @@ class IndexSheet extends Sheet.Index {
 
 }
 
-class ShowQAHeader extends Component {
+
+//////////////////
+
+function THREAD_ID(message) {
+  return "thread-item-" + message.id;
+}
+
+class ThreadItem extends Sheet.Item {
+  renderIcon(message) {
+    return (
+      <UserIcon 
+        userId={message.from_user.id}
+        name={message.from_user.first_name}
+      />
+    );
+  }
+
   render() {
     let message = this.props.message;
+    let job = this.props.job;
+
+    let mine = message.mine;
+    let ownerClass = (mine ? "mine" : "yours");
+
+    let id = THREAD_ID(message);
+    let allClass = ClassNames("thread-item", ownerClass);
+    if (!message.mine && !message.read_at) {
+      allClass.push("unread red");
+    }
+
+    let leftIcon = mine ? this.renderIcon(message) : null;
+    let rightIcon = mine ? null : this.renderIcon(message);
+
+    let justify = ClassNames("flx-row flx-1");
+    if (!mine) {
+      justify.push("justify-content-end");
+    }
 
     return (
-      <div className="qa-header">
-          <div className="align-self-center title">{message.job.title} Questions & Answers</div>
-          <div className="from">{message.from_user.first_name} has asked a question about your job posting</div>
-          <div className="body">{message.body}</div>
-          <div className="align-self-left back"><a href="#" onClick={this.props.onBack}>Back</a></div>
-      </div>
-    );
-  }
-}
-
-const ShowMessageHeader = (props) => (
-  <div className="message-header">
-      <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
-      <div className="align-self-center title">{props.title}</div>
-  </div>
-);
-
-class ShowInner extends Component {
-  render() {
-    console.log("SHOW INNNER!");
-    return (
-      <div 
-        ref={(node) => this.scrollerOld = (node)}
-        id="message-show" 
-        className="flx-1 flx-col scroll" 
-        onScroll={this.props.onScroll}
-      >
-        {this.props.children}
-      </div>
-    );
-  }
-}
-
-class ShowQA extends Component {
-  render() {
-    return (
-      <div className="sheet flx-col-stretch flx-1">
-        <ShowQAHeader 
-          message={this.props.message}
-          onBack={this.props.onBack}
-          title={this.props.title}
-        />
-        <ShowInner
-          onScroll={this.props.onScroll}
-        >
-          {this.props.children}
-        </ShowInner>
-      
-        <ShowFooter 
-          message={this.props.message}
-          onSuccess={this.props.onSuccess}
-        />
-      </div>
-    );
-  }
-}
-
-class ShowThread extends Component {
-  render() {
-    return (
-      <div className="sheet flx-col-stretch flx-1">
-        <ShowMessageHeader 
-          message={this.props.message}
-          onBack={this.props.onBack}
-          title={this.props.title}
-        />
-        <ShowInner
-          onScroll={this.props.onScroll}
-        >
-          {this.props.children}
-        </ShowInner>
-      
-        <ShowFooter 
-          message={this.props.message}
-          onSuccess={this.props.onSuccess}
-        />
-      </div>
-    );
-  }
-}
-
-class ShowFooter extends Component {
-  componentDidMount() {
-  }
-
-  render() {
-    return (
-      <div className="message-footer z-depth-1">
-        <Pyr.Form.Form
-          controller="message"
-          url={MESSAGES_URL + "/" + this.props.message.id}
-          id={"thread-form" + "-" + this.props.message.id}
-          onSuccess={this.props.onSuccess}
-          ref={(node) => this.form = node}
-          reset
-        >
-          <div className="flx-row">
-            <Pyr.Form.Group name="body" className="flx-1">
-              <Pyr.Form.TextField 
-                placeholder="Reply..."
-                ref={(node) => this.textField = node}
-                autoFocus
-              />
-            </Pyr.Form.Group> 
-            <Pyr.Form.SubmitButton target={this}>Reply</Pyr.Form.SubmitButton>
+      <div className={allClass} id={id}>
+        <div className={justify.concat("created-at")}>
+          <Pyr.MagicDate date={message.created_at} />
+        </div>
+        <div className={justify}>
+          { leftIcon }
+          <div className="flx-col justify-content-center">
+            <div className={" content flx-0"}>{id}-{message.body}</div>
           </div>
-        </Pyr.Form.Form>
+          { rightIcon }
+        </div>
       </div>
     );
   }
@@ -299,16 +164,6 @@ class ShowSheet extends Sheet.Show {
     console.log("SCROLLER: " + item);
     return item;
     //return this.inner.scroller;
-  }
-
-  scroll(e) {
-    console.log("******************************");
-    console.log("ScrollHeight " + $(this.scroller)[0].scrollHeight);
-    console.log("TopScrolled " + $(this.scroller)[0].scrollTop);
-    console.log("OffsetScrolled " + $(this.scroller).offset().top);
-    console.log("FirstScrolled " + $(this.scroller).children(":first").offset().top);
-
-    console.log("thread-item-17929 " + $("#thread-item-17929").offset().top);
   }
 
   back(e) {
@@ -365,34 +220,19 @@ class ShowSheet extends Sheet.Show {
       return (<Pyr.Loading />);
     }
 
-    let title = this.props.selected.job.title; // FIXME
+    let MessageSub = this.props.selected.candidate ? MessageThread : MessageQA;
 
-    if (!this.props.selected.candidate) {
-      return (
-        <ShowQA
-          ref={(node) => this.inner = node}
-          title={title}
-          message={this.props.selected}
-          onBack={this.onBack}
-          onScroll={this.props.onScroll}
-          onSuccess={this.onSuccess}
-        >
-          {this.renderInner()}
-        </ShowQA>
-      );
-    }
-
-    return(
-      <ShowThread
+    return (
+      <MessageSub
         ref={(node) => this.inner = node}
-        title={title}
         message={this.props.selected}
         onBack={this.onBack}
         onScroll={this.props.onScroll}
         onSuccess={this.onSuccess}
+        url={MESSAGES_URL}
       >
         {this.renderInner()}
-      </ShowThread>
+      </MessageSub>
     );
   }
 
@@ -522,6 +362,8 @@ class ShowSheet extends Sheet.Show {
     );
   }
 }
+
+///////////////
 
 class MessagesPage extends Page {
   getInitState(props) {

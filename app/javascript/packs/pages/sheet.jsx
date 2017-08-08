@@ -180,7 +180,7 @@ class Show extends Base {
 
     if (!this.props.selected) {
       return (
-          <h2 key={noKey}>Nothing to Show?</h2>
+          <Pyr.Loading />
       );
     }
 
