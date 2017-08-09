@@ -363,6 +363,11 @@ class MessagesPage extends Page {
 
   setItems(items) {
     items = this.reduceItems(items);
+    let count = items.reduce((sum, msg) => {
+      sum = sum + ((msg.mine || msg.read_at) ? 0 :1);
+      return sum;
+    }, 0);
+    this.props.onSetButtonCount("Messages", count);
     super.setItems(items);
   }
 

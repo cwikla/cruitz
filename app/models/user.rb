@@ -13,8 +13,33 @@ class User < ApplicationRecord
   has_many :heads
   has_many :messages
   has_many :sent_messages, class_name: "Message", foreign_key: :from_user_id
+  has_many :candidates, through: :jobs
 
   belongs_to :company
+
+  def new_candidates
+    candidates.isnew
+  end
+
+  def accepted_candidates
+    candidates.accepted
+  end
+
+  def rejected_candidates
+    candidates.rejected
+  end
+
+  def live_candidates
+    candidates.live
+  end
+
+  def candidate_counts
+    results = jobs.pluck(:id, :title)
+    results.map { |jid|
+      j = Job.find(jid[0])
+      [jid[0], jid[1], j.candidates.isnew.count, j.candidates.live.count]
+    }
+  end
 
   def find_message(x)
     find_safe(x).where("user_id = ? or from_user_id = ?", self.id, self.id)

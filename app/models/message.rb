@@ -52,7 +52,7 @@ class Message < ApplicationRecord
     Message.where(candidate_id: candidate.id).order(:id)
   end
 
-  def self.compress(messages)
+  def self.roots(messages)
     all = []
     roots = {}
 

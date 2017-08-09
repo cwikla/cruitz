@@ -11,7 +11,7 @@ class JobSerializer < ActiveModel::Serializer
   has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
 
   def candidate_count
-    object.candidates.count
+    object.candidates.isnew.count
   end
 
   def should_cand?
@@ -20,7 +20,7 @@ class JobSerializer < ActiveModel::Serializer
 
   def attributes(*args)
     hash = super
-    hash[:candidates] = CandidateSerializer.new(object.candidates) if instance_options[:cand]
+    hash[:candidates] = CandidateSerializer.new(object.candidates.live) if instance_options[:cand]
     hash
   end
 

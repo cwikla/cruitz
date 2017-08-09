@@ -3,6 +3,10 @@ class JobsController < ApplicationController
     render json: current_user.jobs.order(:id).all
   end
 
+  def candidate_counts
+    render json: current_user.candidate_counts
+  end
+
   def new
     @job = Job.new
   end

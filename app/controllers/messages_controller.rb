@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   def index
-    mjson = Message.compress(Message.all_for(current_user))
+    mjson = Message.roots(Message.all_for(current_user))
     render json: mjson
   end
 
