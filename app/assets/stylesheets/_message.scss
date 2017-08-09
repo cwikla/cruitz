@@ -87,7 +87,7 @@ $icon_width: 6;
     }
   }
 
-  .qa-header {
+  .qa-header, .qa-question {
     color: #000;
     background-color: rgba($secondary_light_color, 0.25);
     padding: 1rem;
@@ -97,11 +97,6 @@ $icon_width: 6;
     }
     .from {
       padding: 1rem;
-    }
-    .body {
-      padding: 1rem;
-      border-radius: 20px;
-      background-color: rgba($secondary_light_color, 0.5);
     }
   }
 

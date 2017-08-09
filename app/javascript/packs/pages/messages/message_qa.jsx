@@ -14,9 +14,9 @@ const MessageQAHeader = (props) => (
 );
 
 const Header = (props) => (
-  <div className="message-header">
+  <div className="qa-header">
       <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
-      <div className="align-self-center title">{props.message.job.title}</div>
+      <div className="align-self-center title">You have received a question about {props.message.job.title}</div>
   </div>
 );
 
@@ -32,6 +32,9 @@ class ThreadList extends Component {
       <div id={thid} className="message-thread flx-1">
         {
           this.props.thread.map((msg, pos) => {
+            if (!msg.root_message_id) {
+              return null;
+            }
             //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
             return ( <ThreadItem message={msg}
                       job={this.props.jobMap[msg.job_id]}
@@ -53,23 +56,36 @@ class Content extends Component {
     }
     console.log("SHOW INNNER!");
 
+
+    let root = this.props.thread[0];
+    let thid = "thread-" + root.id;
+
     return (
-      <div 
-        ref={(node) => this.scrollerOld = (node)}
-        id="message-show" 
-        className="flx-1 flx-col scroll" 
-        onScroll={this.props.onScroll}
-      >
-        <ThreadList
-          thread={this.props.thread}
-          selected={this.props.message}
-          jobMap={this.props.jobMap}
-        />
+      <div id="qa-content" className="flx-col flx-stretch">
+        <div className="qa-question">
+          <ThreadItem message={root}
+             job={this.props.jobMap[root.job_id]}
+             isSelected={this.props.message.id == root.id}
+             key={thid+"-"+root.id}/>
+        </div>
+        <div
+          ref={(node) => this.scrollerOld = (node)}
+          id="message-show" 
+          className="scroll flx-col flx-stretch" 
+          onScroll={this.props.onScroll}
+        >
+          <ThreadList
+            thread={this.props.thread}
+            selected={this.props.message}
+            jobMap={this.props.jobMap}
+          />
+        </div>
       </div>
     );
   }
 }
-
+/*
+*/
 class Footer extends Component {
   render() {
     return (
@@ -118,7 +134,7 @@ class MessageQA extends Component {
         <Footer
           message={this.props.message}
           onSuccess={this.props.onSuccess}
-          label="Reply"
+          label="Answer"
           url={this.props.url}
         />
       </div>

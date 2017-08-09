@@ -26,7 +26,7 @@ class ThreadList extends Component {
       return (<Pyr.Loading />);
     }
   
-    let thid = "thread-" + this.props.selected.root_message_id;
+    let thid = "thread-" + this.props.selected.root_message_id || this.props.selected.id;
   
     return (
       <div id={thid} className="message-thread flx-1">
