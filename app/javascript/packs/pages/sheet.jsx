@@ -75,6 +75,10 @@ class Base extends Pyr.UserComponent {
     return null;
   }
 
+  renderInner() {
+    return null;
+  }
+
   renderFooter() {
     return null;
   }
@@ -176,17 +180,15 @@ class Show extends Base {
   }
 
   renderInner() {
-    let noKey = "no-" + this.constructor.name.toLowerCase();
-
     if (!this.props.selected) {
       return (
           <Pyr.Loading />
       );
     }
 
+        // <!-- <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div> !-->
     return (
       <div className="inner flx-col-stretch flx-1">
-        <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div>
         {this.renderItem(this.props.selected, false) }
       </div>
     );

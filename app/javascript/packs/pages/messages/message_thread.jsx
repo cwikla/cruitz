@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom';
 import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+import ThreadItem from './thread_item';
+
 const MessageThreadHeader = (props) => (
   <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}Candidate: <span>{props.job.title}</span></div>
 );
@@ -18,10 +20,39 @@ const Header = (props) => (
   </div>
 );
 
+class ThreadList extends Component {
+  render() {
+    if (!this.props.thread || this.props.thread.length < 1) {
+      return (<Pyr.Loading />);
+    }
+  
+    let thid = "thread-" + this.props.selected.root_message_id;
+  
+    return (
+      <div id={thid} className="message-thread flx-1">
+        {
+          this.props.thread.map((msg, pos) => {
+            //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
+            return ( <ThreadItem message={msg}
+                      job={this.props.jobMap[msg.job_id]}
+                      isSelected={msg.id == this.props.selected.id}
+                      key={thid+"-"+msg.id}/>
+            );
+          })
+        }
+      </div>
+    );
+  }
+}
 
 class Content extends Component {
   render() {
+
+    if (!this.props.thread || this.props.thread.length < 1) {
+      return (<Pyr.Loading />);
+    }
     console.log("SHOW INNNER!");
+
     return (
       <div 
         ref={(node) => this.scrollerOld = (node)}
@@ -29,7 +60,11 @@ class Content extends Component {
         className="flx-1 flx-col scroll" 
         onScroll={this.props.onScroll}
       >
-        {this.props.children}
+        <ThreadList
+          thread={this.props.thread}
+          selected={this.props.message}
+          jobMap={this.props.jobMap}
+        />
       </div>
     );
   }
@@ -74,8 +109,10 @@ class MessageThread extends Component {
         />
         <Content
           onScroll={this.props.onScroll}
+          message={this.props.message}
+          thread={this.props.thread}
+          jobMap={this.props.jobMap}
         >
-          {this.props.children}
         </Content>
       
         <Footer

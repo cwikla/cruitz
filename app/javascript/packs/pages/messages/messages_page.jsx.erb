@@ -12,7 +12,7 @@ const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
 import Page from '../page';
 import Sheet from '../sheet';
-import UserIcon from '../../util/icon';
+import ThreadItem, { THREAD_ID } from './thread_item';
 
 import MessageThread, { MessageThreadHeader } from './message_thread';
 import MessageQA, { MessageQAHeader } from './message_qa';
@@ -91,60 +91,6 @@ class IndexSheet extends Sheet.Index {
 }
 
 
-//////////////////
-
-function THREAD_ID(message) {
-  return "thread-item-" + message.id;
-}
-
-class ThreadItem extends Sheet.Item {
-  renderIcon(message) {
-    return (
-      <UserIcon 
-        userId={message.from_user.id}
-        name={message.from_user.first_name}
-      />
-    );
-  }
-
-  render() {
-    let message = this.props.message;
-    let job = this.props.job;
-
-    let mine = message.mine;
-    let ownerClass = (mine ? "mine" : "yours");
-
-    let id = THREAD_ID(message);
-    let allClass = ClassNames("thread-item", ownerClass);
-    if (!message.mine && !message.read_at) {
-      allClass.push("unread red");
-    }
-
-    let leftIcon = mine ? this.renderIcon(message) : null;
-    let rightIcon = mine ? null : this.renderIcon(message);
-
-    let justify = ClassNames("flx-row flx-1");
-    if (!mine) {
-      justify.push("justify-content-end");
-    }
-
-    return (
-      <div className={allClass} id={id}>
-        <div className={justify.concat("created-at")}>
-          <Pyr.MagicDate date={message.created_at} />
-        </div>
-        <div className={justify}>
-          { leftIcon }
-          <div className="flx-col justify-content-center">
-            <div className={" content flx-0"}>{id}-{message.body}</div>
-          </div>
-          { rightIcon }
-        </div>
-      </div>
-    );
-  }
-}
-
 class ShowSheet extends Sheet.Show {
   getInitState(props) {
     return Object.assign(super.getInitState(props), { thread: null });
@@ -220,19 +166,19 @@ class ShowSheet extends Sheet.Show {
       return (<Pyr.Loading />);
     }
 
-    let MessageSub = this.props.selected.candidate ? MessageThread : MessageQA;
+    let MessageRender = this.props.selected.candidate ? MessageThread : MessageQA;
 
     return (
-      <MessageSub
+      <MessageRender
         ref={(node) => this.inner = node}
         message={this.props.selected}
+        jobMap={this.props.jobMap}
         onBack={this.onBack}
         onScroll={this.props.onScroll}
         onSuccess={this.onSuccess}
         url={MESSAGES_URL}
-      >
-        {this.renderInner()}
-      </MessageSub>
+        thread={this.state.thread}
+      />
     );
   }
 
@@ -269,12 +215,14 @@ class ShowSheet extends Sheet.Show {
   }
 
   topPos(item) {
-    let $parent = $(item).parent();
+    let $item = $(item);
+    let $parent = $item.parent();
     let $scroll = $(this.scroller());
 
-    let top = $(item).offset().top;
+    console.log("ITEM: " + $item.attr("id"));
+    let top = $item.offset().top;
 
-    console.log("TOP: " + $(item).attr("id") + " => " + top);
+    console.log("TOP: " + $item.attr("id") + " => " + top);
     //while($parent.attr("id") != "message-show") {
     while($parent.attr("id") != $scroll.attr("id")) {
       console.log("TOP: " + $parent.attr("id") + " => " + top);
@@ -330,6 +278,8 @@ class ShowSheet extends Sheet.Show {
     let mid = THREAD_ID(topMessage);
 
     let $item = $("#" + mid);
+    console.log("THREAD_ID: " + mid);
+
     let $scroll = $(this.scroller());
 
     let showTop = this.scroller().scrollHeight;

@@ -5,25 +5,41 @@ import React, {
 import ReactDOM from 'react-dom';
 
 import Pyr from '../../pyr/pyr';
-import UserIcon from '../../util/icon';
-
 const ClassNames = Pyr.ClassNames;
 
+import ThreadItem from './thread_item';
 
 const MessageQAHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>Q&amp;A: <span>{props.job.title}</span></div>
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}Q&amp;A: <span>{props.job.title}</span></div>
 );
 
+const Header = (props) => (
+  <div className="message-header">
+      <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
+      <div className="align-self-center title">{props.message.job.title}</div>
+  </div>
+);
 
-class Header extends Component {
+class ThreadList extends Component {
   render() {
-    let message = this.props.message;
-
+    if (!this.props.thread || this.props.thread.length < 1) {
+      return (<Pyr.Loading />);
+    }
+  
+    let thid = "thread-" + this.props.selected.root_message_id;
+  
     return (
-      <div className="qa-header">
-          <div className="align-self-center title"><h3>Questions & Answers: {message.job.title}</h3></div>
-          <div className="from flx-row title"><UserIcon userId={message.from_user.id} name={message.from_user.first_name}/> has asked a question about your job posting</div>
-          <div className="align-self-left back"><a href="#" onClick={this.props.onBack}>Back</a></div>
+      <div id={thid} className="message-thread flx-1">
+        {
+          this.props.thread.map((msg, pos) => {
+            //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
+            return ( <ThreadItem message={msg}
+                      job={this.props.jobMap[msg.job_id]}
+                      isSelected={msg.id == this.props.selected.id}
+                      key={thid+"-"+msg.id}/>
+            );
+          })
+        }
       </div>
     );
   }
@@ -31,24 +47,30 @@ class Header extends Component {
 
 class Content extends Component {
   render() {
+
+    if (!this.props.thread || this.props.thread.length < 1) {
+      return (<Pyr.Loading />);
+    }
     console.log("SHOW INNNER!");
+
     return (
-      <div
+      <div 
         ref={(node) => this.scrollerOld = (node)}
-        id="message-show"
-        className="flx-1 flx-col scroll"
+        id="message-show" 
+        className="flx-1 flx-col scroll" 
         onScroll={this.props.onScroll}
       >
-        {this.props.children}
+        <ThreadList
+          thread={this.props.thread}
+          selected={this.props.message}
+          jobMap={this.props.jobMap}
+        />
       </div>
     );
   }
 }
 
 class Footer extends Component {
-  componentDidMount() {
-  }
-
   render() {
     return (
       <div className="message-footer z-depth-1">
@@ -62,12 +84,12 @@ class Footer extends Component {
         >
           <div className="flx-row">
             <Pyr.Form.Group name="body" className="flx-1">
-              <Pyr.Form.TextField
+              <Pyr.Form.TextField 
                 placeholder={this.props.label + "..."}
                 ref={(node) => this.textField = node}
                 autoFocus
               />
-            </Pyr.Form.Group>
+            </Pyr.Form.Group> 
             <Pyr.Form.SubmitButton target={this}>{this.props.label}</Pyr.Form.SubmitButton>
           </div>
         </Pyr.Form.Form>
@@ -77,34 +99,32 @@ class Footer extends Component {
 }
 
 
-
 class MessageQA extends Component {
   render() {
     return (
       <div className="sheet flx-col-stretch flx-1">
-        <Header 
+        <Header
           message={this.props.message}
           onBack={this.props.onBack}
-          title={this.props.title}
         />
         <Content
           onScroll={this.props.onScroll}
+          message={this.props.message}
+          thread={this.props.thread}
+          jobMap={this.props.jobMap}
         >
-          {this.props.children}
         </Content>
       
         <Footer
           message={this.props.message}
           onSuccess={this.props.onSuccess}
-          label="Answer"
+          label="Reply"
           url={this.props.url}
         />
       </div>
     );
   }
 }
-
-
 
 export default MessageQA;
 export {
