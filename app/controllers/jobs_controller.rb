@@ -36,7 +36,11 @@ class JobsController < ApplicationController
   def show
     @job = current_user.jobs.find(params[:id])
 
-    render json: @job, cand: params[:cand]
+    result = {}
+    result[:job] = JobSerializer.new(@job)
+    result[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(@job.candidates) if params[:cand]
+
+    render json: result
   end
 
   def lsearch

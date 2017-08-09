@@ -43,7 +43,7 @@ class MessagesController < ApplicationController
     end
 
     mjson = MessageSerializer.new(@message)
-    tjson = ActiveModel::Serializer::ArraySerializer.new(@thread)
+    tjson = ActiveModel::Serializer::CollectionSerializer.new(@thread)
 
     ReadThreadJob.mark(@thread)
 

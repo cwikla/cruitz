@@ -17,6 +17,7 @@ const ClassNames = Pyr.ClassNames;
 import Sheet from '../sheet';
 
 const JOBS_URL = "/jobs";
+const CANDIDATES_URL = "/candidates";
 
 class CandidateHeader extends Component {
   render() {
@@ -190,6 +191,12 @@ class IndexSheet extends Sheet.Index {
   renderItem(item, isSelected) {
     return (<CandidateItem candidate={item} selected={isSelected} />);
   }
+
+  componentDidMount() {
+    if (!this.props.items) {
+      this.props.getItems(this.onLoading);
+    }
+  }
 }
 
 class ShowSheet extends Sheet.Show {
@@ -219,14 +226,18 @@ class CandidatesPage extends Page {
   }
 
   indexSheet() {
-    let candidates = this.state.job ? this.state.job.candidates : [];
 
     return (
       <IndexSheet
         {...this.props}
-        items={candidates}
-        onSelect={this.onSelect}
+        items={this.state.items}
+        jobMap={this.jobMap}
         selected={this.state.selected}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
+        onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
+        getItems={this.getItems}
       />
     );
   }
@@ -250,19 +261,21 @@ class CandidatesPage extends Page {
   }
 
   getItems() {
-    // nothing to see here, loaded with job
+    this.getCandidates();
   }
 
-  getJob(jobId) {
+  getCandidates(job) {
     let params = [{"cand": 1}];
 
+    let url = job ? (JOBS_URL + "/" + job.id + "?cand=1") : CANDIDATES_URL;
+
     Pyr.getJSON({
-      url: JOBS_URL + "/" + jobId + "?cand=1",   //+ $.param(params),
+      url: url,
       context: this,
       loading: this.onLoading,
 
     }).done((data, textStatus, jaXHR) => {
-      this.onJobLoad(data.job);
+      this.onJobLoad(data.job, data.candidates);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
@@ -270,8 +283,11 @@ class CandidatesPage extends Page {
     });
   }
 
-  onJobLoad(job) {
-    this.setState({job: job});
+  onJobLoad(job, candidates) {
+    this.setItems(candidates);
+    this.setState({
+      job
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -280,8 +296,11 @@ class CandidatesPage extends Page {
     if(this.props.job){
      //alert(this.props.job.uuid);
     }
-    if (this.props.job && (!prevProps.job || (prevProps.job.uuid != this.props.job.uuid))) {
-      this.getJob(this.props.job.id);
+    let prevId = prevProps.job ? prevProps.job.id : -1;
+    let nextId = this.props.job ? this.props.job.id : -1;
+
+    if (prevId != nextId) {
+      this.getCandidates(this.props.job);
     }
   }
 }
