@@ -17,7 +17,7 @@ class URLObj {
     this.parser.href = path;
     
     this.searchParams = new URLSearchParams(this.parser.search);
-    this.pathList = [];
+    this.pathList = this.ptol(path);
   }
   
   parser() {

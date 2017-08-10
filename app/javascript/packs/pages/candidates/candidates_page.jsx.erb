@@ -108,10 +108,10 @@ class CandidateForm extends Component {
 
   render() {
     let key = "candidate-form";
-    let url = JOBS_URL;
+    let url = Pyr.URL(JOBS_URL);
 
     if (this.props.candidate){
-      url = url + "/" + this.props.candidate.id;
+      url.push(this.props.candidate.id);
       key = CandidatesPage.key(this.props.candidate);
     }
 
@@ -261,7 +261,7 @@ class CandidatesPage extends Page {
   getCandidates(job) {
     let params = [{"cand": 1}];
 
-    let url = job ? (JOBS_URL + "/" + job.id + "?cand=1") : CANDIDATES_URL;
+    let url = job ? (Pyr.URL(JOBS_URL).push(job.id).set("cand", 1)) : Pyr.URL(CANDIDATES_URL);
 
     Pyr.getJSON({
       url: url,
