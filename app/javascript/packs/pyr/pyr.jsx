@@ -14,6 +14,7 @@ import {
 
 import Util from './util';
 const ClassNames = Util.ClassNames;
+const URL = Util.URL;
 
 import Grid from './grid';
 
@@ -211,6 +212,7 @@ const Pyr = {
   Method,
   MagicDate,
   ClassNames,
+  URL,
   Loading
 };
 export default Pyr;

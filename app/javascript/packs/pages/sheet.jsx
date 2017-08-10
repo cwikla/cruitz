@@ -128,6 +128,12 @@ class Index extends Base {
     this.props.onSelect(item);
   }
 
+  componentDidMount() {
+    if (!this.props.items) {
+      this.props.getItems(this.onLoading);
+    }
+  }
+
   componentWillUpdate(nextProps, nextState) {
     if (this.props.items != nextProps.items) {
       this.bindClicks(nextProps.items, this.setSelected);
@@ -136,6 +142,10 @@ class Index extends Base {
 
   sortItems(items) {
     return items.sort((x, y) => y.id - x.id);
+  }
+
+  getItems(items) {
+    alert("Sheet:Index If you are seeing this, you need to implement getItems!");
   }
 
   renderChildren() {

@@ -10,6 +10,123 @@ const ONE_HOUR = (ONE_MINUTE * 60);
 const ONE_DAY = (ONE_HOUR * 24);
 const TWO_DAYS = (ONE_DAY * 2);
 
+class URLObj {
+  constructor(path) {
+    path = path || "/";
+    this.parser = document.createElement('a');
+    this.parser.href = path;
+    
+    this.searchParams = new URLSearchParams(this.parser.search);
+    this.pathList = [];
+  }
+  
+  parser() {
+    return this.parser;
+  }
+  
+  search(d) {
+    this.searchParams = new URLSearchParams();
+    for(var key in d) {
+      this.set(key, d[key]);
+    }
+    return this;
+  }
+  
+  set(k, v) {
+    this.searchParams.set(k,v);
+    return this;
+  }
+  
+  get(k,v) {
+    this.searchParams.get(k);
+    return this;
+  }
+  
+  delete(k) {
+    this.searchParams.delete(k);
+    return this;
+  }
+  
+  deleteAll() {
+    this.searchParams = new URLSearchParams();
+    return this;
+  }
+  
+  clear() {
+    this.searchParams = new URLSearchParams();
+    this.pathList = ["/"];
+    return this;
+  }
+  
+  ptol(p) {
+    return p.split("/").reduce((d, c) => {
+      if (c.length && c != "/") {
+        d.push(c);
+      }
+      return d;
+    }, []);
+  }
+  
+  path(inpath) {
+    inpath = inpath || "";
+    this.pathList = this.ptol(inpath);
+    return this;
+  }
+  
+  root() {
+    return this.path();
+  }
+  
+  push(a) {
+    this.pathList = this.pathList.concat(this.ptol(a));
+    console.log("A:" + this.pathList);
+    return this;
+  }
+  
+  pop(a) {
+    if (this.pathList.length) {
+      this.pathList.pop(a);
+    }
+    return this;
+  }
+  
+  bake() {
+    this.parser.search = this.searchParams.toString();
+    let pathname = this.pathList.join("/");
+    console.log("P:" + pathname);
+    this.parser.pathname = pathname;
+    if (this.parser.hostname.startsWith("null.")) { // hack
+        this.parser.hostname = this.parser.hostname.substring(5, this.parser.hostname.length);
+    }
+    return this;
+  }
+  
+  ifa(a) {
+    return (a ? a : '');
+  }
+  
+  toString() {
+    this.bake();
+    return (this.parser.pathname + this.parser.search + this.parser.hash).toLowerCase();
+  }
+  
+  fullString() {
+    this.bake();
+    let parser = this.parser;
+    let ifa = this.ifa;
+    let url = ifa(parser.protocol);
+    if (url.length) {
+      url = url + "//";
+    }
+    url = url + ifa(parser.hostname);
+    return (url + this.toString()).toLowerCase();
+  }
+}
+
+function URL(a) {
+  return new URLObj(a);
+}
+
 class ClassNamesObj  {
   constructor(...args) {
     this.arr = [];
@@ -190,6 +307,7 @@ function propsMergeClassName(props, className) {
 }
 
 const Util = {
+  URL,
   ClassNames,
   summarize,
   friendlyDate,

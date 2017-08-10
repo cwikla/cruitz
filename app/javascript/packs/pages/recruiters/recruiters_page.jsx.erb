@@ -8,9 +8,9 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Pyr from '../pyr/pyr';
-import Page from './page';
-import Sheet from './sheet';
+import Pyr from '../../pyr/pyr';
+import Page from './../page';
+import Sheet from './../sheet';
 
 class RecruiterItem extends Component {
   render() {
@@ -42,16 +42,30 @@ class ShowSheet extends Sheet.Show {
 }
 
 class RecruitersPage extends Page {
-  getItems() {
-    // FIXME
+  getItems(onLoading) {
+    Pyr.getJSON({
+      url: this.props.url,
+      context: this,
+      loading: onLoading,
+    }).done(function(data, textStatus, jaXHR) {
+        this.onSetItems(data.recruiters);
+
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    });
   }
 
   indexSheet() {
     return (
-      <IndexSheet 
-        {...this.props} 
-        items={this.state.items} 
-        onSelect={this.onSelect} 
+      <IndexSheet
+        {...this.props}
+        items={this.state.items}
+        selected={this.state.selected}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
+        onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
+        getItems={this.getItems}
       />
     );
   }

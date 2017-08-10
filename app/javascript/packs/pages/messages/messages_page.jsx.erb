@@ -82,12 +82,6 @@ class IndexSheet extends Sheet.Index {
     return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
   }
 
-  componentDidMount() {
-    if (!this.props.items) {
-      this.props.getItems(this.onLoading);
-    }
-  }
-
 }
 
 

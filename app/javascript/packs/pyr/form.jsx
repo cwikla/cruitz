@@ -14,7 +14,7 @@ import Util from './util';
 
 class Form extends Component {
   static childContextTypes = {
-    controller: PropTypes.string,
+    model: PropTypes.string,
     errors: PropTypes.object,
     object: PropTypes.object,
   }
@@ -34,7 +34,7 @@ class Form extends Component {
 
   getChildContext() {
     return { 
-      controller: this.props.controller,
+      model: this.props.model,
       object: this.props.object,
       errors: this.state.errors,
     }
@@ -169,7 +169,7 @@ class Form extends Component {
   }
 
   render() {
-    let rest = Util.propsRemove(this.props, ["reset", "onPreSubmit", "onPostSubmit", "controller", "object", "url", "onSuccess", "onError"]);
+    let rest = Util.propsRemove(this.props, ["reset", "onPreSubmit", "onPostSubmit", "model", "object", "url", "onSuccess", "onError"]);
 
     return (
       <form ref={(node) => {this.form = node;}} 
@@ -235,17 +235,17 @@ class Group extends Component {
 class Child extends Component {
   static contextTypes = {
     name: PropTypes.string,
-    controller: PropTypes.string,
+    model: PropTypes.string,
     errorString: PropTypes.string,
     object: PropTypes.object,
   }
 
   htmlID() {
-    return (this.context.controller.toLowerCase() + "-" + this.context.name.toLowerCase());
+    return (this.context.model.toLowerCase() + "-" + this.context.name.toLowerCase());
   }
 
   name() {
-    return (this.context.controller.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
+    return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
   }
 
   hasError() {

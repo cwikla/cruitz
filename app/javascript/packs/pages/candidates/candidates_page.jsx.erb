@@ -123,7 +123,7 @@ class CandidateForm extends Component {
     return (
       <div className="form-parent">
         <Pyr.Form.Form
-          controller="Candidate"
+          model="Candidate"
           object={this.props.candidate}
           url={url}
           method={method}
@@ -190,12 +190,6 @@ class IndexSheet extends Sheet.Index {
 
   renderItem(item, isSelected) {
     return (<CandidateItem candidate={item} selected={isSelected} />);
-  }
-
-  componentDidMount() {
-    if (!this.props.items) {
-      this.props.getItems(this.onLoading);
-    }
   }
 }
 

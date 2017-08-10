@@ -18,7 +18,7 @@ import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
 import MessagesPage from './messages/messages_page';
-import RecruitersPage from './recruiters_page';
+import RecruitersPage from './recruiters/recruiters_page';
 import SettingsPage from './settings_page';
 
 const JOBS_PAGE = 'Jobs';
@@ -26,11 +26,16 @@ const CANDIDATES_PAGE = 'Candidates';
 const RECRUITERS_PAGE = 'Recruiters';
 const SETTINGS_PAGE = 'Settings';
 const MESSAGES_PAGE = 'Messages';
-
+const SEARCH_PAGE = "Search";
 
 const JOBS_URL = "/jobs";
 const USERS_URL = "/users";
 const SEARCH_URL = "/search";
+const RECRUITERS_URL = "/recruiters";
+
+function PageURL(page) {
+  return Pyr.URL().push(page).toString();
+}
 
 function same(a,b) {
   return a.id == b.id;
@@ -148,7 +153,7 @@ class Dashboard extends Pyr.UserComponent {
   getJobs() {
     Pyr.getJSON({
       type: Pyr.Method.GET,
-      url: JOBS_URL,
+      url: PageURL(JOBS_PAGE),
       context: this,
       loading: this.onLoading,
     }).done(function(data, textStatus, jaXHR) {
@@ -233,13 +238,13 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   renderSearch() {
-    let controller = this.state.page;
+    let model = this.state.page;
     let url = SEARCH_URL + "/" + this.state.page.toLowerCase();
 
     return (
       <div>
       <Pyr.Form.Form
-        controller={this.state.page}
+        model="search"
         url={url}
         id="search-form"
         ref={(node) => {this.form = node;}}
