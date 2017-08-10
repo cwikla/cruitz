@@ -101,7 +101,7 @@ class ShowSheet extends Sheet.Show {
 
   scroller() {
     let item = $("#message-show")[0];
-    console.log("SCROLLER: " + item);
+    //console.log("SCROLLER: " + item);
     return item;
     //return this.inner.scroller;
   }
@@ -147,7 +147,7 @@ class ShowSheet extends Sheet.Show {
 
     for(let item of thread) {
       if (itemDict[item.id]) {
-        console.log("Replacing: " + item.id);
+        //console.log("Replacing: " + item.id);
       }
       itemDict[item.id] = item;
     }
@@ -213,17 +213,17 @@ class ShowSheet extends Sheet.Show {
     let $parent = $item.parent();
     let $scroll = $(this.scroller());
 
-    console.log("ITEM: " + $item.attr("id"));
+    //console.log("ITEM: " + $item.attr("id"));
     let top = $item.offset().top;
 
-    console.log("TOP: " + $item.attr("id") + " => " + top);
+    //console.log("TOP: " + $item.attr("id") + " => " + top);
     //while($parent.attr("id") != "message-show") {
     while($parent.attr("id") != $scroll.attr("id")) {
-      console.log("TOP: " + $parent.attr("id") + " => " + top);
+      //console.log("TOP: " + $parent.attr("id") + " => " + top);
       top = top - $parent.offset().top;
 
       $parent = $parent.parent();
-      console.log("PARENT IS NOW: " + $parent.attr("id"));
+      //console.log("PARENT IS NOW: " + $parent.attr("id"));
     }
 
     return top;
@@ -249,7 +249,7 @@ class ShowSheet extends Sheet.Show {
     let oldLength = prevState.thread ? prevState.thread.length : 0;
     let newLength = this.state.thread ? this.state.thread.length : 0;
 
-    console.log("UPDATE: " + oldLength + " => " + newLength);
+    //console.log("UPDATE: " + oldLength + " => " + newLength);
 
     if (oldLength != newLength) {
       this.scrollToLastRead(oldLength == 0);
@@ -257,11 +257,11 @@ class ShowSheet extends Sheet.Show {
   }
 
   scrollToLastRead(firstUnread=false) {
-    console.log("SCROLL TO LAST");
+    //console.log("SCROLL TO LAST");
 
     if (!firstUnread) {
-      console.log("Scroll To Bottom");
-      console.log("Scroll Height: " + this.scroller().scrollHeight);
+      //console.log("Scroll To Bottom");
+      //console.log("Scroll Height: " + this.scroller().scrollHeight);
       $(this.scroller()).stop().animate({
         scrollTop: this.scroller().scrollHeight
       }, 800);
@@ -272,7 +272,7 @@ class ShowSheet extends Sheet.Show {
     let mid = THREAD_ID(topMessage);
 
     let $item = $("#" + mid);
-    console.log("THREAD_ID: " + mid);
+    //console.log("THREAD_ID: " + mid);
 
     let $scroll = $(this.scroller());
 

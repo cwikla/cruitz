@@ -13,7 +13,7 @@ const TWO_DAYS = (ONE_DAY * 2);
 class URLObj {
   constructor(path) {
     path = path || "/";
-    if (path.constructor.name == "URLObj") {
+    if (path.constructor.name == this.constructor.name) {
       path = path.fullString();
     }
     this.parser = document.createElement('a');
@@ -24,7 +24,7 @@ class URLObj {
   }
   
   parser() {
-    return this.parser;
+    return this.bake().parser;
   }
   
   search(d) {
@@ -83,7 +83,6 @@ class URLObj {
   
   push(a) {
     this.pathList = this.pathList.concat(this.ptol(a));
-    console.log("A:" + this.pathList);
     return this;
   }
   
@@ -97,7 +96,6 @@ class URLObj {
   bake() {
     this.parser.search = this.searchParams.toString();
     let pathname = this.pathList.join("/");
-    console.log("P:" + pathname);
     this.parser.pathname = pathname;
     if (this.parser.hostname.startsWith("null.")) { // hack
         this.parser.hostname = this.parser.hostname.substring(5, this.parser.hostname.length);

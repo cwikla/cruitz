@@ -5,7 +5,8 @@ class CandidateSerializer < ActiveModel::Serializer
     :last_name,
     :phone_number,
     :email,
-    :description
+    :description,
+    :job_id
 
   def uuid
     "candidate-#{object.id}"

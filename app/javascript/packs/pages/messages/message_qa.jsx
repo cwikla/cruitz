@@ -54,7 +54,7 @@ class Content extends Component {
     if (!this.props.thread || this.props.thread.length < 1) {
       return (<Pyr.Loading />);
     }
-    console.log("SHOW INNNER!");
+    //console.log("SHOW INNNER!");
 
 
     let root = this.props.thread[0];

@@ -14,5 +14,6 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require turbolinks
+//= require jquery.dataTables.min
 //= require pyr/base/application
 //= require ac

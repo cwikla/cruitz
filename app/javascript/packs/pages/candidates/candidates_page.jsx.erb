@@ -211,6 +211,55 @@ class New extends Sheet.Base {
   }
 }
 
+const CandidateRow = (props) => (
+  <tr>
+    <td>{props.candidate.first_name}</td>
+    <td>{props.job}</td>
+    <td>{props.job}</td>
+  </tr>
+);
+
+class CandidateTable extends Sheet.Index {
+  key(item) {
+    return "candidate-row-" + item.id;
+  }
+
+  componentDidUpdate() {
+    $('#candidate-table').DataTable();
+  }
+
+  render() {
+    if (!this.props.items) {
+      return null;
+    }
+
+    return (
+      <table id="candidate-table" className="display col-stretch">
+        <thead>
+          <tr>
+            <th>Candidate</th>
+            <th>Job</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          { 
+            this.props.items.map((candidate, pos) => {
+              let job = candidate.job_id;
+              let key = "candidate-row-" + candidate.id;
+              return (<CandidateRow 
+                        key={key}
+                        candidate={candidate} 
+                        job={job} />
+              );
+            })
+          }
+        </tbody>
+      </table>
+    );
+  }
+}
+
 class CandidatesPage extends Page {
   getInitState(props) {
     return {
@@ -219,13 +268,27 @@ class CandidatesPage extends Page {
     };
   }
 
+  render() {
+    return (
+      <CandidateTable 
+        {...this.props}
+        items={this.state.items}
+        selected={this.state.selected}
+        onSetAction={this.props.onSetAction}
+        onSetUnaction={this.props.onSetUnaction}
+        onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
+        getItems={this.getItems}
+      />
+    );
+  }
+
   indexSheet() {
 
     return (
       <IndexSheet
         {...this.props}
         items={this.state.items}
-        jobMap={this.jobMap}
         selected={this.state.selected}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
@@ -255,6 +318,7 @@ class CandidatesPage extends Page {
   }
 
   getItems() {
+    console.log("CANDIDATE GET ITEMS");
     this.getCandidates();
   }
 
