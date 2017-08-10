@@ -51,10 +51,10 @@ class JobForm extends Component {
 
   render() {
     let key = "job-form";
-    let url = JOBS_URL;
+    let url = Pyr.URL(JOBS_URL);
 
     if (this.props.selected){
-      url = url + "/" + this.props.selected.id;
+      url = url.push(this.props.selected.id);
       key = key + "-" + this.props.selected.id;
     }
 

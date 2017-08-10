@@ -13,11 +13,14 @@ const TWO_DAYS = (ONE_DAY * 2);
 class URLObj {
   constructor(path) {
     path = path || "/";
+    if (path.constructor.name == "URLObj") {
+      path = path.fullString();
+    }
     this.parser = document.createElement('a');
     this.parser.href = path;
     
     this.searchParams = new URLSearchParams(this.parser.search);
-    this.pathList = this.ptol(path);
+    this.pathList = this.ptol(this.parser.pathname);
   }
   
   parser() {
@@ -59,6 +62,7 @@ class URLObj {
   }
   
   ptol(p) {
+    p = p.toString();
     return p.split("/").reduce((d, c) => {
       if (c.length && c != "/") {
         d.push(c);

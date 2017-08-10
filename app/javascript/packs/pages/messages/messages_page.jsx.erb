@@ -170,7 +170,7 @@ class ShowSheet extends Sheet.Show {
         onBack={this.onBack}
         onScroll={this.props.onScroll}
         onSuccess={this.onSuccess}
-        url={MESSAGES_URL}
+        url={Pyr.URL(MESSAGES_URL)}
         thread={this.state.thread}
       />
     );
@@ -188,7 +188,7 @@ class ShowSheet extends Sheet.Show {
   }
 
   getMessage(mid) {
-    let url =  MESSAGES_URL + "/" + mid;
+    let url =  Pyr.URL(MESSAGES_URL).push(mid);
     //alert(url);
     Pyr.getJSON({
       url: url,
@@ -367,7 +367,7 @@ class MessagesPage extends Page {
 
   getItems(onLoading) {
     Pyr.getJSON({
-      url: MESSAGES_URL,
+      url: Pyr.URL(MESSAGES_URL),
       context: this,
       loading: onLoading,
     }).done(function(data, textStatus, jaXHR) {

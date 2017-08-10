@@ -92,7 +92,7 @@ class Footer extends Component {
       <div className="message-footer z-depth-1">
         <Pyr.Form.Form
           model="message"
-          url={this.props.url + "/" + this.props.message.id}
+          url={Pyr.URL(this.props.url).push(this.props.message.id)}
           id={"thread-form" + "-" + this.props.message.id}
           onSuccess={this.props.onSuccess}
           ref={(node) => this.form = node}
