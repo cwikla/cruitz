@@ -21,7 +21,7 @@ const UserAvatar = (props) => (
 );
 
 const UserScore = (props) => (
-  <div className="col-stretch flx-col user-score justify-content-center">
+  <div className="user-score justify-content-center flx-col-stretch">
     <div className="align-self-center">{ props.score }</div>
   </div>
 );

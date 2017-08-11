@@ -49,7 +49,7 @@ const FullContainer = (props) => (
 );
 
 const RowFix = (props) => (
-  <div className="p-15">
+  <div className="row-15">
     {props.children}
   </div>
 );

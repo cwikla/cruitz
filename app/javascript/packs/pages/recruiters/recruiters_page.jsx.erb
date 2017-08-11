@@ -24,21 +24,21 @@ class RecruiterItem extends Component {
 
     return (
       <Grid.Row id={"recruiter-item-" + recruiter.id} className="recruiter-item row-stretch">
-        <Grid.Column className="score col-1 blue">
+        <Grid.Column className="score col-md-1 col-sm-2 blue">
           <UserScore score={recruiter.id} />
         </Grid.Column>
-        <Grid.Column className="icon hidden-sm-down col-md-1 red">
+        <Grid.Column className="icon hidden-md-down col-md-1 red">
           <UserAvatar userId={recruiter.id} />
         </Grid.Column>
-        <Grid.Column className="info col-md-5 col-sm-6">
-          <Grid.Row>{recruiter.first_name}</Grid.Row>
-          <Grid.Row>FakeCompany Placeholder</Grid.Row>
-          <Grid.Row>Description goes here</Grid.Row>
+        <Grid.Column className="info col-md-5 col-sm-5">
+          <div>{recruiter.first_name}</div>
+          <div>FakeCompany Placeholder</div>
+          <div>Description goes here</div>
         </Grid.Column>
-        <Grid.Column className="stats col-md-5">
-          <Grid.Row>22 successful placements</Grid.Row>
-          <Grid.Row>Last Active: 3/3/2017</Grid.Row>
-          <Grid.Row>27 Reviews</Grid.Row>
+        <Grid.Column className="stats col-5">
+          <div>22 successful placements</div>
+          <div>Last Active: 3/3/2017</div>
+          <div>27 Reviews</div>
         </Grid.Column>
       </Grid.Row>
     );
