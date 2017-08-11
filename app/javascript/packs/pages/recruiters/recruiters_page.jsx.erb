@@ -61,6 +61,14 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
+  renderChildren() {
+    return (
+      <Pyr.Grid.RowFix>
+        {super.renderChildren()}
+      </Pyr.Grid.RowFix>
+    );
+  }
+
 }
 
 class ShowSheet extends Sheet.Show {

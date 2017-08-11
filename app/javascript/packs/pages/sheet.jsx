@@ -89,7 +89,7 @@ class Base extends Pyr.UserComponent {
     }
 
     return (
-      <div className="sheet flx-col-stretch flx-1">
+      <div className="sheet flx-col flx-1">
         {this.renderHeader()}
         {this.renderInner()}
         {this.renderFooter()}
@@ -169,7 +169,7 @@ class Index extends Base {
 
   renderInner() {
     return (
-      <Pyr.Scroll className="inner flx-col-stretch flx-1">
+      <Pyr.Scroll className="inner flx-col flx-1">
         { this.props.items ? this.renderChildren() : this.renderNone() }
       </Pyr.Scroll>
     );
@@ -199,7 +199,7 @@ class Show extends Base {
 
         // <!-- <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div> !-->
     return (
-      <div className="inner flx-col-stretch flx-1">
+      <div className="inner flx-col flx-1">
         {this.renderItem(this.props.selected, false) }
       </div>
     );

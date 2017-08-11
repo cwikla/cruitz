@@ -6,8 +6,12 @@ import PropTypes from 'prop-types';
 
 import Pyr from '../pyr/pyr';
 
-const Container = (props) => (
+const ContainerFluid = (props) => (
   <div {...Pyr.Util.propsMergeClassName(props, "container-fluid")} >{props.children}</div>
+);
+
+const Container = (props) => (
+  <div {...Pyr.Util.propsMergeClassName(props, "container")} >{props.children}</div>
 );
 
 const Row = (props) => (
@@ -35,13 +39,19 @@ const ColumnFull = (props) => (
 const ColFull = ColumnFull;
 
 const FullContainer = (props) => (
-  <Pyr.Grid.Container {...Pyr.Util.propsMergeClassName(props, "d-flex h-100 w-100 flex-col")} >
+  <Pyr.Grid.ContainerFluid {...Pyr.Util.propsMergeClassName(props, "d-flex h-100 w-100 flex-col")} >
     <Pyr.Grid.Row {...Pyr.Util.propsMergeClassName(props, "flx-1")} >
       <Pyr.Grid.Col {...Pyr.Util.propsMergeClassName(props, "p-0 d-flex flx-col")}>
         {props.children}
       </Pyr.Grid.Col>
     </Pyr.Grid.Row>
-  </Pyr.Grid.Container>
+  </Pyr.Grid.ContainerFluid>
+);
+
+const RowFix = (props) => (
+  <div className="p-15">
+    {props.children}
+  </div>
 );
 
 const Grid = {
@@ -54,7 +64,9 @@ const Grid = {
   ColumnFull,
   ColThird,
   ColumnThird,
+  ContainerFluid,
   Container,
-  FullContainer
+  FullContainer,
+  RowFix
 };
 export default Grid;

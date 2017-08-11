@@ -118,26 +118,16 @@ class Page extends Pyr.UserComponent {
   }
 
   renderIndexSheet() {
-    let extraClass = ClassNames("col-md-6");
+    let extraClass = ClassNames("index flx-col flx-1");
 
     if (this.showActionSheet()) {
-      if (this.state.fullDetail) {
-        extraClass.reset("hidden");
-      }
-      else {
-        extraClass.push("hidden-xs-down");
-      }
+      return this.renderNoSheet(); // extraClass.push("hidden");
     }
-    else {
-      extraClass.reset("col-md-12");
-    }
-
-    extraClass = extraClass.push(" index flx-col-stretch flx-1");
 
     return (
-      <Pyr.Grid.ColHalf className={extraClass}>
+      <div className={extraClass}>
         {this.indexSheet()}
-      </Pyr.Grid.ColHalf>
+      </div>
     );
   }
 
@@ -150,18 +140,12 @@ class Page extends Pyr.UserComponent {
       return this.renderNoSheet();
     }
 
-    let extraClass = ClassNames("col-md-6");
-
-    if (this.state.fullDetail) {
-      extraClass.reset("col-md-12");
-    }
-
-    extraClass = extraClass.push("action").push(this.props.action.toLowerCase());
+    let extraClass = ClassNames("action flx-col flx-1").push(this.props.action.toLowerCase());
 
     return (
-      <Pyr.Grid.ColHalf className={extraClass}>
+      <div className={extraClass}>
         {this.actionSheet(this.props.action)}
-      </Pyr.Grid.ColHalf>
+      </div>
     );
   }
 
