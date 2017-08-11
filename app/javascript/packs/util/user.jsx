@@ -20,5 +20,14 @@ const UserAvatar = (props) => (
   </div>
 );
 
+const UserScore = (props) => (
+  <div className="col-stretch flx-col user-score justify-content-center">
+    <div className="align-self-center">{ props.score }</div>
+  </div>
+);
 
-export default UserAvatar;
+
+export {
+  UserAvatar,
+  UserScore
+}

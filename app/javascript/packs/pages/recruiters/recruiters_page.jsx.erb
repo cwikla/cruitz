@@ -13,7 +13,10 @@ const Grid = Pyr.Grid;
 
 import Page from './../page';
 import Sheet from './../sheet';
-import UserAvatar from '../../util/avatar';
+import {
+  UserAvatar,
+  UserScore
+} from '../../util/user';
 
 class RecruiterItem extends Component {
   render() {
@@ -21,18 +24,18 @@ class RecruiterItem extends Component {
 
     return (
       <Grid.Row id={"recruiter-item-" + recruiter.id} className="recruiter-item row-stretch">
-        <Grid.Column className="score red col-1">
-          4.5
+        <Grid.Column className="score col-1 blue">
+          <UserScore score={recruiter.id} />
         </Grid.Column>
-        <Grid.Column className="icon blue col-1">
+        <Grid.Column className="icon hidden-sm-down col-md-1 red">
           <UserAvatar userId={recruiter.id} />
         </Grid.Column>
-        <Grid.Column className="info yellow col-5">
+        <Grid.Column className="info col-md-5 col-sm-6">
           <Grid.Row>{recruiter.first_name}</Grid.Row>
           <Grid.Row>FakeCompany Placeholder</Grid.Row>
           <Grid.Row>Description goes here</Grid.Row>
         </Grid.Column>
-        <Grid.Column className="info yellow col-5">
+        <Grid.Column className="stats col-md-5">
           <Grid.Row>22 successful placements</Grid.Row>
           <Grid.Row>Last Active: 3/3/2017</Grid.Row>
           <Grid.Row>27 Reviews</Grid.Row>

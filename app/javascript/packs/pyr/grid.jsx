@@ -6,6 +6,10 @@ import PropTypes from 'prop-types';
 
 import Pyr from '../pyr/pyr';
 
+const Container = (props) => (
+  <div {...Pyr.Util.propsMergeClassName(props, "container-fluid")} >{props.children}</div>
+);
+
 const Row = (props) => (
   <div {...Pyr.Util.propsMergeClassName(props, "row")} >{props.children}</div>
 );
@@ -40,5 +44,6 @@ const Grid = {
   ColumnFull,
   ColThird,
   ColumnThird,
+  Container,
 };
 export default Grid;

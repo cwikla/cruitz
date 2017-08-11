@@ -8,7 +8,9 @@ import ReactDOM from 'react-dom';
 import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 import Sheet from '../sheet';
-import UserAvatar from '../../util/avatar';
+import {
+  UserAvatar 
+} from '../../util/user';
 
 function THREAD_ID(message) {
   return "thread-item-" + message.id;
