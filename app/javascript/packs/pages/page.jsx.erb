@@ -181,11 +181,11 @@ class Page extends Pyr.UserComponent {
     let id = this.name().toLowerCase() + "-page";
 
     return (
-        <Pyr.Grid.Row className="flx-row-stretch flx-1 no-gutters" id={id}>
+        <Pyr.Grid.FullContainer>
           {this.renderHeader()}
           {this.renderIndexSheet()}
           {this.renderActionSheet()}
-        </Pyr.Grid.Row>
+        </Pyr.Grid.FullContainer>
     );
   }
 }

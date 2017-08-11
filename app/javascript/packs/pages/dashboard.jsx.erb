@@ -406,25 +406,27 @@ class Dashboard extends Pyr.UserComponent {
           className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col-stretch flx-1 main-page" 
           id="main-page"
         >
-          {this.renderBlurb(mainTitle)}
-          <div className="flx-col-stretch flx-1">
-            <MessagesPage 
-              {...this.pageProps(MESSAGES_PAGE)}
-            />
-            <JobsPage 
-              {...this.pageProps(JOBS_PAGE)}
-              items={this.state.jobs}
-            />
-            <CandidatesPage 
-              {...this.pageProps(CANDIDATES_PAGE)}
-            />
-            <RecruitersPage 
-              {...this.pageProps(RECRUITERS_PAGE)}
-            />
-            <SettingsPage 
-              {...this.pageProps(SETTINGS_PAGE)}
-            />
-          </div>
+          <Pyr.Grid.FullContainer>
+            {this.renderBlurb(mainTitle)}
+            <div className="flx-row flx-1">
+              <MessagesPage 
+                {...this.pageProps(MESSAGES_PAGE)}
+              />
+              <JobsPage 
+                {...this.pageProps(JOBS_PAGE)}
+                 items={this.state.jobs}
+              />
+              <CandidatesPage 
+                {...this.pageProps(CANDIDATES_PAGE)}
+              />
+              <RecruitersPage 
+                {...this.pageProps(RECRUITERS_PAGE)}
+              />
+              <SettingsPage 
+                {...this.pageProps(SETTINGS_PAGE)}
+              />
+            </div>
+          </Pyr.Grid.FullContainer>
         </main>
     );
   }
@@ -435,28 +437,20 @@ class Dashboard extends Pyr.UserComponent {
 
     if (this.state.loading) {
       return (
-        <Pyr.Grid.Container className="d-flex h-100 w-100 flex-col">
-          <Pyr.Grid.Row className="flx-1">
-            <Pyr.Grid.Col className="">
-              <div className="">Hello<br/>Hello</div>
-            </Pyr.Grid.Col>
-          </Pyr.Grid.Row>
-        </Pyr.Grid.Container>
+        <Pyr.Grid.FullContainer key="react-top">
+          <Pyr.Loading />
+        </Pyr.Grid.FullContainer>
       );
     }
 
     return(
-      <Pyr.Grid.Container className="d-flex h-100 w-100 flex-col">
-        <Pyr.Grid.Row className="flx-1">
-          <Pyr.Grid.Col className="p-0 d-flex flx-col">
-            { this.renderNav() }
-            <div className="flx-row flx-1">
-              { this.renderSideBar() }
-              { this.renderMain() }
-            </div>
-          </Pyr.Grid.Col>
-        </Pyr.Grid.Row>
-      </Pyr.Grid.Container>
+      <Pyr.Grid.FullContainer key="react-top">
+        { this.renderNav() }
+        <div className="flx-row flx-1">
+          { this.renderSideBar() }
+          { this.renderMain() }
+        </div>
+      </Pyr.Grid.FullContainer>
     );
   }
 }

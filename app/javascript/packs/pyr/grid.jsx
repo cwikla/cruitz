@@ -34,6 +34,16 @@ const ColumnFull = (props) => (
 );
 const ColFull = ColumnFull;
 
+const FullContainer = (props) => (
+  <Pyr.Grid.Container {...Pyr.Util.propsMergeClassName(props, "d-flex h-100 w-100 flex-col")} >
+    <Pyr.Grid.Row {...Pyr.Util.propsMergeClassName(props, "flx-1")} >
+      <Pyr.Grid.Col {...Pyr.Util.propsMergeClassName(props, "p-0 d-flex flx-col")}>
+        {props.children}
+      </Pyr.Grid.Col>
+    </Pyr.Grid.Row>
+  </Pyr.Grid.Container>
+);
+
 const Grid = {
   Row,
   Col,
@@ -45,5 +55,6 @@ const Grid = {
   ColThird,
   ColumnThird,
   Container,
+  FullContainer
 };
 export default Grid;
