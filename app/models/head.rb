@@ -1,5 +1,5 @@
 class Head < ApplicationRecord
-  belongs_to :user, :class_name => "User"
+  belongs_to :recruiter, :class_name => "User", foreign_key: :user_id
 
   def to_s
     "#{self.first_name} #{self.last_name}"

@@ -27,11 +27,15 @@ class RecruiterItem extends Component {
         <Grid.Column className="icon blue col-1">
           <UserAvatar userId={recruiter.id} />
         </Grid.Column>
-        <Grid.Column className="info yellow col-10">
+        <Grid.Column className="info yellow col-5">
           <Grid.Row>{recruiter.first_name}</Grid.Row>
           <Grid.Row>FakeCompany Placeholder</Grid.Row>
-          <Grid.Row>27 Reviews</Grid.Row>
           <Grid.Row>Description goes here</Grid.Row>
+        </Grid.Column>
+        <Grid.Column className="info yellow col-5">
+          <Grid.Row>22 successful placements</Grid.Row>
+          <Grid.Row>Last Active: 3/3/2017</Grid.Row>
+          <Grid.Row>27 Reviews</Grid.Row>
         </Grid.Column>
       </Grid.Row>
     );
@@ -73,7 +77,7 @@ class RecruitersPage extends Page {
       context: this,
       loading: onLoading,
     }).done(function(data, textStatus, jaXHR) {
-        this.onSetItems(data.users);
+        this.onSetItems(data.recruiters);
 
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
