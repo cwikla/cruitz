@@ -68,10 +68,8 @@ class Content extends Component {
              isSelected={this.props.message.id == root.id}
              key={thid+"-"+root.id}/>
         </div>
-        <div
-          ref={(node) => this.scrollerOld = (node)}
+        <Pyr.Scroll
           id="message-show" 
-          className="scroll flx-col flx-stretch" 
           onScroll={this.props.onScroll}
         >
           <ThreadList
@@ -79,7 +77,7 @@ class Content extends Component {
             selected={this.props.message}
             jobMap={this.props.jobMap}
           />
-        </div>
+        </Pyr.Scroll>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-$icon_width: 6;
+$avatar_width: 6;
 
 .message-item {
   padding: 0.5rem 0rem 0.5rem 0rem;
@@ -46,13 +46,13 @@ $icon_width: 6;
     //border-style: solid;
   }
 
-  .user-icon {
+  .user-avatar {
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 0.8rem;
     img {
-      width: #{$icon_width}rem;
-      height: #{$icon_width}rem;
+      width: #{$avatar_width}rem;
+      height: #{$avatar_width}rem;
       border-radius: 50%;
     }
   }
@@ -63,8 +63,8 @@ $icon_width: 6;
 
     .created-at {
       font-size: 0.85rem;
-      padding-left: #{$icon_width+3}rem;
-      padding-right: #{$icon_width+3}rem;
+      padding-left: #{$avatar_width+3}rem;
+      padding-right: #{$avatar_width+3}rem;
       color: $gray_color;
     }
 
@@ -77,13 +77,13 @@ $icon_width: 6;
       .content {
         background-color: rgba($primary_light_color, 0.5);
       }
-      padding-right: #{$icon_width + 2}rem;
+      padding-right: #{$avatar_width + 2}rem;
     }
     &.yours {
       .content {
         background-color: rgba($secondary_light_color, 0.5);
       }
-      padding-left: #{$icon_width + 2}rem;
+      padding-left: #{$avatar_width + 2}rem;
     }
   }
 

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
   get 'users/me' => 'users#me'
+  get 'recruiters' => 'users#recruiters'
+
   resources :users, only: [:index, :create, :show, :update, :destroy]
 
     #resources :microposts, only: [:index, :create, :show, :update, :destroy]

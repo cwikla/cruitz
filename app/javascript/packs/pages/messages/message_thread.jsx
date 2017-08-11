@@ -54,10 +54,8 @@ class Content extends Component {
     //console.log("SHOW INNNER!");
 
     return (
-      <div 
-        ref={(node) => this.scrollerOld = (node)}
+      <Pyr.Scroll
         id="message-show" 
-        className="flx-1 flx-col scroll" 
         onScroll={this.props.onScroll}
       >
         <ThreadList
@@ -65,7 +63,7 @@ class Content extends Component {
           selected={this.props.message}
           jobMap={this.props.jobMap}
         />
-      </div>
+      </Pyr.Scroll>
     );
   }
 }

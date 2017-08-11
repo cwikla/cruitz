@@ -224,10 +224,6 @@ class CandidateTable extends Sheet.Index {
     return "candidate-row-" + item.id;
   }
 
-  componentDidUpdate() {
-    $('#candidate-table').DataTable();
-  }
-
   render() {
     if (!this.props.items) {
       return null;
@@ -268,7 +264,7 @@ class CandidatesPage extends Page {
     };
   }
 
-  render() {
+  render_table() {
     return (
       <CandidateTable 
         {...this.props}

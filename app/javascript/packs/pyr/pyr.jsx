@@ -17,6 +17,7 @@ const ClassNames = Util.ClassNames;
 const URL = Util.URL;
 
 import Grid from './grid';
+import Scroll from './scroll';
 
 const Method = { 
   POST, 
@@ -213,6 +214,7 @@ const Pyr = {
   MagicDate,
   ClassNames,
   URL,
-  Loading
+  Loading,
+  Scroll
 };
 export default Pyr;

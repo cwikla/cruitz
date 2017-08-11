@@ -15,6 +15,8 @@ class User < ApplicationRecord
   has_many :sent_messages, class_name: "Message", foreign_key: :from_user_id
   has_many :candidates, through: :jobs
 
+  scope :recruiter, -> { where(is_recruiter: true) }
+
   belongs_to :company
 
   def new_candidates

@@ -8,16 +8,16 @@ import ReactDOM from 'react-dom';
 import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 import Sheet from '../sheet';
-import UserIcon from '../../util/icon';
+import UserAvatar from '../../util/avatar';
 
 function THREAD_ID(message) {
   return "thread-item-" + message.id;
 }
 
 class ThreadItem extends Sheet.Item {
-  renderIcon(message) {
+  renderAvatar(message) {
     return (
-      <UserIcon 
+      <UserAvatar 
         userId={message.from_user.id}
         name={message.from_user.first_name}
       />
@@ -38,8 +38,8 @@ class ThreadItem extends Sheet.Item {
       allClass.push("unread red");
     }
 
-    let leftIcon = mine ? this.renderIcon(message) : null;
-    let rightIcon = mine ? null : this.renderIcon(message);
+    let leftAvatar = mine ? this.renderAvatar(message) : null;
+    let rightAvatar = mine ? null : this.renderAvatar(message);
 
     let justify = ClassNames("flx-row flx-1");
     if (!mine) {
@@ -52,11 +52,11 @@ class ThreadItem extends Sheet.Item {
           <Pyr.MagicDate date={message.created_at} />
         </div>
         <div className={justify}>
-          { leftIcon }
+          { leftAvatar }
           <div className="flx-col justify-content-center">
             <div className={" content flx-0"}>{id}-{message.body}</div>
           </div>
-          { rightIcon }
+          { rightAvatar }
         </div>
       </div>
     );

@@ -34,7 +34,7 @@ const SEARCH_URL = "/search";
 const RECRUITERS_URL = "/recruiters";
 
 function PageURL(page) {
-  return Pyr.URL().push(page).toString();
+  return Pyr.URL().push(page);
 }
 
 function same(a,b) {
@@ -239,7 +239,7 @@ class Dashboard extends Pyr.UserComponent {
 
   renderSearch() {
     let model = this.state.page;
-    let url = SEARCH_URL + "/" + this.state.page.toLowerCase();
+    let url = Pyr.URL(SEARCH_URL).push(this.state.page);
 
     return (
       <div>
@@ -337,11 +337,11 @@ class Dashboard extends Pyr.UserComponent {
             onClick={this.onSetPageCandidates}
             selected={this.state.job != null}
           />
-          <div className="flx-col-stretch scroll hidden-sm-down">
+          <Pyr.Scroll className="hidden-sm-down">
             <Sidebar.Menu>
               {jobKids}
             </Sidebar.Menu>
-          </div>
+          </Pyr.Scroll>
 
           <Sidebar.Header 
             id="recruiters"
@@ -376,17 +376,30 @@ class Dashboard extends Pyr.UserComponent {
     );
   }
 
-  renderMain() {
-    let mainTitle = this.title();
-    let pageProps = {
+  pageProps(page) {
+    let props = {
       action: this.state.action,
       jobs: this.state.jobs,
       job: this.state.job,
 
       onSetAction: this.onSetAction,
       onSetUnaction: this.onSetUnaction,
-      onSetButtonCount: this.onSetButtonCount
+      onSetButtonCount: this.onSetButtonCount,
+
+      onJobCreate: this.onJobCreate,
+      onJobUpdate: this.onJobUpdate,
+      onJobDelete: this.onJobDelete,
+
+      showing: (this.state.page == page), 
+      url: PageURL(page),
+      jobs: this.state.jobs,
     };
+
+    return props;
+  }
+
+  renderMain() {
+    let mainTitle = this.title();
 
     return (
         <main 
@@ -396,33 +409,20 @@ class Dashboard extends Pyr.UserComponent {
           {this.renderBlurb(mainTitle)}
           <div className="flx-col-stretch flx-1">
             <MessagesPage 
-              {...this.props.messagePageProps} 
-              {...pageProps}
-              showing={this.state.page==MESSAGES_PAGE} 
+              {...this.pageProps(MESSAGES_PAGE)}
             />
             <JobsPage 
-              {...this.props.jobsPageProps} 
-              {...pageProps}
-              showing={this.state.page==JOBS_PAGE}
-              onJobCreate={this.onJobCreate}
-              onJobUpdate={this.onJobUpdate}
-              onJobDelete={this.onJobDelete}
+              {...this.pageProps(JOBS_PAGE)}
               items={this.state.jobs}
             />
             <CandidatesPage 
-              {...this.props.candidatePageProps} 
-              {...pageProps}
-              showing={this.state.page==CANDIDATES_PAGE} 
+              {...this.pageProps(CANDIDATES_PAGE)}
             />
             <RecruitersPage 
-              {...this.props.recruiterPageProps} 
-              {...pageProps}
-              showing={this.state.page==RECRUITERS_PAGE} 
+              {...this.pageProps(RECRUITERS_PAGE)}
             />
             <SettingsPage 
-              {...this.props.settingsPageProps} 
-              {...pageProps}
-              showing={this.state.page==SETTINGS_PAGE} 
+              {...this.pageProps(SETTINGS_PAGE)}
             />
           </div>
         </main>

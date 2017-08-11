@@ -9,13 +9,31 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Pyr from '../../pyr/pyr';
+const Grid = Pyr.Grid;
+
 import Page from './../page';
 import Sheet from './../sheet';
+import UserAvatar from '../../util/avatar';
 
 class RecruiterItem extends Component {
   render() {
+    let recruiter = this.props.recruiter;
+
     return (
-      <h3>Check it out, I'm a recruiter</h3>
+      <Grid.Row id={"recruiter-item-" + recruiter.id} className="recruiter-item row-stretch">
+        <Grid.Column className="score red col-1">
+          4.5
+        </Grid.Column>
+        <Grid.Column className="icon blue col-1">
+          <UserAvatar userId={recruiter.id} />
+        </Grid.Column>
+        <Grid.Column className="info yellow col-10">
+          <Grid.Row>{recruiter.first_name}</Grid.Row>
+          <Grid.Row>FakeCompany Placeholder</Grid.Row>
+          <Grid.Row>27 Reviews</Grid.Row>
+          <Grid.Row>Description goes here</Grid.Row>
+        </Grid.Column>
+      </Grid.Row>
     );
   }
 }
@@ -26,9 +44,16 @@ class IndexSheet extends Sheet.Index {
     return RecruitersPage.key(a)
   }
 
-  renderItem() {
-    return ( <RecruiterItem /> );
+  renderItem(item, isSelected) {
+    return ( <RecruiterItem recruiter={item} isSelected={isSelected} /> );
   }
+
+  renderNone() {
+    return (
+      <h2> Recruiters Empty</h2>
+    );
+  }
+
 }
 
 class ShowSheet extends Sheet.Show {
@@ -48,7 +73,7 @@ class RecruitersPage extends Page {
       context: this,
       loading: onLoading,
     }).done(function(data, textStatus, jaXHR) {
-        this.onSetItems(data.recruiters);
+        this.onSetItems(data.users);
 
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);

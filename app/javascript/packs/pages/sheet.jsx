@@ -156,6 +156,7 @@ class Index extends Base {
       <ul>
         {items.map((item, pos) => {
           let isSelected = this.same(item, this.props.selected);
+          //console.log("RENDERING " + item);
           return (
             <li 
               key={this.key(item)} 
@@ -168,9 +169,9 @@ class Index extends Base {
 
   renderInner() {
     return (
-      <div className="inner flx-col-stretch flx-1 scroll">
+      <Pyr.Scroll className="inner flx-col-stretch flx-1">
         { this.props.items ? this.renderChildren() : this.renderNone() }
-      </div>
+      </Pyr.Scroll>
     );
   }
 
