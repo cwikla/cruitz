@@ -1,5 +1,5 @@
 <% if user_signed_in? %>
-  <div class="flx-row flx-stretch flx-1" id="react-container">
+  <div id="react-container" class="h-100 w-100">
       <%= yield %>
   </div>
 <%= javascript_pack_tag "pages/#{params[:controller]}" %>
