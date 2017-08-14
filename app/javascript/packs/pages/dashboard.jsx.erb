@@ -406,7 +406,7 @@ class Dashboard extends Pyr.UserComponent {
           className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col-stretch flx-1 main-page" 
           id="main-page"
         >
-          <Pyr.Grid.FullContainer>
+          <div className="d-flex">
             {this.renderBlurb(mainTitle)}
             <div className="flx-row flx-1">
               <MessagesPage 
@@ -426,7 +426,7 @@ class Dashboard extends Pyr.UserComponent {
                 {...this.pageProps(SETTINGS_PAGE)}
               />
             </div>
-          </Pyr.Grid.FullContainer>
+          </div>
         </main>
     );
   }
