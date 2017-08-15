@@ -4,13 +4,10 @@
 }
 
 .candidate-item {
-  border-width: 4px;
-  border-color: rgba(#ffffff, 0.0);
-  border-style: solid;
+  border-bottom: 3px groove rgba(white, 0.7);
 }
 
 .candidate-item:hover {
-  border-color: $primary_color;
   background-color: $hover_background_color;
 }
 

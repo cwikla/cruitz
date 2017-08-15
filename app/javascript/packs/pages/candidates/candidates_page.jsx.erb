@@ -9,12 +9,16 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Page from '../page';
-
 import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+import Page from '../page';
 import Sheet from '../sheet';
+import {
+  UserAvatar,
+  UserScore
+} from '../../util/user';
+
 
 const JOBS_URL = "/jobs";
 const CANDIDATES_URL = "/candidates";
@@ -54,17 +58,39 @@ class CandidateHeader extends Component {
 class CandidateItem extends Component {
 
   render() {
-    let id = "candidate-" + this.props.candidate.id;
-    let classes = ClassNames("candidate-item card");
+    let candidate = this.props.candidate;
+
+    let id = "candidate-" + candidate.id;
+    let classes = ClassNames("candidate-item flx-col row-stretch");
 
     if (this.props.selected) {
        classes.push("selected");
     }
 
-    let fullName = this.props.candidate.first_name + " " + this.props.candidate.last_name;
-    let phoneNumber = this.props.candidate.phone_number || "No Phone";
-    let email = this.props.candidate.email || "No Email";
-    let description = this.props.candidate.description || "No Description";
+    let fullName = candidate.first_name + " " + candidate.last_name;
+    let phoneNumber = candidate.phone_number || "No Phone";
+    let email = candidate.email || "No Email";
+    let description = candidate.description || "No Description";
+
+    return (
+      <div className={classes} id={id}>
+        <div className="flx-row">
+          <div className="state col-md-2">State</div>
+          <div className="name col-md-3">{fullName}</div>
+          <div className="email col-md-3">{email}</div>
+          <div className="phone-number col-md-3">{phoneNumber}</div>
+        </div>
+        <div className="flx-row">
+          <div className="recruiter col-md-2">
+            <UserAvatar userId={candidate.id} />
+          </div>
+          <div className="description col-md-10">Description</div>
+        </div>
+      </div>
+    );
+  }
+
+  render2() {
 
     return (
       <div className={classes} id={id}>
@@ -193,13 +219,40 @@ class IndexSheet extends Sheet.Index {
   }
 }
 
+class CandidateCVItem extends Sheet.Item {
+  render() {
+    let candidate = this.props.candidate;
+
+    let classes = ClassNames("candidate-cv-item flx-col row-stretch");
+
+    let fullName = candidate.first_name + " " + candidate.last_name;
+    let phoneNumber = candidate.phone_number || "No Phone";
+    let email = candidate.email || "No Email";
+    let description = candidate.description || "No Description";
+
+    let id = "candidate-cv-" + candidate.id;
+
+    return (
+      <div className={classes} id={id}>
+        <div className="flx-row orange">
+          <div className="vitals col-md-9 red">State</div>
+          <div className="recruiter col-md-3 blue">Recruiter</div>
+        </div>
+        <div className="flx-row yellow">
+            Messaging goes here.
+        </div>
+      </div>
+    );
+  }
+}
+
 class ShowSheet extends Sheet.Show {
   key(item) {
     return CandidatesPage.key(item);
   }
 
   renderItem(item, isSelected) {
-    return (<CandidateItem candidate={item} selected={isSelected} />);
+    return (<CandidateCVItem candidate={item} selected={isSelected} />);
   }
 }
 

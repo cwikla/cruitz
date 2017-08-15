@@ -86,24 +86,10 @@ class IndexSheet extends Sheet.Index {
 
 
 class ShowSheet extends Sheet.Show {
-  getInitState(props) {
-    return Object.assign(super.getInitState(props), { thread: null });
-  }
-
   constructor(props) {
     super(props);
 
-    this.onMessageDetails = this.messageDetails.bind(this);
     this.onBack = this.back.bind(this);
-    this.onSuccess = this.success.bind(this);
-    //this.onScroll = this.scroll.bind(this);
-  }
-
-  scroller() {
-    let item = $("#message-show")[0];
-    //console.log("SCROLLER: " + item);
-    return item;
-    //return this.inner.scroller;
   }
 
   back(e) {
@@ -112,47 +98,6 @@ class ShowSheet extends Sheet.Show {
     }
 
     this.props.onSetUnaction();
-  }
-
-  threadExtra(thread) {
-    let all = [];
-    let userId = this.context.user.id;
-
-    thread.map((item, pos) => {
-      item.is_root = !item.root_message_id;
-      item.mine = (item.from_user.id == userId);
-      item.read_at = new Date(); // got it so pretend it's been read, server is updating
-    });
-
-    return thread;
-  }
-
-  setThread(thread) {
-    this.setState({
-      thread: this.threadExtra(thread)
-    });
-
-  }
-
-  success(data, textStatus, jqXHR) {
-    let thread = this.state.thread || [];
-    thread = thread.concat(data.message);
-
-    this.setThread(thread);
-
-    let itemDict = this.props.items.reduce((results, item) => {
-      results[item.id] = item;
-      return results;
-    }, {} );
-
-    for(let item of thread) {
-      if (itemDict[item.id]) {
-        //console.log("Replacing: " + item.id);
-      }
-      itemDict[item.id] = item;
-    }
-
-    this.props.onSetItems(Object.values(itemDict));
   }
 
   render() {
@@ -164,14 +109,10 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <MessageRender
-        ref={(node) => this.inner = node}
         message={this.props.selected}
         jobMap={this.props.jobMap}
         onBack={this.onBack}
-        onScroll={this.props.onScroll}
-        onSuccess={this.onSuccess}
         url={Pyr.URL(MESSAGES_URL)}
-        thread={this.state.thread}
       />
     );
   }
@@ -180,108 +121,6 @@ class ShowSheet extends Sheet.Show {
   key(a) {
     return MessagesPage.key(a)
   }
-
-  messageDetails(message, thread) {
-    //alert(JSON.stringify(thread));
-    // FIXME ignore message, we already have it in props.selected - FOR NOW ;)
-    this.setThread(thread);
-  }
-
-  getMessage(mid) {
-    let url =  Pyr.URL(MESSAGES_URL).push(mid);
-    //alert(url);
-    Pyr.getJSON({
-      url: url,
-      context: this,
-      loading: this.onLoading
-    }).done(function(data, textStatus, jaXHR) {
-     this.onMessageDetails(data.message, data.thread);
-   
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
-    });
-  }
-
-  componentDidMount() {
-    if (this.props.selected) {
-      this.getMessage(this.props.selected.id);
-    }
-  }
-
-  topPos(item) {
-    let $item = $(item);
-    let $parent = $item.parent();
-    let $scroll = $(this.scroller());
-
-    //console.log("ITEM: " + $item.attr("id"));
-    let top = $item.offset().top;
-
-    //console.log("TOP: " + $item.attr("id") + " => " + top);
-    //while($parent.attr("id") != "message-show") {
-    while($parent.attr("id") != $scroll.attr("id")) {
-      //console.log("TOP: " + $parent.attr("id") + " => " + top);
-      top = top - $parent.offset().top;
-
-      $parent = $parent.parent();
-      //console.log("PARENT IS NOW: " + $parent.attr("id"));
-    }
-
-    return top;
-  }
-
-  firstUnread() {
-    let messages = this.state.thread;
-
-    let pos = messages.reduce((result, m, index) => {
-      if (m.mine || m.read_at) {
-        return index;
-      }
-      return result;
-    }, 0);
-    //console.log("READ POS: " + pos);
-    return messages[pos];
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.selected && (this.props.selected.id != prevProps.selected.id)) {
-      this.getMessage(this.props.selected.id);
-    }
-    let oldLength = prevState.thread ? prevState.thread.length : 0;
-    let newLength = this.state.thread ? this.state.thread.length : 0;
-
-    //console.log("UPDATE: " + oldLength + " => " + newLength);
-
-    if (oldLength != newLength) {
-      this.scrollToLastRead(oldLength == 0);
-    }
-  }
-
-  scrollToLastRead(firstUnread=false) {
-    //console.log("SCROLL TO LAST");
-
-    if (!firstUnread) {
-      //console.log("Scroll To Bottom");
-      //console.log("Scroll Height: " + this.scroller().scrollHeight);
-      $(this.scroller()).stop().animate({
-        scrollTop: this.scroller().scrollHeight
-      }, 800);
-      return;
-    }
-
-    let topMessage = this.firstUnread();
-    let mid = THREAD_ID(topMessage);
-
-    let $item = $("#" + mid);
-    //console.log("THREAD_ID: " + mid);
-
-    let $scroll = $(this.scroller());
-
-    let showTop = this.scroller().scrollHeight;
-    let top = this.topPos($item) + $scroll.offset().top + $item.height();
-
-    $scroll.stop().scrollTop(top);
-  }
-
 
   renderItem(message, isSelected) {
     if (!this.state.thread || this.state.thread.length < 1) {

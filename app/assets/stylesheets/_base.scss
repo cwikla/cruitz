@@ -282,5 +282,17 @@ label {
   font-size: 3rem;
 }
 
+.user-avatar {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.8rem;
+  img {
+    width: #{$avatar_width}rem;
+    height: #{$avatar_width}rem;
+    border-radius: 50%;
+  }
+}
+
+
 @import 'messages';
 @import 'recruiters';
