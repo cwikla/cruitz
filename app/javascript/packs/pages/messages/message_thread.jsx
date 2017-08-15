@@ -236,13 +236,17 @@ class MessageThread extends Pyr.UserComponent {
     }
   }
 
-  render() {
+  renderHeader() {
     return (
-      <div className="sheet flx-col-stretch flx-1">
         <Header
           message={this.props.message}
           onBack={this.props.onBack}
         />
+    );
+  }
+
+  renderContent() {
+    return (
         <Content
           ref={(node) => this.content = (node)}
           onScroll={this.props.onScroll}
@@ -251,13 +255,26 @@ class MessageThread extends Pyr.UserComponent {
           jobMap={this.props.jobMap}
         >
         </Content>
-      
+    );
+  }
+
+  renderFooter(label="Reply") {
+    return (
         <Footer
           message={this.props.message}
           onSuccess={this.onSuccess}
-          label="Reply"
+          label={label}
           url={this.props.url}
         />
+    );
+  }
+
+  render() {
+    return (
+      <div className="flx-col-stretch flx-1 sheet thread">
+        {this.renderHeader()}
+        {this.renderContent()}
+        {this.renderFooter()}
       </div>
     );
   }

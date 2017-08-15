@@ -36,7 +36,7 @@ class Scroll extends Component {
     //while($parent.attr("id") != "message-show") {
     //while($parent.attr("id") != this.scroller.attr("id")) {
     while(!$parent.is(this.scroller)) {
-      console.log("TOP: " + $parent.attr("id") + " => " + top);
+      //console.log("TOP: " + $parent.attr("id") + " => " + top);
       top = top - $parent.offset().top;
 
       $parent = $parent.parent();
@@ -48,7 +48,7 @@ class Scroll extends Component {
 
   scrollToPos({pos, animateTime}) {
     pos = pos || this.scroller[0].scrollHeight;
-    console.log("ScrollToPos: " + pos);
+    //console.log("ScrollToPos: " + pos);
     
     if (!animateTime) {
       return this.scroller.stop().scrollTop(pos);

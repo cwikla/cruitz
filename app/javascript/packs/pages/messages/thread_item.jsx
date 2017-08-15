@@ -39,6 +39,9 @@ class ThreadItem extends Sheet.Item {
     if (!message.mine && !message.read_at) {
       allClass.push("unread red");
     }
+    if (!message.root_message_id) {
+      allClass.push("root");
+    }
 
     let leftAvatar = mine ? this.renderAvatar(message) : null;
     let rightAvatar = mine ? null : this.renderAvatar(message);

@@ -138,6 +138,10 @@ class UserComponent extends Component {
     // nothing to see here
   }
 
+  user() {
+    return this.context.user;
+  }
+
   componentDidUpdate(prevProps, prevState, prevContext) {
     let prevID = prevContext.user ? prevContext.user.id : null;
     let id = this.context.user ? this.context.user.id : null;
