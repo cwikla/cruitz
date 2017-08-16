@@ -23,7 +23,7 @@ const MessageThreadHeader = (props) => (
 const Header = (props) => (
   <div className="message-header">
       <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
-      <div className="align-self-center title">{props.message.job.title}</div>
+      <div className="align-self-center title">{props.job.title}</div>
   </div>
 );
 
@@ -33,16 +33,15 @@ class ThreadList extends Component {
       return (<Pyr.Loading />);
     }
   
-    let thid = "thread-" + this.props.selected.root_message_id || this.props.selected.id;
+    let thid = "thread-" + this.props.message.root_message_id || this.props.message.id;
   
     return (
       <div id={thid} className="message-thread flx-1">
         {
           this.props.thread.map((msg, pos) => {
-            //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
             return ( <ThreadItem message={msg}
-                      job={this.props.jobMap[msg.job_id]}
-                      isSelected={msg.id == this.props.selected.id}
+                      job={this.props.job}
+                      isSelected={msg.id == this.props.message.id}
                       key={thid+"-"+msg.id}/>
             );
           })
@@ -92,15 +91,19 @@ class Content extends Component {
 
     let $item = $("#" + mid);
 
-    console.log("SCROLLING TO ITEM: " + mid);
+    //console.log("SCROLLING TO ITEM: " + mid);
     this.scroll.scrollToItem($item);
+  }
+
+  componentDidMount() {
+    this.scrollToLastRead(true);
   }
 
   componentDidUpdate(prevProps, prevState) {
     let oldLength = prevProps.thread ? prevProps.thread.length : 0;
     let newLength = this.props.thread ? this.props.thread.length : 0;
 
-    console.log("UPDATE: " + oldLength + " => " + newLength);
+    //console.log("UPDATE: " + oldLength + " => " + newLength);
 
     if (oldLength != newLength) {
       this.scrollToLastRead(oldLength == 0);
@@ -112,7 +115,6 @@ class Content extends Component {
     if (!this.props.thread || this.props.thread.length < 1) {
       return (<Pyr.Loading />);
     }
-    //console.log("SHOW INNNER!");
 
     return (
       <Pyr.Scroll
@@ -122,8 +124,8 @@ class Content extends Component {
       >
         <ThreadList
           thread={this.props.thread}
-          selected={this.props.message}
-          jobMap={this.props.jobMap}
+          message={this.props.message}
+          job={this.props.job}
         />
       </Pyr.Scroll>
     );
@@ -186,7 +188,7 @@ class MessageThread extends Pyr.UserComponent {
 
   setThread(thread) {
     this.setState({
-      thread: this.threadExtra(thread)
+      thread: this.threadExtra(thread),
     });
   }
 
@@ -236,32 +238,33 @@ class MessageThread extends Pyr.UserComponent {
     }
   }
 
-  renderHeader() {
+  renderHeader(message) {
     return (
-        <Header
-          message={this.props.message}
-          onBack={this.props.onBack}
-        />
+      <Header
+        job={this.props.job}
+        message={message}
+        onBack={this.props.onBack}
+      />
     );
   }
 
-  renderContent() {
+  renderContent(message) {
     return (
         <Content
           ref={(node) => this.content = (node)}
-          onScroll={this.props.onScroll}
-          message={this.props.message}
+          message={message}
           thread={this.state.thread}
-          jobMap={this.props.jobMap}
+          onScroll={this.props.onScroll}
+          job={this.props.job}
         >
         </Content>
     );
   }
 
-  renderFooter(label="Reply") {
+  renderFooter(message, label="Reply") {
     return (
         <Footer
-          message={this.props.message}
+          message={message}
           onSuccess={this.onSuccess}
           label={label}
           url={this.props.url}
@@ -270,11 +273,16 @@ class MessageThread extends Pyr.UserComponent {
   }
 
   render() {
+    let message = this.state.thread ? this.state.thread[this.state.thread.length-1] : null;
+    if (!message) {
+      return <Pyr.Loading />
+    }
+
     return (
       <div className="flx-col-stretch flx-1 sheet thread">
-        {this.renderHeader()}
-        {this.renderContent()}
-        {this.renderFooter()}
+        {this.renderHeader(message)}
+        {this.renderContent(message)}
+        {this.renderFooter(message)}
       </div>
     );
   }

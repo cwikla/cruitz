@@ -14,6 +14,10 @@ const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
 import Sheet from '../sheet';
+import MessageThread from '../messages/message_thread';
+
+const MESSAGES_URL = "/messages";
+
 import {
   UserAvatar,
   UserScore
@@ -220,6 +224,53 @@ class IndexSheet extends Sheet.Index {
 }
 
 class CandidateCVItem extends Sheet.Item {
+  constructor(props) {
+    super(props);
+    this.state = {
+      job: null
+    };
+  }
+
+  setJob(job) {
+    this.setState({
+      job
+    });
+  }
+
+  getJob(jobId) {
+    let url = Pyr.URL(JOBS_URL).push(jobId);
+
+    Pyr.getJSON({
+      url: url,
+      context: this,
+
+    }).done((data, textStatus, jaXHR) => {
+      this.setJob(data.job);
+
+    }).fail((jaXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+
+    });
+  }
+
+  componentWillMount() {
+    this.getJob(this.props.candidate.job_id);
+  }
+
+  renderThread() {
+    if (!this.state.job) {
+      return <Pyr.Loading />
+    }
+
+    return (
+      <MessageThread
+        messageId={this.props.candidate.root_message_id}
+        job={this.state.job}
+        url={Pyr.URL(MESSAGES_URL)}
+      />
+    );
+  }
+
   render() {
     let candidate = this.props.candidate;
 
@@ -239,7 +290,7 @@ class CandidateCVItem extends Sheet.Item {
           <div className="recruiter col-md-3 blue">Recruiter</div>
         </div>
         <div className="flx-row yellow">
-            Messaging goes here.
+          {this.renderThread()}
         </div>
       </div>
     );

@@ -49,7 +49,8 @@ class Message < ApplicationRecord
   end
 
   def self.thread_for_candidate(candidate)
-    Message.where(candidate_id: candidate.id).order(:id)
+    cid = candidate.respond_to?(:id) ? candidate.id : candidate
+    Message.where(candidate_id: cid).order(:id)
   end
 
   def self.roots(messages)

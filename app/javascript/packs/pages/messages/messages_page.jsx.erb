@@ -105,12 +105,13 @@ class ShowSheet extends Sheet.Show {
       return (<Pyr.Loading />);
     }
 
+    let message = this.props.selected;
     let MessageRender = this.props.selected.candidate ? MessageThread : MessageQA;
 
     return (
       <MessageRender
-        message={this.props.selected}
-        jobMap={this.props.jobMap}
+        message={message}
+        job={this.props.jobMap[message.job_id]}
         onBack={this.onBack}
         url={Pyr.URL(MESSAGES_URL)}
       />

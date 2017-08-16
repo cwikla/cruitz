@@ -6,7 +6,8 @@ class CandidateSerializer < ActiveModel::Serializer
     :phone_number,
     :email,
     :description,
-    :job_id
+    :job_id,
+    :root_message_id
 
   def uuid
     "candidate-#{object.id}"
@@ -26,6 +27,11 @@ class CandidateSerializer < ActiveModel::Serializer
 
   def email
     object.head.email
+  end
+
+  def root_message_id
+    m = Message.thread_for_candidate(object).first
+    m ? m.id : nil
   end
 
   def description

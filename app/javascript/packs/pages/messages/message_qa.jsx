@@ -17,20 +17,27 @@ const MessageQAHeader = (props) => (
 const Header = (props) => (
   <div className="qa-header">
       <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
-      <div className="align-self-center title">You have received a question about {props.message.job.title}</div>
+      <div className="align-self-center title">You have received a question about {props.job.title}</div>
   </div>
 );
 
 class MessageQA extends MessageThread {
   render() {
+    let message = this.state.thread ? this.state.thread[this.state.thread.length-1] : null;
+    if (!message) {
+      return <Pyr.Loading />
+    }
+
+
     return (
       <div className="flx-col-stretch flx-1 sheet qa">
         <Header
-          message={this.props.message}
+          job={this.props.job}
+          message={message}
           onBack={this.props.onBack}
         />
-        {this.renderContent()}
-        {this.renderFooter("Answer")}
+        {this.renderContent(message)}
+        {this.renderFooter(message, "Answer")}
       </div>
     );
   }
