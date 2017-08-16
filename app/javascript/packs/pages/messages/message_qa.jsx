@@ -30,7 +30,7 @@ class MessageQA extends MessageThread {
 
 
     return (
-      <div className="flx-col-stretch flx-1 sheet qa">
+      <div className="flx-col flx-1 sheet qa">
         <Header
           job={this.props.job}
           message={message}

@@ -279,7 +279,7 @@ class MessageThread extends Pyr.UserComponent {
     }
 
     return (
-      <div className="flx-col-stretch flx-1 sheet thread">
+      <div className="flx-col flx-1 sheet thread">
         {this.renderHeader(message)}
         {this.renderContent(message)}
         {this.renderFooter(message)}
