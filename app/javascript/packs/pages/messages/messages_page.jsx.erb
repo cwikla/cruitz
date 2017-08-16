@@ -14,7 +14,10 @@ import Page from '../page';
 import Sheet from '../sheet';
 import ThreadItem, { THREAD_ID } from './thread_item';
 
-import MessageThread, { MessageThreadHeader } from './message_thread';
+import MessageThread, { 
+  MessageThreadHeader,
+  MessageThreadIndexHeader
+} from './message_thread';
 import MessageQA, { MessageQAHeader } from './message_qa';
 
 const MESSAGES_URL = "/messages";
@@ -46,7 +49,7 @@ class MessageItem extends Sheet.Item {
       allClass.push("new");
     }
 
-    let Header = message.candidate ? MessageThreadHeader : MessageQAHeader;
+    let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
 
     return (
       <div className={allClass} id={id}>
@@ -109,12 +112,20 @@ class ShowSheet extends Sheet.Show {
     let MessageRender = this.props.selected.candidate ? MessageThread : MessageQA;
 
     return (
-      <MessageRender
-        message={message}
-        job={this.props.jobMap[message.job_id]}
-        onBack={this.onBack}
-        url={Pyr.URL(MESSAGES_URL)}
-      />
+      <div className="d-flex flx-1 flx-col">
+        <MessageThreadHeader
+          message={message}
+          job={this.props.jobMap[message.job_id]}
+          onBack={this.onBack}
+          url={Pyr.URL(MESSAGES_URL)}
+        />
+        <MessageRender
+          message={message}
+          job={this.props.jobMap[message.job_id]}
+          onBack={this.onBack}
+          url={Pyr.URL(MESSAGES_URL)}
+        />
+      </div>
     );
   }
 

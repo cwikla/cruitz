@@ -16,11 +16,11 @@ const SCROLL_TIME = 800;
 const MESSAGES_URL = "/messages";
 
 
-const MessageThreadHeader = (props) => (
+const MessageThreadIndexHeader = (props) => (
   <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}Candidate: <span>{props.job.title}</span></div>
 );
 
-const Header = (props) => (
+const MessageThreadHeader = (props) => (
   <div className="message-header">
       <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
       <div className="align-self-center title">{props.job.title}</div>
@@ -280,7 +280,6 @@ class MessageThread extends Pyr.UserComponent {
 
     return (
       <div className="flx-col flx-1 sheet thread">
-        {this.renderHeader(message)}
         {this.renderContent(message)}
         {this.renderFooter(message)}
       </div>
@@ -290,5 +289,6 @@ class MessageThread extends Pyr.UserComponent {
 
 export default MessageThread;
 export {
-  MessageThreadHeader
+  MessageThreadIndexHeader,
+  MessageThreadHeader,
 };
