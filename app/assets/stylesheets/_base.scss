@@ -241,6 +241,7 @@ label {
 
 .main-page {
   margin: 0;
+  margin-left: 1px;
   padding: 0;
 }
 
@@ -292,15 +293,6 @@ label {
     border-radius: 50%;
   }
 }
-
-.f-row {
-  flex-direction: row;
-}
-
-.f-col {
-  flex-direction: column;
-}
-
 
 @import 'messages';
 @import 'recruiters';

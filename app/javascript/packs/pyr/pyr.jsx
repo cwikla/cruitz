@@ -219,6 +219,6 @@ const Pyr = {
   ClassNames,
   URL,
   Loading,
-  Scroll
+  Scroll,
 };
 export default Pyr;

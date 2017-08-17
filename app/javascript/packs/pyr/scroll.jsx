@@ -97,7 +97,7 @@ class Scroll extends Component {
     return (
       <div 
         ref={(node) => this.scroller = $(node)}
-        {...Util.propsMergeClassName(this.props, "scroll flx-col flx-stretch")}
+        {...Util.propsMergeClassName(this.props, "scroll flx-1")}
         onScroll={this.onScroll}
       >
         { this.props.children }
