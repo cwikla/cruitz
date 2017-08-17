@@ -313,7 +313,7 @@ class Dashboard extends Pyr.UserComponent {
 
 
     return (
-        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col-stretch z-depth-1">
+        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col h-100 z-depth-1">
           <Sidebar.Header 
             id="messages"
             icon="envelope-open-o"
@@ -337,7 +337,7 @@ class Dashboard extends Pyr.UserComponent {
             onClick={this.onSetPageCandidates}
             selected={this.state.job != null}
           />
-          <Pyr.Scroll className="hidden-sm-down">
+          <Pyr.Scroll className="hidden-sm-down flx-1">
             <Sidebar.Menu>
               {jobKids}
             </Sidebar.Menu>
@@ -403,7 +403,7 @@ class Dashboard extends Pyr.UserComponent {
 
     return (
         <main 
-          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col-stretch flx-1 main-page" 
+          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page" 
           id="main-page"
         >
           <div className="d-flex flx-1">

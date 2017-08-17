@@ -240,6 +240,10 @@ class CandidateCVItem extends Sheet.Item {
   getJob(jobId) {
     let url = Pyr.URL(JOBS_URL).push(jobId);
 
+    this.setState({
+      job: null
+    });
+
     Pyr.getJSON({
       url: url,
       context: this,
@@ -251,6 +255,15 @@ class CandidateCVItem extends Sheet.Item {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
 
     });
+  }
+
+  componentDidUpdate(prevProps, prevUpdate) {
+    let pid = prevProps.candidate ? prevProps.candidate.job_id : -1;
+    let cid = this.props.candidate ? this.props.candidate.job_id : -1;
+
+    if (pid != cid) {
+      this.getJob(cid);
+    }
   }
 
   componentWillMount() {
@@ -274,7 +287,7 @@ class CandidateCVItem extends Sheet.Item {
   render() {
     let candidate = this.props.candidate;
 
-    let classes = ClassNames("candidate-cv-item flx-col row-stretch");
+    let classes = ClassNames("candidate-cv-item flx-col");
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";

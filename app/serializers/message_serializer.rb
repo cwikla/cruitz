@@ -25,6 +25,11 @@ class MessageSerializer < ActiveModel::Serializer
     object.thread.count()
   end
 
+
+  def body 
+    return Pyr::Base::Util::String.emojify(object.body)
+  end
+
   def user
     result = nil
     if object.user

@@ -10,6 +10,14 @@ class JobSerializer < ActiveModel::Serializer
 
   has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
 
+  def title
+    Pyr::Base::Util::String::emojify(object.title)
+  end
+
+  def description
+    Pyr::Base::Util::String::emojify(object.description)
+  end
+
   def candidate_count
     object.candidates.isnew.count
   end
