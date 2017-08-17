@@ -294,5 +294,16 @@ label {
   }
 }
 
+.btn-flat {
+  -webkit-box-shadow: unset;
+  box-shadow: unset;
+
+  background-color: rgba(#FFF, 0.2);
+
+  &.selected {
+    background-color: rgba(#FFF, 0.5);
+  }
+}
+
 @import 'messages';
 @import 'recruiters';

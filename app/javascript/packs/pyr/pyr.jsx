@@ -70,6 +70,33 @@ const Icon = (props) => (
   <i {...Util.propsMergeClassName(props, "fa fa-" + props.name)}/>
 );
 
+const PrimaryButton = (props) => (
+    <a href="#"
+      {...Util.propsMergeClassName(props, "btn btn-primary")}
+    >{props.children}</a>
+);
+
+const Button = (props) => (
+    <a href="#"
+      {...Util.propsMergeClassName(props, "btn")}
+    >{props.children}</a>
+);
+
+class FlatButton extends Component {
+  render() {
+    let classes = ClassNames("btn btn-flat");
+    if (this.props.selected) {
+      classes.push("selected");
+    }
+
+    return (
+      <a href="#"
+        {...Util.propsMergeClassName(this.props, classes)}
+      >{this.props.children}</a>
+    );
+  }
+}
+
 const SmallLabel = (props) => (
     <label {...Util.propsMergeClassName(props, "small-label hidden-sm-down")}>{props.children}</label>
 );
@@ -220,5 +247,8 @@ const Pyr = {
   URL,
   Loading,
   Scroll,
+  Button,
+  PrimaryButton,
+  FlatButton
 };
 export default Pyr;

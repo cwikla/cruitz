@@ -33,27 +33,39 @@ class CandidateHeader extends Component {
       return <Pyr.Loading />
     }
 
-    let id ="job-header-" + this.props.candidate.id;
-    let title = this.props.candidate.title;
-    let responseCount = 11;
-    let createdAt = "Today";
+    let candidate = this.props.candidate;
+    let job = this.props.job;
+
+    //let id ="candidate-header" + this.props.candidate.id;
+
+    let fullName = candidate.first_name + " " + candidate.last_name;
+    let phoneNumber = candidate.phone_number || "No Phone";
+    let email = candidate.email || "No Email";
+    let description = candidate.description || "No Description";
 
     return (
-      <div className="job-header card">
-        <div className="card-block">
-          <Pyr.Grid.Row className="card-title">
-            <Pyr.Grid.ColFull className="name col col-md-12"><span className="card-text">{title}</span></Pyr.Grid.ColFull>
+      <div className="candidate-header flx-noshrink">
+          <Pyr.Grid.Row className="recruiter-info p-1 flx-end">
+              <Pyr.FlatButton className="selected">Accept</Pyr.FlatButton>
+              <Pyr.FlatButton>Reject</Pyr.FlatButton>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row className="title">
+            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf id="response-count">{responseCount}</Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf id="created-at">{createdAt}</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel><span className="">{phoneNumber}</span></Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel>{email}</Pyr.Grid.ColHalf>
           </Pyr.Grid.Row>
-          <Pyr.Grid.Row id="candidate-bar">
-            <Pyr.Grid.ColThird id="sort" className="sort">[Sort]</Pyr.Grid.ColThird>
-            <Pyr.Grid.ColThird id="search" className="search">Search( )</Pyr.Grid.ColThird>
-            <Pyr.Grid.ColThird id="edit">Edit Link</Pyr.Grid.ColThird>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Hmmmmmm</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</Pyr.Grid.ColHalf>
           </Pyr.Grid.Row>
-        </div>
+          <Pyr.Grid.Row>
+            <Pyr.Grid.ColFull className="description">{description}</Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row className="recruiter-info">
+            <Pyr.Grid.ColFull>Interesting stuff about the recruiter goes here!</Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
       </div>
     );
   }
@@ -298,11 +310,10 @@ class CandidateCVItem extends Sheet.Item {
 
     return (
       <div className={classes} id={id}>
-        <div className="flx-row orange flx-noshrink">
-          <div className="vitals col-md-9 red">State</div>
-          <div className="recruiter col-md-3 blue">Recruiter</div>
-        </div>
-        <div className="flx-row yellow">
+        <CandidateHeader 
+          candidate={candidate}
+        />
+        <div className="flx-row">
           {this.renderThread()}
         </div>
       </div>
