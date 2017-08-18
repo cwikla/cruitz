@@ -67,6 +67,10 @@ class Base extends Pyr.UserComponent {
 
   renderNone() {
     return (
+      <Pyr.Loading />
+    );
+
+    return (
       <h2>Empty</h2>
     );
   }
