@@ -73,13 +73,13 @@
 
     &.mine {
       .content {
-        background-color: rgba($primary_light_color, 0.5);
+        background-color: lighten($primary_light_color, 0.5);
       }
       padding-right: #{$avatar_width + 2}rem;
     }
     &.yours {
       .content {
-        background-color: rgba($secondary_light_color, 0.5);
+        background-color: lighten($secondary_light_color, 0.5);
       }
       padding-left: #{$avatar_width + 2}rem;
     }

@@ -61,20 +61,16 @@ class CandidateHeader extends Component {
             <Pyr.Grid.ColHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</Pyr.Grid.ColHalf>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row className="flx-row-stretch">
-            <Pyr.Icon name="linkedin-square" className="p-1"/>
-            <Pyr.Icon name="github" className="p-1"/>
-            <Pyr.Icon name="dribbble" className="p-1"/>
-            <Pyr.Icon name="quora" className="p-1"/>
+            <Pyr.Icon name="linkedin-square" className="social"/>
+            <Pyr.Icon name="github" className="social"/>
+            <Pyr.Icon name="dribbble" className="social"/>
+            <Pyr.Icon name="quora" className="social"/>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row>
             <Pyr.Grid.ColFull className="description">{description}</Pyr.Grid.ColFull>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row className="recruiter-info">
             <Pyr.Grid.ColFull>Interesting stuff about the recruiter goes here!</Pyr.Grid.ColFull>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row className="recruiter-info p-1">
-              <Pyr.FlatButton className="flx-1">Experience</Pyr.FlatButton>
-              <Pyr.FlatButton className="flx-1 selected">Messages</Pyr.FlatButton>
           </Pyr.Grid.Row>
       </div>
     );
@@ -245,7 +241,81 @@ class IndexSheet extends Sheet.Index {
   }
 }
 
+class RecruiterMessage extends Sheet.Item {
+  render() {
+    if (!this.props.job) {
+      return <Pyr.Loading />
+    }
+
+    return (
+      <MessageThread 
+        className="recruiter-message"
+        messageId={this.props.candidate.root_message_id}
+        job={this.props.job}
+        url={Pyr.URL(MESSAGES_URL)}
+      />
+    );
+  }
+
+}
+
 class CandidateCVItem extends Sheet.Item {
+  render() {
+    let candidate = this.props.candidate;
+
+    let classes = ClassNames("candidate-cv-item flx-col");
+
+    let fullName = candidate.first_name + " " + candidate.last_name;
+    let phoneNumber = candidate.phone_number || "No Phone";
+    let email = candidate.email || "No Email";
+    let description = candidate.description || "No Description";
+
+    let id = "candidate-cv-" + candidate.id;
+
+    return (
+      <div className={classes} id={id}>
+        <CandidateHeader 
+          candidate={candidate}
+        />
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+      </div>
+    );
+  }
+}
+
+class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
     this.state = {
@@ -280,8 +350,8 @@ class CandidateCVItem extends Sheet.Item {
   }
 
   componentDidUpdate(prevProps, prevUpdate) {
-    let pid = prevProps.candidate ? prevProps.candidate.job_id : -1;
-    let cid = this.props.candidate ? this.props.candidate.job_id : -1;
+    let pid = prevProps.selected ? prevProps.selected.job_id : -1;
+    let cid = this.props.selected ? this.props.selected.job_id : -1;
 
     if (pid != cid) {
       this.getJob(cid);
@@ -289,55 +359,33 @@ class CandidateCVItem extends Sheet.Item {
   }
 
   componentWillMount() {
-    this.getJob(this.props.candidate.job_id);
+    this.getJob(this.props.selected.job_id);
   }
 
-  renderThread() {
-    if (!this.state.job) {
-      return <Pyr.Loading />
-    }
-
-    return (
-      <MessageThread
-        messageId={this.props.candidate.root_message_id}
-        job={this.state.job}
-        url={Pyr.URL(MESSAGES_URL)}
-      />
-    );
-  }
-
-  render() {
-    let candidate = this.props.candidate;
-
-    let classes = ClassNames("candidate-cv-item flx-col");
-
-    let fullName = candidate.first_name + " " + candidate.last_name;
-    let phoneNumber = candidate.phone_number || "No Phone";
-    let email = candidate.email || "No Email";
-    let description = candidate.description || "No Description";
-
-    let id = "candidate-cv-" + candidate.id;
-
-    return (
-      <div className={classes} id={id}>
-        <CandidateHeader 
-          candidate={candidate}
-        />
-        <div className="flx-row">
-          {this.renderThread()}
-        </div>
-      </div>
-    );
-  }
-}
-
-class ShowSheet extends Sheet.Show {
   key(item) {
     return CandidatesPage.key(item);
   }
 
   renderItem(item, isSelected) {
-    return (<CandidateCVItem candidate={item} selected={isSelected} />);
+    return (
+      <Pyr.Grid.Row>
+        <Pyr.Grid.ColHalf className="flx-col side left">
+          <Pyr.Scroll>
+            <CandidateCVItem 
+              candidate={item} 
+              selected={isSelected} 
+            />
+          </Pyr.Scroll>
+        </Pyr.Grid.ColHalf>
+        <Pyr.Grid.ColHalf className="flx-col side right">
+          <RecruiterMessage 
+            job={this.state.job}
+            candidate={item} 
+            selected={isSelected} 
+          />
+        </Pyr.Grid.ColHalf>
+      </Pyr.Grid.Row>
+    );
   }
 }
 

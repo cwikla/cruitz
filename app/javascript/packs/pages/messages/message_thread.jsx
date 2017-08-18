@@ -278,8 +278,13 @@ class MessageThread extends Pyr.UserComponent {
       return <Pyr.Loading />
     }
 
+    let divClasses = ClassNames(Pyr.Util.propsMergeClassName({}, this.props.className || ""));
+    
+
     return (
-      <div className="flx-col flx-1 sheet thread">
+      <div 
+        className={divClasses.push("flx-col flx-1 sheet thread")}
+      >
         {this.renderContent(message)}
         {this.renderFooter(message)}
       </div>
