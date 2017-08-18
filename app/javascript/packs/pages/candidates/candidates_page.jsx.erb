@@ -46,8 +46,8 @@ class CandidateHeader extends Component {
     return (
       <div className="candidate-header flx-noshrink">
           <Pyr.Grid.Row className="recruiter-info p-1 flx-end">
-              <Pyr.FlatButton className="selected">Accept</Pyr.FlatButton>
-              <Pyr.FlatButton>Reject</Pyr.FlatButton>
+              <Pyr.PrimaryButton>Accept</Pyr.PrimaryButton>
+              <Pyr.Button>Reject</Pyr.Button>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row className="title">
             <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
@@ -65,6 +65,10 @@ class CandidateHeader extends Component {
           </Pyr.Grid.Row>
           <Pyr.Grid.Row className="recruiter-info">
             <Pyr.Grid.ColFull>Interesting stuff about the recruiter goes here!</Pyr.Grid.ColFull>
+          </Pyr.Grid.Row>
+          <Pyr.Grid.Row className="recruiter-info p-1">
+              <Pyr.FlatButton className="flx-1">Experience</Pyr.FlatButton>
+              <Pyr.FlatButton className="flx-1 selected">Messages</Pyr.FlatButton>
           </Pyr.Grid.Row>
       </div>
     );
