@@ -344,6 +344,13 @@ class Dashboard extends Pyr.UserComponent {
           </Pyr.Scroll>
 
           <Sidebar.Header 
+            id="jobs"
+            icon="plus"
+            onClick={this.onSetPageJobs}
+            itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
+            selected={this.state.page==JOBS_PAGE}
+          >Jobs</Sidebar.Header>
+          <Sidebar.Header 
             id="recruiters"
             icon="users"
             onClick={this.onSetPageRecruiters}
@@ -418,6 +425,9 @@ class Dashboard extends Pyr.UserComponent {
               />
               <CandidatesPage 
                 {...this.pageProps(CANDIDATES_PAGE)}
+              />
+              <JobsPage 
+                {...this.pageProps(JOBS_PAGE)}
               />
               <RecruitersPage 
                 {...this.pageProps(RECRUITERS_PAGE)}
