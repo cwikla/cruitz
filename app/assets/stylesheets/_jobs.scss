@@ -1,0 +1,32 @@
+.show {
+  .sheet {
+    .side {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+}
+
+.job-message {
+  background-color: lighten($secondary_navbar_background_color, 0.5);
+}
+
+.jobs-index-header {
+  color: black;
+  border-bottom: 1px solid $sep_color;
+}
+
+#jobs-page .index-sheet {
+}
+
+.job-item {
+  border-bottom: 1px groove rgba(white, 0.7);
+}
+
+.job-item:hover {
+  background-color: $hover_background_color;
+}
+
+.job-item.selected {
+  border-color: $selected_background_color;
+}

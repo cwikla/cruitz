@@ -28,17 +28,6 @@
       text-overflow: ellipses;
     }
 
-    color: $gray_color;
-
-    &.unread {
-      background-color: rgba($primary_color, 0.05);
-      color: black;
-      font-weight: 500;
-
-      .title {
-      }
-    }
-
   }
 }
 
@@ -137,24 +126,3 @@
   }
 }
 
-@include media-breakpoint-down(xs) {
-  .action.show .sheet {
-    .thread-item.mine {
-      padding-right: #{0.5}rem;
-    }
-    .thread-item.yours {
-      padding-right: #{0.5}rem;
-    }
-  }
-}
-
-@include media-breakpoint-down(sm) {
-  .action.show .sheet {
-    .thread-item.mine {
-      padding-right: #{1.0}rem;
-    }
-    .thread-item.yours {
-      padding-left: #{1.0}rem;
-    }
-  }
-}

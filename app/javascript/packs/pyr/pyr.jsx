@@ -2,7 +2,11 @@
 import React, {
   Component
 } from 'react';
+
 import PropTypes from 'prop-types';
+import { 
+  CSSTransitionGroup 
+} from 'react-transition-group';
 
 import { 
   PyrForm as Form, 
@@ -27,6 +31,12 @@ const Method = {
 };
 
 const USERS_URL = "/users";
+
+const APPEAR_TIME = 250;
+const ENTER_TIME = 250;
+const LEAVE_TIME = 250;
+
+const ESCAPE_KEY = 27;
 
 function ajaxError(jaXHR, textStatus, errorThrown) {
    alert(errorThrown);
@@ -71,15 +81,15 @@ const Icon = (props) => (
 );
 
 const PrimaryButton = (props) => (
-    <a href="#"
+    <label href="#"
       {...Util.propsMergeClassName(props, "btn btn-primary")}
-    >{props.children}</a>
+    >{props.children}</label>
 );
 
 const Button = (props) => (
-    <a href="#"
+    <label href="#"
       {...Util.propsMergeClassName(props, "btn")}
-    >{props.children}</a>
+    >{props.children}</label>
 );
 
 class FlatButton extends Component {
@@ -231,6 +241,56 @@ class UserProvider extends Component {
   }
 }
 
+const Fade = (props) => (
+    <CSSTransitionGroup
+      transitionName={"fade-" + (props.in_or_out || "in")}
+      transitionAppear={true}
+      transitionEnter={false}
+      transitionLeave={false}
+      transitionAppearTimeout={props.appearTime || APPEAR_TIME}
+      transitionEnterTimeout={props.enterTime || ENTER_TIME}
+      transitionLeaveTimeout={props.leaveTime || LEAVE_TIME}
+    >
+      { Util.firstKid(props.children) }
+    </CSSTransitionGroup>
+);
+
+class FullScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onEscape = this.escPress.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.onEscape);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.onEscape);
+  }
+
+  escPress(e) {
+    if (e.keyCode === ESCAPE_KEY) {
+      this.props.onEscape();
+    }
+  }
+
+  render() {
+    return (
+      <div className="fullscreen"
+        ref={(node) => this.me = node }
+      >
+        <div className="content">
+          {this.props.children}
+        </div>
+      </div>
+    );
+  }
+
+}
+
+
 const Pyr = { 
   ajaxError,
   getJSON,
@@ -249,6 +309,8 @@ const Pyr = {
   Scroll,
   Button,
   PrimaryButton,
-  FlatButton
+  FlatButton,
+  Fade,
+  FullScreen,
 };
 export default Pyr;

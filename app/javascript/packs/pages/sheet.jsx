@@ -214,6 +214,20 @@ class FormBase extends Base {
   constructor(props) {
     super(props);
     this.onSuccess = this.success.bind(this);
+    this.onClose = this.close.bind(this);
+    this.onEscPress = this.escPress.bind(this);
+  }
+
+  close(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onSetUnaction();
+  }
+
+  escPress() {
+    this.props.onSetUnaction();
   }
 
   success(data, textStatus, jqXHR) {
@@ -223,6 +237,29 @@ class FormBase extends Base {
   renderForm() {
     alert("Sheet:New If you are seeing this you need to implement renderForm!");
   }
+
+  render() {
+    return (
+      <Pyr.Fade>
+        <Pyr.FullScreen
+          onEscape={this.onEscPress}
+        >
+          <div className="flx-col" >
+            <div 
+             className="flx-row flx-end"
+            ><Pyr.Icon name="close" 
+              className="close"
+              onClick={this.onClose}
+              />
+            </div>
+            <div className="flx-1">
+              { this.renderForm() }
+            </div>
+          </div>
+        </Pyr.FullScreen>
+      </Pyr.Fade>
+    );
+  }
 }
 
 class New extends FormBase {
@@ -230,24 +267,11 @@ class New extends FormBase {
     super(props);
   }
 
-  render() {
-    return (
-      <div className="new">
-        { this.renderForm() }
-      </div>
-    );
-  }
 }
 
 class Edit extends FormBase {
   constructor(props) {
     super(props);
-  }
-
-  render() {
-    <div className="edit">
-      { this.renderForm() }
-    </div>
   }
 
 }

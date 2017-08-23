@@ -62,7 +62,7 @@ class JobTitle extends Component {
 }
 
 const UserLabel = (props) => (
-  <div className="nav-item"><Pyr.Icon name="user" /> <Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel></div>
+  <div className="nav-item"><Pyr.Icon name="user" className="fa-fw"/><Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel></div>
 );
 
 
@@ -117,6 +117,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   setAction(action, e) {
+    console.log("Action set to " + action);
     if (e) {
       e.preventDefault();
     }
@@ -246,7 +247,7 @@ class Dashboard extends Pyr.UserComponent {
       <Pyr.Form.Form
         model="search"
         url={url}
-        id="search-form"
+        className="search-form"
         ref={(node) => {this.form = node;}}
       >
         <Pyr.Form.Group name="search">
@@ -313,7 +314,7 @@ class Dashboard extends Pyr.UserComponent {
 
 
     return (
-        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col h-100 z-depth-1">
+        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col h-100">
           <Sidebar.Header 
             id="messages"
             icon="envelope-open-o"
@@ -362,6 +363,7 @@ class Dashboard extends Pyr.UserComponent {
             icon="gear"
             onClick={this.onSetPageSettings}
             selected={this.state.page==SETTINGS_PAGE}
+            className="p-b-1"
           >Settings</Sidebar.Header>
         </Sidebar.Main>
     );
@@ -415,7 +417,6 @@ class Dashboard extends Pyr.UserComponent {
         >
           <div className="d-flex flx-1">
             {this.renderBlurb(mainTitle)}
-            <div className="flx-row flx-1">
               <MessagesPage 
                 {...this.pageProps(MESSAGES_PAGE)}
               />
@@ -426,16 +427,12 @@ class Dashboard extends Pyr.UserComponent {
               <CandidatesPage 
                 {...this.pageProps(CANDIDATES_PAGE)}
               />
-              <JobsPage 
-                {...this.pageProps(JOBS_PAGE)}
-              />
               <RecruitersPage 
                 {...this.pageProps(RECRUITERS_PAGE)}
               />
               <SettingsPage 
                 {...this.pageProps(SETTINGS_PAGE)}
               />
-            </div>
           </div>
         </main>
     );

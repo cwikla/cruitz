@@ -17,6 +17,8 @@ import Sheet from '../sheet';
 
 
 const JOBS_URL = "/jobs";
+const SEARCH_URL = "/search";
+const NEW_ACTION = "New";
 
 class JobItem extends Component {
 
@@ -132,6 +134,20 @@ class EditSheet extends Sheet.Edit {
 }
 
 class IndexSheet extends Sheet.Index {
+  constructor(props) {
+    super(props);
+
+    this.onAddJob = this.addJob.bind(this);
+  }
+
+  addJob(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onSetAction(NEW_ACTION);
+  }
+
   key(job) {
     return JobsPage.key(job);
   }
@@ -140,9 +156,42 @@ class IndexSheet extends Sheet.Index {
     return (<JobItem job={job} selected={isSelected}/>)
   }
 
-  key(job) {
-    return JobsPage.key(job);
+  renderSearch() {
+    let url = Pyr.URL(SEARCH_URL).push("jobs");
+
+    return (
+        <Pyr.Form.Form
+          className="search-form d-flex flx-1"
+          model="search"
+          url={url}
+          ref={(node) => {this.form = node;}}
+        >
+          <Pyr.Form.Group name="search" className="flx-row flx-1">
+            <i className="fa fa-search"></i><Pyr.Form.TextField placeholder="Search..." className="flx-1"/>
+          </Pyr.Form.Group>
+        </Pyr.Form.Form>
+    );
+  }   
+
+  renderButtons() {
+    return(
+      <div className="d-flex flx-row flx-1 flx-end">
+        <Pyr.Button onClick={this.onAddJob}><Pyr.Icon name="plus">Add Job</Pyr.Icon></Pyr.Button>
+      </div>
+    );
   }
+
+
+  renderHeader() {
+    return (
+      <div className="jobs-index-header">
+          <div className="recruiter-info p-1 d-flex flx-end">
+              <Pyr.PrimaryButton onClick={this.onAddJob}><Pyr.Icon name="plus"/> Add Job</Pyr.PrimaryButton>
+          </div>
+      </div>
+    );
+  }
+
 }
 
 class ShowSheet extends Sheet.Show {

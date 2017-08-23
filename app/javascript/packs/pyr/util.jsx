@@ -284,6 +284,11 @@ function childrenWithProps(children, props, kidType) {
   });
 }
 
+function firstKid(children) {
+  const childrenArray = React.Children.toArray(children);
+  return childrenArray[0] || null;
+}
+
 function propsRemove(props, ripOut) {
   let tmp = Object.assign({}, props);
   ripOut.forEach((a) => {
@@ -318,6 +323,7 @@ const Util = {
   propsRemove,
   propsMerge,
   propsMergeClassName,
+  firstKid
 };
 
 export default Util;
