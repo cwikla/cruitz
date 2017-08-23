@@ -39,7 +39,7 @@ class MessageItem extends Sheet.Item {
     let mine = message.mine;
     let ownerClass = (mine ? "mine" : "yours");
 
-    let allClass = ClassNames("message-item candidate ", ownerClass);
+    let allClass = ClassNames("message-item", ownerClass);
 
     if (!mine && !message.read_at) {
       allClass.push("unread");
@@ -63,10 +63,7 @@ class MessageItem extends Sheet.Item {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row> 
-            <Grid.Column className="col-1 avatar">
-              {id}:{message.root_message_id}
-            </Grid.Column>
-            <Grid.Column className="col-11 summary">
+            <Grid.Column className="summary">
               {Pyr.Util.summarize(message.body, 300)}
             </Grid.Column>
           </Grid.Row>

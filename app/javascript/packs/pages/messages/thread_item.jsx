@@ -37,7 +37,7 @@ class ThreadItem extends Sheet.Item {
     //console.log("RENDER THREADID: " + id);
     let allClass = ClassNames("thread-item", ownerClass);
     if (!message.mine && !message.read_at) {
-      allClass.push("unread red");
+      allClass.push("unread");
     }
     if (!message.root_message_id) {
       allClass.push("root");

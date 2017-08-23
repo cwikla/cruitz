@@ -210,13 +210,21 @@ class NewSheet extends Sheet.New {
     this.props.onJobCreate(data.job);
   }
 
+  renderTitle() {
+    return (
+      <h3 className="title">Add a New Job</h3>
+    );
+  }
+
   renderForm() { 
     return ( 
-      <JobForm 
-        onPreSubmit={this.onPreSubmit} 
-        onPostSubmit={this.onPostSubmit} 
-        onSuccess={this.onSuccess}
-      />
+      <div>
+        <JobForm 
+          onPreSubmit={this.onPreSubmit} 
+          onPostSubmit={this.onPostSubmit} 
+          onSuccess={this.onSuccess}
+        />
+      </div>
     );
   }
 }

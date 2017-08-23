@@ -277,10 +277,19 @@ class FullScreen extends Component {
   }
 
   render() {
+    let close = this.props.onClose || this.onClose
     return (
       <div className="fullscreen"
         ref={(node) => this.me = node }
       >
+        <div 
+          className="flx-row flx-end"
+          onClick={this.props.onClose}
+        >
+          <Pyr.Icon name="close"
+              className="close"
+              />
+        </div>
         <div className="content">
           {this.props.children}
         </div>

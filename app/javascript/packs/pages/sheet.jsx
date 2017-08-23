@@ -234,24 +234,23 @@ class FormBase extends Base {
     alert("Sheet:Edit Do something with the success!");
   }
 
+  renderTitle() {
+    return null;
+  }
+
   renderForm() {
     alert("Sheet:New If you are seeing this you need to implement renderForm!");
   }
 
-  render() {
+  renderInner() {
     return (
       <Pyr.Fade>
         <Pyr.FullScreen
           onEscape={this.onEscPress}
+          onClose={this.onClose}
         >
           <div className="flx-col" >
-            <div 
-             className="flx-row flx-end"
-            ><Pyr.Icon name="close" 
-              className="close"
-              onClick={this.onClose}
-              />
-            </div>
+            { this.renderTitle() }
             <div className="flx-1">
               { this.renderForm() }
             </div>
