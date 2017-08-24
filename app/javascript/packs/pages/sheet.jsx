@@ -143,7 +143,7 @@ class Index extends Base {
 
   componentDidMount() {
     if (!this.props.items) {
-      this.props.getItems(this.onLoading);
+      this.props.onGetItems(this.onLoading);
     }
   }
 
@@ -157,9 +157,9 @@ class Index extends Base {
     return items.sort((x, y) => y.id - x.id);
   }
 
-  getItems(items) {
-    alert("Sheet:Index If you are seeing this, you need to implement getItems!");
-  }
+  //getItems(items) {
+    //alert("Sheet:Index If you are seeing this, you need to implement getItems!");
+  //}
 
   renderChildren() {
     let self = this;

@@ -10,12 +10,14 @@ const avatars = ["emilia", "snow", "sophie", "thetick"];
 
 function getAvatar(uid) {
   let pos = uid % avatars.length;
-  return "/assets/images/thrones/" + avatars[pos] + ".jpeg";
+  let av = "/assets/images/thrones/" + avatars[pos] + ".jpeg";
+  console.log(av);
+  return av;
 }
 
 const UserAvatar = (props) => (
   <div className="flx-col user-avatar justify-content-center">
-    <div className="align-self-center"><img src={getAvatar(props.userId)}/></div>
+    <div className="align-self-center"><img src="/assets/images/thrones/thetick.jpeg"/></div>
     { props.name ? (<div className="align-self-center">{props.name}</div> ) : null }
   </div>
 );

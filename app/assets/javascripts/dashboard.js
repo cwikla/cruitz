@@ -1,4 +1,4 @@
-
+/*
 Pyr.dashboard = {
   pageSetup: function() {
     //$('.pyr-page .page-default').showPage();
@@ -14,3 +14,4 @@ Pyr.addJob = {
     $('.pyr-page .page-default').showPage();
   },
 };
+*/
