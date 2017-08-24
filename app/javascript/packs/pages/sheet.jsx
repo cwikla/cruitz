@@ -22,6 +22,15 @@ class Base extends Pyr.UserComponent {
     this.onClicks = {};
     this.onLoading = this.setLoading.bind(this);
     this.onLoaded = this.setLoading.bind(this, false);
+    this.onBack = this.back.bind(this);
+  }
+
+  back(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onSetUnaction();
   }
 
   bindClicks(items, f) {
@@ -184,7 +193,6 @@ class Index extends Base {
 class Show extends Base {
   constructor(props) {
     super(props);
-    this.onClick = this.props.onUnselect;
   }
 
   editMe(e) {
@@ -201,7 +209,6 @@ class Show extends Base {
       );
     }
 
-        // <!-- <div className="hidden-sm-up" onClick={this.onClick}><Pyr.Icon name="close"/></div> !-->
     return (
       <div className="inner flx-col flx-1">
         {this.renderItem(this.props.selected, false) }

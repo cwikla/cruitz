@@ -11,9 +11,15 @@
   .message-item {
     padding: 0.5rem 0 0.5rem 0;
     border-bottom: 3px groove rgba(white, 0.7);
+    background-color: $light_gray_color;
+
+    .title {
+      padding-bottom: 1rem;
+    }
 
     .summary {
       text-overflow: ellipses;
+      font-weight: 300;
     }
 
     color: $gray_color;

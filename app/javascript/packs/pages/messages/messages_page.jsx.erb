@@ -54,17 +54,19 @@ class MessageItem extends Sheet.Item {
     return (
       <div className={allClass} id={id}>
         <Grid.Column>
-          <Grid.Row className="title"> 
+          <Grid.Row className=""> 
             <Grid.Column className="col-9">
-              <Header job={job} isNew={message.is_root}/>
+              <Header className="title" job={job} isNew={message.is_root}/>
             </Grid.Column>
             <Grid.Column className="col-3 created-at text-right">
               <Pyr.MagicDate date={message.created_at} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row> 
-            <Grid.Column className="summary">
-              {Pyr.Util.summarize(message.body, 300)}
+            <Grid.Column className="">
+              <div className="summary">
+                {Pyr.Util.summarize(message.body, 300)}
+              </div>
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>
@@ -88,16 +90,6 @@ class IndexSheet extends Sheet.Index {
 class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
-
-    this.onBack = this.back.bind(this);
-  }
-
-  back(e) {
-    if (e) {
-      e.preventDefault();
-    }
-
-    this.props.onSetUnaction();
   }
 
   render() {
@@ -121,6 +113,8 @@ class ShowSheet extends Sheet.Show {
           job={this.props.jobMap[message.job_id]}
           onBack={this.onBack}
           url={Pyr.URL(MESSAGES_URL)}
+          onSetItems={this.props.onSetItems}
+          onSetItem={this.props.onSetItem}
         />
       </div>
     );
@@ -166,14 +160,7 @@ class MessagesPage extends Page {
 
   constructor(props) {
     super(props);
-
-    let jobs = this.props.jobs || [];
-    this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
-    this.onSetItems = this.setItems.bind(this);
-  }
-
-  key(a) {
-    return "message" + "-" + a.id;
+    //this.onSetItems = this.setItems.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -203,6 +190,20 @@ class MessagesPage extends Page {
 
   }
 
+  setItemCompare(a, b) {
+    return (a.root_message_id == b.root_message_id);
+  }
+
+  setItem(item) {
+    if (!item) {
+      return;
+    }
+    //console.log("SET ITEM: " + item);
+
+    let result = this.reduceItems(item);
+    super.setItem(result[0]);
+  }
+
   setItems(items) {
     items = this.reduceItems(items);
     let count = items.reduce((sum, msg) => {
@@ -214,12 +215,14 @@ class MessagesPage extends Page {
   }
 
   getItems(onLoading) {
+    let me = this;
+
     Pyr.getJSON({
       url: Pyr.URL(MESSAGES_URL),
-      context: this,
+      context: me,
       loading: onLoading,
     }).done(function(data, textStatus, jaXHR) {
-        this.onSetItems(data.messages);
+        me.setItems(data.messages);
 
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
@@ -242,7 +245,7 @@ class MessagesPage extends Page {
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-        getItems={this.getItems}
+        getItems={this.onGetItems}
       />
     );
   }
@@ -260,6 +263,7 @@ class MessagesPage extends Page {
         jobMap={this.jobMap}
         selected={this.state.selected}
         onSetItems={this.onSetItems}
+        onSetItem={this.onSetItem}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
       />

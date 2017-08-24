@@ -26,6 +26,9 @@ class Page extends Pyr.UserComponent {
 
     this.state = Object.assign(myState, this.getInitState(props));
 
+    let jobs = this.props.jobs || [];
+    this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
+
     this.onSelect = this.setSelected.bind(this);
     this.onUnselect = this.setSelected.bind(this, null);
 
@@ -33,7 +36,8 @@ class Page extends Pyr.UserComponent {
     //this.onSetUnaction = this.setAction.bind(this, null);
 
     this.onSetItems = this.setItems.bind(this);
-    this.getItems = this.getItems.bind(this);
+    this.onGetItems = this.getItems.bind(this);
+    this.onSetItem = this.setItem.bind(this);
   }
 
   name() {
@@ -44,6 +48,44 @@ class Page extends Pyr.UserComponent {
     }
     let name = fullName.substring(0, pos);
     return name;
+  }
+
+  setItemCompare(a, b) {
+    return a.id == b.id;
+  }
+
+  setItem(item) {
+    //console.log("ITEM: " + item);
+    //console.log(this.state.items);
+
+    if (!item) {
+      return;
+    }
+
+    let items = this.state.items || [];
+    let found = false;
+
+    let copy = items.map((val, pos) => {
+      if (this.setItemCompare(val, item)) {
+        found = true;
+        return item;
+      }
+      return val;
+    });
+
+    //console.log(copy);
+    //console.log("ITEM FOUND: " + found);
+
+    if (!found) {
+      copy.push(item);
+    }
+    this.setItems(copy);
+  }
+
+  setItems(items) {
+    this.setState({ 
+      items
+    });
   }
 
   getItems() {
@@ -84,6 +126,7 @@ class Page extends Pyr.UserComponent {
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect} 
         onSetItems={this.onSetItems}
+        onSetItem={this.onSetItem}
         loading={this.state.loading}
         job={this.props.job}
         jobs={this.props.jobs}
@@ -97,12 +140,6 @@ class Page extends Pyr.UserComponent {
   }
 
 ///// END ////
-
-  setItems(items) {
-    this.setState({ 
-      items
-    });
-  }
 
   setSelected(selected) {
     //alert("SELECTED " + JSON.stringify(selected));
@@ -172,6 +209,10 @@ class Page extends Pyr.UserComponent {
         </div>
     );
   }
+
+}
+Page.key = (item) => {
+  return item.id;
 }
 
 export default Page;

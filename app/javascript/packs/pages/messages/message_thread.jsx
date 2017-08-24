@@ -21,7 +21,7 @@ const MessageThreadIndexHeader = (props) => (
 );
 
 const MessageThreadHeader = (props) => (
-  <div className="message-header">
+  <div className={ClassNames("message-header").push(props.className)}>
       <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
       <div className="align-self-center title">{props.job.title}</div>
   </div>
@@ -190,6 +190,7 @@ class MessageThread extends Pyr.UserComponent {
     this.setState({
       thread: this.threadExtra(thread),
     });
+    this.props.onSetItem(thread);
   }
 
   getThread(mid) {
