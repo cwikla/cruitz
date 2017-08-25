@@ -22,6 +22,7 @@ const URL = Util.URL;
 
 import Grid from './grid';
 import Scroll from './scroll';
+import PieChart from './pie_chart';
 
 const Method = { 
   POST, 
@@ -321,5 +322,6 @@ const Pyr = {
   FlatButton,
   Fade,
   FullScreen,
+  PieChart
 };
 export default Pyr;

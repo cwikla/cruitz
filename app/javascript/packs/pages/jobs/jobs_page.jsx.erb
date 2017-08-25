@@ -31,6 +31,21 @@ class JobItem extends Component {
         <div className="card-header">
           <h4 className="card-title">{job.title}</h4>
         </div>
+        <div>
+          <Pyr.PieChart
+            className="chart"
+            slices={[
+              {
+                color: '#f00',
+                value: 10,
+              },
+              {
+                color: '#0f0',
+                value: 20,
+              },
+            ]}
+          />
+        </div>
         <div className="card-body">
           <p className="card-text">{job.description}</p>
         </div>
