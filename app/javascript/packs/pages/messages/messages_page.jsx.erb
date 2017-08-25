@@ -116,7 +116,7 @@ class ShowSheet extends Sheet.Show {
     super(props);
   }
 
-  render() {
+  renderInner() {
     if (this.state.isLoading || !this.props.selected) {
       return (<Pyr.Loading />);
     }
@@ -149,28 +149,6 @@ class ShowSheet extends Sheet.Show {
     return MessagesPage.key(a)
   }
 
-  renderItem(message, isSelected) {
-    if (!this.state.thread || this.state.thread.length < 1) {
-      return (<Pyr.Loading />);
-    }
-
-    let thid = "thread-" + this.props.selected.root_message_id;
-
-    return (
-      <div id={thid} className="message-thread flx-1">
-        { 
-          this.state.thread.map((msg, pos) => {
-            //console.log(msg.job_id + " => " + JSON.stringify(this.props.jobMap[message.job_id]));
-            return ( <ThreadItem message={msg} 
-                      job={this.props.jobMap[message.job_id]} 
-                      isSelected={msg.id == this.props.selected.id} 
-                      key={thid+"-"+msg.id}/> 
-            );
-          })
-        }
-      </div>
-    );
-  }
 }
 
 ///////////////
