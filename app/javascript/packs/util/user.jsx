@@ -16,7 +16,7 @@ function getAvatar(uid) {
 }
 
 const UserAvatar = (props) => (
-  <div className="flx-col user-avatar justify-content-center">
+  <div className={Pyr.ClassNames("flx-col user-avatar justify-content-center").push(props.small ? "small" : "").push(props.className)}>
     <div className="align-self-center"><img src={getAvatar(props.userId)}/></div>
     { props.name ? (<div className="align-self-center">{props.name}</div> ) : null }
   </div>

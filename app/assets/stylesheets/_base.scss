@@ -256,6 +256,17 @@ label {
     height: #{$avatar_width}rem;
     border-radius: 50%;
   }
+
+  &.small {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+
+    font-size: 0.6rem;
+    img {
+      width: #{$avatar_width/2}rem;
+      height: #{$avatar_width/2}rem;
+    }
+  }
 }
 
 .btn-flat {
