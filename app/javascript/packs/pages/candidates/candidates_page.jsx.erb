@@ -86,7 +86,7 @@ class CandidateItem extends Component {
     let id = "candidate-" + candidate.id;
     let allClass = ClassNames("item candidate-item flx-row");
 
-    if (this.props.selected) {
+    if (this.props.isSelected) {
        allClass.push("selected");
     }
 
@@ -215,7 +215,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(item, isSelected) {
-    return (<CandidateItem candidate={item} selected={isSelected} />);
+    return (<CandidateItem candidate={item} isSelected={isSelected} />);
   }
 }
 
@@ -351,7 +351,7 @@ class ShowSheet extends Sheet.Show {
           <Pyr.Scroll>
             <CandidateCVItem 
               candidate={item} 
-              selected={isSelected} 
+              isSelected={isSelected} 
             />
           </Pyr.Scroll>
         </Pyr.Grid.ColHalf>
