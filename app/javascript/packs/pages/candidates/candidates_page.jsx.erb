@@ -81,12 +81,13 @@ class CandidateItem extends Component {
 
   render() {
     let candidate = this.props.candidate;
+    let recruiter = candidate.recruiter;
 
     let id = "candidate-" + candidate.id;
-    let classes = ClassNames("candidate-item flx-col row-stretch");
+    let allClass = ClassNames("candidate-item flx-row");
 
     if (this.props.selected) {
-       classes.push("selected");
+       allClass.push("selected");
     }
 
     let fullName = candidate.first_name + " " + candidate.last_name;
@@ -95,46 +96,23 @@ class CandidateItem extends Component {
     let description = candidate.description || "No Description";
 
     return (
-      <div className={classes} id={id}>
-        <div className="flx-row">
-          <div className="state col-md-2">State</div>
-          <div className="name col-md-3">{fullName}</div>
-          <div className="email col-md-3">{email}</div>
-          <div className="phone-number col-md-3">{phoneNumber}</div>
-        </div>
-        <div className="flx-row">
-          <div className="recruiter col-md-2">
-            <UserAvatar userId={candidate.id} />
+      <div className={allClass} id={id}>
+        <Pyr.Grid.Column className="content">
+          <div className="flx-row">
+            <div className="state col-md-2">State</div>
+            <div className="name col-md-3">{fullName}</div>
+            <div className="email col-md-3">{email}</div>
+            <div className="phone-number col-md-3">{phoneNumber}</div>
           </div>
-          <div className="description col-md-10">Description</div>
-        </div>
-      </div>
-    );
-  }
-
-  render2() {
-
-    return (
-      <div className={classes} id={id}>
-        <div className="card-block">
-          <Pyr.Grid.Row className="card-title">
-            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="card-text">{fullName}</span></Pyr.Grid.ColFull>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel><span className="card-text">{phoneNumber}</span></Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel>{email}</Pyr.Grid.ColHalf>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Hmmmmmm</Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</Pyr.Grid.ColHalf>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row>
-            <Pyr.Grid.ColFull className="description">{description}</Pyr.Grid.ColFull>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row className="recruiter-info">
-            <Pyr.Grid.ColFull>Interesting stuff about the recruiter goes here!</Pyr.Grid.ColFull>
-          </Pyr.Grid.Row>
-        </div>
+        </Pyr.Grid.Column>
+        <Pyr.Grid.Column className="recruiter col-2 d-flex">
+          <UserAvatar
+            className={"flx-1"}
+            userId={recruiter.id}
+            name={recruiter.first_name}
+            small
+          />
+        </Pyr.Grid.Column>
       </div>
     );
   }
@@ -263,7 +241,7 @@ class CandidateCVItem extends Sheet.Item {
   render() {
     let candidate = this.props.candidate;
 
-    let classes = ClassNames("candidate-cv-item flx-col");
+    let allClass = ClassNames("candidate-cv-item flx-col");
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -273,7 +251,7 @@ class CandidateCVItem extends Sheet.Item {
     let id = "candidate-cv-" + candidate.id;
 
     return (
-      <div className={classes} id={id}>
+      <div className={allClass} id={id}>
         <CandidateHeader 
           candidate={candidate}
         />

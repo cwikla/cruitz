@@ -31,7 +31,7 @@ class ThreadItem extends Sheet.Item {
     let job = this.props.job;
 
     let mine = message.mine;
-    let ownerClass = (mine ? "mine" : "yours");
+    let ownerClass = (mine ? "mine" : "recruiter");
 
     let id = THREAD_ID(message);
     //console.log("RENDER THREADID: " + id);

@@ -17,7 +17,7 @@
       padding-bottom: 0.5rem;
     }
 
-    .your {
+    .recruiter {
       border-right: 1px solid rgba(gray, 0.4);
     }
 
@@ -99,7 +99,7 @@
       }
       padding-right: #{$avatar_width + 2}rem;
     }
-    &.yours {
+    &.recruiter {
       .content {
         background-color: lighten($secondary_light_color, 0.5);
       }
@@ -151,7 +151,7 @@
     .thread-item.mine {
       padding-right: #{0.5}rem;
     }
-    .thread-item.yours {
+    .thread-item.recruiter {
       padding-right: #{0.5}rem;
     }
   }
@@ -162,7 +162,7 @@
     .thread-item.mine {
       padding-right: #{1.0}rem;
     }
-    .thread-item.yours {
+    .thread-item.recruiter {
       padding-left: #{1.0}rem;
     }
   }

@@ -1,7 +1,7 @@
 class Candidate < ApplicationRecord
   belongs_to :job
   belongs_to :head
-  has_one :recruiter, through: :head, source: 'User'
+  has_one :recruiter, through: :head, class_name: 'User'
 
   scope :isnew, -> { where(accepted_at: nil).where(rejected_at: nil) }
   scope :accepted, -> {  where.not(accepted_at: nil).where(rejected_at: nil) }

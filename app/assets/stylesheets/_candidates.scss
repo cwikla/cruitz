@@ -7,6 +7,53 @@
   }
 }
 
+.index .sheet {
+  .header {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+  }
+
+  .candidate-item {
+    border-bottom: 1px solid rgba(gray, 0.4);
+    background-color: $light_gray_color;
+
+    &:hover {
+      background-color: rgba($light_gray_color, 0.5);
+    }
+
+    .col {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .recruiter {
+      border-left: 1px solid rgba(gray, 0.4);
+    }
+
+    .title {
+      font-size: 1.1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .summary {
+      text-overflow: ellipses;
+      font-weight: 300;
+    }
+
+    color: $gray_color;
+
+    &.unread {
+      background-color: rgba($primary_color, 0.05);
+      color: black;
+      font-weight: 500;
+      &:hover {
+        background-color: rgba($primary_color, 0.075);
+      }
+    }
+
+  }
+}
+
 .recruiter-message {
   background-color: lighten($secondary_navbar_background_color, 0.5);
 }
@@ -17,17 +64,3 @@
   padding: 1rem;
 }
 
-#candidates-page .index-sheet {
-}
-
-.candidate-item {
-  border-bottom: 3px groove rgba(white, 0.7);
-}
-
-.candidate-item:hover {
-  background-color: $hover_background_color;
-}
-
-.candidate-item.selected {
-  border-color: $selected_background_color;
-}

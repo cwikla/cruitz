@@ -9,6 +9,8 @@ class CandidateSerializer < ActiveModel::Serializer
     :job_id,
     :root_message_id
 
+  has_one :recruiter, through: :head, class_name: 'User'
+
   def uuid
     "candidate-#{object.id}"
   end

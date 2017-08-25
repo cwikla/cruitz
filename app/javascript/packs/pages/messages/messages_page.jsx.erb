@@ -52,7 +52,7 @@ class MessageItem extends Sheet.Item {
     let id = MID(message);
 
     let mine = message.mine;
-    let ownerClass = (mine ? "mine" : "yours");
+    let ownerClass = (mine ? "mine" : "recruiter");
 
     let allClass = ClassNames("message-item flx-row", ownerClass);
 
@@ -67,15 +67,15 @@ class MessageItem extends Sheet.Item {
     console.log(message);
 
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
-    let your = this.other(message);
+    let recruiter = this.other(message);
 
     return (
       <div className={allClass} id={id}>
-        <Grid.Column className="your col-2 d-flex">
+        <Grid.Column className="recruiter col-2 d-flex">
           <UserAvatar
             className={"flx-1"}
-            userId={your.id}
-            name={your.first_name}
+            userId={recruiter.id}
+            name={recruiter.first_name}
             small
           />
         </Grid.Column>
