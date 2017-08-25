@@ -54,7 +54,7 @@ class MessageItem extends Sheet.Item {
     let mine = message.mine;
     let ownerClass = (mine ? "mine" : "recruiter");
 
-    let allClass = ClassNames("message-item flx-row", ownerClass);
+    let allClass = ClassNames("item message-item flx-row", ownerClass);
 
     if (!mine && !message.read_at) {
       allClass.push("unread");
@@ -63,8 +63,6 @@ class MessageItem extends Sheet.Item {
     if (message.is_root) {
       allClass.push("new");
     }
-
-    console.log(message);
 
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
     let recruiter = this.other(message);

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Pyr from '../../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
 
 import Page from './../page';
@@ -30,19 +31,51 @@ class RecruiterItem extends Component {
         <div className="icon hidden-md-down col-md-1 red">
           <UserAvatar userId={recruiter.id} />
         </div>
-        <div className="info col-md-5 col-sm-5">
-          <div>{recruiter.first_name}</div>
-          <div>FakeCompany Placeholder</div>
-          <div>Description goes here</div>
-        </div>
-        <div className="stats col-5">
-          <div>22 successful placements</div>
-          <div>Last Active: 3/3/2017</div>
-          <div>27 Reviews</div>
-        </div>
       </div>
     );
   }
+
+  render() {
+    let recruiter = this.props.recruiter;
+
+    let id = "recruiter-" + recruiter.id;
+    let allClass = ClassNames("item recruiter-item flx-row");
+
+    if (this.props.selected) {
+       allClass.push("selected");
+    }
+
+    let fullName = recruiter.first_name + " " + recruiter.last_name;
+    let phoneNumber = recruiter.phone_number || "No Phone";
+    let email = recruiter.email || "No Email";
+    let description = recruiter.description || "No Description";
+
+    return (
+      <div className={allClass} id={id}>
+        <Pyr.Grid.Column className="recruiter col-2 d-flex">
+          <UserAvatar
+            className={"flx-1"}
+            userId={recruiter.id}
+            name={recruiter.first_name}
+            small
+          />
+        </Pyr.Grid.Column>
+        <Pyr.Grid.Column className="content">
+          <div className="info col-md-5 col-sm-5">
+            <div>{recruiter.first_name}</div>
+            <div>FakeCompany Placeholder</div>
+            <div>Description goes here</div>
+          </div>
+          <div className="stats col-5">
+            <div>22 successful placements</div>
+            <div>Last Active: 3/3/2017</div>
+            <div>27 Reviews</div>
+          </div>
+        </Pyr.Grid.Column>
+      </div>
+    );
+  }
+
 }
 
 

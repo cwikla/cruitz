@@ -1,33 +1,21 @@
 
-.recruiter-item {
-  padding: 0.5rem 0rem 0.5rem 0rem;
-
-  .user-avatar {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    font-size: 0.8rem;
-    img {
-      width: #{$avatar_width}rem;
-      height: #{$avatar_width}rem;
-      border-radius: 50%;
-    }
-  }
-}
-
 .index .sheet {
-  .header {
-    font-size: 1.2rem;
-    line-height: 1.5rem;
-  }
-
   .recruiter-item {
-    padding: 0.5rem 0 0.5rem 0;
-    border-bottom: 3px groove rgba(white, 0.7);
 
     .summary {
       text-overflow: ellipses;
     }
 
+    .user-avatar {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      font-size: 0.8rem;
+      img {
+        width: #{$avatar_width}rem;
+        height: #{$avatar_width}rem;
+        border-radius: 50%;
+      }
+    }
   }
 }
 
