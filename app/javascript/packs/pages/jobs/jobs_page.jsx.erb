@@ -27,14 +27,17 @@ class JobItem extends Component {
     let id = "job-" + job.id;
 
     return (
-      <div id={id}>
-        <h2>{job.title}</h2>
-        <h3>Location: {job.location}</h3>
-        <h3>Time: {job.time_commit}</h3>
-        <p>{job.description}</p>
+      <div className="job-item card" id={id} key={id}>
+        <div className="card-header">
+          <h4 className="card-title">{job.title}</h4>
+        </div>
+        <div className="card-body">
+          <p className="card-text">{job.description}</p>
+        </div>
       </div>
     );
   }
+
 }
 
 class JobForm extends Component {
@@ -153,7 +156,25 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(job, isSelected) {
-    return (<JobItem job={job} selected={isSelected}/>)
+    return (
+      <JobItem 
+        job={job} 
+        isSelected={isSelected}
+      />
+    );
+  }
+
+  renderChildren(items, selected) {
+    return (
+      <div className="d-flex flx-wrap" key="job-stuff">
+        { items.map( (item, pos) => {
+            let key="job-item-"+item.id;
+            let isSelected = this.same(item, selected);
+            return (<div key={key} className="spacer">{this.renderItem(item, isSelected)}</div>);
+          })
+        }
+      </div>
+    );
   }
 
   renderSearch() {

@@ -1,0 +1,41 @@
+.index .sheet {
+  .item {
+    border-bottom: 1px solid rgba(gray, 0.4);
+    background-color: $light_gray_color;
+
+    &:hover {
+      background-color: rgba($light_gray_color, 0.5);
+    }
+
+    &>.col {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+
+    .recruiter {
+      border-right: 1px solid rgba(gray, 0.4);
+    }
+
+    .title {
+      font-size: 1.1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .summary {
+      text-overflow: ellipses;
+      font-weight: 300;
+    }
+
+    color: $gray_color;
+
+    &.unread {
+      background-color: rgba($primary_color, 0.05);
+      color: black;
+      font-weight: 500;
+      &:hover {
+        background-color: rgba($primary_color, 0.075);
+      }
+    }
+
+  }
+}

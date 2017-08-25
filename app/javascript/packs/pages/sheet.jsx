@@ -161,14 +161,13 @@ class Index extends Base {
     //alert("Sheet:Index If you are seeing this, you need to implement getItems!");
   //}
 
-  renderChildren() {
+  renderChildren(items, selected) {
     let self = this;
-    let items = this.sortItems(this.props.items) || [];
 
     return (
       <ul>
         {items.map((item, pos) => {
-          let isSelected = this.same(item, this.props.selected);
+          let isSelected = this.same(item, selected);
           //console.log("RENDERING " + item);
           return (
             <li 
@@ -181,9 +180,15 @@ class Index extends Base {
    }
 
   renderInner() {
+    if (!this.props.items) {
+      return this.renderNone();
+    }
+
+    let items = this.sortItems(this.props.items) || [];
+
     return (
       <Pyr.Scroll className="inner flx-col flx-1">
-        { this.props.items ? this.renderChildren() : this.renderNone() }
+        { this.renderChildren(items, this.props.selected) }
       </Pyr.Scroll>
     );
   }

@@ -116,13 +116,12 @@ class ShowSheet extends Sheet.Show {
     super(props);
   }
 
-  renderInner() {
-    if (this.state.isLoading || !this.props.selected) {
+  renderItem(message, isSelected) {
+    if (this.state.isLoading || !message) {
       return (<Pyr.Loading />);
     }
 
-    let message = this.props.selected;
-    let MessageRender = this.props.selected.candidate ? MessageThread : MessageQA;
+    let MessageRender = message.candidate ? MessageThread : MessageQA;
 
     return (
       <div className="d-flex flx-1 flx-col">

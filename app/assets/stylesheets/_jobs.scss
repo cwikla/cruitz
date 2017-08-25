@@ -1,14 +1,36 @@
-.show {
-  .sheet {
-    .side {
-      padding-left: 1rem;
-      padding-right: 1rem;
+.show .sheet {
+  .side {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+}
+
+.index .sheet {
+  .spacer {
+    padding: 3rem;
+  }
+
+  .job-item {
+    .card-header, .card-body {
+      padding: 1rem;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
     }
+
+    border-radius: 20px;
+    border: 1px solid $primary_color;
+
+    &:hover {
+      background-color: lighten($primary_light_color, 30%);
+    }
+
+    width: 30rem;
   }
 }
 
 .job-message {
-  background-color: lighten($secondary_navbar_background_color, 0.5);
+  background-color: lighten($primary_color, 95%);
 }
 
 .jobs-index-header {
@@ -16,17 +38,3 @@
   border-bottom: 1px solid $sep_color;
 }
 
-#jobs-page .index-sheet {
-}
-
-.job-item {
-  border-bottom: 1px groove rgba(white, 0.7);
-}
-
-.job-item:hover {
-  background-color: $hover_background_color;
-}
-
-.job-item.selected {
-  border-color: $selected_background_color;
-}
