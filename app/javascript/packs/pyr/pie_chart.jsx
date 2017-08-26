@@ -141,8 +141,8 @@ class PieChart extends Component {
       <div {...Util.propsMergeClassName(props, "pyr-pie-chart")}
         ref={(node) => this.chart = node}
       >
-        <svg viewBox={`0 0 ${size} ${size}`}>
-          <g transform={`rotate(-90 ${center} ${center})`}>
+        <svg viewBox={"0 0 ${size} ${size}"}>
+          <g transform={"rotate(-90 ${center} ${center}) translate(0, ${size}) scale(1, -1)"}>
             {renderPaths(this.props.slices, size, center, radius)}
           </g>
         </svg>
