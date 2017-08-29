@@ -528,6 +528,7 @@ class CandidatesPage extends Page {
     let nextId = this.props.job ? this.props.job.id : -1;
 
     if (prevId != nextId) {
+      this.setItems(null);
       this.getCandidates(this.props.job);
     }
   }
