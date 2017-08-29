@@ -225,12 +225,15 @@ class RecruiterMessage extends Sheet.Item {
       return <Pyr.Loading />
     }
 
+    let clazzes = ClassNames("recruiter-message").push(this.props.className);
+
     return (
       <MessageThread 
-        className="recruiter-message"
+        className={clazzes}
         messageId={this.props.candidate.root_message_id}
         job={this.props.job}
         url={Pyr.URL(MESSAGES_URL)}
+        onSetItem={this.props.onSetItem}
       />
     );
   }
@@ -297,7 +300,8 @@ class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
     this.state = {
-      job: null
+      job: null,
+      showMessages: true
     };
   }
 
@@ -345,23 +349,28 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderItem(item, isSelected) {
+    let clazzes = ClassNames(this.state.showMessages ? "" : "hide");
+
+    console.log("RENDER: " + clazzes);
+
     return (
       <Pyr.Grid.Row>
-        <Pyr.Grid.ColHalf className="flx-col side left">
+        <Pyr.Grid.Col className="flx-col side left">
           <Pyr.Scroll>
             <CandidateCVItem 
               candidate={item} 
               isSelected={isSelected} 
             />
           </Pyr.Scroll>
-        </Pyr.Grid.ColHalf>
-        <Pyr.Grid.ColHalf className="flx-col side right">
+
           <RecruiterMessage 
+            className={clazzes}
             job={this.state.job}
             candidate={item} 
             selected={isSelected} 
+            onSetItem={this.props.onSetItem}
           />
-        </Pyr.Grid.ColHalf>
+        </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );
   }
@@ -472,6 +481,7 @@ class CandidatesPage extends Page {
         onUnaction={this.onUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
+        onSetItem={this.setItem}
       />
     );
 

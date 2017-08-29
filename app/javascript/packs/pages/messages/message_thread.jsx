@@ -190,7 +190,7 @@ class MessageThread extends Pyr.UserComponent {
     this.setState({
       thread: this.threadExtra(thread),
     });
-    this.props.onSetItem(thread);
+    //this.props.onSetItem(thread);
   }
 
   getThread(mid) {
@@ -279,12 +279,9 @@ class MessageThread extends Pyr.UserComponent {
       return <Pyr.Loading />
     }
 
-    let divClasses = ClassNames(Pyr.Util.propsMergeClassName({}, this.props.className || ""));
-    
-
     return (
       <div 
-        className={divClasses.push("flx-col flx-1 sheet thread")}
+        className={ClassNames("flx-col flx-1 sheet thread").push(this.props.className)}
       >
         {this.renderContent(message)}
         {this.renderFooter(message)}

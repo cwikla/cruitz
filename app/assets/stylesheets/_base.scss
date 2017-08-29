@@ -315,6 +315,10 @@ label {
   height: 10rem;
 }
 
+.hide {
+  display: none;
+}
+
 @import 'item';
 @import 'messages';
 @import 'recruiters';
