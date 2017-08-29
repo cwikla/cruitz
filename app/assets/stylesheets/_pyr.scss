@@ -35,9 +35,18 @@
 .fade-in-appear {
   opacity: 0.0;
  
-  &.fade-in-appear.fade-in-appear-active {
+  &.fade-in-appear-active {
     opacity: 1.0;
     transition: opacity 250ms ease-in;
+  }
+}
+
+.fade-out-appear {
+  opacity: 1.0;
+ 
+  &.fade-out-appear-active {
+    opacity: 0.0;
+    transition: opacity 150ms ease-out;
   }
 }
 

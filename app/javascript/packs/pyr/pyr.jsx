@@ -88,9 +88,15 @@ const PrimaryButton = (props) => (
 );
 
 const Button = (props) => (
-    <label href="#"
+    <label
       {...Util.propsMergeClassName(props, "btn")}
     >{props.children}</label>
+);
+
+const IconButton = (props) => (
+  <label
+    {...Util.propsMergeClassName(props)}
+  ><Pyr.Icon name={props.name}/></label>
 );
 
 class FlatButton extends Component {
@@ -261,6 +267,7 @@ class FullScreen extends Component {
     super(props);
 
     this.onEscape = this.escPress.bind(this);
+    this.onClose = this.close.bind(this);
   }
 
   componentDidMount() {
@@ -271,21 +278,31 @@ class FullScreen extends Component {
     document.removeEventListener("keydown", this.onEscape);
   }
 
+  close(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
   escPress(e) {
     if (e.keyCode === ESCAPE_KEY) {
-      this.props.onEscape();
+      if (this.props.onEscape) {
+        this.props.onEscape();
+      }
     }
   }
 
   render() {
-    let close = this.props.onClose || this.onClose
     return (
       <div className="fullscreen"
         ref={(node) => this.me = node }
       >
         <div 
           className="flx-row flx-end"
-          onClick={this.props.onClose}
+          onClick={this.onClose}
         >
           <Pyr.Icon name="close"
               className="close"
@@ -320,6 +337,7 @@ const Pyr = {
   Button,
   PrimaryButton,
   FlatButton,
+  IconButton,
   Fade,
   FullScreen,
   PieChart

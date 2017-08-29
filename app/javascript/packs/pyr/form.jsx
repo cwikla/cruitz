@@ -32,6 +32,10 @@ class Form extends Component {
     this.onSubmit = this.submitHandler.bind(this);
   }
 
+  componentWillUnmount() {
+    console.log("FORM WILL UNMOUNT");
+  }
+
   getChildContext() {
     return { 
       model: this.props.model,
@@ -41,25 +45,27 @@ class Form extends Component {
   }
 
   setIsLoading(val=true) {
+    console.log("FORM SET ISLOADING: " + val);
     let stuff = { isLoading: val };
     if (val) {
       stuff.errors = null;
     }
     this.setState(stuff);
+    console.log("FORM END SET ISLOADING: " + val);
   }
 
   preSubmit() {
+    this.setIsLoading();
     if (this.props.onPreSubmit) {
       this.props.onPreSubmit();
     }
-    this.setIsLoading();
   }
 
   postSubmit() {
+    this.setIsLoading(false);
     if (this.props.onPostSubmit) {
       this.props.onPostSubmit();
     }
-    this.setIsLoading(false);
   }
 
   submit(e) {
@@ -88,6 +94,9 @@ class Form extends Component {
       data: data,
       context: self
 
+    }).always(function() {
+      this.postSubmit();
+
     }).done(function(retData, textStatus, jaXHR) {
       if (self.props.reset) {
         //$("#" + $(self.form).attr("id")).trigger("reset");
@@ -100,8 +109,6 @@ class Form extends Component {
     }).fail(function(jaXHR, textStatus, errorThrown) {
       self.ajaxError(jaXHR, textStatus, errorThrown);
 
-    }).always(function() {
-      this.postSubmit();
 
     });
   }

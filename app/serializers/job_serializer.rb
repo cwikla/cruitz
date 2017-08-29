@@ -5,8 +5,9 @@ class JobSerializer < ActiveModel::Serializer
 							:description, 
 							:time_commit, 
 							:location,
-              :candidate_count,
-              :user_id
+              :candidate_counts,
+              :user_id,
+              :created_at
 
   has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
 
@@ -18,8 +19,13 @@ class JobSerializer < ActiveModel::Serializer
     Pyr::Base::Util::String::emojify(object.description)
   end
 
-  def candidate_count
-    object.candidates.isnew.count
+  def candidate_counts
+   {
+      total: object.candidates.count,
+      accepted: object.candidates.accepted.count,
+      rejected: object.candidates.rejected.count,
+      waiting: object.candidates.isnew.count
+    }
   end
 
   def should_cand?

@@ -51,6 +51,10 @@
   line-height: 1.5rem;
 }
 
+.sidebar-header#jobs {
+  padding-top: 0.75rem;
+}
+
 .sidebar-header:hover {
   color: $sidebar_hover_color;
   background-color: $sidebar_hover_background_color;

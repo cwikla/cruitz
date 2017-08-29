@@ -117,7 +117,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   setAction(action, e) {
-    console.log("Action set to " + action);
+    //console.log("Action set to " + action);
     if (e) {
       e.preventDefault();
     }
@@ -338,7 +338,7 @@ class Dashboard extends Pyr.UserComponent {
             onClick={this.onSetPageCandidates}
             selected={this.state.job != null}
           />
-          <Pyr.Scroll className="hidden-sm-down flx-1">
+          <Pyr.Scroll className="sidebar-scroll hidden-sm-down flx-1">
             <Sidebar.Menu>
               {jobKids}
             </Sidebar.Menu>

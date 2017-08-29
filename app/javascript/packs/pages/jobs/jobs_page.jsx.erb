@@ -8,9 +8,8 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Pyr, {
-  ClassNames
-}  from '../../pyr/pyr';
+import Pyr from '../../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
 import Sheet from '../sheet';
@@ -19,31 +18,42 @@ import Sheet from '../sheet';
 const JOBS_URL = "/jobs";
 const SEARCH_URL = "/search";
 const NEW_ACTION = "New";
+const EDIT_ACTION = "Edit";
 
 class JobItem extends Component {
 
-  render() {
+  renderCard() {
     let job = this.props.job;
     let id = "job-" + job.id;
 
+    let rejectedCount = 1;
+    let acceptedCount = 4;
+    let waitingCount = 2;
+    
+    let allCount = rejectedCount + acceptedCount + waitingCount;
+
+    let slices = [{ 
+      color: '#CCD', 
+      value: acceptedCount
+    },
+    {
+      color: '#FF0',
+      value: waitingCount,
+    },
+    {
+      color: '#F00',
+      value: rejectedCount,
+    }];
+
     return (
       <div className="job-item card" id={id} key={id}>
-        <div className="card-header">
-          <h4 className="card-title">{job.title}</h4>
+        <div className="card-header flx-row">
+          <h4 className="card-title">{job.title}</h4><Pyr.IconButton name="edit"/>
         </div>
         <div>
           <Pyr.PieChart
             className="chart"
-            slices={[
-              {
-                color: '#f00',
-                value: 10,
-              },
-              {
-                color: '#0f0',
-                value: 20,
-              },
-            ]}
+            slices={slices}
           />
         </div>
         <div className="card-body">
@@ -52,6 +62,35 @@ class JobItem extends Component {
       </div>
     );
   }
+
+  render() {
+    let job = this.props.job;
+    
+    let id = "job-" + job.id;
+    let allClass = ClassNames("item job-item flx-row");
+    
+    if (this.props.selected) {
+       allClass.push("selected");
+    }  
+    
+    let description = job.description || "No Description";
+    
+    return (
+      <div className={allClass} id={id}>
+        <Pyr.Grid.Column className="job col-6">
+          <div>{job.title}</div>
+          <div>Created: <Pyr.MagicDate date={job.created_at}/></div>
+        </Pyr.Grid.Column>
+        <Pyr.Grid.Column className="content">
+          <div>Total: {job.candidate_counts.total}</div>
+          <div>Accepted: {job.candidate_counts.accepted}</div>
+          <div>New: {job.candidate_counts.waiting}</div>
+          <div>Rejected: {job.candidate_counts.rejected}</div>
+        </Pyr.Grid.Column>
+      </div>
+    );
+  }
+
 
 }
 
@@ -179,7 +218,7 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-  renderChildren(items, selected) {
+  renderChildrenCard(items, selected) {
     return (
       <div className="d-flex flx-wrap" key="job-stuff">
         { items.map( (item, pos) => {
@@ -236,7 +275,12 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderItem(job, isSelected) {
-    return (<JobItem job={job} selected={isSelected}/>)
+    return (
+        <JobItem 
+          job={job} 
+          selected={isSelected}
+        />
+    );
   }
 }
 
@@ -244,6 +288,7 @@ class NewSheet extends Sheet.New {
 
   success(data, textStatus, jqXHR) {
     this.props.onJobCreate(data.job);
+    super.success(data, textStatus, jqXHR);
   }
 
   renderTitle() {

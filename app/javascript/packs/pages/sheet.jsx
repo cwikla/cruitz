@@ -6,8 +6,45 @@ import PropTypes from 'prop-types';
 
 import Pyr from '../pyr/pyr';
 
+class Modal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: 'in'
+    };
+
+    this.onClose = this.close.bind(this);
+  }
+
+  close(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    this.setState({
+      show: 'out'
+    });
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
+  render() {
+    return (
+      <Pyr.Fade in_or_out={this.state.show}>
+        <Pyr.FullScreen
+          onEscape={this.onClose}
+          onClose={this.onClose}
+        >
+        { this.props.children }
+        </Pyr.FullScreen>
+      </Pyr.Fade>
+    );
+  }
+}
+
 class Item extends Pyr.UserComponent {
 }
+
 
 class Base extends Pyr.UserComponent {
   getInitState(props) {
@@ -23,6 +60,15 @@ class Base extends Pyr.UserComponent {
     this.onLoading = this.setLoading.bind(this);
     this.onLoaded = this.setLoading.bind(this, false);
     this.onBack = this.back.bind(this);
+    this.onClose = this.close.bind(this);
+  }
+
+  close(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onSetUnaction();
   }
 
   back(e) {
@@ -222,65 +268,46 @@ class Show extends Base {
   }
 }
 
-class FormBase extends Base {
+class Form extends Base {
   constructor(props) {
     super(props);
     this.onSuccess = this.success.bind(this);
-    this.onClose = this.close.bind(this);
-    this.onEscPress = this.escPress.bind(this);
-  }
-
-  close(e) {
-    if (e) {
-      e.preventDefault();
-    }
-
-    this.props.onSetUnaction();
-  }
-
-  escPress() {
-    this.props.onSetUnaction();
   }
 
   success(data, textStatus, jqXHR) {
-    alert("Sheet:Edit Do something with the success!");
-  }
-
-  renderTitle() {
-    return null;
+    this.onClose();
   }
 
   renderForm() {
     alert("Sheet:New If you are seeing this you need to implement renderForm!");
   }
 
+  renderTitle() {
+    return null;
+  }
+
   renderInner() {
     return (
-      <Pyr.Fade>
-        <Pyr.FullScreen
-          onEscape={this.onEscPress}
-          onClose={this.onClose}
-        >
-          <div className="flx-col" >
-            { this.renderTitle() }
-            <div className="flx-1">
-              { this.renderForm() }
-            </div>
-          </div>
-        </Pyr.FullScreen>
-      </Pyr.Fade>
+      <Modal onClose={this.onClose}>
+        <div className="title flx-col" >
+          { this.renderTitle() }
+        </div>
+        <div className="content flx-1">
+          { this.renderForm() }
+        </div>
+      </Modal>
     );
   }
 }
 
-class New extends FormBase {
+class New extends Form {
   constructor(props) {
     super(props);
   }
 
 }
 
-class Edit extends FormBase {
+class Edit extends Form {
   constructor(props) {
     super(props);
   }
@@ -295,7 +322,9 @@ const Sheet = {
   Index,
   Show,
   New, 
-  Edit
+  Edit,
+  Form,
+  Modal,
 };
 
 export default Sheet;
