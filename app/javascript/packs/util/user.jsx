@@ -23,8 +23,8 @@ const UserAvatar = (props) => (
 );
 
 const UserScore = (props) => (
-  <div className="user-score justify-content-center flx-col-stretch">
-    <div className="align-self-center">{ props.score }</div>
+  <div className={Pyr.ClassNames("user-score justify-content-center flx-col-stretch").push(props.className)}>
+    <div className="align-self-center">{ Pyr.Util.firstKid(props.children) }</div>
   </div>
 );
 

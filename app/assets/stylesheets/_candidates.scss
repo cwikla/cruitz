@@ -1,8 +1,6 @@
 .show {
   .sheet {
     .side {
-      padding-left: 1rem;
-      padding-right: 1rem;
     }
   }
 }
@@ -24,5 +22,14 @@
   color: white;
   background-color: $secondary_navbar_background_color;
   padding: 1rem;
+}
+
+.candidate-action {
+  .accept {
+  }
+
+  .reject {
+    color: $secondary_color !important;
+  }
 }
 

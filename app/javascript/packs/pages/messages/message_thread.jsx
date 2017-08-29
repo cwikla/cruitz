@@ -263,6 +263,9 @@ class MessageThread extends Pyr.UserComponent {
   }
 
   renderFooter(message, label="Reply") {
+    if (this.props.readOnly) {
+      return;
+    }
     return (
         <Footer
           message={message}

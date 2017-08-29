@@ -45,10 +45,6 @@ class CandidateHeader extends Component {
 
     return (
       <div className="candidate-header flx-noshrink">
-          <Pyr.Grid.Row className="recruiter-info p-1 flx-end">
-              <Pyr.PrimaryButton>Accept</Pyr.PrimaryButton>
-              <Pyr.Button>Reject</Pyr.Button>
-          </Pyr.Grid.Row>
           <Pyr.Grid.Row className="title">
             <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
           </Pyr.Grid.Row>
@@ -229,6 +225,7 @@ class RecruiterMessage extends Sheet.Item {
 
     return (
       <MessageThread 
+        readOnly
         className={clazzes}
         messageId={this.props.candidate.root_message_id}
         job={this.props.job}
@@ -348,7 +345,7 @@ class ShowSheet extends Sheet.Show {
     return CandidatesPage.key(item);
   }
 
-  renderItem(item, isSelected) {
+  renderItem(candidate, isSelected) {
     let clazzes = ClassNames(this.state.showMessages ? "" : "hide");
 
     console.log("RENDER: " + clazzes);
@@ -356,20 +353,25 @@ class ShowSheet extends Sheet.Show {
     return (
       <Pyr.Grid.Row>
         <Pyr.Grid.Col className="flx-col side left">
+          <div className="candidate-action flx-row p-1 flx-start">
+            <UserScore className="flx-align-content-start">88</UserScore>
+              <Pyr.PrimaryButton className="accept ml-auto">Accept</Pyr.PrimaryButton>
+              <Pyr.Button className="reject">Reject</Pyr.Button>
+          </div>
           <Pyr.Scroll>
             <CandidateCVItem 
-              candidate={item} 
+              candidate={candidate} 
               isSelected={isSelected} 
             />
-          </Pyr.Scroll>
 
           <RecruiterMessage 
             className={clazzes}
             job={this.state.job}
-            candidate={item} 
+            candidate={candidate} 
             selected={isSelected} 
             onSetItem={this.props.onSetItem}
           />
+          </Pyr.Scroll>
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );
