@@ -10,7 +10,7 @@ const ONE_HOUR = (ONE_MINUTE * 60);
 const ONE_DAY = (ONE_HOUR * 24);
 const TWO_DAYS = (ONE_DAY * 2);
 
-const ROOT = ["api", "v1"];
+const REMOTE_URL = "/api/v1";
 
 class URLObj {
   constructor(path) {
@@ -26,7 +26,7 @@ class URLObj {
   }
   
   parser() {
-    return this.bake().parser;
+    return this.bake(this.pathList).parser;
   }
   
   search(d) {
@@ -95,9 +95,9 @@ class URLObj {
     return this;
   }
   
-  bake() {
+  bake(pathList) {
     this.parser.search = this.searchParams.toString();
-    let pathname = ROOT.concat(this.pathList).join("/");
+    let pathname = pathList.join("/");
     this.parser.pathname = pathname;
     if (this.parser.hostname.startsWith("null.")) { // hack
         this.parser.hostname = this.parser.hostname.substring(5, this.parser.hostname.length);
@@ -108,14 +108,18 @@ class URLObj {
   ifa(a) {
     return (a ? a : '');
   }
-  
+
+  toRemote() {
+    return (new URL(REMOTE_URL)).push(this.toString());
+  }
+
   toString() {
-    this.bake();
+    this.bake(this.pathList);
     return (this.parser.pathname + this.parser.search + this.parser.hash).toLowerCase();
   }
   
   fullString() {
-    this.bake();
+    this.bake(this.pathList);
     let parser = this.parser;
     let ifa = this.ifa;
     let url = ifa(parser.protocol);

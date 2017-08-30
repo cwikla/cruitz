@@ -47,7 +47,7 @@ function getJSON(stuff) {
   stuff = Object.assign({
     dataType: "json",
     type: GET,
-  }, stuff);
+  }, stuff, { url: URL(stuff.url).toRemote() });
 
   let onLoading = stuff.loading ? stuff.loading : null;
 
@@ -230,7 +230,7 @@ class UserProvider extends Component {
 
     //alert("GET SELF CALLED");
 
-    $.getJSON({
+    getJSON({
       type: Pyr.Method.GET,
       url: URL().push(USERS_URL).push("/me"),
       context: this

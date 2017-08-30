@@ -313,6 +313,7 @@ class Dashboard extends Pyr.UserComponent {
     let jobKids = this.state.jobs.map( (child, pos) => {
         return (<Sidebar.Button 
                   key={child.uuid} 
+                  url={Pyr.URL(JOBS_URL).push(child.uuid).toString()}
                   selected={this.state.job && same(this.state.job, child)} 
                   onClick={this.onJobClicks[child.id]}><span className="hidden-sm-down">{child.title} ({child.candidate_count || 0})</span></Sidebar.Button>
         );
@@ -420,7 +421,7 @@ class Dashboard extends Pyr.UserComponent {
     return (
       <Route
         exact
-        path={"/"}
+        path={Pyr.URL("/").toString()}
         render={(props) => <PageComponent {...this.pageProps(page)} />}
       />
     );
@@ -430,7 +431,7 @@ class Dashboard extends Pyr.UserComponent {
     return (
       <Route
         exact
-        path={"/" + page.toLowerCase()}
+        path={Pyr.URL("/").push(page).toString()}
         render={(props) => <PageComponent {...this.pageProps(page)} />}
       />
     );
