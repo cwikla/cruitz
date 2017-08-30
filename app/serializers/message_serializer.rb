@@ -13,6 +13,22 @@ class MessageSerializer < ActiveModel::Serializer
     :updated_at,
     :read_at
 
+  def id
+    object.hashid
+  end
+
+  def parent_message_id
+    object.parent_message_id ? object.parent_message.hashid : nil
+  end
+
+  def root_message_id
+    object.root_message_id ? object.root_message.hashid : nil
+  end
+
+  def job_id
+    object.job.hashid
+  end
+
   def created_at
     object.created_at.in_time_zone.iso8601 if object.created_at
   end
@@ -35,7 +51,7 @@ class MessageSerializer < ActiveModel::Serializer
     if object.user
       u = object.user
       result = { 
-        id: u.id,
+        id: u.hashid,
         first_name: u.first_name,
         last_name: u.last_name
       }
@@ -48,7 +64,7 @@ class MessageSerializer < ActiveModel::Serializer
     if object.from_user
       u = object.from_user
       result = { 
-        id: u.id,
+        id: u.hashid,
         first_name: u.first_name,
         last_name: u.last_name
       }
@@ -61,7 +77,7 @@ class MessageSerializer < ActiveModel::Serializer
     if object.candidate
       candy = object.candidate
       result = { 
-        id: candy.head.id,
+        id: candy.head.hashid,
         first_name: candy.head.first_name,
         last_name: candy.head.last_name
       }

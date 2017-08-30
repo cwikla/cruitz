@@ -33,8 +33,6 @@ class Button extends Component {
     let url = this.props.url;
     let props = Pyr.Util.propsRemove(this.props, "url");
 
-    console.log("URL: " + url);
-
     return(
       <li {...Pyr.Util.propsMergeClassName(props, myClass)} >
         <Link to={url}><span className="inner"><span className="name">{props.children}</span></span></Link>

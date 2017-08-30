@@ -1,6 +1,5 @@
 class CandidateSerializer < ActiveModel::Serializer
   attributes :id,
-    :uuid,
     :first_name,
     :last_name,
     :phone_number,
@@ -11,8 +10,12 @@ class CandidateSerializer < ActiveModel::Serializer
 
   has_one :recruiter, through: :head, class_name: 'User'
 
-  def uuid
-    "candidate-#{object.id}"
+  def id
+    object.hashid
+  end
+
+  def job_id
+    object.job_id ? object.job.hashid : nil
   end
 
   def first_name
@@ -33,7 +36,7 @@ class CandidateSerializer < ActiveModel::Serializer
 
   def root_message_id
     m = Message.thread_for_candidate(object).first
-    m ? m.id : nil
+    m ? m.hashid : nil
   end
 
   def description

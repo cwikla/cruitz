@@ -1,7 +1,4 @@
 class Message < ApplicationRecord
-  acts_as_simple_cache
-  acts_as_paranoid
-
   belongs_to :user
   belongs_to :from_user, :class_name => 'User'
   belongs_to :job
@@ -34,6 +31,8 @@ class Message < ApplicationRecord
   end
 
   def self.for(user, mid)
+    mid = dehashid(mid)
+
     message = all_for(user).where(:id => mid).first
     return message
   end

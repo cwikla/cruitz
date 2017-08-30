@@ -17,7 +17,7 @@ const MESSAGES_URL = "/messages";
 
 
 const MessageThreadIndexHeader = (props) => (
-  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}<span className="job-title">{props.job.title}</span></div>
+  <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}<span className="job-title">{props.job.title}|{props.message.id}|{props.message.root_message_id}|{props.message.parent_message_id}</span></div>
 );
 
 const MessageThreadHeader = (props) => (

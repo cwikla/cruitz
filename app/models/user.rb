@@ -1,9 +1,6 @@
 class User < ApplicationRecord
   include Pyr::Base::Model::User
 
-  acts_as_simple_cache
-  acts_as_paranoid
-
   #make_authorized_by(:email)
 
   before_create :check_jti

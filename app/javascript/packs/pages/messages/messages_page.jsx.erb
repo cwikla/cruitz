@@ -81,7 +81,7 @@ class MessageItem extends Sheet.Item {
         <Grid.Column className="content">
           <Grid.Row className=""> 
             <Grid.Column className="col-8">
-              <Header className="title" job={job} isNew={message.is_root}/>
+              <Header className="title" message={message} job={job} isNew={message.is_root}/>
             </Grid.Column>
             <Grid.Column className="col-4 created-at text-right">
               <Pyr.MagicDate date={message.created_at} />
@@ -180,6 +180,7 @@ class MessagesPage extends Page {
       if (!mmap[threadId] || mmap[threadId].id < msg.id) {
 
         let job = this.jobMap[msg.job_id]; // FIXME, if job not here go fetch it
+        console.log("MINE: " + msg.from_user_id + ":" + this.context.user.id);
         let mine = (msg.from_user.id == this.context.user.id);
         let is_root = !msg.root_message_id;
 

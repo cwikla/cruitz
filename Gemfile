@@ -60,6 +60,9 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'tether-rails'
 gem 'bootstrap', '~> 4.0.0.alpha6'
+
+gem 'hashids'
+
 #
 #source "http://pyr:akbash42@gems.cwikla.com" do
   gem 'pyr_gem', :path => "../pyr/pyr_gem"

@@ -1,6 +1,5 @@
 class JobSerializer < ActiveModel::Serializer
   attributes  :id,
-              :uuid,
               :title, 
 							:description, 
 							:time_commit, 
@@ -10,6 +9,14 @@ class JobSerializer < ActiveModel::Serializer
               :created_at
 
   has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
+
+  def id
+    object.hashid
+  end
+
+  def user_id
+    object.user.hashid
+  end
 
   def title
     Pyr::Base::Util::String::emojify(object.title)
