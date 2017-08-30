@@ -312,17 +312,19 @@ class NewSheet extends Sheet.New {
 
 class JobsPage extends Page {
   getItems() {
-    return this.props.jobs;
+    this.onSetItems(this.props.jobs);
   }
 
   indexSheet() {
     return (
       <IndexSheet
         {...this.props}
-        jobs={this.props.items}
+        items={this.props.jobs}
+        jobs={this.props.jobs}
         onSelect={this.onSelect}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
+        onGetItems={this.onGetItems}
       />
     );
   }
@@ -334,10 +336,12 @@ class JobsPage extends Page {
     return (
       <ActionSheet
         {...this.props}
-        jobs={this.props.items}
+        items={this.props.jobs}
+        jobs={this.props.jobs}
         selected={this.state.selected}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
+        onGetItems={this.onGetItems}
       />
     );
 

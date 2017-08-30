@@ -9,8 +9,10 @@ import {
 } from 'react-dom';
 
 import {
-  Provider
-} from 'react-redux';
+  BrowserRouter as Router,
+  Link,
+  Route
+} from 'react-router-dom';
 
 import Pyr from '../pyr/pyr';
 
@@ -27,6 +29,9 @@ const RECRUITERS_PAGE = 'Recruiters';
 const SETTINGS_PAGE = 'Settings';
 const MESSAGES_PAGE = 'Messages';
 const SEARCH_PAGE = "Search";
+
+class CandidatesPageLocal extends CandidatesPage {
+};
 
 const JOBS_URL = "/jobs";
 const USERS_URL = "/users";
@@ -128,8 +133,10 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   setPage(page, e) {
+    page = page || MESSAGES_PAGE;
+
     //alert(page);
-    if (e) {
+    if (e && false) {
       e.preventDefault();
     }
 
@@ -318,24 +325,24 @@ class Dashboard extends Pyr.UserComponent {
           <Sidebar.Header 
             id="messages"
             icon="envelope-open-o"
-            onClick={this.onSetPageMessages}
             selected={this.state.page==MESSAGES_PAGE}
             itemCount={this.state.buttonItemCount[MESSAGES_PAGE] || 0}
+            url="/messages"
             >Messages</Sidebar.Header>
 
           <Sidebar.Header 
             id="candidates" 
             icon="users"
-            onClick={this.onSetPageCandidates}
             selected={this.state.page==CANDIDATES_PAGE}
             itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
+            url="/candidates"
           >Candidates</Sidebar.Header>
 
           <Sidebar.Header
             className="hidden-md-up"
             id="per-jobs"
             icon="hashtag"
-            onClick={this.onSetPageCandidates}
+            url="/candidates"
             selected={this.state.job != null}
           />
           <Pyr.Scroll className="sidebar-scroll hidden-sm-down flx-1">
@@ -347,23 +354,23 @@ class Dashboard extends Pyr.UserComponent {
           <Sidebar.Header 
             id="jobs"
             icon="bullseye"
-            onClick={this.onSetPageJobs}
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
             selected={this.state.page==JOBS_PAGE}
+            url="/jobs"
           >Jobs</Sidebar.Header>
           <Sidebar.Header 
             id="recruiters"
             icon="cubes"
-            onClick={this.onSetPageRecruiters}
             itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
             selected={this.state.page==RECRUITERS_PAGE}
+            url="/recruiters"
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
             id="settings"
             icon="gear"
-            onClick={this.onSetPageSettings}
             selected={this.state.page==SETTINGS_PAGE}
             className="p-b-1"
+            url="/settings"
           >Settings</Sidebar.Header>
         </Sidebar.Main>
     );
@@ -399,16 +406,39 @@ class Dashboard extends Pyr.UserComponent {
       onJobUpdate: this.onJobUpdate,
       onJobDelete: this.onJobDelete,
 
-      showing: (this.state.page == page), 
+      showing: true,
       url: PageURL(page),
       jobs: this.state.jobs,
     };
+    console.log("PageProps: " + page);
+    console.log(props);
 
     return props;
   }
 
+  defaultPage(page, PageComponent) {
+    return (
+      <Route
+        exact
+        path={"/"}
+        render={(props) => <PageComponent {...this.pageProps(page)} />}
+      />
+    );
+  }
+
+  renderPage(page, PageComponent) {
+    return (
+      <Route
+        exact
+        path={"/" + page.toLowerCase()}
+        render={(props) => <PageComponent {...this.pageProps(page)} />}
+      />
+    );
+  }
+
   renderMain() {
     let mainTitle = this.title();
+    let me = this;
 
     return (
         <main 
@@ -417,22 +447,12 @@ class Dashboard extends Pyr.UserComponent {
         >
           <div className="d-flex flx-1">
             {this.renderBlurb(mainTitle)}
-              <MessagesPage 
-                {...this.pageProps(MESSAGES_PAGE)}
-              />
-              <JobsPage 
-                {...this.pageProps(JOBS_PAGE)}
-                 items={this.state.jobs}
-              />
-              <CandidatesPage 
-                {...this.pageProps(CANDIDATES_PAGE)}
-              />
-              <RecruitersPage 
-                {...this.pageProps(RECRUITERS_PAGE)}
-              />
-              <SettingsPage 
-                {...this.pageProps(SETTINGS_PAGE)}
-              />
+            {this.renderPage(MESSAGES_PAGE, MessagesPage)}
+            {this.renderPage(CANDIDATES_PAGE, CandidatesPage)}
+            {this.renderPage(JOBS_PAGE, JobsPage)}
+            {this.renderPage(RECRUITERS_PAGE, RecruitersPage)}
+            {this.renderPage(SETTINGS_PAGE, SettingsPage)}
+            {this.defaultPage(MESSAGES_PAGE, MessagesPage)}
           </div>
         </main>
     );
@@ -472,7 +492,10 @@ const Footer = (props) => (
 
 render (
   <Pyr.UserProvider>
-    <Dashboard />
+    <Router>
+      <Dashboard />
+    </Router>
   </Pyr.UserProvider>,
-   document.getElementById('react-container')
+
+  document.getElementById('react-container')
 );

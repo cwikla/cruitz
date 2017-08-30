@@ -232,7 +232,7 @@ class UserProvider extends Component {
 
     $.getJSON({
       type: Pyr.Method.GET,
-      url: USERS_URL + "/me",
+      url: URL().push(USERS_URL).push("/me"),
       context: this
     }).done(function(data, textStatus, jaXHR) {
       self.setState({

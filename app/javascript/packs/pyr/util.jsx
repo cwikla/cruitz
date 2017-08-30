@@ -10,6 +10,8 @@ const ONE_HOUR = (ONE_MINUTE * 60);
 const ONE_DAY = (ONE_HOUR * 24);
 const TWO_DAYS = (ONE_DAY * 2);
 
+const ROOT = ["api", "v1"];
+
 class URLObj {
   constructor(path) {
     path = path || "/";
@@ -95,7 +97,7 @@ class URLObj {
   
   bake() {
     this.parser.search = this.searchParams.toString();
-    let pathname = this.pathList.join("/");
+    let pathname = ROOT.concat(this.pathList).join("/");
     this.parser.pathname = pathname;
     if (this.parser.hostname.startsWith("null.")) { // hack
         this.parser.hostname = this.parser.hostname.substring(5, this.parser.hostname.length);
@@ -290,6 +292,10 @@ function firstKid(children) {
 }
 
 function propsRemove(props, ripOut) {
+  if (!Array.isArray(ripOut)) {
+    ripOut = [ ripOut ];
+  }
+
   let tmp = Object.assign({}, props);
   ripOut.forEach((a) => {
     delete tmp[a];

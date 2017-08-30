@@ -5,6 +5,7 @@ import React, {
   Component
 } from 'react';
 
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Pyr from '../../pyr/pyr';
@@ -278,5 +279,4 @@ function key(item) {
   return "message-" + item.id;
 }
 MessagesPage.key = key;
-
 export default MessagesPage;
