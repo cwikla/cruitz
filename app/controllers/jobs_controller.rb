@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   def index
-    render json: current_user.jobs.order(:id).all
+    render json: current_user.jobs.order(:created_at).all
   end
 
   def candidate_counts
@@ -25,7 +25,8 @@ class JobsController < ApplicationController
   end
 
   def update
-    @job = current_user.jobs.find(params[:id])
+    jid = hid()
+    @job = current_user.jobs.find(jid)
     if @job.update(job_params)
       return render json: @job
     else
@@ -34,7 +35,8 @@ class JobsController < ApplicationController
   end
 
   def show
-    @job = current_user.jobs.find(params[:id])
+    jid = hid()
+    @job = current_user.jobs.find(jid)
 
     result = {}
     result[:job] = JobSerializer.new(@job)

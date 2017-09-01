@@ -44,7 +44,10 @@
     padding-left: 1.75rem;
   }
 
-  color: $sidebar_color;
+  color: $sidebar_color !important;
+  a {
+    color: $sidebar_color !important;
+  }
 }
 
 .sidebar-menu {
@@ -65,7 +68,10 @@
   background-color: $sidebar_hover_background_color;
 }
 .sidebar-button.selected, .sidebar-header.selected {
-  color: $selected_color;
+  color: $selected_color !important;
+  a {
+    color: $selected_color !important;
+  }
   background-color: $selected_background_color;
   font-weight: 500;
 }

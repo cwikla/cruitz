@@ -46,6 +46,10 @@ class URLObj {
     this.searchParams.get(k);
     return this;
   }
+
+  data() {
+    return this.searchParams;
+  }
   
   delete(k) {
     this.searchParams.delete(k);
@@ -110,12 +114,12 @@ class URLObj {
   }
 
   toRemote() {
-    return (new URL(REMOTE_URL)).push(this.toString());
+    return (new URLObj(REMOTE_URL)).push(this.toString());
   }
 
   toString() {
     this.bake(this.pathList);
-    return (this.parser.pathname + this.parser.search + this.parser.hash).toLowerCase();
+    return (this.parser.pathname).toLowerCase();
   }
   
   fullString() {
@@ -131,7 +135,7 @@ class URLObj {
   }
 }
 
-function URL(a) {
+function PURL(a) {
   return new URLObj(a);
 }
 
@@ -338,7 +342,7 @@ function hash(str) {
 }
 
 const Util = {
-  URL,
+  PURL,
   ClassNames,
   summarize,
   friendlyDate,

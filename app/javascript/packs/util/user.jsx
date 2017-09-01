@@ -11,7 +11,7 @@ const avatars = ["emilia", "snow", "sophie", "thetick"];
 function getAvatar(uid) {
   let pos = Math.abs(Pyr.Util.hash(uid)) % avatars.length;
   let av = "/assets/images/thrones/" + avatars[pos] + ".jpeg";
-  console.log(av);
+  //console.log(av);
   return av;
 }
 

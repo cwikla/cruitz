@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   get 'pricing' => 'home#pricing'
   get 'about' => 'home#about'
-  get 'recruiters' => 'home#recruiters'
+  get 'recruit' => 'home#recruiters'
 
 
   authenticated :user do

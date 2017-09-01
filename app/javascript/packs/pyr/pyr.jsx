@@ -18,7 +18,7 @@ import {
 
 import Util from './util';
 const ClassNames = Util.ClassNames;
-const URL = Util.URL;
+const PURL = Util.PURL;
 
 import Grid from './grid';
 import Scroll from './scroll';
@@ -44,10 +44,23 @@ function ajaxError(jaXHR, textStatus, errorThrown) {
 }
 
 function getJSON(stuff) {
+  let url = stuff.url;
+  if (typeof url == 'string') {
+    url = PURL(url);
+  }
+  let data = url.data().toString();
+  url = url.toRemote();
+
+  console.log("GETJSON: " + url);
+  console.log("DATA:" + data.toString());
+
   stuff = Object.assign({
     dataType: "json",
     type: GET,
-  }, stuff, { url: URL(stuff.url).toRemote() });
+  }, stuff, { 
+    url: url,
+    data: data
+  });
 
   let onLoading = stuff.loading ? stuff.loading : null;
 
@@ -232,7 +245,7 @@ class UserProvider extends Component {
 
     getJSON({
       type: Pyr.Method.GET,
-      url: URL().push(USERS_URL).push("/me"),
+      url: PURL().push(USERS_URL).push("/me"),
       context: this
     }).done(function(data, textStatus, jaXHR) {
       self.setState({
@@ -317,6 +330,7 @@ class FullScreen extends Component {
 
 }
 
+const URL = PURL;
 
 const Pyr = { 
   ajaxError,

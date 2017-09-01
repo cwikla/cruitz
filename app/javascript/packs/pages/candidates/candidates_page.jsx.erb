@@ -490,13 +490,10 @@ class CandidatesPage extends Page {
   }
 
   getItems() {
-    console.log("CANDIDATE GET ITEMS");
     this.getCandidates();
   }
 
   getCandidates(job) {
-    let params = [{"cand": 1}];
-
     let url = job ? (Pyr.URL(JOBS_URL).push(job.id).set("cand", 1)) : Pyr.URL(CANDIDATES_URL);
 
     Pyr.getJSON({

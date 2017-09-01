@@ -38,7 +38,7 @@ module Hashid
     end
 
     def looks_like_hashid?(hid)
-      !SIG.index(hid[0].downcase).nil?
+      !SIG.index(hid[0].to_s.downcase).nil?
     end
 
   end

@@ -37,6 +37,7 @@ const JOBS_URL = "/jobs";
 const USERS_URL = "/users";
 const SEARCH_URL = "/search";
 const RECRUITERS_URL = "/recruiters";
+const CANDIDATES_URL = "/candidates";
 
 function PageURL(page) {
   return Pyr.URL().push(page);
@@ -197,7 +198,7 @@ class Dashboard extends Pyr.UserComponent {
     buttonItemCount[JOBS_PAGE] = jobs.length;
 
     buttonItemCount[CANDIDATES_PAGE] = jobs.reduce((sum, job) => {
-      return sum + job.candidate_count;
+      return sum + (job.candidate_counts.accepted + job.candidate_counts.waiting);
     }, 0);
 
     this.setState({
@@ -307,15 +308,24 @@ class Dashboard extends Pyr.UserComponent {
   }
 */
 
+  renderCandidateCount(count) {
+    if (count == 0) {
+      return null;
+    }
+    return (
+      <span>({count})</span>
+    );
+  }
+ 
   renderSideBar() {
     let self = this;
 
-    let jobKids = this.state.jobs.map( (child, pos) => {
+    let jobKids = this.state.jobs.map( (job, pos) => {
         return (<Sidebar.Button 
-                  key={child.id} 
-                  url={Pyr.URL(JOBS_URL).push(child.id).toString()}
-                  selected={this.state.job && same(this.state.job, child)} 
-                  onClick={this.onJobClicks[child.id]}><span className="hidden-sm-down">{child.title} ({child.candidate_count || 0})</span></Sidebar.Button>
+                  key={job.id} 
+                  url={Pyr.URL(CANDIDATES_URL).push(job.id).toString()}
+                  selected={this.state.job && same(this.state.job, job)} 
+                  onClick={this.onJobClicks[job.id]}><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
         );
       }
     );
@@ -426,14 +436,15 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   renderPage(page, PageComponent) {
-    let url = "/"+page+"/:action?";
+    let url = "/"+page+"/:hid?";
     //console.log("RENDER PAGE URL: " + url);
     return (
       <Route
         path={url.toLowerCase()}
-        render={
-          (props) => { 
-            //console.log(props.match);
+        render={(props) => {
+            console.log("MATCH");
+            console.log(PageComponent);
+            console.log(props.match);
             return (<PageComponent {...this.pageProps(page)} />);
           }
         }

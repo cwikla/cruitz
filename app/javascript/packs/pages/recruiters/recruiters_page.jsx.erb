@@ -102,6 +102,7 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderItem() {
+    alert("hello");
     return ( <RecruiterItem recruiter={this.props.recruiter}/> );
   }
 }
@@ -152,7 +153,7 @@ class RecruitersPage extends Page {
   }
 }
 function key(item) {
-  return item.id;
+  return "rec-" + item.id;
 }
 RecruitersPage.key = key;
 

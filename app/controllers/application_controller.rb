@@ -8,6 +8,10 @@ class ApplicationController < Pyr::Base::ApplicationController
 
   private 
 
+  def hid
+    User.dehashid(params[:id])
+  end
+
   def set_app_name
     @app_name = "CRUITZ"
     if params[:debug]

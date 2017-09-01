@@ -1,13 +1,15 @@
 class CandidatesController < ApplicationController
   def index
-    render json: current_user.candidates.order(:id).all
+    render json: current_user.candidates.order(:created_at).all
   end
 
   def show
-    render json: current_user.candidates.find(params[:id])
+    cid = hid()
+    render json: current_user.candidates.find(cid)
   end
 
   def thread
-    Message.thread_for_candidate(params[:id])
+    cid = hid()
+    Message.thread_for_candidate(cid)
   end
 end
