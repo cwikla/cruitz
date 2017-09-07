@@ -18,13 +18,14 @@ class Page extends Pyr.UserComponent {
   constructor(props) {
     super(props);
 
+    console.log("PAGE PARAMS: " + props);
+
     let myState = {
       items: null,
       selected: null,
       fullDetail: false,
     };
 
-    this.state = Object.assign(myState, this.getInitState(props));
 
     let jobs = this.props.jobs || [];
     this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
@@ -36,8 +37,13 @@ class Page extends Pyr.UserComponent {
     //this.onSetUnaction = this.setAction.bind(this, null);
 
     this.onSetItems = this.setItems.bind(this);
-    this.onGetItems = this.getItems.bind(this);
-    this.onSetItem = this.setItem.bind(this);
+
+
+    this.onLoadItems = this.loadItems.bind(this);
+    this.onLoadSelected = this.loadSelected.bind(this);
+    this.onAddItem = this.addItem.bind(this);
+
+    this.state = Object.assign(myState, this.getInitState(props));
   }
 
   name() {
@@ -50,11 +56,19 @@ class Page extends Pyr.UserComponent {
     return name;
   }
 
-  setItemCompare(a, b) {
+  setRoute(item) {
+    let fullUrl = Pyr.URL(this.props.url);
+    if (item) {
+      fullUrl.push(item.id);
+    }
+    this.context.router.history.push(fullUrl.toString());
+  }
+
+  addItemCompare(a, b) {
     return a.id == b.id;
   }
 
-  setItem(item) {
+  addItem(item) {
     //console.log("ITEM: " + item);
     //console.log(this.state.items);
 
@@ -66,7 +80,7 @@ class Page extends Pyr.UserComponent {
     let found = false;
 
     let copy = items.map((val, pos) => {
-      if (this.setItemCompare(val, item)) {
+      if (this.addItemCompare(val, item)) {
         found = true;
         return item;
       }
@@ -88,8 +102,12 @@ class Page extends Pyr.UserComponent {
     });
   }
 
-  getItems() {
-    alert("Page:getItems needs to be implemented");
+  loadItems() {
+    alert("Page:loadItems needs to be implemented");
+  }
+
+  loadSelected(hid) {
+    alert("Page:loadSelected needs to be implemented");
   }
 
 ////// COPY ME INTO SUBCLASS //////
@@ -136,17 +154,26 @@ class Page extends Pyr.UserComponent {
   }
 
   showActionSheet() {
-    return !!this.props.action;
+    return !!this.props.itemId;
   }
 
 ///// END ////
 
   setSelected(selected) {
-    //alert("SELECTED " + JSON.stringify(selected));
+    console.log("SELECTED " + JSON.stringify(selected));
+
     this.setState({
       selected
     });
     this.props.onSetAction(SHOW_ACTION);
+  }
+
+  getSelected() {
+    return this.state.selected;
+  }
+
+  getAction() {
+    return this.props.action || SHOW_ACTION;
   }
 
   setActionOld(action) {
@@ -177,11 +204,13 @@ class Page extends Pyr.UserComponent {
       return this.renderNoSheet();
     }
 
-    let extraClass = ClassNames("action flx-col flx-1").push(this.props.action.toLowerCase());
+    let action = this.getAction();
+
+    let extraClass = ClassNames("action flx-col flx-1").push(action.toLowerCase());
 
     return (
       <div className={extraClass}>
-        {this.actionSheet(this.props.action)}
+        {this.actionSheet(action)}
       </div>
     );
   }
@@ -200,6 +229,9 @@ class Page extends Pyr.UserComponent {
     }
 
     let id = this.name().toLowerCase() + "-page";
+
+    console.log("PAGE props");
+    console.log(this.props);
 
     return (
         <div className="d-flex flx-1 page flx-col cwikla">

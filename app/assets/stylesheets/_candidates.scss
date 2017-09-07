@@ -1,7 +1,34 @@
 .show {
   .sheet {
-    .side {
+    .candidate-item {
+      .actions {
+        border-bottom: 1px solid rgba(gray, 0.4);
+        margin-bottom: 1rem;
+
+        .reject {
+            color: $secondary_color !important;
+        }
+      }
+
+      .left, .right {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .cv-item {
+        background-color: white;
+        border: 1px solid rgba(gray, 0.4);
+        border-radius: 10px;
+      }
+
+      .recruiter-blurb {
+        padding: 1rem;
+        border: 1px solid rgba(gray, 0.4);
+        border-radius: 10px;
+        background-color: $light_gray_color;
+      }
     }
+
   }
 }
 
@@ -19,8 +46,6 @@
 }
 
 .candidate-header {
-  color: white;
-  background-color: $secondary_navbar_background_color;
   padding: 1rem;
 }
 
@@ -28,8 +53,5 @@
   .accept {
   }
 
-  .reject {
-    color: $secondary_color !important;
-  }
 }
 

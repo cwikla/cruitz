@@ -319,6 +319,10 @@ label {
   display: none;
 }
 
+.rating {
+  color: $secondary_color;
+}
+
 @import 'item';
 @import 'messages';
 @import 'recruiters';

@@ -4,6 +4,11 @@ import React, {
 
 import PropTypes from 'prop-types';
 
+import {
+  Link,
+  Route
+} from 'react-router-dom';
+
 import Pyr from '../pyr/pyr';
 
 class Modal extends Component {
@@ -188,8 +193,9 @@ class Index extends Base {
   }
 
   componentDidMount() {
+    console.log("GETTING ITEMS");
     if (!this.props.items) {
-      this.props.onGetItems(this.onLoading);
+      this.props.onLoadItems(this.onLoading);
     }
   }
 
@@ -203,23 +209,28 @@ class Index extends Base {
     return items.sort((x, y) => y.id - x.id);
   }
 
-  //getItems(items) {
-    //alert("Sheet:Index If you are seeing this, you need to implement getItems!");
-  //}
+  renderChild(item, isSelected) {
+    let url=Pyr.URL(this.props.url).push(item.id);
+
+    return (
+      <li 
+        key={this.key(item)} 
+      ><Link to={url.toString()}>{this.renderItem(item, isSelected)}</Link></li>
+    );
+  }
 
   renderChildren(items, selected) {
     let self = this;
+    console.log("render children");
+    console.log(this.props);
 
+              /*onClick={this.onClicks[this.key(item)] }  */
     return (
       <ul>
         {items.map((item, pos) => {
           let isSelected = this.same(item, selected);
           //console.log("RENDERING " + item);
-          return (
-            <li 
-              key={this.key(item)} 
-              onClick={this.onClicks[this.key(item)] } 
-            >{this.renderItem(item, isSelected)}</li>);
+          return this.renderChild(item, isSelected);
         })}
       </ul>
      );
@@ -244,6 +255,13 @@ class Index extends Base {
 class Show extends Base {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    console.log("GETTING ITEM");
+    if (!this.props.item) {
+      this.props.onLoadSelected(this.props.itemId, this.onLoading);
+    }
   }
 
   editMe(e) {

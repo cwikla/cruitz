@@ -15,6 +15,15 @@ function getAvatar(uid) {
   return av;
 }
 
+const Stars = (props) => (
+  <div>
+    { Pyr.Util.times(props.rating, (i) => {
+        return (<Pyr.Icon name="star" key={"star"+i} className="rating"/>);
+      })
+    }
+  </div>
+);
+
 const UserAvatar = (props) => (
   <div className={Pyr.ClassNames("flx-col user-avatar justify-content-center").push(props.small ? "small" : "").push(props.className)}>
     <div className="align-self-center"><img src={getAvatar(props.userId)}/></div>
@@ -31,5 +40,6 @@ const UserScore = (props) => (
 
 export {
   UserAvatar,
-  UserScore
+  UserScore,
+  Stars
 }

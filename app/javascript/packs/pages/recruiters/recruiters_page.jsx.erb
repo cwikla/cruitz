@@ -108,7 +108,7 @@ class ShowSheet extends Sheet.Show {
 }
 
 class RecruitersPage extends Page {
-  getItems(onLoading) {
+  loadItems(onLoading) {
     Pyr.getJSON({
       url: this.props.url,
       context: this,
@@ -131,7 +131,7 @@ class RecruitersPage extends Page {
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-        onGetItems={this.onGetItems}
+        onLoadItems={this.onLoadItems}
       />
     );
   }

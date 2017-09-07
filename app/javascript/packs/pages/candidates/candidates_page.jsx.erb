@@ -20,7 +20,8 @@ const MESSAGES_URL = "/messages";
 
 import {
   UserAvatar,
-  UserScore
+  UserScore,
+  Stars,
 } from '../../util/user';
 
 
@@ -215,7 +216,7 @@ class IndexSheet extends Sheet.Index {
   }
 }
 
-class RecruiterMessage extends Sheet.Item {
+class RecruiterMessage extends Component {
   render() {
     if (!this.props.job) {
       return <Pyr.Loading />
@@ -237,24 +238,96 @@ class RecruiterMessage extends Sheet.Item {
 
 }
 
-class CandidateCVItem extends Sheet.Item {
+class RecruiterBlurb extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: null,
+    };
+  }
+
+  setMessage(message) {
+    this.setState({
+      message
+    });
+  }
+
+  getMessage() {
+    if (!this.props.candidate.root_message_id) {
+      return;
+    }
+
+    console.log(this.props.candidate);
+    let url = Pyr.URL(MESSAGES_URL).push(this.props.candidate.root_message_id);
+
+    Pyr.getJSON({
+      url: url,
+      context: this,
+
+    }).done((data, textStatus, jaXHR) => {
+      this.setMessage(data.message);
+
+    }).fail((jaXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+
+    });
+  }
+
+  componentDidMount() {
+    this.getMessage();
+  }
+  render() {
+    return (
+      <div className="recruiter-blurb">
+        <UserAvatar
+          userId={this.props.recruiter.id}
+          name={this.props.recruiter.first_name}
+        />
+        <Stars rating={4}/>
+        <div>64% acceptance rate</div>
+        <div>Awesome Recruiting, Inc</div>
+        <div>San Francisco, CA</div>
+        <div>I specialize in recruiting software engineers
+        from top 10 schools.  I have worked with Uber, Twitter,
+        BobCo and SallyCo.</div>
+        <div>{this.state.message}</div>
+      </div>
+    );
+  }
+}
+
+class CandidateCVItem extends Component {
   render() {
     let candidate = this.props.candidate;
 
-    let allClass = ClassNames("candidate-cv-item flx-col");
+    let allClass = ClassNames("cv-item flx-col");
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
     let email = candidate.email || "No Email";
     let description = candidate.description || "No Description";
 
-    let id = "candidate-cv-" + candidate.id;
+    let id = "cv-" + candidate.id;
 
     return (
       <div className={allClass} id={id}>
         <CandidateHeader 
           candidate={candidate}
         />
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
+        <div>Stuff</div>
         <div>Stuff</div>
         <div>Stuff</div>
         <div>Stuff</div>
@@ -338,7 +411,9 @@ class ShowSheet extends Sheet.Show {
   }
 
   componentWillMount() {
-    this.getJob(this.props.selected.job_id);
+    console.log("WILL MOUNT");
+    console.log(this.props);
+    this.getJob(this.props.jobId);
   }
 
   key(item) {
@@ -347,31 +422,39 @@ class ShowSheet extends Sheet.Show {
 
   renderItem(candidate, isSelected) {
     let clazzes = ClassNames(this.state.showMessages ? "" : "hide");
+    let recruiter = candidate.recruiter;
 
     console.log("RENDER: " + clazzes);
 
     return (
-      <Pyr.Grid.Row>
+      <Pyr.Grid.Row className="candidate-item">
         <Pyr.Grid.Col className="flx-col side left">
-          <div className="candidate-action flx-row p-1 flx-start">
+          <div className="actions flx-row p-1 flx-start">
             <UserScore className="flx-align-content-start">88</UserScore>
               <Pyr.PrimaryButton className="accept ml-auto">Accept</Pyr.PrimaryButton>
               <Pyr.Button className="reject">Reject</Pyr.Button>
           </div>
-          <Pyr.Scroll>
-            <CandidateCVItem 
-              candidate={candidate} 
-              isSelected={isSelected} 
-            />
-
-          <RecruiterMessage 
-            className={clazzes}
-            job={this.state.job}
-            candidate={candidate} 
-            selected={isSelected} 
-            onSetItem={this.props.onSetItem}
-          />
-          </Pyr.Scroll>
+          <Pyr.Grid.Row className="flx-1">
+            <Pyr.Grid.Col className="flx-col">
+              <Pyr.Scroll className="left">
+                <CandidateCVItem 
+                  candidate={candidate} 
+                  isSelected={isSelected} 
+                />
+  
+                <RecruiterMessage 
+                  className={clazzes}
+                  job={this.state.job}
+                  candidate={candidate} 
+                  selected={isSelected} 
+                  onSetItem={this.props.onSetItem}
+                />
+              </Pyr.Scroll>
+            </Pyr.Grid.Col>
+            <Pyr.Grid.Col className="col-3 right">
+              <RecruiterBlurb candidate={candidate} recruiter={recruiter}/>
+            </Pyr.Grid.Col>
+          </Pyr.Grid.Row>
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );
@@ -434,7 +517,7 @@ class CandidateTable extends Sheet.Index {
 class CandidatesPage extends Page {
   getInitState(props) {
     return {
-      job: props.job, // placeholder until we can fetch the full one
+      job: this.jobMap[props.jobId], // placeholder until we can fetch the full one
       fullDetail: false
     };
   }
@@ -444,28 +527,29 @@ class CandidatesPage extends Page {
       <CandidateTable 
         {...this.props}
         items={this.state.items}
-        selected={this.state.selected}
+        selected={this.getSelected()}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-        onGetItems={this.onGetItems}
+        onLoadItems={this.onLoadItems}
       />
     );
   }
 
   indexSheet() {
+    console.log("CANDINDEX");
 
     return (
       <IndexSheet
         {...this.props}
         items={this.state.items}
-        selected={this.state.selected}
+        selected={this.getSelected()}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-        onGetItems={this.onGetItems}
+        onLoadItems={this.onLoadItems}
       />
     );
   }
@@ -477,24 +561,24 @@ class CandidatesPage extends Page {
     return (
       <ActionSheet
         {...this.props}
-        items={this.props.items}
-        selected={this.state.selected}
+        items={this.state.items}
+        selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-        onSetItem={this.setItem}
+        onLoadItem={this.loadItem}
       />
     );
 
   }
 
-  getItems() {
-    this.getCandidates();
+  loadItems() {
+    this.getCandidates(this.props.jobId);
   }
 
-  getCandidates(job) {
-    let url = job ? (Pyr.URL(JOBS_URL).push(job.id).set("cand", 1)) : Pyr.URL(CANDIDATES_URL);
+  getCandidates(jobId) {
+    let url = Pyr.URL(JOBS_URL).push(jobId).set("cand", 1);
 
     Pyr.getJSON({
       url: url,
@@ -518,23 +602,23 @@ class CandidatesPage extends Page {
   }
 
   componentDidUpdate(prevProps, prevState) {
-     //alert("Did Update");
+     console.log("Did Update");
     //alert(this.props.job);
     if(this.props.job){
      //alert(this.props.job.uuid);
     }
-    let prevId = prevProps.job ? prevProps.job.id : -1;
-    let nextId = this.props.job ? this.props.job.id : -1;
+    let prevId = prevProps.jobId ? prevProps.jobId : -1;
+    let nextId = this.props.jobId ? this.props.jobId : -1;
 
     if (prevId != nextId) {
       this.setItems(null);
-      this.getCandidates(this.props.job);
+      this.getCandidates(nextId);
     }
   }
 }
 
 function key(item) {
-  return "candidate-" + item.id;
+  return "cand-" + item.id;
 }
 
 CandidatesPage.key = key;

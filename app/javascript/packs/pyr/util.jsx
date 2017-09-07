@@ -341,6 +341,16 @@ function hash(str) {
   return hash >>> 0;
 }
 
+function times(x,f) {
+  let result = [];
+  let n = x-1;
+  while(n >= 0) {
+    result.push(f(n));
+    n = n - 1;
+  }
+  return result;
+}
+
 const Util = {
   PURL,
   ClassNames,
@@ -352,7 +362,8 @@ const Util = {
   propsMerge,
   propsMergeClassName,
   firstKid,
-  hash
+  hash,
+  times
 };
 
 export default Util;

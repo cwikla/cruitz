@@ -117,10 +117,13 @@ class ShowSheet extends Sheet.Show {
     super(props);
   }
 
-  renderItem(message, isSelected) {
-    if (this.state.isLoading || !message) {
+  renderItem(item, isSelected) {
+    if (this.state.isLoading || !item) {
       return (<Pyr.Loading />);
     }
+
+    let message = item.message;
+    let thread = item.thread;
 
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
@@ -197,7 +200,7 @@ class MessagesPage extends Page {
     return (a.root_message_id == b.root_message_id);
   }
 
-  setItem(item) {
+  setItemOld(item) {
     if (!item) {
       return;
     }
@@ -217,13 +220,34 @@ class MessagesPage extends Page {
     super.setItems(items);
   }
 
-  getItems(onLoading) {
+  loadSelected(item, onLoading) {
+    console.log("GET ITEM: " + item);
+
+    let me = this;
+
+    Pyr.getJSON({
+      url: Pyr.URL(MESSAGES_URL).push(item),
+      context: me,
+      loading: onLoading,
+
+    }).done(function(data, textStatus, jaXHR) {
+        me.onSelect(data);
+
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
+  loadItems(onLoading) {
+    console.log("GET ITEMS..." + this.constructor.name);
+
     let me = this;
 
     Pyr.getJSON({
       url: Pyr.URL(MESSAGES_URL),
       context: me,
       loading: onLoading,
+
     }).done(function(data, textStatus, jaXHR) {
         me.setItems(data.messages);
 
@@ -243,12 +267,12 @@ class MessagesPage extends Page {
         {...this.props} 
         items={this.state.items}
         jobMap={this.jobMap}
-        selected={this.state.selected}
+        selected={this.getSelected()}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-        onGetItems={this.onGetItems}
+        onLoadItems={this.onLoadItems}
       />
     );
   }
@@ -264,12 +288,12 @@ class MessagesPage extends Page {
         {...this.props}
         items={this.state.items}
         jobMap={this.jobMap}
-        selected={this.state.selected}
+        selected={this.getSelected()}
         onSetItems={this.onSetItems}
         onSetItem={this.onSetItem}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
-        onGetItems={this.onGetItems}
+        onLoadSelected={this.onLoadSelected}
       />
     );
     

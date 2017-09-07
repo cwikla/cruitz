@@ -311,7 +311,7 @@ class NewSheet extends Sheet.New {
 }
 
 class JobsPage extends Page {
-  getItems() {
+  loadItems() {
     this.onSetItems(this.props.jobs);
   }
 
@@ -324,7 +324,7 @@ class JobsPage extends Page {
         onSelect={this.onSelect}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
-        onGetItems={this.onGetItems}
+        onLoadItems={this.onLoadItems}
       />
     );
   }
@@ -341,7 +341,7 @@ class JobsPage extends Page {
         selected={this.state.selected}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
-        onGetItems={this.onGetItems}
+        onLoadItems={this.onLoadItems}
       />
     );
 
