@@ -141,7 +141,7 @@ class ShowSheet extends Sheet.Show {
           onBack={this.onBack}
           url={Pyr.URL(MESSAGES_URL)}
           onSetItems={this.props.onSetItems}
-          onSetItem={this.props.onSetItem}
+          onAddItem={this.props.onAddItem}
         />
       </div>
     );
@@ -220,13 +220,13 @@ class MessagesPage extends Page {
     super.setItems(items);
   }
 
-  loadSelected(item, onLoading) {
-    console.log("GET ITEM: " + item);
+  loadSelected(itemId, onLoading) {
+    console.log("GET ITEM: " + itemId);
 
     let me = this;
 
     Pyr.getJSON({
-      url: Pyr.URL(MESSAGES_URL).push(item),
+      url: Pyr.URL(MESSAGES_URL).push(itemId),
       context: me,
       loading: onLoading,
 
@@ -290,7 +290,7 @@ class MessagesPage extends Page {
         jobMap={this.jobMap}
         selected={this.getSelected()}
         onSetItems={this.onSetItems}
-        onSetItem={this.onSetItem}
+        onAddItem={this.onAddItem}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onLoadSelected={this.onLoadSelected}

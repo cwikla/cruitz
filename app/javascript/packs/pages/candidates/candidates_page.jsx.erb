@@ -562,15 +562,34 @@ class CandidatesPage extends Page {
       <ActionSheet
         {...this.props}
         items={this.state.items}
+        jobMap={this.jobMap}
         selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
-        onLoadItem={this.loadItem}
+        onLoadSelected={this.onLoadSelected}
       />
     );
 
+  }
+
+  loadSelected(itemId, onLoading) {
+    console.log("GET ITEM: " + itemId);
+
+    let me = this;
+
+    Pyr.getJSON({
+      url: Pyr.URL(CANDIDATES_URL).push(itemId),
+      context: me,
+      loading: onLoading,
+
+    }).done(function(data, textStatus, jaXHR) {
+        me.onSelect(data.candidate);
+
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    });
   }
 
   loadItems() {

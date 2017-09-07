@@ -38,7 +38,6 @@ class Page extends Pyr.UserComponent {
 
     this.onSetItems = this.setItems.bind(this);
 
-
     this.onLoadItems = this.loadItems.bind(this);
     this.onLoadSelected = this.loadSelected.bind(this);
     this.onAddItem = this.addItem.bind(this);
@@ -144,7 +143,6 @@ class Page extends Pyr.UserComponent {
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect} 
         onSetItems={this.onSetItems}
-        onSetItem={this.onSetItem}
         loading={this.state.loading}
         job={this.props.job}
         jobs={this.props.jobs}
