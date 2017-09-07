@@ -48,26 +48,6 @@ function same(a,b) {
   return a.id == b.id;
 }
 
-class JobTitle extends Component {
-  render() {
-    return (
-      <div className="job-title">
-        <Pyr.Grid.Row>
-          <Pyr.Grid.ColFull><span className="title">{this.props.job.title}</span></Pyr.Grid.ColFull>
-        </Pyr.Grid.Row>
-        <Pyr.Grid.Row>
-          <Pyr.Grid.ColHalf>Candidates: <span>()</span></Pyr.Grid.ColHalf>
-          <Pyr.Grid.ColHalf>Created: <span>{this.props.job.created_at}</span></Pyr.Grid.ColHalf>
-        </Pyr.Grid.Row>
-        <Pyr.Grid.Row>
-          <Pyr.Grid.ColHalf>Search: <span>[         ]</span></Pyr.Grid.ColHalf>
-          <Pyr.Grid.ColHalf>Filter: <span>[ ]</span></Pyr.Grid.ColHalf>
-        </Pyr.Grid.Row>
-      </div>
-    );
-  }
-}
-
 const UserLabel = (props) => (
   <div className="nav-item"><Pyr.Icon name="user" className="fa-fw"/><Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel></div>
 );
@@ -81,8 +61,8 @@ class Dashboard extends Pyr.UserComponent {
       page: MESSAGES_PAGE,
       action: null,
       jobs: [],
-      job: null,
       jobMap: {},
+      job: null,
       loading: true,
       buttonItemCount: {}
     };
@@ -113,7 +93,8 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   title() {
-    return (this.state.page == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.page;
+    return this.state.page;
+    //return (this.state.page == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.page;
   }
 
   setButtonCount(page, count=0) {
@@ -140,22 +121,24 @@ class Dashboard extends Pyr.UserComponent {
   setPage(page, e) {
     page = page || MESSAGES_PAGE;
 
-    //alert(page);
-    if (e && false) {
-      e.preventDefault();
+    let job = null;
+
+    if (page == CANDIDATES_PAGE) {
+      job = this.state.jobs ? this.state.jobs[0] : null;
     }
 
-    let newState = {};
+    let newState = {
+      page,
+      job
+    };
 
     if (page != this.state.page) {
       newState.action = null;
-      newState.job = null;
     }
 
-    this.setState(Object.assign(newState, {
-        page
-      })
-    );
+    console.log("JOB: " + (job ? job.id : null));
+
+    this.setState(newState);
   }
 
   setLoading(loading=true) {
@@ -248,8 +231,6 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   selectJob(job, e) {
-    return;
-
     // alert("SELECT JOB");
     if (e) {
       e.preventDefault();
@@ -353,6 +334,7 @@ class Dashboard extends Pyr.UserComponent {
             icon="envelope-open-o"
             selected={this.state.page==MESSAGES_PAGE}
             itemCount={this.state.buttonItemCount[MESSAGES_PAGE] || 0}
+            onClick={this.onSetPageMessages}
             url="/messages"
             >Messages</Sidebar.Header>
 
@@ -361,6 +343,7 @@ class Dashboard extends Pyr.UserComponent {
             icon="users"
             selected={this.state.page==CANDIDATES_PAGE}
             itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
+            onClick={this.onSetPageCandidates}
             url="/candidates"
           >Candidates</Sidebar.Header>
 
@@ -382,6 +365,7 @@ class Dashboard extends Pyr.UserComponent {
             icon="bullseye"
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
             selected={this.state.page==JOBS_PAGE}
+            onClick={this.onSetPageJobs}
             url="/jobs"
           >Jobs</Sidebar.Header>
           <Sidebar.Header 
@@ -389,6 +373,7 @@ class Dashboard extends Pyr.UserComponent {
             icon="cubes"
             itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
             selected={this.state.page==RECRUITERS_PAGE}
+            onClick={this.onSetPageRecruiters}
             url="/recruiters"
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
@@ -396,34 +381,19 @@ class Dashboard extends Pyr.UserComponent {
             icon="gear"
             selected={this.state.page==SETTINGS_PAGE}
             className="p-b-1"
+            onClick={this.onSetPageSettings}
             url="/settings"
           >Settings</Sidebar.Header>
         </Sidebar.Main>
     );
   }
 
-  renderBlurb(title) {
-    return null;
-
-    if (this.state.job && this.state.page == CANDIDATES_PAGE) {
-      return (
-        <div className="main-blurb hidden-sm-down">
-          <JobTitle job={this.state.job} />
-        </div>
-      );
-    }
-
-    return (
-      <div className="main-blurb hidden-sm-down">{title}</div>
-    );
-  }
-
-  pageProps(page) {
+  pageProps(page, jobId) {
     let props = {
       action: this.state.action,
       jobs: this.state.jobs,
-      job: this.state.job,
       jobMap: this.state.jobMap,
+      job: jobId ? this.state.jobMap[jobId] : null,
 
       onSetAction: this.onSetAction,
       onSetUnaction: this.onSetUnaction,
@@ -464,7 +434,7 @@ class Dashboard extends Pyr.UserComponent {
             console.log(PageComponent);
             console.log(props.match.params.itemId);
             console.log(props.match.params.jobId);
-            return (<PageComponent {...this.pageProps(page)} {...props.match.params} />);
+            return (<PageComponent {...this.pageProps(page, props.match.params.jobId)} {...props.match.params} />);
           }
         }
       />
@@ -486,7 +456,6 @@ class Dashboard extends Pyr.UserComponent {
           id="main-page"
         >
           <div className="d-flex flx-1">
-            {this.renderBlurb(mainTitle)}
             <Switch>
               {this.renderPage(MESSAGES_PAGE, MessagesPage)}
               {this.renderSidebarPage(CANDIDATES_PAGE, CandidatesPage)}
