@@ -117,14 +117,9 @@ class Page extends Pyr.UserComponent {
     return (
       <IndexSheet 
         {...this.props} 
-        items={this.props.items}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         loading={this.state.loading}
-        job={this.props.job}
-        jobs={this.props.jobs}
       />
     );
   }
@@ -139,13 +134,9 @@ class Page extends Pyr.UserComponent {
       <ActionSheet 
         {...this.props}
         items={this.state.items}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect} 
         onSetItems={this.onSetItems}
         loading={this.state.loading}
-        job={this.props.job}
-        jobs={this.props.jobs}
       />
     );
    

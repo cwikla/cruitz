@@ -81,7 +81,8 @@ class Dashboard extends Pyr.UserComponent {
       page: MESSAGES_PAGE,
       action: null,
       jobs: [],
-      job: (this.props.jobs ? this.props.jobs[0] : null),
+      job: null,
+      jobMap: {},
       loading: true,
       buttonItemCount: {}
     };
@@ -98,8 +99,10 @@ class Dashboard extends Pyr.UserComponent {
     this.onSetPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
     this.onSetPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
     this.onSetPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
+
     this.onSetAction = this.setAction.bind(this);
     this.onSetUnaction = this.setAction.bind(this, null);
+
     this.onSetButtonCount = this.setButtonCount.bind(this);
 
     this.onLoading = this.setLoading.bind(this);
@@ -166,10 +169,13 @@ class Dashboard extends Pyr.UserComponent {
       url: PageURL(JOBS_PAGE),
       context: this,
       loading: this.onLoading,
+
     }).done(function(data, textStatus, jaXHR) {
         this.onJobIndex(data.jobs);
+
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+
     });
   }
 
@@ -202,9 +208,15 @@ class Dashboard extends Pyr.UserComponent {
       return sum + (job.candidate_counts.accepted + job.candidate_counts.waiting);
     }, 0);
 
+    let jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
+
+    let job = jobs.length ? jobs[jobs.length-1] : null;
+
     this.setState({
       buttonItemCount,
-      jobs
+      jobs,
+      jobMap,
+      job
     });
   }
 
@@ -411,6 +423,7 @@ class Dashboard extends Pyr.UserComponent {
       action: this.state.action,
       jobs: this.state.jobs,
       job: this.state.job,
+      jobMap: this.state.jobMap,
 
       onSetAction: this.onSetAction,
       onSetUnaction: this.onSetUnaction,
@@ -492,7 +505,7 @@ class Dashboard extends Pyr.UserComponent {
     //alert(this.state.page == CANDIDATES_PAGE);
     // React went bonkers changing the top level dude
 
-    if (this.state.loading) {
+    if (this.state.loading || !this.state.jobs) {
       return (
         <Pyr.Grid.FullContainer key="react-top">
           <Pyr.Loading />
