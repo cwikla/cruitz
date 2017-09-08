@@ -12,7 +12,8 @@ import {
   BrowserRouter as Router,
   Link,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 
 import Pyr from '../pyr/pyr';
@@ -339,10 +340,24 @@ class Dashboard extends Pyr.UserComponent {
   renderInnerSideBar(params) {
     let self = this;
     let page = params.page;
+    let arg1 = params.arg1;
+    let arg2 = params.arg2;
 
-    let jobKids = this.state.jobs.map( (job, pos) => {
-        let isJob = isPage(page, JOBS_PAGE) && isPage(params.arg2, CANDIDATES_PAGE);
-        let jobId = params.arg1;
+    if (isPage(page, CANDIDATES_PAGE)) {
+      let url = Pyr.URL(JOBS_PAGE).push(this.state.jobs[0].id).push(CANDIDATES_PAGE);
+      return (
+        <Redirect to={url.toString()} />
+      );
+    }
+
+    console.log("CREATED AT:");
+    console.log(this.state.jobs[0]);
+
+    let jobs = this.state.jobs; //.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
+
+    let jobKids = jobs.map( (job, pos) => {
+        let isJob = isPage(page, JOBS_PAGE) && isPage(arg2, CANDIDATES_PAGE);
+        let jobId = arg1;
 
         return (<Sidebar.Button 
                   key={job.id} 
@@ -369,7 +384,7 @@ class Dashboard extends Pyr.UserComponent {
           <Sidebar.Header 
             id="candidates" 
             icon="users"
-            selected={isPage(page, CANDIDATES_PAGE) || isPage(params.arg2, CANDIDATES_PAGE)}
+            selected={isPage(page, CANDIDATES_PAGE) || isPage(arg2, CANDIDATES_PAGE)}
             itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
             onClick={this.onSetPageCandidates}
             url="/candidates"
@@ -392,7 +407,7 @@ class Dashboard extends Pyr.UserComponent {
             id="jobs"
             icon="bullseye"
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
-            selected={isPage(page, JOBS_PAGE) && !isPage(params.arg2, CANDIDATES_PAGE)}
+            selected={isPage(page, JOBS_PAGE) && !isPage(arg2, CANDIDATES_PAGE)}
             onClick={this.onSetPageJobs}
             url="/jobs"
           >Jobs</Sidebar.Header>

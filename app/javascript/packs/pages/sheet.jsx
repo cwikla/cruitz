@@ -206,7 +206,7 @@ class Index extends Base {
   }
 
   sortItems(items) {
-    return items.sort((x, y) => y.id - x.id);
+    return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
   }
 
   renderChild(item, isSelected) {
