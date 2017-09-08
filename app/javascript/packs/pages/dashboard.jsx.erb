@@ -418,10 +418,12 @@ class Dashboard extends Pyr.UserComponent {
     );
   }
 
-  renderPage(page, PageComponent, url) {
-    if (!url) {
-      url = "/"+page.toLowerCase()+"/:itemId?";
+  renderPage(page, PageComponent, includeJob=false) {
+    let url = "/"+page.toLowerCase()+"/:itemId?";
+    if (includeJob) {
+      url = "/jobs/:jobId" + url;
     }
+
     url = url.toString();
     console.log("RENDER PAGE URL: " + url);
     return (
@@ -440,11 +442,6 @@ class Dashboard extends Pyr.UserComponent {
     );
   }
 
-  renderSidebarPage(page, PageComponent) {
-    let url = "/jobs/:jobId/candidates/:itemId?";
-    return this.renderPage(page, PageComponent, url);
-  }
-
   renderMain() {
     let mainTitle = this.title();
     let me = this;
@@ -457,8 +454,7 @@ class Dashboard extends Pyr.UserComponent {
           <div className="d-flex flx-1">
             <Switch>
               {this.renderPage(MESSAGES_PAGE, MessagesPage)}
-              {this.renderSidebarPage(CANDIDATES_PAGE, CandidatesPage)}
-              {this.renderPage(CANDIDATES_PAGE, CandidatesPage)}
+              {this.renderPage(CANDIDATES_PAGE, CandidatesPage, true)}
               {this.renderPage(JOBS_PAGE, JobsPage)}
               {this.renderPage(RECRUITERS_PAGE, RecruitersPage)}
               {this.renderPage(SETTINGS_PAGE, SettingsPage)}
