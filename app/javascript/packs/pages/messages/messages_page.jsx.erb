@@ -106,8 +106,6 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(message, isSelected) {
-    console.log("RENDER ITEM");
-    console.log(this.props);
     return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
   }
 

@@ -232,9 +232,6 @@ class Dashboard extends Pyr.UserComponent {
 
   selectJob(job, e) {
     // alert("SELECT JOB");
-    if (e) {
-      e.preventDefault();
-    }
 
     this.setState({
       page: CANDIDATES_PAGE,
@@ -321,7 +318,8 @@ class Dashboard extends Pyr.UserComponent {
                   key={job.id} 
                   url={Pyr.URL(JOBS_URL).push(job.id).push("candidates").toString()}
                   selected={this.state.job && same(this.state.job, job)} 
-                  onClick={this.onJobClicks[job.id]}><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
+                  onClick={this.onJobClicks[job.id]}
+                ><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
         );
       }
     );
@@ -432,6 +430,7 @@ class Dashboard extends Pyr.UserComponent {
         render={(props) => {
             console.log("MATCH: " + page);
             console.log(PageComponent);
+            console.log(props.match);
             console.log(props.match.params.itemId);
             console.log(props.match.params.jobId);
             return (<PageComponent {...this.pageProps(page, props.match.params.jobId)} {...props.match.params} />);
