@@ -44,6 +44,15 @@ function PageURL(page) {
   return Pyr.URL().push(page);
 }
 
+function isPage(page1, page2, isDefault=false) {
+  console.log("IS PAGE: " + page1 + ":" + page2);
+  if (!page1) {
+    return isDefault;
+  }
+
+  return page1.toLowerCase() == page2.toLowerCase();
+}
+
 function same(a,b) {
   return a.id == b.id;
 }
@@ -312,12 +321,33 @@ class Dashboard extends Pyr.UserComponent {
  
   renderSideBar() {
     let self = this;
+    let url = "/:page?/:arg1?/:arg2?/:arg3?";
+
+    return (
+      <Route
+        path={url}
+        render={(props) => {
+          console.log("SIDEBAR PROPS");
+          console.log(props.match);
+          return self.renderInnerSideBar(props.match.params);
+          }
+        }
+      />
+    );
+  }
+
+  renderInnerSideBar(params) {
+    let self = this;
+    let page = params.page;
 
     let jobKids = this.state.jobs.map( (job, pos) => {
+        let isJob = isPage(page, JOBS_PAGE) && isPage(params.arg2, CANDIDATES_PAGE);
+        let jobId = params.arg1;
+
         return (<Sidebar.Button 
                   key={job.id} 
                   url={Pyr.URL(JOBS_URL).push(job.id).push("candidates").toString()}
-                  selected={this.state.job && same(this.state.job, job)} 
+                  selected={isJob && (job.id == jobId)}
                   onClick={this.onJobClicks[job.id]}
                 ><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
         );
@@ -330,7 +360,7 @@ class Dashboard extends Pyr.UserComponent {
           <Sidebar.Header 
             id="messages"
             icon="envelope-open-o"
-            selected={this.state.page==MESSAGES_PAGE}
+            selected={isPage(page, MESSAGES_PAGE, true)}
             itemCount={this.state.buttonItemCount[MESSAGES_PAGE] || 0}
             onClick={this.onSetPageMessages}
             url="/messages"
@@ -339,7 +369,7 @@ class Dashboard extends Pyr.UserComponent {
           <Sidebar.Header 
             id="candidates" 
             icon="users"
-            selected={this.state.page==CANDIDATES_PAGE}
+            selected={isPage(page, CANDIDATES_PAGE) || isPage(params.arg2, CANDIDATES_PAGE)}
             itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
             onClick={this.onSetPageCandidates}
             url="/candidates"
@@ -362,7 +392,7 @@ class Dashboard extends Pyr.UserComponent {
             id="jobs"
             icon="bullseye"
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
-            selected={this.state.page==JOBS_PAGE}
+            selected={isPage(page, JOBS_PAGE) && !isPage(params.arg2, CANDIDATES_PAGE)}
             onClick={this.onSetPageJobs}
             url="/jobs"
           >Jobs</Sidebar.Header>
@@ -370,14 +400,14 @@ class Dashboard extends Pyr.UserComponent {
             id="recruiters"
             icon="cubes"
             itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
-            selected={this.state.page==RECRUITERS_PAGE}
+            selected={isPage(page, RECRUITERS_PAGE)}
             onClick={this.onSetPageRecruiters}
             url="/recruiters"
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
             id="settings"
             icon="gear"
-            selected={this.state.page==SETTINGS_PAGE}
+            selected={isPage(page, SETTINGS_PAGE)}
             className="p-b-1"
             onClick={this.onSetPageSettings}
             url="/settings"
