@@ -238,6 +238,10 @@ class MessagesPage extends Page {
     });
   }
 
+  getSelected() {
+    return this.state.selected;
+  }
+
   loadItems(onLoading) {
     console.log("GET ITEMS..." + this.constructor.name);
 
@@ -286,7 +290,6 @@ class MessagesPage extends Page {
     return (
       <ActionSheet 
         {...this.props}
-        items={this.state.items}
         jobMap={this.jobMap}
         selected={this.getSelected()}
         onSetItems={this.onSetItems}

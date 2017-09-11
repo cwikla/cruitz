@@ -12,9 +12,12 @@ class MessagesController < ApplicationController
     request.headers.each do |k,v|
       puts "HEADER: #{k} => #{v}"
     end
+    puts "DATA: #{request.params}"
 
     mid = hid()
     @parentMessage = Message.for(current_user, mid)
+
+    puts "GOT PARENT MSG: #{@parentMessage.id}"
 
     @message = @parentMessage.reply_from(current_user)
     @message.body = message_params[:body].blank? ? nil : message_params[:body]

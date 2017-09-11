@@ -102,8 +102,7 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderItem() {
-    alert("hello");
-    return ( <RecruiterItem recruiter={this.props.recruiter}/> );
+    return ( <RecruiterItem recruiter={this.props.selected}/> );
   }
 }
 
@@ -143,8 +142,7 @@ class RecruitersPage extends Page {
     return (
       <ActionSheet 
         {...this.props}
-        items={this.state.items}
-        recruiter={this.state.selected}
+        selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
       />

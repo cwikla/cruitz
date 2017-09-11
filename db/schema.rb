@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809194218) do
+ActiveRecord::Schema.define(version: 20170911230251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,11 +126,13 @@ ActiveRecord::Schema.define(version: 20170809194218) do
     t.integer "parent_message_id"
     t.text "title"
     t.text "body", null: false
+    t.string "uuid", limit: 36
     t.index ["candidate_id"], name: "index_messages_on_candidate_id"
     t.index ["from_user_id", "job_id", "candidate_id"], name: "index_messages_on_from_user_id_and_job_id_and_candidate_id"
     t.index ["job_id"], name: "index_messages_on_job_id"
     t.index ["root_message_id"], name: "index_messages_on_root_message_id"
     t.index ["user_id", "job_id", "candidate_id"], name: "index_messages_on_user_id_and_job_id_and_candidate_id"
+    t.index ["uuid"], name: "index_messages_on_uuid", unique: true
   end
 
   create_table "pyr_base_magic_keys", force: :cascade do |t|

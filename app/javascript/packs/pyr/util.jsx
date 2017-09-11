@@ -12,6 +12,19 @@ const TWO_DAYS = (ONE_DAY * 2);
 
 const REMOTE_URL = "/api/v1";
 
+const POST = 'POST';
+const PUT = 'PUT';
+const GET = 'GET';
+const DELETE = 'DELETE';
+
+const Method = {
+  POST,
+  PUT,
+  GET,
+  DELETE 
+};
+
+
 class URLObj {
   constructor(path) {
     path = path || "/";
@@ -138,6 +151,57 @@ class URLObj {
 function PURL(a) {
   return new URLObj(a);
 }
+
+function ajaxError(jaXHR, textStatus, errorThrown) {
+   alert(errorThrown);
+}
+
+function getJSON(stuff) {
+  let url = stuff.url;
+  if (typeof url == 'string') {
+    url = PURL(url);
+  }
+  let data = stuff.data;
+  if (!data) {
+    data = url.data().toString();
+  }
+  url = url.toRemote();
+
+  console.log("GETJSON: " + url);
+  console.log(data);
+
+  stuff = Object.assign({
+    dataType: "json",
+    type: GET,
+  }, stuff, {
+    url: url,
+    data: data
+  });
+
+  let onLoading = stuff.loading ? stuff.loading : null;
+
+  let oldBeforeSend = stuff.beforeSend;
+  let beforeSend = (jqXHR, settings) => {
+    if (oldBeforeSend) {
+      oldBeforeSend(jqXHR, settings);
+    }
+    if (onLoading) {
+      onLoading();
+    }
+  };
+
+  stuff.beforeSend = beforeSend;
+
+  return $.getJSON(
+    stuff
+  )
+  .always(() => {
+    if (onLoading) {
+      onLoading(false);
+    }
+  });
+}
+
 
 class ClassNamesObj  {
   constructor(...args) {
@@ -363,7 +427,10 @@ const Util = {
   propsMergeClassName,
   firstKid,
   hash,
-  times
+  times,
+  ajaxError,
+  getJSON,
+  Method
 };
 
 export default Util;

@@ -10,26 +10,20 @@ import {
 
 import { 
   PyrForm as Form, 
-  POST, 
-  PUT, 
-  GET, 
-  DELETE 
 } from "./form";
 
 import Util from './util';
-const ClassNames = Util.ClassNames;
+
 const PURL = Util.PURL;
+const ajaxError = Util.ajaxError;
+const getJSON = Util.getJSON;
+const Method = Util.Method;
+
+const ClassNames = Util.ClassNames;
 
 import Grid from './grid';
 import Scroll from './scroll';
 import PieChart from './pie_chart';
-
-const Method = { 
-  POST, 
-  PUT, 
-  GET, 
-  DELETE 
-};
 
 const USERS_URL = "/users";
 
@@ -38,53 +32,6 @@ const ENTER_TIME = 250;
 const LEAVE_TIME = 250;
 
 const ESCAPE_KEY = 27;
-
-function ajaxError(jaXHR, textStatus, errorThrown) {
-   alert(errorThrown);
-}
-
-function getJSON(stuff) {
-  let url = stuff.url;
-  if (typeof url == 'string') {
-    url = PURL(url);
-  }
-  let data = url.data().toString();
-  url = url.toRemote();
-
-  console.log("GETJSON: " + url);
-  console.log("DATA:" + data.toString());
-
-  stuff = Object.assign({
-    dataType: "json",
-    type: GET,
-  }, stuff, { 
-    url: url,
-    data: data
-  });
-
-  let onLoading = stuff.loading ? stuff.loading : null;
-
-  let oldBeforeSend = stuff.beforeSend;
-  let beforeSend = (jqXHR, settings) => {
-    if (oldBeforeSend) {
-      oldBeforeSend(jqXHR, settings);
-    }
-    if (onLoading) {
-      onLoading();
-    }
-  };
-
-  stuff.beforeSend = beforeSend;
-    
-  return $.getJSON(
-    stuff
-  )
-  .always(() => {
-    if (onLoading) {
-      onLoading(false);
-    }
-  });
-}
 
 const Loading = (props) => (
   <div className="loading" />
@@ -244,7 +191,7 @@ class UserProvider extends Component {
     //alert("GET SELF CALLED");
 
     getJSON({
-      type: Pyr.Method.GET,
+      type: Method.GET,
       url: PURL().push(USERS_URL).push("/me"),
       context: this
     }).done(function(data, textStatus, jaXHR) {
@@ -330,8 +277,8 @@ class FullScreen extends Component {
 
 }
 
-const URL = PURL;
 
+const URL = PURL;
 const Pyr = { 
   ajaxError,
   getJSON,

@@ -193,8 +193,8 @@ class Index extends Base {
   }
 
   componentDidMount() {
-    console.log("GETTING ITEMS");
     if (!this.props.items) {
+      console.log("LOADING ITEMS");
       this.props.onLoadItems(this.onLoading);
     }
   }
@@ -209,8 +209,12 @@ class Index extends Base {
     return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
   }
 
+  childURL(item, isSelected) {
+    return Pyr.URL(this.props.url).push(item.id);
+  }
+
   renderChild(item, isSelected) {
-    let url=Pyr.URL(this.props.url).push(item.id);
+    let url = this.childURL(item, isSelected);
 
     return (
       <li 
@@ -258,8 +262,8 @@ class Show extends Base {
   }
 
   componentDidMount() {
-    console.log("GETTING ITEM");
-    if (!this.props.item) {
+    if (!this.props.selected) {
+      console.log("GETTING SELECTED");
       this.props.onLoadSelected(this.props.itemId, this.onLoading);
     }
   }

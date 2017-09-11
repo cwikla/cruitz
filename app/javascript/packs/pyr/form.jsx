@@ -5,11 +5,6 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-const POST = 'POST';
-const PUT = 'PUT';
-const GET = 'GET';
-const DELETE = 'DELETE';
-
 import Util from './util';
 
 class Form extends Component {
@@ -88,8 +83,8 @@ class Form extends Component {
   innerSubmit(data) {
     var self = this;
 
-    $.getJSON({
-      type: self.props.method || POST,
+    Util.getJSON({
+      type: self.props.method || Util.Method.POST,
       url: self.props.url,
       data: data,
       context: self
@@ -379,9 +374,5 @@ const PyrForm = {
 };
 
 export { 
-  PyrForm, 
-  POST, 
-  GET, 
-  PUT, 
-  DELETE 
+  PyrForm
 };

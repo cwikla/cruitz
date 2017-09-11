@@ -8,6 +8,11 @@ class UsersController < ApplicationController
     render json: @recruiters, each_serializer: RecruiterSerializer
   end
 
+  def recruiter
+    @recruiter = User.is_recruiter.find(params[:id])
+    render json: @recruiter, serializer: RecruiterSerializer
+  end
+
   private
 
 end

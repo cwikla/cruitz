@@ -46,7 +46,7 @@ function PageURL(page) {
 }
 
 function isPage(page1, page2, isDefault=false) {
-  console.log("IS PAGE: " + page1 + ":" + page2);
+  //console.log("IS PAGE: " + page1 + ":" + page2);
   if (!page1) {
     return isDefault;
   }
@@ -118,7 +118,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   setAction(action, e) {
-    //console.log("Action set to " + action);
+    console.log("Action set to " + action);
     if (e) {
       e.preventDefault();
     }
@@ -146,7 +146,7 @@ class Dashboard extends Pyr.UserComponent {
       newState.action = null;
     }
 
-    console.log("JOB: " + (job ? job.id : null));
+    //console.log("JOB: " + (job ? job.id : null));
 
     this.setState(newState);
   }
@@ -328,8 +328,6 @@ class Dashboard extends Pyr.UserComponent {
       <Route
         path={url}
         render={(props) => {
-          console.log("SIDEBAR PROPS");
-          console.log(props.match);
           return self.renderInnerSideBar(props.match.params);
           }
         }
@@ -343,15 +341,12 @@ class Dashboard extends Pyr.UserComponent {
     let arg1 = params.arg1;
     let arg2 = params.arg2;
 
-    if (isPage(page, CANDIDATES_PAGE)) {
+    if (isPage(page, CANDIDATES_PAGE) && !arg1) {
       let url = Pyr.URL(JOBS_PAGE).push(this.state.jobs[0].id).push(CANDIDATES_PAGE);
       return (
         <Redirect to={url.toString()} />
       );
     }
-
-    console.log("CREATED AT:");
-    console.log(this.state.jobs[0]);
 
     let jobs = this.state.jobs; //.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
 
@@ -470,16 +465,16 @@ class Dashboard extends Pyr.UserComponent {
     }
 
     url = url.toString();
-    console.log("RENDER PAGE URL: " + url);
+    //console.log("RENDER PAGE URL: " + url);
     return (
       <Route
         path={url}
         render={(props) => {
-            console.log("MATCH: " + page);
-            console.log(PageComponent);
-            console.log(props.match);
-            console.log(props.match.params.itemId);
-            console.log(props.match.params.jobId);
+            //console.log("MATCH: " + page);
+            //console.log(PageComponent);
+            //console.log(props.match);
+            //console.log(props.match.params.itemId);
+            //console.log(props.match.params.jobId);
             return (<PageComponent {...this.pageProps(page, props.match.params.jobId)} {...props.match.params} />);
           }
         }

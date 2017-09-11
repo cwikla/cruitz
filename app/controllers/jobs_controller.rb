@@ -20,6 +20,7 @@ class JobsController < ApplicationController
     if @job.save
       return render json: @job
     else
+      puts "ERROR: #{@job.errors.inspect}"
       return render_create_error json: @job
     end
   end

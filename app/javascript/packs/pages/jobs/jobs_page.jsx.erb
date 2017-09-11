@@ -311,6 +311,10 @@ class NewSheet extends Sheet.New {
 }
 
 class JobsPage extends Page {
+  getItems() {
+    return this.props.jobs;
+  }
+
   loadItems() {
     this.onSetItems(this.props.jobs);
   }
@@ -321,6 +325,7 @@ class JobsPage extends Page {
         {...this.props}
         items={this.props.jobs}
         jobs={this.props.jobs}
+        jobMap={this.props.jobMap}
         onSelect={this.onSelect}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
@@ -337,12 +342,12 @@ class JobsPage extends Page {
     return (
       <ActionSheet
         {...this.props}
-        items={this.props.jobs}
+        selected={this.getSelected()}
         jobs={this.props.jobs}
-        selected={this.state.selected}
+        jobMap={this.props.jobMap}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
-        onLoadItems={this.onLoadItems}
+        onLoadSelected={this.onLoadSelected}
       />
     );
 

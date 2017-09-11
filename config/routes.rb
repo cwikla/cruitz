@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     scope :v1 do
       get 'users/me' => 'users#me'
       get 'recruiters' => 'users#recruiters'
+      get 'recruiter' => 'users#recruiter'
       get 'candidates/:id/thread' => 'candidates#thread'
 
       resources :users, only: [:index, :create, :show, :update, :destroy]

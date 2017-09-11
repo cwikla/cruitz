@@ -33,14 +33,12 @@ class Page extends Pyr.UserComponent {
     this.onSelect = this.setSelected.bind(this);
     this.onUnselect = this.setSelected.bind(this, null);
 
-    //this.onSetAction = this.setAction.bind(this);
-    //this.onSetUnaction = this.setAction.bind(this, null);
-
     this.onSetItems = this.setItems.bind(this);
 
     this.onLoadItems = this.loadItems.bind(this);
-    this.onLoadSelected = this.loadSelected.bind(this);
     this.onAddItem = this.addItem.bind(this);
+
+    this.onLoadSelected = this.loadSelected.bind(this);
 
     this.state = Object.assign(myState, this.getInitState(props));
   }
@@ -96,6 +94,7 @@ class Page extends Pyr.UserComponent {
   }
 
   setItems(items) {
+    console.log("ITEMS NO LONGER NULL");
     this.setState({ 
       items
     });
@@ -130,12 +129,17 @@ class Page extends Pyr.UserComponent {
     let sheet = Sheet.sheetComponent(action || SHOW_ACTION);
     let ActionSheet = eval(sheet);
 
+    let item = null;
+    if (this.props.itemId) {
+      item = items.find((x) => x.id == itemId);
+    }
+  
     return (
       <ActionSheet 
         {...this.props}
-        items={this.state.items}
+        item={item}
         onSelect={this.onSelect} 
-        onSetItems={this.onSetItems}
+        onAddItems={this.onAddItems}
         loading={this.state.loading}
       />
     );
@@ -143,8 +147,7 @@ class Page extends Pyr.UserComponent {
   }
 
   showActionSheet() {
-    //return !!this.props.itemId;
-    return !!this.props.action;
+    return !!this.props.action || !!this.props.itemId;
   }
 
 ///// END ////
@@ -158,17 +161,24 @@ class Page extends Pyr.UserComponent {
     this.props.onSetAction(SHOW_ACTION);
   }
 
+  getItems() {
+    return this.state.items;
+  }
+
   getSelected() {
-    return this.state.selected;
+    console.log("GET SELECTED: " + this.props.itemId);
+    console.log(this.state.items);
+
+    let items = this.getItems();
+
+    if (this.props.itemId && items) {
+      return items.find((x) => x.id == this.props.itemId);
+    }
+    return null;
   }
 
   getAction() {
     return this.props.action || SHOW_ACTION;
-  }
-
-  setActionOld(action) {
-    //alert("Set Acxtion" + action);
-    this.setState({action});
   }
 
   renderIndexSheet() {
