@@ -330,6 +330,7 @@ class JobsPage extends Page {
   }
 
   actionSheet(action) {
+    console.log("JOB ACTION: " + action);
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

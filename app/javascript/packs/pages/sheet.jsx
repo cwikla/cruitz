@@ -305,6 +305,7 @@ class Form extends Base {
   }
 
   renderInner() {
+    console.log("FORM rwender inner");
     return (
       <Modal onClose={this.onClose}>
         <div className="title flx-col" >
