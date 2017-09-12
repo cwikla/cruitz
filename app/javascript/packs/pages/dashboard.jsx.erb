@@ -465,16 +465,16 @@ class Dashboard extends Pyr.UserComponent {
     }
 
     url = url.toString();
-    //console.log("RENDER PAGE URL: " + url);
+    console.log("RENDER PAGE URL: " + url);
     return (
       <Route
         path={url}
         render={(props) => {
-            //console.log("MATCH: " + page);
-            //console.log(PageComponent);
-            //console.log(props.match);
-            //console.log(props.match.params.itemId);
-            //console.log(props.match.params.jobId);
+            console.log("MATCH: " + page);
+            console.log(PageComponent);
+            console.log(props.match);
+            console.log(props.match.params.itemId);
+            console.log(props.match.params.jobId);
             return (<PageComponent {...this.pageProps(page, props.match.params.jobId)} {...props.match.params} />);
           }
         }
@@ -495,6 +495,7 @@ class Dashboard extends Pyr.UserComponent {
             <Switch>
               {this.renderPage(MESSAGES_PAGE, MessagesPage)}
               {this.renderPage(CANDIDATES_PAGE, CandidatesPage, true)}
+              {this.renderPage(CANDIDATES_PAGE, CandidatesPage)}
               {this.renderPage(JOBS_PAGE, JobsPage)}
               {this.renderPage(RECRUITERS_PAGE, RecruitersPage)}
               {this.renderPage(SETTINGS_PAGE, SettingsPage)}

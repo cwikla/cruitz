@@ -413,7 +413,7 @@ class ShowSheet extends Sheet.Show {
   componentWillMount() {
     console.log("WILL MOUNT");
     console.log(this.props);
-    this.getJob(this.props.jobId);
+    this.getJob(this.props.selected.job_id);
   }
 
   key(item) {
@@ -561,7 +561,6 @@ class CandidatesPage extends Page {
     return (
       <ActionSheet
         {...this.props}
-        items={this.state.items}
         jobMap={this.jobMap}
         selected={this.getSelected()}
         onAction={this.onAction}
@@ -629,9 +628,11 @@ class CandidatesPage extends Page {
     let prevId = prevProps.jobId ? prevProps.jobId : -1;
     let nextId = this.props.jobId ? this.props.jobId : -1;
 
-    if (prevId != nextId) {
-      this.setItems(null);
-      this.getCandidates(nextId);
+    if (nextId != -1) {
+      if (prevId != nextId) {
+        this.setItems(null);
+        this.getCandidates(nextId);
+      }
     }
   }
 }
