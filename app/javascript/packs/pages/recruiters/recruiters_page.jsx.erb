@@ -84,6 +84,14 @@ class IndexSheet extends Sheet.Index {
     return RecruitersPage.key(a)
   }
 
+  renderHeader() {
+    return (
+          <div className="actions flx-row p-1 flx-start">
+              <Pyr.PrimaryButton className="accept ml-auto"><Pyr.Icon name="plus"/> Invite</Pyr.PrimaryButton>
+          </div>
+    );
+  }
+
   renderItem(item, isSelected) {
     return ( <RecruiterItem recruiter={item} isSelected={isSelected} /> );
   }

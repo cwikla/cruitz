@@ -430,20 +430,23 @@ class ShowSheet extends Sheet.Show {
     return CandidatesPage.key(item);
   }
 
+  renderHeader() {
+    return (
+      <div className="actions flx-row p-1 flx-start">
+        <UserScore className="flx-align-content-start">88</UserScore>
+        <Pyr.PrimaryButton className="accept ml-auto">Accept</Pyr.PrimaryButton>
+        <Pyr.Button className="reject">Reject</Pyr.Button>
+      </div>
+    );
+  }
+
   renderItem(candidate, isSelected) {
     let clazzes = ClassNames(this.state.showMessages ? "" : "hide");
     let recruiter = candidate.recruiter;
 
-    console.log("RENDER: " + clazzes);
-
     return (
       <Pyr.Grid.Row className="candidate-item">
         <Pyr.Grid.Col className="flx-col side left">
-          <div className="actions flx-row p-1 flx-start">
-            <UserScore className="flx-align-content-start">88</UserScore>
-              <Pyr.PrimaryButton className="accept ml-auto">Accept</Pyr.PrimaryButton>
-              <Pyr.Button className="reject">Reject</Pyr.Button>
-          </div>
           <Pyr.Grid.Row className="flx-1">
             <Pyr.Grid.Col className="flx-col">
               <Pyr.Scroll className="left">
