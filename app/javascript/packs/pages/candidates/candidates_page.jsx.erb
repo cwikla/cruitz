@@ -211,6 +211,16 @@ class IndexSheet extends Sheet.Index {
     return CandidatesPage.key(item);
   }
 
+  renderNone() {
+    return (
+      <div className="empty flx-1 flx-col-stretch">
+        <div className="flx-1 flx-row-stretch flx-align-center ml-auto mr-auto">
+          <Pyr.Icon name="user-times"/> No candidates have been submitted for this job.
+        </div>
+      </div>
+    );
+  }
+
   renderItem(item, isSelected) {
     return (<CandidateItem candidate={item} isSelected={isSelected} />);
   }
@@ -596,7 +606,14 @@ class CandidatesPage extends Page {
   }
 
   getCandidates(jobId) {
-    let url = Pyr.URL(JOBS_URL).push(jobId).set("cand", 1);
+    let url = null;
+
+    if (jobId) {
+      url = Pyr.URL(JOBS_URL).push(jobId).push(CANDIDATES_URL);
+    }
+    else {
+      url = Pyr.URL(CANDIDATES_URL);
+    }
 
     Pyr.getJSON({
       url: url,

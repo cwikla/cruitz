@@ -125,13 +125,15 @@ class Base extends Pyr.UserComponent {
     alert("Sheet:Base If you are seeing this, you need to implement renderItem!");
   }
 
-  renderNone() {
+  renderLoading() {
     return (
       <Pyr.Loading />
     );
+  }
 
+  renderNone() {
     return (
-      <h2>Empty</h2>
+      <h2 className="empty flx-1 flx-align-center">Empty</h2>
     );
   }
 
@@ -242,6 +244,10 @@ class Index extends Base {
 
   renderInner() {
     if (!this.props.items) {
+      return this.renderLoading();
+    }
+
+    if (this.props.items.length == 0) {
       return this.renderNone();
     }
 

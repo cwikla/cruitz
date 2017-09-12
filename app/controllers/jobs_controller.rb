@@ -39,9 +39,11 @@ class JobsController < ApplicationController
     jid = hid()
     @job = current_user.jobs.find(jid)
 
+    getCands = params[:candidates] && params[:candidates].downcase == 'candidates'
+
     result = {}
     result[:job] = JobSerializer.new(@job)
-    result[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(@job.candidates) if params[:cand]
+    result[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(@job.candidates) if getCands
 
     render json: result
   end

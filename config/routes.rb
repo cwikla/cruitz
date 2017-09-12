@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         #resources :microposts, only: [:index, :create, :show, :update, :destroy]
 
       get 'jobs/location' => 'jobs#lsearch'
+      get 'jobs/:id(/:candidates)' => 'jobs#show'
 
       resources :ratings
       resources :companies

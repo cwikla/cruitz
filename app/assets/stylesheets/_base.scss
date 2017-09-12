@@ -323,6 +323,10 @@ label {
   color: $secondary_color;
 }
 
+.empty {
+  font-size: 2rem;
+}
+
 @import 'item';
 @import 'messages';
 @import 'recruiters';

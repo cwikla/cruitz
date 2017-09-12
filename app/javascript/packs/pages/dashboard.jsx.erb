@@ -341,12 +341,14 @@ class Dashboard extends Pyr.UserComponent {
     let arg1 = params.arg1;
     let arg2 = params.arg2;
 
+/*
     if (isPage(page, CANDIDATES_PAGE) && !arg1) {
       let url = Pyr.URL(JOBS_PAGE).push(this.state.jobs[0].id).push(CANDIDATES_PAGE);
       return (
         <Redirect to={url.toString()} />
       );
     }
+*/
 
     let jobs = this.state.jobs; //.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
 
