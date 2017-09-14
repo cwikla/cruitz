@@ -14,12 +14,14 @@ Rails.application.routes.draw do
       get 'jobs/location' => 'jobs#lsearch'
       get 'jobs/:id(/:candidates)' => 'jobs#show'
 
+      get 'settings' => 'settings#show'
+      put 'settings' => 'settings#update'
+
       resources :ratings
       resources :companies
       resources :candidates
       resources :heads
       resources :jobs
-      resources :settings
 
       post 'messages/:id' => 'messages#create'
       resources :messages

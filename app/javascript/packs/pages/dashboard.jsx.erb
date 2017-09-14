@@ -32,6 +32,8 @@ const SETTINGS_PAGE = 'Settings';
 const MESSAGES_PAGE = 'Messages';
 const SEARCH_PAGE = "Search";
 
+const DEFAULT_PAGE = MESSAGES_PAGE;
+
 class CandidatesPageLocal extends CandidatesPage {
 };
 
@@ -68,7 +70,7 @@ class Dashboard extends Pyr.UserComponent {
     super(props);
 
     this.state = {
-      page: MESSAGES_PAGE,
+      page: DEFAULT_PAGE,
       action: null,
       jobs: [],
       jobMap: {},
@@ -129,7 +131,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   setPage(page, e) {
-    page = page || MESSAGES_PAGE;
+    page = page || DEFAULT_PAGE;
 
     let job = null;
 
@@ -502,7 +504,7 @@ class Dashboard extends Pyr.UserComponent {
               {this.renderPage(JOBS_PAGE, JobsPage)}
               {this.renderPage(RECRUITERS_PAGE, RecruitersPage)}
               {this.renderPage(SETTINGS_PAGE, SettingsPage)}
-              {this.defaultPage(MESSAGES_PAGE, MessagesPage)}
+              {this.defaultPage(SETTINGS_PAGE, SettingsPage)}
             </Switch>
           </div>
         </main>

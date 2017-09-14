@@ -64,7 +64,6 @@ class Form extends Component {
   }
 
   submit(e) {
-    //alert("submit");
     if (e) {
       e.preventDefault();
     }
@@ -266,8 +265,12 @@ class Child extends Component {
     if (!this.context.object) {
       return null;
     }
-    let v = this.context.object[this.context.name];
-    return (v ? v.toString() : v);
+    return this.context.object[this.context.name];
+  }
+
+  strValue() {
+    let v = this.value();
+    return v ? v.toString() : null;
   }
 }
 
@@ -323,7 +326,7 @@ class TextField extends Child {
     };
 
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} defaultValue={this.value()}/>
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} defaultValue={this.strValue()}/>
     );
   }
 }
@@ -378,7 +381,7 @@ class TextArea extends Child {
 
 class CheckBox extends Child {
   checked() {
-    return this.value() == "true" ? "1" : "0";
+    return this.value();
   }
 
   render() {
@@ -392,7 +395,7 @@ class CheckBox extends Child {
 
     return(
       <div className="form-checkbox flx-row">
-        <input name={this.name()} type="hidden" value="0" />
+        <input name={this.name()} type="hidden" value={false} />
         <input type="checkbox" {...myProps} {...Util.propsMergeClassName(rest, "f-form-control")} defaultChecked={this.checked()}/>
         <span className="mt-auto mb-auto">{this.props.children}</span>
       </div>
