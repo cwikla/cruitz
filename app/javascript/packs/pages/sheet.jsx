@@ -84,6 +84,15 @@ class Base extends Pyr.UserComponent {
     this.props.onSetUnaction();
   }
 
+  setSelected(item, e) {
+    //alert("SELECTED: " + item.id);
+    if (e) {
+      e.preventDefault()
+    }
+
+    this.props.onSelect(item);
+  }
+
   bindClicks(items, f) {
     let self = this;
     this.onClicks = {};
@@ -187,15 +196,6 @@ class Index extends Base {
     this.bindClicks(this.props.items, this.setSelected);
   }
 
-  setSelected(item, e) {
-    //alert("SELECTED: " + item.id);
-    if (e) {
-      e.preventDefault()
-    }
-
-    this.props.onSelect(item);
-  }
-
   componentDidMount() {
     if (!this.props.items) {
       console.log("LOADING ITEMS");
@@ -290,24 +290,16 @@ class Show extends Base {
       );
     }
 
+    // hmm was just a div
     return (
-      <div className="inner flx-col flx-1">
+      <Pyr.Scroll className="inner flx-col flx-1"> 
         {this.renderItem(this.props.selected, false) }
-      </div>
+      </Pyr.Scroll>
     );
   }
 }
 
 class Form extends Base {
-  constructor(props) {
-    super(props);
-    this.onSuccess = this.success.bind(this);
-  }
-
-  success(data, textStatus, jqXHR) {
-    this.onClose();
-  }
-
   renderForm() {
     alert("Sheet:New If you are seeing this you need to implement renderForm!");
   }
@@ -317,28 +309,46 @@ class Form extends Base {
   }
 
   renderInner() {
-    console.log("FORM rwender inner");
     return (
-      <Modal onClose={this.onClose}>
+      <div className="form-main">
         <div className="title flx-col" >
           { this.renderTitle() }
         </div>
         <div className="content flx-1">
           { this.renderForm() }
         </div>
+      </div>
+    );
+  }
+}
+
+class ModalForm extends Form {
+  constructor(props) {
+    super(props);
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
+    this.onClose();
+  }
+
+  renderInner() {
+    return (
+      <Modal onClose={this.onClose}>
+        { super.renderInner() }
       </Modal>
     );
   }
 }
 
-class New extends Form {
+class New extends ModalForm {
   constructor(props) {
     super(props);
   }
 
 }
 
-class Edit extends Form {
+class Edit extends ModalForm {
   constructor(props) {
     super(props);
   }
@@ -356,6 +366,7 @@ const Sheet = {
   Edit,
   Form,
   Modal,
+  ModalForm
 };
 
 export default Sheet;

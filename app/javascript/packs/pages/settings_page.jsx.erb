@@ -9,55 +9,142 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
-import Page from './page';
+import Page, {
+  SHOW_ACTION
+} from './page';
 import Sheet from './sheet';
 
-class IndexSheet extends Sheet.Base {
+const SETTINGS_URL = "/settings";
+
+class SettingsForm extends Component {
+
   render() {
+    let key = "settings-form";
+    let url = Pyr.URL(SETTINGS_URL);
+
+    let method = Pyr.Method.PUT;
+
     return (
-      <h2>Settings Index Sheet</h2>
+      <div className="form-parent">
+        <Pyr.Form.Form
+          model="Setting"
+          object={this.props.settings}
+          url={url}
+          method={method}
+          id="setting-form"
+          key={key}
+          ref={(node) => { this.form = node; }}
+          onPreSubmit={this.props.onPreSubmit}
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.props.onSuccess}
+          onError={this.props.onError}
+        >
+
+          <div className="flx-row">
+          <Pyr.Form.Group name="use_ignore_recruiters" className="">
+            <Pyr.Form.CheckBox className="">Ignore recruiters with score under</Pyr.Form.CheckBox>
+          </Pyr.Form.Group>
+          <Pyr.Form.Group name="minimum_recruiter_score" data-checkbox="use_ignore_recruiters" className="">
+            <Pyr.Form.TextField />
+          </Pyr.Form.Group>
+          </div>
+
+          <Pyr.Form.Group name="use_ignore_agencies">
+            <Pyr.Form.CheckBox> Ignore agencies with score under</Pyr.Form.CheckBox>
+          </Pyr.Form.Group>
+          <Pyr.Form.Group name="minimum_agency_score" data-checkbox="use_ignore_agencies">
+            <Pyr.Form.TextField />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="use_reject_candidates">
+            <Pyr.Form.CheckBox> Reject candidates after</Pyr.Form.CheckBox>
+          </Pyr.Form.Group>
+          <Pyr.Form.Group name="reject_candidate_days" data-checkbox="use_reject_candidates">
+            <Pyr.Form.TextField />
+            <Pyr.Form.Label>days</Pyr.Form.Label>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="use_auto_spam">
+            <Pyr.Form.CheckBox>Automatic spam detection</Pyr.Form.CheckBox>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="use_recruiter_limit">
+            <Pyr.Form.CheckBox>Limit recruiter to</Pyr.Form.CheckBox>
+          </Pyr.Form.Group>
+          <Pyr.Form.Group name="recruiter_limit" data-checkbox="use_recruiter_limit">
+            <Pyr.Form.TextField />
+            <Pyr.Form.Label>candidates per day</Pyr.Form.Label>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="use_agency_limit">
+            <Pyr.Form.CheckBox>Limit agency to</Pyr.Form.CheckBox>
+          </Pyr.Form.Group>
+          <Pyr.Form.Group name="agency_limit" data-checkbox="use_agency_limit">
+            <Pyr.Form.TextField />
+            <Pyr.Form.Label>candidates per day</Pyr.Form.Label>
+          </Pyr.Form.Group>
+
+        </Pyr.Form.Form>
+      </div>
+
     );
   }
 }
 
-class ShowSheet extends Sheet.Base {
-  render() {
+class ShowSheet extends Sheet.Show {
+  renderItem(item) {
+    console.log(item);
     return (
-      <h2>Settings Show Sheet</h2>
+      <SettingsForm settings={item}/>
     );
   }
 }
 
 class SettingsPage extends Page {
-  loadItems() {
-    // FIXME
+  showActionSheet() {
+    return true;
   }
 
-  indexSheet() {
-    return (
-      <IndexSheet 
-        {...this.props} 
-        items={this.state.items}
-        onSelect={this.onSelect} 
-      />
-    );
+  getAction() {
+    console.log("SENDING BCK SHOW_ACTION");
+    return SHOW_ACTION;
   }
-  
+
+  loadSelected(unused, onLoading) {
+    Pyr.getJSON({
+      url: this.props.url,
+      context: this,
+      loading: onLoading,
+
+    }).done(function(data, textStatus, jaXHR) {
+        this.onSelect(data.setting);
+
+    }).fail(function(jaXHR, textStatus, errorThrown) {
+
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
+
   actionSheet(action) {
-    let sheet = Sheet.sheetComponent(action || "Show");
-    let ActionSheet = eval(sheet);
-
+    console.log("SETTINGS ACTION SHEET");
     return (
-      <ActionSheet 
+      <ShowSheet
         {...this.props}
         items={this.state.items}
         selected={this.state.selected}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
+        onLoadSelected={this.onLoadSelected}
       />
     );
     
   }
 }
+
+function key(item) {
+  return "set-" + item.id;
+}
+SettingsPage.key = key;
 
 export default SettingsPage;

@@ -257,6 +257,7 @@ class Dashboard extends Pyr.UserComponent {
       <div>
       <Pyr.Form.Form
         model="search"
+        object={{search: null}}
         url={url}
         className="search-form"
         ref={(node) => {this.form = node;}}

@@ -290,10 +290,6 @@ label {
   line-height: 1.5rem;
 }
 
-.form-group {
-  margin-bottom: 0;
-}
-
 .fa::before {
   padding-right: 0.25rem;
   line-height: inherit;
@@ -325,6 +321,21 @@ label {
 
 .empty {
   font-size: 2rem;
+}
+
+.form-checkbox {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    height: 2.1rem;
+    font-size: 1rem;
+  }
+
+  span {
+    padding-left: 0.25rem;
+  }
 }
 
 @import 'item';

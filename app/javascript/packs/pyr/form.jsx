@@ -221,7 +221,7 @@ class Group extends Component {
   }
 
   render() { 
-    let className = Util.ClassNames("form-group");
+    let className = Util.ClassNames("mdb-form-unused form-group");
     if (this.state.errorString) {
       className.push("error");
     }
@@ -251,7 +251,23 @@ class Child extends Component {
   }
 
   hasError() {
-    return false;
+    return !!errorString;
+  }
+
+  model() {
+    return this.context.model;
+  }
+
+  object() {
+    return this.context.object;
+  }
+
+  value() {
+    if (!this.context.object) {
+      return null;
+    }
+    let v = this.context.object[this.context.name];
+    return (v ? v.toString() : v);
   }
 }
 
@@ -307,7 +323,7 @@ class TextField extends Child {
     };
 
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} defaultValue={this.value()}/>
     );
   }
 }
@@ -360,6 +376,30 @@ class TextArea extends Child {
   }
 }
 
+class CheckBox extends Child {
+  checked() {
+    return this.value() == "true" ? "1" : "0";
+  }
+
+  render() {
+    let myProps = { 
+      name: this.name(), 
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID()
+    };
+
+    let rest = Util.propsRemove(this.props, ["children"]);
+
+    return(
+      <div className="form-checkbox flx-row">
+        <input name={this.name()} type="hidden" value="0" />
+        <input type="checkbox" {...myProps} {...Util.propsMergeClassName(rest, "f-form-control")} defaultChecked={this.checked()}/>
+        <span className="mt-auto mb-auto">{this.props.children}</span>
+      </div>
+    );
+  }
+}
+
 const PyrForm = { 
   Form, 
   Group, 
@@ -370,7 +410,8 @@ const PyrForm = {
   Option, 
   TextArea, 
   SubmitButton, 
-  Hidden 
+  Hidden,
+  CheckBox
 };
 
 export { 

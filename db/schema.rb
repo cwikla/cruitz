@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911230251) do
+ActiveRecord::Schema.define(version: 20170913231207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,31 @@ ActiveRecord::Schema.define(version: 20170911230251) do
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id"
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "uuid", limit: 36
+    t.integer "user_id", null: false
+    t.boolean "use_ignore_recruiters", default: true, null: false
+    t.integer "minimum_recruiter_score", null: false
+    t.boolean "use_ignore_agencies", default: true, null: false
+    t.integer "minimum_agency_score", null: false
+    t.boolean "use_reject_candidates", default: true, null: false
+    t.integer "reject_candidate_days", null: false
+    t.boolean "use_auto_spam", default: true, null: false
+    t.boolean "use_ban_recruiter", default: true, null: false
+    t.integer "ban_recruiter_days", null: false
+    t.boolean "use_ban_agency", default: true, null: false
+    t.integer "ban_agency_days", null: false
+    t.boolean "use_recruiter_limit", default: true, null: false
+    t.integer "recruiter_limit", null: false
+    t.boolean "use_agency_limit", default: true, null: false
+    t.integer "agency_limit", null: false
+    t.index ["user_id"], name: "index_settings_on_user_id", unique: true
+    t.index ["uuid"], name: "index_settings_on_uuid", unique: true
   end
 
   create_table "users", force: :cascade do |t|

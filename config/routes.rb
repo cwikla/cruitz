@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :candidates
       resources :heads
       resources :jobs
+      resources :settings
 
       post 'messages/:id' => 'messages#create'
       resources :messages

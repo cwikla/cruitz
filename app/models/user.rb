@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   #make_authorized_by(:email)
 
-  before_create :check_jti
+  before_create :on_before_create
   after_create :on_after_create
 
   has_many :jobs
@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
   has_many :candidate_heads, through: :candidates, source: :head
   has_many :recruiters, -> { group(:id) }, through: :candidate_heads
+
+  has_one :setting
 
   scope :is_recruiter, -> { where(is_recruiter: true) }
 
@@ -67,8 +69,11 @@ class User < ApplicationRecord
 
   private
 
+  def on_before_create
+  end
+
   def on_after_create
-    #self.build_employer
+    create_setting
   end
 
   def check_jti
