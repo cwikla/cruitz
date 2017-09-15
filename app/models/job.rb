@@ -2,6 +2,7 @@ class Job < ApplicationRecord
   belongs_to :user
   has_many :candidates
   has_many :heads, :through => :candidates
+  has_many :messages
 
   JOB_FULL_TIME = 0
   JOB_PART_TIME = 1
