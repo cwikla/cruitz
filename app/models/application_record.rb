@@ -4,7 +4,7 @@ class ApplicationRecord < ActiveRecord::Base
   acts_as_simple_cache
   acts_as_paranoid
 
-  include Pyr::Base::UuidHelp
+  #include Pyr::Base::UuidHelp
   include Hashid
 
 end

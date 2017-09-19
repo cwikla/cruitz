@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170913231207) do
+ActiveRecord::Schema.define(version: 20170918184350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,18 @@ ActiveRecord::Schema.define(version: 20170913231207) do
     t.index ["started_at", "status"], name: "index_async_queues_on_started_at_and_status"
   end
 
+  create_table "candidate_states", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "candidate_id"
+    t.integer "user_id"
+    t.integer "recruiter_id"
+    t.integer "message_id"
+    t.integer "state"
+    t.index ["candidate_id", "state"], name: "index_candidate_states_on_candidate_id_and_state"
+  end
+
   create_table "candidates", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -65,6 +77,7 @@ ActiveRecord::Schema.define(version: 20170913231207) do
     t.datetime "unlocked_at"
     t.datetime "accepted_at"
     t.datetime "rejected_at"
+    t.integer "state", default: 0, null: false
     t.index ["head_id"], name: "index_candidates_on_head_id"
     t.index ["job_id", "accepted_at"], name: "index_candidates_on_job_id_and_accepted_at"
     t.index ["job_id", "rejected_at"], name: "index_candidates_on_job_id_and_rejected_at"

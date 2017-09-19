@@ -2,6 +2,7 @@ class Candidate < ApplicationRecord
   belongs_to :job
   belongs_to :head
   has_one :recruiter, through: :head, class_name: 'User'
+  has_one :hirer, through: :job, source: :user, class_name: 'User'
   has_many :states
   has_many :messages
 
@@ -10,52 +11,101 @@ class Candidate < ApplicationRecord
   scope :rejected, -> {  where.not(rejected_at: nil) }
   scope :live, -> { where(rejected_at: nil) }
 
-  SUBMITTED_STATE = "Submitted"
-  ACCEPTED_STATE = "Accepted"
-  REJECTED_STATE = "Rejected"
-  PRECALL_STATE = "Precall"
-  ONSITE_STATE = "OnSite"
-  CHECKS_STATE = "Checking"
-  HIRE_STATE = "Hired"
-  RECALL_STATE = "Recalled"
-  CANCEL_STATE = "Canceled"
+  SUBMITTED_STATE = 0
+  ACCEPTED_STATE = 100
+  REJECTED_STATE = -100
+  PRECALL_STATE = 200
+  ONSITE_STATE = 300
+  CHECKS_STATE = 400
+  HIRE_STATE = 1000
+  SPAM_STATE = -666
+  RECALL_STATE = -1000
+  CANCEL_STATE = -5000
 
   def to_s
     "#{job.id} => #{job.title} => #{head}"
   end
 
-  def submit(job, msg)
+  def self.submit(head, job, body=nil)
+    candidate = nil
+    state = SUBMITTED_STATE
+
+    Candidate.transaction do
+      recruiter = head.recruiter
+      candidate = Candidate.create(job: job, head: head, state: state)
+    
+      msg = nil 
+      msg = Message.create(candidate: candidate, user: candidate.hirer, from_user: recruiter, body: body) if body
+    
+      CandidateState.create(candidate: candidate, 
+        state: candidate.state,
+        recruiter: recruiter,
+        message: msg)
+    end
+
+    return candidate
   end
 
-  def accept(msg)
+  def accept(body)
+    setState(self.hirer, ACCEPTED_STATE, body)
   end
 
-  def reject(msg)
+  def reject(body)
+    setState(self.hirer, REJECTED_STATE, body)
   end
 
-  def spam(msg)
+  def spam(body)
+    setState(self.hirer, SPAM_STATE, body)
   end
 
-  def precall(msg)
+  def precall(body)
+    setState(self.hirer, PRECALL_STATE, body)
   end
 
-  def onsite(msg)
+  def onsite(body)
+    setState(self.hirer, ONSITE_STATE, body)
   end
 
-  def checks(msg)
+  def checks(body)
+    setState(self.hirer, CHECKS_STATE, body)
   end
 
-  def hire(salary, msg)
+  def hire(salary, body) # FIXME
+    setState(self.hirer, HIRE_STATE, body)
   end
 
-  def recall(msg)
+  def recall(body)
+    setState(self.hirer, RECALL_STATE, body)
   end
 
-  def cancel(msg)
+  def cancel(body)
+    setState(self.recruiter, CANCEL_STATE, body)
   end
 
-  def state
+  private
+
+  def setState(actor, state, body)
+    Candidate.transaction do
+      recruiter = self.head.recruiter
+      self.state = state
+      self.save
+
+      to_user = (actor.id == job.user_id) ? recruiter : job.user
+
+      msg = nil
+      if body
+        msg = self.messages.order("-id").first
+        msg = msg.reply_from(actor) if msg
+        msg ||= Message.create(candidate: self, user: to_user, from_user: actor, body: body)
+      end
+      
+      CandidateState.create(candidate: self,
+        state: self.state,
+        recruiter: recruiter,
+        message: msg)
+    end
+
+    return self
   end
-  
 
 end
