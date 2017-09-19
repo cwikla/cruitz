@@ -117,6 +117,23 @@ class ShowSheet extends Sheet.Show {
     super(props);
   }
 
+  renderHeader(item) {
+    if (this.state.isLoading || !item) {
+      return (<Pyr.Loading />);
+    }
+
+    let message = item.message;
+
+    return (
+        <MessageThreadHeader
+          message={message}
+          job={this.props.jobMap[message.job_id]}
+          onBack={this.onBack}
+          url={Pyr.URL(MESSAGES_URL)}
+        />
+    );
+  }
+
   renderItem(item, isSelected) {
     if (this.state.isLoading || !item) {
       return (<Pyr.Loading />);
@@ -129,12 +146,6 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <div className="d-flex flx-1 flx-col">
-        <MessageThreadHeader
-          message={message}
-          job={this.props.jobMap[message.job_id]}
-          onBack={this.onBack}
-          url={Pyr.URL(MESSAGES_URL)}
-        />
         <MessageRender
           message={message}
           job={this.props.jobMap[message.job_id]}

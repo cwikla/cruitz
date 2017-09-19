@@ -166,7 +166,7 @@ class Base extends Pyr.UserComponent {
     return (
       <div className="sheet flx-col flx-1">
         <div className="header">
-          {this.renderHeader()}
+          {this.renderHeader(this.props.selected)}
         </div>
         {this.renderInner()}
         {this.renderFooter()}

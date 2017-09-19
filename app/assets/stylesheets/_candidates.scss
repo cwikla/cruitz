@@ -1,13 +1,21 @@
 .show {
   .sheet {
+    .header {
+        border-bottom: 1px solid rgba(gray, 0.4);
+        .reject {
+            color: $secondary_color !important;
+        }
+    }
+
+    .scroll.inner {
+      margin-top: 1rem;
+    }
+
     .candidate-item {
       .actions {
         border-bottom: 1px solid rgba(gray, 0.4);
         margin-bottom: 1rem;
 
-        .reject {
-            color: $secondary_color !important;
-        }
       }
 
       .left, .right {
@@ -16,16 +24,36 @@
       }
 
       .cv-item {
+        padding: 1rem;
         background-color: white;
         border: 1px solid rgba(gray, 0.4);
         border-radius: 10px;
       }
 
       .recruiter-blurb {
-        padding: 1rem;
+        font-size: 0.9rem;
+
+        padding: 0.75rem;
         border: 1px solid rgba(gray, 0.4);
         border-radius: 10px;
         background-color: $light_gray_color;
+        
+        .icon .fa {
+          font-size: 1.25rem;
+          line-height: 1.25rem;
+        }
+
+        .icon-btn.spam:hover {
+          color: red !important;
+        }
+
+        .user-avatar {
+          padding-bottom: 1.5rem;
+        }
+
+        .blurb {
+          padding-top: 1.5rem;
+        }
       }
     }
 
@@ -33,6 +61,31 @@
 }
 
 .index .sheet {
+  .item {
+      &.new {
+        color: $primary_color;
+      }
+
+      &.rejected {
+        color: orange;
+      }
+
+      &.spam {
+        color: red;
+      }
+
+      &.accepted,
+      &.vetting,
+      &.on-site,
+      &.background-checks {
+        color: $secondary_color;
+      }
+
+      &.hired {
+        color: $primary_color;
+      }
+  }
+
   .candidate-item {
     .recruiter {
       border-left: 1px solid rgba(gray, 0.4);
@@ -45,7 +98,7 @@
   background-color: lighten($secondary_navbar_background_color, 0.5);
 }
 
-.candidate-header {
+.a-candidate-header {
   padding: 1rem;
 }
 

@@ -22,7 +22,6 @@ const MessageThreadIndexHeader = (props) => (
 
 const MessageThreadHeader = (props) => (
   <div className={ClassNames("message-header").push(props.className)}>
-      <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
       <div className="align-self-center title">{props.job.title}</div>
   </div>
 );

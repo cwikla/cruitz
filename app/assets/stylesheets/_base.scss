@@ -338,6 +338,13 @@ label {
   }
 }
 
+.icon-btn:hover {
+  color: lighten($secondary_color, 5%) !important;
+}
+
+.sheet .header {
+}
+
 @import 'item';
 @import 'messages';
 @import 'recruiters';

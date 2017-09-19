@@ -55,7 +55,7 @@ const Button = (props) => (
 
 const IconButton = (props) => (
   <label
-    {...Util.propsMergeClassName(props)}
+    {...Util.propsMergeClassName(props, "icon-btn")}
   ><Pyr.Icon name={props.name}/></label>
 );
 

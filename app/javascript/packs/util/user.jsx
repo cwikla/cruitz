@@ -15,14 +15,33 @@ function getAvatar(uid) {
   return av;
 }
 
-const Stars = (props) => (
-  <div>
-    { Pyr.Util.times(props.rating, (i) => {
-        return (<Pyr.Icon name="star" key={"star"+i} className="rating"/>);
-      })
+class Stars extends Component {
+  renderHalf(half, pos) {
+    if (!half) {
+      return null;
     }
-  </div>
-);
+
+    return (
+      <Pyr.Icon name="star-half" key={"star"+pos} className="star"/>
+    );
+  }
+  render() {
+    let half = (this.props.rating * 10 % 10) > 0;
+    let rating = Math.floor(this.props.rating);
+
+    return (
+      <div className="rating">
+        { Pyr.Util.times(rating, (i) => {
+              return (<Pyr.Icon name="star" key={"star"+i} className="star"/>);
+          })
+        }
+        {
+          this.renderHalf(half, rating+1)
+        }
+      </div>
+    );
+  }
+}
 
 const UserAvatar = (props) => (
   <div className={Pyr.ClassNames("flx-col user-avatar justify-content-center").push(props.small ? "small" : "").push(props.className)}>

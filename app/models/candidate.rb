@@ -6,10 +6,6 @@ class Candidate < ApplicationRecord
   has_many :states
   has_many :messages
 
-  scope :isnew, -> { where(accepted_at: nil).where(rejected_at: nil) }
-  scope :accepted, -> {  where.not(accepted_at: nil).where(rejected_at: nil) }
-  scope :rejected, -> {  where.not(rejected_at: nil) }
-  scope :live, -> { where(rejected_at: nil) }
 
   SUBMITTED_STATE = 0
   ACCEPTED_STATE = 100
@@ -21,6 +17,11 @@ class Candidate < ApplicationRecord
   SPAM_STATE = -666
   RECALL_STATE = -1000
   CANCEL_STATE = -5000
+
+  scope :isnew, -> { where(state: SUBMITTED_STATE) }
+  scope :accepted, -> {  where(state: ACCEPTED_STATE) }
+  scope :rejected, -> {  where(state: REJECTED_STATE) }
+  scope :live, -> { where("state >= ? and state <= ?", SUBMITTED_STATE, HIRE_STATE) }
 
   def to_s
     "#{job.id} => #{job.title} => #{head}"

@@ -6,7 +6,8 @@ class CandidateSerializer < ActiveModel::Serializer
     :email,
     :description,
     :job_id,
-    :root_message_id
+    :root_message_id,
+    :state
 
   has_one :recruiter, through: :head, class_name: 'User'
 

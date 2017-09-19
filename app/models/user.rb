@@ -38,6 +38,7 @@ class User < ApplicationRecord
   end
 
   def candidate_counts
+    #candidates.group(:state).count
     results = jobs.pluck(:id, :title)
     results.map { |jid|
       j = Job.find(jid[0])

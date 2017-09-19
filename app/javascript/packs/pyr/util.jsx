@@ -344,6 +344,11 @@ function friendlyDate(date, longOnly=false) {
   );
 }
 
+function squish(str) {
+  console.log(str);
+  return str.replace(" ", "-");
+}
+
 function capFirstLetter(string) {
     string = string.toLowerCase();
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -421,6 +426,7 @@ const Util = {
   summarize,
   friendlyDate,
   capFirstLetter,
+  squish,
   childrenWithProps,
   propsRemove,
   propsMerge,

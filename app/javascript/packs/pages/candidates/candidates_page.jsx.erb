@@ -28,6 +28,27 @@ import {
 const JOBS_URL = "/jobs";
 const CANDIDATES_URL = "/candidates";
 
+const ID_TO_STATE = {
+  0: "New",
+  100 : "Accepted",
+  "-100" : "Rejected",
+  200 : "Vetting",
+  300 : "On Site",
+  400 : "Background Checks",
+  1000 : "Hired!",
+  "-666" : "SPAM",
+  "-1000" : "Recalled",
+  "-5000" : "Cancelled",
+};
+
+function stateString(sid) {
+  if (sid in ID_TO_STATE) {
+    return ID_TO_STATE[sid];
+  }
+
+  return "Unknown";
+}
+
 class CandidateHeader extends Component {
   render() {
     if (!this.props.candidate) {
@@ -79,6 +100,7 @@ class CandidateItem extends Component {
   render() {
     let candidate = this.props.candidate;
     let recruiter = candidate.recruiter;
+    let state = Pyr.Util.squish(stateString(candidate.state));
 
     let id = "candidate-" + candidate.id;
     let allClass = ClassNames("item candidate-item flx-row");
@@ -86,6 +108,8 @@ class CandidateItem extends Component {
     if (this.props.isSelected) {
        allClass.push("selected");
     }
+
+    allClass.push(state.toLowerCase());
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -96,7 +120,7 @@ class CandidateItem extends Component {
       <div className={allClass} id={id}>
         <Pyr.Grid.Column className="content">
           <div className="flx-row">
-            <div className="state col-md-2">State</div>
+            <div className="state col-md-2">{state}</div>
             <div className="name col-md-3">{fullName}</div>
             <div className="email col-md-3">{email}</div>
             <div className="phone-number col-md-3">{phoneNumber}</div>
@@ -228,9 +252,16 @@ class IndexSheet extends Sheet.Index {
 
 class RecruiterMessage extends Component {
   render() {
+    if (!this.props.candidate.root_message_id) {
+      return null;
+    }
+
+    console.log("message id");
+    console.log(this.props.candidate);
     if (!this.props.job) {
       return <Pyr.Loading />
     }
+
 
     let clazzes = ClassNames("recruiter-message").push(this.props.className);
 
@@ -289,18 +320,22 @@ class RecruiterBlurb extends Component {
   render() {
     return (
       <div className="recruiter-blurb">
+        <div className="icon flx-row flx-start">
+          <Pyr.IconButton name="flag" className="spam"/>
+          <Pyr.IconButton name="eye" className="ml-auto"/>
+        </div>
+
         <UserAvatar
           userId={this.props.recruiter.id}
           name={this.props.recruiter.first_name}
         />
-        <Stars rating={4}/>
-        <div>64% acceptance rate</div>
-        <div>Awesome Recruiting, Inc</div>
-        <div>San Francisco, CA</div>
-        <div>I specialize in recruiting software engineers
+        <Stars rating={3.7}/>
+        <div className="rate">64% acceptance rate</div>
+        <div className="company">Awesome Recruiting, Inc</div>
+        <div className="location">San Francisco, CA</div>
+        <div className="blurb">I specialize in recruiting software engineers
         from top 10 schools.  I have worked with Uber, Twitter,
         BobCo and SallyCo.</div>
-        <div>{this.state.message}</div>
       </div>
     );
   }
@@ -324,52 +359,6 @@ class CandidateCVItem extends Component {
         <CandidateHeader 
           candidate={candidate}
         />
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
-        <div>Stuff</div>
         <div>Stuff</div>
       </div>
     );
@@ -446,7 +435,7 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <Pyr.Grid.Row className="candidate-item">
-        <Pyr.Grid.Col className="flx-col side left">
+        <Pyr.Grid.Col className="flx-col side">
           <Pyr.Grid.Row className="flx-1">
             <Pyr.Grid.Col className="flx-col">
               <Pyr.Scroll className="left">
