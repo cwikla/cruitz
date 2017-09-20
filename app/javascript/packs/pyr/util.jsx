@@ -397,6 +397,7 @@ function propsMergeClassName(props, className) {
 }
 
 function hash(str) {
+  str = '' + str; // conversion
   var hash = 5381,
       i    = str.length;
 
