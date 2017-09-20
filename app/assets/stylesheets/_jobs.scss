@@ -1,38 +1,41 @@
-.show .sheet {
-  .side {
-  }
+.page.jobs {
 
-}
-
-.index .sheet {
-  .spacer {
-    padding: 3rem;
-  }
-
-  .job-item.card {
-    .card-header, .card-body {
-      padding: 1rem;
-      border-radius: 20px 20px 0 0;
-      overflow: hidden;
+  .show .sheet {
+    .side {
     }
-
-    border-radius: 20px;
-    border: 1px solid $primary_color;
-
-    &:hover {
-      background-color: lighten($primary_light_color, 30%);
-    }
-
-    width: 30rem;
+  
   }
-}
-
-.job-message {
-  background-color: lighten($primary_color, 95%);
-}
-
-.jobs-index-header {
-  color: black;
-  border-bottom: 1px solid $sep_color;
+  
+  .index .sheet {
+    .spacer {
+      padding: 3rem;
+    }
+  
+    .job-item.card {
+      .card-header, .card-body {
+        padding: 1rem;
+        border-radius: 20px 20px 0 0;
+        overflow: hidden;
+      }
+  
+      border-radius: 20px;
+      border: 1px solid $primary_color;
+  
+      &:hover {
+        background-color: lighten($primary_light_color, 30%);
+      }
+  
+      width: 30rem;
+    }
+  }
+  
+  .job-message {
+    background-color: lighten($primary_color, 95%);
+  }
+  
+  .jobs-index-header {
+    color: black;
+    border-bottom: 1px solid $sep_color;
+  }
 }
 

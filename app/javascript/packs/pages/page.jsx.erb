@@ -235,8 +235,10 @@ class Page extends Pyr.UserComponent {
     console.log("PAGE props");
     console.log(this.props);
 
+    let cname = ClassNames("d-flex flx-1 page flx-col").push(this.props.page.toLowerCase());
+
     return (
-        <div className="d-flex flx-1 page flx-col cwikla">
+        <div className={cname}>
           {this.renderHeader()}
           {this.renderIndexSheet()}
           {this.renderActionSheet()}
