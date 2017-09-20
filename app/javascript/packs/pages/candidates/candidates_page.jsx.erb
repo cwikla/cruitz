@@ -541,6 +541,7 @@ class CandidatesPage extends Page {
 
   indexSheet() {
     console.log("CANDINDEX");
+    console.log(this.onLoadItems);
 
     return (
       <IndexSheet
@@ -557,6 +558,7 @@ class CandidatesPage extends Page {
   }
 
   actionSheet(action) {
+    console.log("ACDTION SHEET?");
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

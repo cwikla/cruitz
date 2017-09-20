@@ -43,6 +43,9 @@ const SEARCH_URL = "/search";
 const RECRUITERS_URL = "/recruiters";
 const CANDIDATES_URL = "/candidates";
 
+const INDEX_ACTION = 'index';
+const SHOW_ACTION = 'show';
+
 function PageURL(page) {
   return Pyr.URL().push(page);
 }
@@ -247,7 +250,8 @@ class Dashboard extends Pyr.UserComponent {
 
     this.setState({
       page: CANDIDATES_PAGE,
-      job: job
+      job: job,
+      action: null
     });
   }
 
