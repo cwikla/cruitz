@@ -435,28 +435,24 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <Pyr.Grid.Row className="candidate-item">
-        <Pyr.Grid.Col className="flx-col side">
-          <Pyr.Grid.Row className="flx-1">
-            <Pyr.Grid.Col className="flx-col">
-              <Pyr.Scroll className="left">
-                <CandidateCVItem 
-                  candidate={candidate} 
-                  isSelected={isSelected} 
-                />
-  
-                <RecruiterMessage 
-                  className={clazzes}
-                  job={this.state.job}
-                  candidate={candidate} 
-                  selected={isSelected} 
-                  onSetItem={this.props.onSetItem}
-                />
-              </Pyr.Scroll>
-            </Pyr.Grid.Col>
-            <Pyr.Grid.Col className="col-3 right">
-              <RecruiterBlurb candidate={candidate} recruiter={recruiter}/>
-            </Pyr.Grid.Col>
-          </Pyr.Grid.Row>
+        <Pyr.Grid.Col className="flx-col left">
+          <Pyr.Scroll className="">
+            <CandidateCVItem 
+              candidate={candidate} 
+              isSelected={isSelected} 
+            />
+ 
+            <RecruiterMessage 
+              className={clazzes}
+              job={this.state.job}
+              candidate={candidate} 
+              selected={isSelected} 
+              onSetItem={this.props.onSetItem}
+            />
+          </Pyr.Scroll>
+        </Pyr.Grid.Col>
+        <Pyr.Grid.Col className="col-3 right">
+          <RecruiterBlurb candidate={candidate} recruiter={recruiter}/>
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );

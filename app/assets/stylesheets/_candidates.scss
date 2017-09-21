@@ -19,10 +19,15 @@
           margin-bottom: 1rem;
   
         }
-  
-        .left, .right {
-          padding-left: 1rem;
-          padding-right: 1rem;
+
+        .left {
+          padding-left: 2rem;
+          padding-right: 0.5rem;
+        }
+
+        .right {
+          padding-left: 0.5rem;
+          padding-right: 2rem;
         }
   
         .cv-item {
