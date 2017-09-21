@@ -208,13 +208,6 @@ class Dashboard extends Pyr.UserComponent {
     return j1.id == j2.id;
   }
 
-  bindClicks(jobs, f) {
-    this.onJobClicks = {};
-    for(let item of jobs) {
-      this.onJobClicks[item.id] = f.bind(this, item);
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if ((this.props.page != nextProps.page) ||
         (this.props.subPage != nextProps.subPage) ||
@@ -228,14 +221,6 @@ class Dashboard extends Pyr.UserComponent {
         action: null
       });
       
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    return;
-
-    if (this.state.jobs != nextState.jobs) {
-      this.bindClicks(nextState.jobs, this.selectJob);
     }
   }
 
@@ -520,7 +505,7 @@ const Footer = (props) => (
 render (
   <Pyr.UserProvider>
     <Router>
-      <Pyr.RouterProps component={Dashboard} />
+      <Pyr.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}/>
     </Router>
   </Pyr.UserProvider>,
 

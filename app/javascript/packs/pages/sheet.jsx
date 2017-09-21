@@ -93,17 +93,6 @@ class Base extends Pyr.UserComponent {
     this.props.onSelect(item);
   }
 
-  bindClicks(items, f) {
-    let self = this;
-    this.onClicks = {};
-
-    if (items) {
-      for(let item of items) {
-        this.onClicks[this.key(item)] = f.bind(this, item);
-      }
-    }
-  }
-
   setLoading(val=true) {
     this.setState({
       isLoading: val
@@ -192,8 +181,6 @@ function sheetID(name, action) {
 class Index extends Base {
   constructor(props) {
     super(props);
-
-    this.bindClicks(this.props.items, this.setSelected);
   }
 
   componentDidMount() {
@@ -204,9 +191,6 @@ class Index extends Base {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.items != nextProps.items) {
-      this.bindClicks(nextProps.items, this.setSelected);
-    }
   }
 
   sortItems(items) {

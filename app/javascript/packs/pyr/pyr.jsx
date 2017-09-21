@@ -16,6 +16,7 @@ import Util from './util';
 
 import {
   Route,
+  Redirect
 } from 'react-router-dom';
 
 
@@ -164,8 +165,9 @@ class UserComponent extends Component {
 
 class RouterProps extends Component {
   render() {
-    let rest = Util.propsRemove(this.props, "component");
+    let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
     let Component = this.props.component;
+    let dashboard = this.props.dashboard;
 
     let url = "/:page?/:pid?/:sub?/:subid?";
 
@@ -180,9 +182,12 @@ class RouterProps extends Component {
             subPage: params.sub,
             subItemId: params.subid,
           };
-  
-          console.log("COMPONENT");
-          console.log(sendProps);
+
+          if (!sendProps.page && dashboard) {
+            return (
+              <Redirect to={Pyr.URL(dashboard).toString()}/>
+            );
+          }
   
           return (
             <Component {...rest} {...sendProps} />
