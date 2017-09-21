@@ -10,10 +10,6 @@ import {
 
 import {
   BrowserRouter as Router,
-  Link,
-  Switch,
-  Route,
-  Redirect
 } from 'react-router-dom';
 
 import Pyr from '../pyr/pyr';
@@ -333,34 +329,19 @@ class Dashboard extends Pyr.UserComponent {
  
   renderSideBar() {
     let self = this;
-    let url = "/:page?/:arg1?/:arg2?/:arg3?";
-
-    return (
-      <Route
-        path={url}
-        render={(props) => {
-          return self.renderInnerSideBar(props.match.params);
-          }
-        }
-      />
-    );
-  }
-
-  renderInnerSideBar(params) {
-    let self = this;
-    let page = params.page;
-    let arg1 = params.arg1;
-    let arg2 = params.arg2;
+    let page = this.getPage();
+    let itemId = this.getItemId();
+    let subPage = this.getSubPage();
 
     let jobs = this.state.jobs; //.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
 
     let jobKids = jobs.map( (job, pos) => {
-        let isJob = isPage(page, JOBS_PAGE) && isPage(arg2, CANDIDATES_PAGE);
-        let jobId = arg1;
+        let isJob = isPage(page, CANDIDATES_PAGE);
+        let jobId = itemId;
 
         return (<Sidebar.Button 
                   key={job.id} 
-                  url={Pyr.URL(JOBS_URL).push(job.id).push("candidates").toString()}
+                  url={Pyr.URL(JOBS_URL).push(job.id).push(CANDIDATES_PAGE).toString()}
                   selected={isJob && (job.id == jobId)}
                 ><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
         );
@@ -381,7 +362,7 @@ class Dashboard extends Pyr.UserComponent {
           <Sidebar.Header 
             id="candidates" 
             icon="users"
-            selected={isPage(page, CANDIDATES_PAGE) || isPage(arg2, CANDIDATES_PAGE)}
+            selected={isPage(page, CANDIDATES_PAGE) }
             itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
             url={PageURL(CANDIDATES_PAGE)}
           >Candidates</Sidebar.Header>
@@ -403,7 +384,7 @@ class Dashboard extends Pyr.UserComponent {
             id="jobs"
             icon="bullseye"
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
-            selected={isPage(page, JOBS_PAGE) && !isPage(arg2, CANDIDATES_PAGE)}
+            selected={isPage(page, JOBS_PAGE)}
             url={PageURL(JOBS_URL)}
           >Jobs</Sidebar.Header>
           <Sidebar.Header 
