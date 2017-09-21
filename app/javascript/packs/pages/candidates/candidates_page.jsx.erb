@@ -1,7 +1,3 @@
-<% include Rails.application.routes.url_helpers %>
-<% include Rails.application.helpers %>
-
-
 import React, { 
   Component
 } from 'react';
@@ -16,17 +12,17 @@ import Page from '../page';
 import Sheet from '../sheet';
 import MessageThread from '../messages/message_thread';
 
-const MESSAGES_URL = "/messages";
-
 import {
   UserAvatar,
   UserScore,
   Stars,
 } from '../../util/user';
 
-
-const JOBS_URL = "/jobs";
-const CANDIDATES_URL = "/candidates";
+import {
+  MESSAGES_URL,
+  JOBS_URL,
+  CANDIDATES_URL
+} from '../const';
 
 const ID_TO_STATE = {
   0: "New",

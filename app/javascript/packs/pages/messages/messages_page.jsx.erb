@@ -12,12 +12,17 @@ import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
 
+import {
+  MESSAGES_URL
+} from '../const';
+
 import Page from '../page';
 import Sheet from '../sheet';
 
 import {
   UserAvatar
 } from '../../util/user';
+
 
 import ThreadItem, { 
   THREAD_ID 
@@ -28,9 +33,6 @@ import MessageThread, {
   MessageThreadIndexHeader
 } from './message_thread';
 import MessageQA, { MessageQAHeader } from './message_qa';
-
-const MESSAGES_URL = "/messages";
-
 
 function MID(message) {
   return "message-" + message.id;
@@ -255,6 +257,7 @@ class MessagesPage extends Page {
 
   loadItems(onLoading) {
     console.log("GET ITEMS..." + this.constructor.name);
+    console.log(MESSAGES_URL);
 
     let me = this;
 

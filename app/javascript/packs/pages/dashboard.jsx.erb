@@ -25,12 +25,28 @@ import MessagesPage from './messages/messages_page';
 import RecruitersPage from './recruiters/recruiters_page';
 import SettingsPage from './settings_page';
 
-const JOBS_PAGE = 'Jobs';
-const CANDIDATES_PAGE = 'Candidates';
-const RECRUITERS_PAGE = 'Recruiters';
-const SETTINGS_PAGE = 'Settings';
-const MESSAGES_PAGE = 'Messages';
-const SEARCH_PAGE = "Search";
+import {
+  JOBS_PAGE,
+  CANDIDATES_PAGE,
+  RECRUITERS_PAGE,
+  SETTINGS_PAGE,
+  MESSAGES_PAGE,
+  SEARCH_PAGE,
+
+  JOBS_URL,
+  CANDIDATES_URL,
+  RECRUITERS_URL,
+  SETTINGS_URL,
+  MESSAGES_URL,
+  SEARCH_URL,
+
+  USERS_URL,
+
+  INDEX_ACTION,
+  SHOW_ACTION,
+} from './const';
+
+const DEFAULT_PAGE = MESSAGES_PAGE;
 
 const PAGE_MAP = {
   [JOBS_PAGE.toLowerCase()]: JobsPage,
@@ -40,19 +56,6 @@ const PAGE_MAP = {
   [MESSAGES_PAGE.toLowerCase()]: MessagesPage
 };
 
-const DEFAULT_PAGE = MESSAGES_PAGE;
-
-class CandidatesPageLocal extends CandidatesPage {
-};
-
-const JOBS_URL = "/jobs";
-const USERS_URL = "/users";
-const SEARCH_URL = "/search";
-const RECRUITERS_URL = "/recruiters";
-const CANDIDATES_URL = "/candidates";
-
-const INDEX_ACTION = null;
-const SHOW_ACTION = 'show';
 
 function PageURL(page) {
   return Pyr.URL().push(page);
@@ -372,7 +375,7 @@ class Dashboard extends Pyr.UserComponent {
             icon="envelope-open-o"
             selected={isPage(page, MESSAGES_PAGE, true)}
             itemCount={this.state.buttonItemCount[MESSAGES_PAGE] || 0}
-            url="/messages"
+            url={PageURL(MESSAGES_PAGE)}
             >Messages</Sidebar.Header>
 
           <Sidebar.Header 
@@ -380,14 +383,14 @@ class Dashboard extends Pyr.UserComponent {
             icon="users"
             selected={isPage(page, CANDIDATES_PAGE) || isPage(arg2, CANDIDATES_PAGE)}
             itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
-            url="/candidates"
+            url={PageURL(CANDIDATES_PAGE)}
           >Candidates</Sidebar.Header>
 
           <Sidebar.Header
             className="hidden-md-up"
             id="per-jobs"
             icon="hashtag"
-            url="/candidates"
+            url={PageURL(CANDIDATES_URL)}
             selected={this.state.job != null}
           />
           <Pyr.Scroll className="sidebar-scroll hidden-sm-down flx-1">
@@ -401,21 +404,21 @@ class Dashboard extends Pyr.UserComponent {
             icon="bullseye"
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
             selected={isPage(page, JOBS_PAGE) && !isPage(arg2, CANDIDATES_PAGE)}
-            url="/jobs"
+            url={PageURL(JOBS_URL)}
           >Jobs</Sidebar.Header>
           <Sidebar.Header 
             id="recruiters"
             icon="cubes"
             itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
             selected={isPage(page, RECRUITERS_PAGE)}
-            url="/recruiters"
+            url={PageURL(RECRUITERS_URL)}
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
             id="settings"
             icon="gear"
             selected={isPage(page, SETTINGS_PAGE)}
             className="p-b-1"
-            url="/settings"
+            url={PageURL(SETTINGS_URL)}
           >Settings</Sidebar.Header>
         </Sidebar.Main>
     );
@@ -503,7 +506,7 @@ const Footer = (props) => (
 ///
 
 render (
-  <Pyr.UserProvider>
+  <Pyr.UserProvider url={Pyr.URL().push(USERS_URL).push("/me")}>
     <Router>
       <Pyr.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}/>
     </Router>

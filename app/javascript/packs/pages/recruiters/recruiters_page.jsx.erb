@@ -19,6 +19,14 @@ import {
   UserScore
 } from '../../util/user';
 
+import {
+  RECRUITERS_URL,
+
+  SHOW_ACTION,
+  INDEX_ACTION,
+  NEW_ACTION
+} from '../const';
+
 class RecruiterItem extends Component {
   render() {
     let recruiter = this.props.recruiter;
@@ -79,18 +87,116 @@ class RecruiterItem extends Component {
 }
 
 
+class RecruiterForm extends Component {
+
+  methodToName(method) {
+    switch (method) {
+      case Pyr.Method.PUT:
+        return "Update";
+        break
+
+      default:
+        return "Create";
+        break;
+    }
+  }
+
+  render() {
+    let key = "invite-recruiter-form";
+    let url = Pyr.URL(RECRUITERS_URL);
+
+    let method = Pyr.Method.POST;
+
+    return (
+      <div className="form-parent">
+        <Pyr.Form.Form
+          model="Recruiter"
+          object={{}}
+          url={url}
+          method={method}
+          id="invite-recruiter-form" 
+          key={key}
+          ref={(node) => { this.form = node; }} 
+          onPreSubmit={this.props.onPreSubmit} 
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.props.onSuccess}
+          onError={this.props.onError}
+        >
+      
+          <Pyr.Form.Group name="first_name">
+            <Pyr.Form.Label>First Name</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder= "First"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="last_name">
+            <Pyr.Form.Label>Last Name</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder= "Last"/>
+          </Pyr.Form.Group>
+      
+          <Pyr.Form.Group name="email">
+            <Pyr.Form.Label>Email</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder="Email"/>
+          </Pyr.Form.Group>
+        </Pyr.Form.Form>
+      <div className="form-footer">
+        <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>{this.methodToName(method)}</Pyr.Form.SubmitButton>
+      </div>
+      </div>
+    );
+  }
+}
+
+class NewSheet extends Sheet.New {
+
+  renderTitle() {
+    return (
+      <h3 className="title">Add a New Job</h3>
+    );
+  }
+
+  renderForm() {
+    return (
+      <div>
+        <RecruiterForm
+          onPreSubmit={this.onPreSubmit}
+          onPostSubmit={this.onPostSubmit}
+          onSuccess={this.onSuccess}
+        />
+      </div>
+    );
+  }
+}
+
+
 class IndexSheet extends Sheet.Index {
+  constructor(props) {
+    super(props);
+
+    this.onAddJob = this.addJob.bind(this);
+  }
+
+  addJob(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onSetAction(NEW_ACTION);
+  }
+
   key(a) {
     return RecruitersPage.key(a)
   }
 
   renderHeader() {
     return (
-          <div className="actions flx-row p-1 flx-start">
-              <Pyr.PrimaryButton className="accept ml-auto"><Pyr.Icon name="plus"/> Invite</Pyr.PrimaryButton>
+      <div className="recruiters-index-header">
+          <div className="recruiter-new p-1 d-flex flx-end">
+              <Pyr.PrimaryButton onClick={this.onAddJob}><Pyr.Icon name="plus"/> Invite Recruiter</Pyr.PrimaryButton>
           </div>
+      </div>
     );
   }
+
 
   renderItem(item, isSelected) {
     return ( <RecruiterItem recruiter={item} isSelected={isSelected} /> );

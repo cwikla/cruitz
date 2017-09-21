@@ -220,20 +220,20 @@ class UserProvider extends Component {
   componentDidMount() {
     // This is being called twice - saw some notes about it being because it's DEV
 
-    this.getSelf();
+    this.getSelf(this.props.url);
   }
 
   componentWillUnmount() {
   }
 
-  getSelf() {
+  getSelf(url) {
     let self = this;
 
     //alert("GET SELF CALLED");
 
     getJSON({
       type: Method.GET,
-      url: PURL().push(USERS_URL).push("/me"),
+      url: url,
       context: this
     }).done(function(data, textStatus, jaXHR) {
       self.setState({

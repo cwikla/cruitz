@@ -11,10 +11,11 @@ import ThreadItem, {
   THREAD_ID
 } from './thread_item';
 
+import {
+  MESSAGES_URL
+} from '../const';
+
 const SCROLL_TIME = 800;
-
-const MESSAGES_URL = "/messages";
-
 
 const MessageThreadIndexHeader = (props) => (
   <div className="message-header" {...Pyr.Util.propsRemove(props, ["job", "message", "isNew"])}>{props.isNew ? "New ": ""}<span className="job-title">{props.job.title}|{props.message.id}|{props.message.root_message_id}|{props.message.parent_message_id}</span></div>
@@ -137,7 +138,7 @@ class Footer extends Component {
       <div className="message-footer z-depth-1">
         <Pyr.Form.Form
           model="message"
-          url={Pyr.URL(this.props.url).push(this.props.message.id)}
+          url={Pyr.URL(MESSAGES_URL).push(this.props.message.id)}
           id={"thread-form" + "-" + this.props.message.id}
           onSuccess={this.props.onSuccess}
           ref={(node) => this.form = node}

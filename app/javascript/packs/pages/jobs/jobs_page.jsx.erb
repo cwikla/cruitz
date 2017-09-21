@@ -1,6 +1,3 @@
-<% include Rails.application.routes.url_helpers %>
-<% include Rails.application.helpers %>
-
 import React, { 
   Component
 } from 'react';
@@ -14,11 +11,13 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 
+import {
+  JOBS_URL,
+  SEARCH_URL,
 
-const JOBS_URL = "/jobs";
-const SEARCH_URL = "/search";
-const NEW_ACTION = "New";
-const EDIT_ACTION = "Edit";
+  NEW_ACTION,
+  SHOW_ACTION
+} from '../const';
 
 class JobItem extends Component {
 
@@ -145,7 +144,7 @@ class JobForm extends Component {
       
           <Pyr.Form.Group name="location">
             <Pyr.Form.Label>Location</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Enter location" className="auto-complete" data-source="<%= jobs_location_path %>"/>
+            <Pyr.Form.TextField placeholder="Enter location" />
           </Pyr.Form.Group>
       
           <Pyr.Form.Group name="time_commit">
@@ -260,7 +259,7 @@ class IndexSheet extends Sheet.Index {
   renderHeader() {
     return (
       <div className="jobs-index-header">
-          <div className="recruiter-info p-1 d-flex flx-end">
+          <div className="job-new p-1 d-flex flx-end">
               <Pyr.PrimaryButton onClick={this.onAddJob}><Pyr.Icon name="plus"/> Add Job</Pyr.PrimaryButton>
           </div>
       </div>
