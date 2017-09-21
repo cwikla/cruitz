@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import Pyr from '../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+export const INDEX_ACTION = null;
 export const SHOW_ACTION = "Show";
 export const EDIT_ACTION = "Edit";
 export const NEW_ACTION = "New";
@@ -20,7 +21,8 @@ class Page extends Pyr.UserComponent {
   constructor(props) {
     super(props);
 
-    console.log("PAGE PARAMS: " + props);
+    console.log("PAGE PARAMS: ");
+    console.log(props);
 
     let myState = {
       items: null,
@@ -132,8 +134,10 @@ class Page extends Pyr.UserComponent {
     let ActionSheet = eval(sheet);
 
     let item = null;
-    if (this.props.itemId) {
-      item = items.find((x) => x.id == itemId);
+    let sid = this.getItemId();
+
+    if (sid) {
+      item = items.find((x) => x.id == sid);
     }
   
     return (
@@ -149,7 +153,7 @@ class Page extends Pyr.UserComponent {
   }
 
   showActionSheet() {
-    return !!this.props.action || !!this.props.itemId;
+    return !!this.props.action;
   }
 
 ///// END ////
@@ -163,18 +167,23 @@ class Page extends Pyr.UserComponent {
     this.props.onSetAction(SHOW_ACTION);
   }
 
+  getItemId() {
+    return this.props.itemId;
+  }
+
   getItems() {
     return this.state.items;
   }
 
   getSelected() {
-    console.log("GET SELECTED: " + this.props.itemId);
-    console.log(this.state.items);
+    let sid = this.getItemId();
+    return this.getItem(sid);
+  }
 
+  getItem(sid) {
     let items = this.getItems();
-
-    if (this.props.itemId && items) {
-      return items.find((x) => x.id == this.props.itemId);
+    if (sid && items) {
+      return items.find((x) => x.id == sid);
     }
     return null;
   }

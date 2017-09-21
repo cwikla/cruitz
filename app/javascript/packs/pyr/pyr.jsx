@@ -14,6 +14,11 @@ import {
 
 import Util from './util';
 
+import {
+  Route,
+} from 'react-router-dom';
+
+
 const PURL = Util.PURL;
 const ajaxError = Util.ajaxError;
 const getJSON = Util.getJSON;
@@ -154,6 +159,37 @@ class UserComponent extends Component {
       //alert(prevID + " => " + id);
       this.userChange(this.context.user);
     }
+  }
+}
+
+class RouterProps extends Component {
+  render() {
+    let rest = Util.propsRemove(this.props, "component");
+    let Component = this.props.component;
+
+    let url = "/:page?/:pid?/:sub?/:subid?";
+
+    return (
+      <Route
+        path={url}
+        render={(props) => {
+          let params = props.match.params;
+          let sendProps = { 
+            page: params.page,
+            itemId: params.pid,
+            subPage: params.sub,
+            subItemId: params.subid,
+          };
+  
+          console.log("COMPONENT");
+          console.log(sendProps);
+  
+          return (
+            <Component {...rest} {...sendProps} />
+          );
+        }}
+      />
+    );
   }
 }
 
@@ -301,6 +337,7 @@ const Pyr = {
   IconButton,
   Fade,
   FullScreen,
-  PieChart
+  PieChart,
+  RouterProps,
 };
 export default Pyr;

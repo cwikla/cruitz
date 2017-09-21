@@ -32,6 +32,14 @@ const SETTINGS_PAGE = 'Settings';
 const MESSAGES_PAGE = 'Messages';
 const SEARCH_PAGE = "Search";
 
+const PAGE_MAP = {
+  [JOBS_PAGE.toLowerCase()]: JobsPage,
+  [CANDIDATES_PAGE.toLowerCase()]: CandidatesPage,
+  [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,
+  [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
+  [MESSAGES_PAGE.toLowerCase()]: MessagesPage
+};
+
 const DEFAULT_PAGE = MESSAGES_PAGE;
 
 class CandidatesPageLocal extends CandidatesPage {
@@ -43,7 +51,7 @@ const SEARCH_URL = "/search";
 const RECRUITERS_URL = "/recruiters";
 const CANDIDATES_URL = "/candidates";
 
-const INDEX_ACTION = 'index';
+const INDEX_ACTION = null;
 const SHOW_ACTION = 'show';
 
 function PageURL(page) {
@@ -73,14 +81,14 @@ class Dashboard extends Pyr.UserComponent {
     super(props);
 
     this.state = {
-      page: DEFAULT_PAGE,
-      action: null,
+      action: INDEX_ACTION,
       jobs: [],
       jobMap: {},
-      job: null,
       loading: true,
       buttonItemCount: {}
     };
+
+    this.lastPage = null;
 
     this.onJobClicks = {};
 
@@ -88,12 +96,6 @@ class Dashboard extends Pyr.UserComponent {
     this.onJobCreate = this.jobCreate.bind(this);
     this.onJobUpdate = this.jobUpdate.bind(this);
     this.onJobDelete = this.jobDelete.bind(this);
-
-    this.onSetPageMessages = this.setPage.bind(this, MESSAGES_PAGE);
-    this.onSetPageJobs = this.setPage.bind(this, JOBS_PAGE);
-    this.onSetPageCandidates = this.setPage.bind(this, CANDIDATES_PAGE);
-    this.onSetPageRecruiters = this.setPage.bind(this, RECRUITERS_PAGE);
-    this.onSetPageSettings = this.setPage.bind(this, SETTINGS_PAGE);
 
     this.onSetAction = this.setAction.bind(this);
     this.onSetUnaction = this.setAction.bind(this, null);
@@ -103,12 +105,56 @@ class Dashboard extends Pyr.UserComponent {
     this.onLoading = this.setLoading.bind(this);
   }
 
+  getSubPage() {
+    return this.props.subPage;
+  }
+
+  getPage() {
+    let subPage = this.getSubPage();
+    if (subPage) {
+      return subPage;
+    }
+    return this.props.page || DEFAULT_PAGE;
+  }
+
+  getItemId() {
+    return this.props.itemId;
+  }
+
+  getSubItemId() {
+    return this.props.subItemId;
+  }
+
+  getPageComponent() {
+    let page = this.getPage().toLowerCase();
+    let result = PAGE_MAP[page];
+    return result;
+  }
+
+  getAction() {
+    let act = this.state.action;
+    let page = this.props.page;
+    let subPage = this.props.subPage;
+    let itemId = this.props.itemId;
+    let subId = this.props.subItemId;
+
+    if (act) {
+      return act;
+    }
+
+    if (subId || (itemId && !subPage)) {
+      act = SHOW_ACTION;
+    }
+
+    return act;
+  }
+
   userChange(user) {
     console.log("User Change: " + JSON.stringify(user));
   }
 
   title() {
-    return this.state.page;
+    return this.getPage();
     //return (this.state.page == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.page;
   }
 
@@ -131,29 +177,6 @@ class Dashboard extends Pyr.UserComponent {
     this.setState({
       action
     });
-  }
-
-  setPage(page, e) {
-    page = page || DEFAULT_PAGE;
-
-    let job = null;
-
-    if (page == CANDIDATES_PAGE) {
-      job = this.state.jobs ? this.state.jobs[0] : null;
-    }
-
-    let newState = {
-      page,
-      job
-    };
-
-    if (page != this.state.page) {
-      newState.action = null;
-    }
-
-    //console.log("JOB: " + (job ? job.id : null));
-
-    this.setState(newState);
   }
 
   setLoading(loading=true) {
@@ -192,7 +215,25 @@ class Dashboard extends Pyr.UserComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if ((this.props.page != nextProps.page) ||
+        (this.props.subPage != nextProps.subPage) ||
+        (this.props.itemId != nextProps.itemId) ||
+        (this.props.subPageId != nextProps.subPageId)) {
+      let page = Pyr.Util.capFirstLetter(this.props.page || DEFAULT_PAGE);
+      console.log("WILL RECEIVE");
+      console.log(nextProps);
+      console.log(page);
+      this.setState({
+        action: null
+      });
+      
+    }
+  }
+
   componentWillUpdate(nextProps, nextState) {
+    return;
+
     if (this.state.jobs != nextState.jobs) {
       this.bindClicks(nextState.jobs, this.selectJob);
     }
@@ -246,7 +287,7 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   selectJob(job, e) {
-    // alert("SELECT JOB");
+    alert("SELECT JOB");
 
     this.setState({
       page: CANDIDATES_PAGE,
@@ -256,8 +297,9 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   renderSearch() {
-    let model = this.state.page;
-    let url = Pyr.URL(SEARCH_URL).push(this.state.page);
+    let page = this.getPage();
+    let model = page;
+    let url = Pyr.URL(SEARCH_URL).push(page);
 
     return (
       <div>
@@ -292,32 +334,6 @@ class Dashboard extends Pyr.UserComponent {
     );
   }
 
-/*
-  render_old() {
-    return (
-      <div className="red flx-row flx-stretch s1">
-        <div className="flx-1 flx-col flx-stretch cyan">
-          <div className="flx-1 flx-col flx-stretch green">
-            <div className="flx-1 flx-row flx-stretch pink">
-              <Pyr.Grid.ColHalf className="white">
-                One
-              </Pyr.Grid.ColHalf>
-              <Pyr.Grid.ColHalf className="blue">
-                Two
-              </Pyr.Grid.ColHalf>
-            </div>
-          </div>
-        </div>
-        <div className="flx-1 flx-col flx-stretch grey">
-          <div className="yellow flx-1">
-            Bye
-          </div>
-        </div>
-      </div>
-    );
-  }
-*/
-
   renderCandidateCount(count) {
     if (count == 0) {
       return null;
@@ -348,15 +364,6 @@ class Dashboard extends Pyr.UserComponent {
     let arg1 = params.arg1;
     let arg2 = params.arg2;
 
-/*
-    if (isPage(page, CANDIDATES_PAGE) && !arg1) {
-      let url = Pyr.URL(JOBS_PAGE).push(this.state.jobs[0].id).push(CANDIDATES_PAGE);
-      return (
-        <Redirect to={url.toString()} />
-      );
-    }
-*/
-
     let jobs = this.state.jobs; //.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
 
     let jobKids = jobs.map( (job, pos) => {
@@ -367,7 +374,6 @@ class Dashboard extends Pyr.UserComponent {
                   key={job.id} 
                   url={Pyr.URL(JOBS_URL).push(job.id).push("candidates").toString()}
                   selected={isJob && (job.id == jobId)}
-                  onClick={this.onJobClicks[job.id]}
                 ><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
         );
       }
@@ -375,13 +381,12 @@ class Dashboard extends Pyr.UserComponent {
 
 
     return (
-        <Sidebar.Main {...this.props} className="col col-1 col-sm-1 col-md-2 flx-col h-100">
+        <Sidebar.Main className="col col-1 col-sm-1 col-md-2 flx-col h-100">
           <Sidebar.Header 
             id="messages"
             icon="envelope-open-o"
             selected={isPage(page, MESSAGES_PAGE, true)}
             itemCount={this.state.buttonItemCount[MESSAGES_PAGE] || 0}
-            onClick={this.onSetPageMessages}
             url="/messages"
             >Messages</Sidebar.Header>
 
@@ -390,7 +395,6 @@ class Dashboard extends Pyr.UserComponent {
             icon="users"
             selected={isPage(page, CANDIDATES_PAGE) || isPage(arg2, CANDIDATES_PAGE)}
             itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
-            onClick={this.onSetPageCandidates}
             url="/candidates"
           >Candidates</Sidebar.Header>
 
@@ -412,7 +416,6 @@ class Dashboard extends Pyr.UserComponent {
             icon="bullseye"
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
             selected={isPage(page, JOBS_PAGE) && !isPage(arg2, CANDIDATES_PAGE)}
-            onClick={this.onSetPageJobs}
             url="/jobs"
           >Jobs</Sidebar.Header>
           <Sidebar.Header 
@@ -420,7 +423,6 @@ class Dashboard extends Pyr.UserComponent {
             icon="cubes"
             itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
             selected={isPage(page, RECRUITERS_PAGE)}
-            onClick={this.onSetPageRecruiters}
             url="/recruiters"
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
@@ -428,7 +430,6 @@ class Dashboard extends Pyr.UserComponent {
             icon="gear"
             selected={isPage(page, SETTINGS_PAGE)}
             className="p-b-1"
-            onClick={this.onSetPageSettings}
             url="/settings"
           >Settings</Sidebar.Header>
         </Sidebar.Main>
@@ -437,10 +438,9 @@ class Dashboard extends Pyr.UserComponent {
 
   pageProps(page, jobId) {
     let props = {
-      action: this.state.action,
+      action: this.getAction(),
       jobs: this.state.jobs,
       jobMap: this.state.jobMap,
-      job: jobId ? this.state.jobMap[jobId] : null,
 
       onSetAction: this.onSetAction,
       onSetUnaction: this.onSetUnaction,
@@ -449,7 +449,11 @@ class Dashboard extends Pyr.UserComponent {
       onJobCreate: this.onJobCreate,
       onJobUpdate: this.onJobUpdate,
       onJobDelete: this.onJobDelete,
-      page: page,
+
+      page: page.toLowerCase(),
+      itemId: this.getItemId(),
+      subPage: this.getSubPage(),
+      subItemId: this.getSubItemId(),
 
       showing: true,
       url: PageURL(page),
@@ -458,43 +462,16 @@ class Dashboard extends Pyr.UserComponent {
     return props;
   }
 
-  defaultPage(page, PageComponent) {
-    return (
-      <Route
-        exact
-        path={"/"}
-        render={(props) => <PageComponent {...this.pageProps(page)} />}
-      />
-    );
-  }
-
-  renderPage(page, PageComponent, includeJob=false) {
-    let url = "/"+page.toLowerCase()+"/:itemId?";
-    if (includeJob) {
-      url = "/jobs/:jobId" + url;
-    }
-
-    url = url.toString();
-    console.log("RENDER PAGE URL: " + url);
-    return (
-      <Route
-        path={url}
-        render={(props) => {
-            console.log("MATCH: " + page);
-            console.log(PageComponent);
-            console.log(props.match);
-            console.log(props.match.params.itemId);
-            console.log(props.match.params.jobId);
-            return (<PageComponent {...this.pageProps(page, props.match.params.jobId)} {...props.match.params} />);
-          }
-        }
-      />
-    );
-  }
-
   renderMain() {
     let mainTitle = this.title();
     let me = this;
+
+    let page = this.getPage();
+    let PageComponent = this.getPageComponent();
+
+    let props = this.pageProps(page);
+    console.log("MAIN");
+    console.log(props);
 
     return (
         <main 
@@ -502,15 +479,7 @@ class Dashboard extends Pyr.UserComponent {
           id="main-page"
         >
           <div className="d-flex flx-1">
-            <Switch>
-              {this.renderPage(MESSAGES_PAGE, MessagesPage)}
-              {this.renderPage(CANDIDATES_PAGE, CandidatesPage, true)}
-              {this.renderPage(CANDIDATES_PAGE, CandidatesPage)}
-              {this.renderPage(JOBS_PAGE, JobsPage)}
-              {this.renderPage(RECRUITERS_PAGE, RecruitersPage)}
-              {this.renderPage(SETTINGS_PAGE, SettingsPage)}
-              {this.defaultPage(MESSAGES_PAGE, MessagesPage)}
-            </Switch>
+            <PageComponent {...props} />
           </div>
         </main>
     );
@@ -551,7 +520,7 @@ const Footer = (props) => (
 render (
   <Pyr.UserProvider>
     <Router>
-      <Dashboard />
+      <Pyr.RouterProps component={Dashboard} />
     </Router>
   </Pyr.UserProvider>,
 

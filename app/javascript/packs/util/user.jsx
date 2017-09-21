@@ -9,10 +9,8 @@ import Pyr from '../pyr/pyr';
 const avatars = ["emilia", "snow", "sophie", "thetick"];
 
 function getAvatar(uid) {
-  console.log("AVATAR: " + Pyr.Util.hash(uid));
   let pos = Math.abs(Pyr.Util.hash(uid)) % avatars.length;
   let av = "/assets/images/thrones/" + avatars[pos] + ".jpeg";
-  //console.log(av);
   return av;
 }
 

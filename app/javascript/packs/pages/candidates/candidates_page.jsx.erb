@@ -245,6 +245,10 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
+  childURL(item, isSelected) {
+    return Pyr.URL(JOBS_URL).push(item.job_id).push(CANDIDATES_URL).push(item.id);
+  }
+
   renderItem(item, isSelected) {
     return (<CandidateItem candidate={item} isSelected={isSelected} />);
   }
@@ -401,8 +405,8 @@ class ShowSheet extends Sheet.Show {
   }
 
   componentDidUpdate(prevProps, prevUpdate) {
-    let pid = prevProps.selected ? prevProps.selected.job_id : -1;
-    let cid = this.props.selected ? this.props.selected.job_id : -1;
+    let pid = prevProps.jobId;
+    let cid = this.props.jobId;
 
     if (pid != cid) {
       this.getJob(cid);
@@ -412,7 +416,7 @@ class ShowSheet extends Sheet.Show {
   componentWillMount() {
     console.log("WILL MOUNT");
     console.log(this.props);
-    this.getJob(this.props.selected.job_id);
+    this.getJob(this.props.jobId);
   }
 
   key(item) {
@@ -519,7 +523,7 @@ class CandidateTable extends Sheet.Index {
 class CandidatesPage extends Page {
   getInitState(props) {
     return {
-      job: this.jobMap[props.jobId], // placeholder until we can fetch the full one
+      job: this.jobMap[props.itemId], // placeholder until we can fetch the full one
       fullDetail: false
     };
   }
@@ -541,13 +545,11 @@ class CandidatesPage extends Page {
 
   indexSheet() {
     console.log("CANDINDEX");
-    console.log(this.onLoadItems);
 
     return (
       <IndexSheet
         {...this.props}
         items={this.state.items}
-        selected={this.getSelected()}
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
@@ -558,15 +560,17 @@ class CandidatesPage extends Page {
   }
 
   actionSheet(action) {
-    console.log("ACDTION SHEET?");
+    console.log("ACDTION SHEET?: ");
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
     return (
       <ActionSheet
         {...this.props}
+        itemId={this.props.subItemId}
+        jobId={this.props.itemId}
+        selected={this.getItem(this.props.subItemId)}
         jobMap={this.jobMap}
-        selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
         onSelect={this.onSelect}
@@ -596,10 +600,11 @@ class CandidatesPage extends Page {
   }
 
   loadItems() {
-    this.getCandidates(this.props.jobId);
+    this.getCandidates(this.props.itemId);
   }
 
   getCandidates(jobId) {
+    console.log("GET CANDIDATES: " + jobId);
     let url = null;
 
     if (jobId) {
@@ -615,7 +620,7 @@ class CandidatesPage extends Page {
       loading: this.onLoading,
 
     }).done((data, textStatus, jaXHR) => {
-      this.onJobLoad(data.job, data.candidates);
+      this.jobLoad(data.job, data.candidates);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
@@ -623,7 +628,7 @@ class CandidatesPage extends Page {
     });
   }
 
-  onJobLoad(job, candidates) {
+  jobLoad(job, candidates) {
     this.setItems(candidates);
     this.setState({
       job
@@ -636,14 +641,15 @@ class CandidatesPage extends Page {
     if(this.props.job){
      //alert(this.props.job.uuid);
     }
-    let prevId = prevProps.jobId ? prevProps.jobId : -1;
-    let nextId = this.props.jobId ? this.props.jobId : -1;
+    let prevId = prevProps.itemId;
+    let nextId = this.props.itemId;
 
-    if (nextId != -1) {
-      if (prevId != nextId) {
-        this.setItems(null);
-        this.getCandidates(nextId);
-      }
+    console.log("PREV: " + prevId);
+    console.log("NEXT: " + nextId);
+
+    if (prevId != nextId) {
+      this.setItems(null);
+      this.getCandidates(nextId);
     }
   }
 }

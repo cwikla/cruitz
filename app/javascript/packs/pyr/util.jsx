@@ -345,7 +345,7 @@ function friendlyDate(date, longOnly=false) {
 }
 
 function squish(str) {
-  console.log(str);
+  //console.log(str);
   return str.replace(" ", "-");
 }
 
