@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918184350) do
+ActiveRecord::Schema.define(version: 20170921212654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,23 @@ ActiveRecord::Schema.define(version: 20170918184350) do
     t.index ["last_name", "first_name"], name: "index_heads_on_last_name_and_first_name"
     t.index ["phone_number"], name: "index_heads_on_phone_number"
     t.index ["user_id"], name: "index_heads_on_user_id"
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.datetime "sent_at", null: false
+    t.integer "user_id", null: false
+    t.integer "invited_user_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email", null: false
+    t.text "body"
+    t.boolean "use_default", default: true, null: false
+    t.index ["email"], name: "index_invites_on_email"
+    t.index ["invited_user_id"], name: "index_invites_on_invited_user_id"
+    t.index ["user_id"], name: "index_invites_on_user_id"
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|

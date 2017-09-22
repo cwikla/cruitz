@@ -102,7 +102,7 @@ class JobForm extends Component {
         break
 
       default:
-        return "Create";
+        return "Add";
         break;
     }
   }
@@ -290,10 +290,8 @@ class NewSheet extends Sheet.New {
     super.success(data, textStatus, jqXHR);
   }
 
-  renderTitle() {
-    return (
-      <h3 className="title">Add a New Job</h3>
-    );
+  title() {
+    return "Add a New Job";
   }
 
   renderForm() { 

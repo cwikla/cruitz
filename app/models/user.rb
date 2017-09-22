@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :sent_messages, class_name: "Message", foreign_key: :from_user_id
   has_many :candidates, through: :jobs
 
+  has_many :invites
+
   has_many :candidate_heads, through: :candidates, source: :head
   has_many :recruiters, -> { group(:id) }, through: :candidate_heads
 

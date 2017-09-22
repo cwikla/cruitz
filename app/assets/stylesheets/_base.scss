@@ -297,15 +297,6 @@ label {
   margin-bottom: auto;
 }
 
-.close {
-  font-size: 2em;
-}
-
-.fullscreen {
-  background-color: rgba($light_gray_color, 0.9);
-
-}
-
 .pyr-pie-chart {
   width: 10rem;
   height: 10rem;
@@ -345,6 +336,15 @@ label {
 .sheet .header {
   border-bottom: 1px solid rgba(gray, 0.4);
 }
+
+.fullscreen {
+  .title {
+    h3 {
+      color: $primary_color;
+    }
+  }
+}
+
 
 @import 'item';
 @import 'messages';

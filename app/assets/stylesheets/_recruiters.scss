@@ -23,7 +23,14 @@
       }
     }
   }
-  
+
+  .new .sheet {
+    .form-parent {
+      #body {
+        height: 15rem;
+      }
+    }
+  }
   
   .show .sheet {
     .col, .row {

@@ -21,6 +21,7 @@ import {
 
 import {
   RECRUITERS_URL,
+  INVITES_URL,
 
   SHOW_ACTION,
   INDEX_ACTION,
@@ -87,22 +88,33 @@ class RecruiterItem extends Component {
 }
 
 
-class RecruiterForm extends Component {
+class InviteForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onHandleChange = this.handleChange.bind(this);
+  }
 
   methodToName(method) {
-    switch (method) {
-      case Pyr.Method.PUT:
-        return "Update";
-        break
+    return "Invite";
+  }
 
-      default:
-        return "Create";
-        break;
+  handleChange(e) {
+    console.log("HANDLE CHANGE: "  + e.target.value);
+    console.log(e.target);
+    console.log($(this.body));
+    console.log(this.body.defaultValue());
+
+    if (e.target.checked) {
+      this.body.setText(this.body.defaultValue());
+    } 
+    else {
+      this.body.setText("");
     }
   }
 
   render() {
-    let key = "invite-recruiter-form";
+    let key = "invite-form";
     let url = Pyr.URL(RECRUITERS_URL);
 
     let method = Pyr.Method.POST;
@@ -110,11 +122,11 @@ class RecruiterForm extends Component {
     return (
       <div className="form-parent">
         <Pyr.Form.Form
-          model="Recruiter"
-          object={{}}
+          model="Invite"
+          object={this.props.invite}
           url={url}
           method={method}
-          id="invite-recruiter-form" 
+          id="invite-form" 
           key={key}
           ref={(node) => { this.form = node; }} 
           onPreSubmit={this.props.onPreSubmit} 
@@ -122,22 +134,39 @@ class RecruiterForm extends Component {
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
         >
-      
-          <Pyr.Form.Group name="first_name">
-            <Pyr.Form.Label>First Name</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "First"/>
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="last_name">
-            <Pyr.Form.Label>Last Name</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Last"/>
-          </Pyr.Form.Group>
+     
+          <div className="flx-row"> 
+            <Pyr.Form.Group name="first_name">
+              <Pyr.Form.Label>Name</Pyr.Form.Label>
+              <Pyr.Form.TextField placeholder= "First"/>
+            </Pyr.Form.Group>
+  
+            <Pyr.Form.Group name="last_name">
+              <Pyr.Form.Label>&nbsp;</Pyr.Form.Label>
+              <Pyr.Form.TextField placeholder= "Last"/>
+            </Pyr.Form.Group>
+          </div>
       
           <Pyr.Form.Group name="email">
             <Pyr.Form.Label>Email</Pyr.Form.Label>
             <Pyr.Form.TextField placeholder="Email"/>
           </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="use_default">
+            <Pyr.Form.CheckBox value="1" onChange={this.onHandleChange} > Default Introduction</Pyr.Form.CheckBox>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="body">
+            <Pyr.Form.Label>Introduction</Pyr.Form.Label>
+            <Pyr.Form.TextArea 
+              rows="10" 
+              id="body" 
+              ref={node => this.body = node} 
+              onChange={this.onTextChange}
+            />
+          </Pyr.Form.Group>
         </Pyr.Form.Form>
+
       <div className="form-footer">
         <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>{this.methodToName(method)}</Pyr.Form.SubmitButton>
       </div>
@@ -147,20 +176,52 @@ class RecruiterForm extends Component {
 }
 
 class NewSheet extends Sheet.New {
+  getInitState(props) {
+    return  {
+      invite: null
+    };
+  }
 
-  renderTitle() {
-    return (
-      <h3 className="title">Add a New Job</h3>
-    );
+  getTemplate() {
+    let url = Pyr.URL(INVITES_URL).push("new");
+
+    Pyr.getJSON({
+      url: url,
+      context: this,
+
+    }).done((data, textStatus, jaXHR) => {
+      this.setState({
+        invite: data.invite
+      });
+
+    }).fail((jaXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+
+    });
+  }
+
+  componentWillMount() {
+    this.getTemplate();
+  }
+
+  title() {
+    return "Invite a Recruiter";
   }
 
   renderForm() {
+    if (!this.state.invite) {
+      return (
+        <Pyr.Loading />
+      );
+    }
+
     return (
       <div>
-        <RecruiterForm
+        <InviteForm
           onPreSubmit={this.onPreSubmit}
           onPostSubmit={this.onPostSubmit}
           onSuccess={this.onSuccess}
+          invite={this.state.invite}
         />
       </div>
     );

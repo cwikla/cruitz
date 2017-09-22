@@ -241,6 +241,11 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
+  sortItems(items) {
+    return items;
+  }
+
+
   childURL(item, isSelected) {
     return Pyr.URL(JOBS_URL).push(item.job_id).push(CANDIDATES_URL).push(item.id);
   }

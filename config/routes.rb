@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :candidates
       resources :heads
       resources :jobs
+      resources :invites, only: [:new, :create]
 
       post 'messages/:id' => 'messages#create'
       resources :messages

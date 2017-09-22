@@ -261,7 +261,7 @@ class Child extends Component {
     return this.context.object;
   }
 
-  value() {
+  defaultValue() {
     if (!this.context.object) {
       return null;
     }
@@ -269,7 +269,7 @@ class Child extends Component {
   }
 
   strValue() {
-    let v = this.value();
+    let v = this.defaultValue();
     return v ? v.toString() : null;
   }
 }
@@ -317,16 +317,42 @@ class Label extends Child {
 }
 
 class TextField extends Child {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ""
+    };
+
+    this.onTextChange = this.textChange.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({
+      value: (this.props.value || this.defaultValue() || "")
+    });
+  }
+
+  setText(value) {
+    this.setState({
+      value
+    });
+  }
+
+  textChange(e) {
+    this.setText(event.target.value);
+  }
+
   render() {
     let myProps = { 
       name: this.name(), 
       type: "text", 
       id: this.htmlID() ,
-      "aria-describedby": this.htmlID()
+      "aria-describedby": this.htmlID(),
+      value: this.state.value
     };
 
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} defaultValue={this.strValue()}/>
+      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} onChange={this.onTextChange}/>
     );
   }
 }
@@ -367,21 +393,48 @@ class Hidden extends Child {
 }
 
 class TextArea extends Child {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ""
+    };
+
+    this.onTextChange = this.textChange.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({
+      value: (this.props.value || this.defaultValue() || "")
+    });
+  }
+
+  setText(value) {
+    this.setState({
+      value
+    });
+  }
+
+  textChange(e) {
+    this.setText(event.target.value);
+  }
+
   render() {
     let myProps = { 
       name: this.name(), 
       id: this.htmlID() ,
-      "aria-describedby": this.htmlID()
+      "aria-describedby": this.htmlID(),
+      value: this.state.value,
     };
     return(
-      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
+      <textarea {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} onChange={this.onTextChange}/>
     );
   }
 }
 
 class CheckBox extends Child {
   checked() {
-    return this.value();
+    console.log("CHECKED: " + this.defaultValue());
+    return this.defaultValue();
   }
 
   render() {
