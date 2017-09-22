@@ -431,23 +431,52 @@ class TextArea extends Child {
 }
 
 class CheckBox extends Child {
-  checked() {
-    return this.defaultValue();
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false
+    };
+
+    this.onChange = this.change.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({
+      checked: (this.props.checked || this.defaultChecked() || false)
+    });
+  }
+
+  setChecked(checked) {
+    checked = checked ? true : false;
+    this.setState({
+      checked
+    });
+  }
+
+  change(e) {
+    console.log("Checked: " + e.target.checked);
+    this.setChecked(e.target.checked);
+    this.props.onChange(e);
+  }
+
+  defaultChecked() {
+    return this.defaultValue() ? true : false
   }
 
   render() {
     let myProps = { 
       name: this.name(), 
       id: this.htmlID() ,
-      "aria-describedby": this.htmlID()
+      "aria-describedby": this.htmlID(),
+      checked: this.state.checked,
     };
 
-    let rest = Util.propsRemove(this.props, ["children"]);
+    let rest = Util.propsRemove(this.props, ["children", "onChange"]);
 
     return(
       <div className="form-checkbox flx-row">
         <input name={this.name()} type="hidden" value={false} />
-        <input type="checkbox" {...myProps} {...Util.propsMergeClassName(rest, "f-form-control")} defaultChecked={this.checked()}/>
+        <input type="checkbox" {...myProps} {...Util.propsMergeClassName(rest, "f-form-control")} onChange={this.onChange}/>
         <span className="mt-auto mb-auto">{this.props.children}</span>
       </div>
     );
