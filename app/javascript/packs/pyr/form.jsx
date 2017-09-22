@@ -28,7 +28,7 @@ class Form extends Component {
   }
 
   componentWillUnmount() {
-    console.log("FORM WILL UNMOUNT");
+    //console.log("FORM WILL UNMOUNT");
   }
 
   getChildContext() {
@@ -40,13 +40,11 @@ class Form extends Component {
   }
 
   setIsLoading(val=true) {
-    console.log("FORM SET ISLOADING: " + val);
     let stuff = { isLoading: val };
     if (val) {
       stuff.errors = null;
     }
     this.setState(stuff);
-    console.log("FORM END SET ISLOADING: " + val);
   }
 
   preSubmit() {
@@ -327,8 +325,9 @@ class TextField extends Child {
   }
 
   componentWillMount() {
+    let value = this.props.value || this.defaultValue() || "";
     this.setState({
-      value: (this.props.value || this.defaultValue() || "")
+      value
     });
   }
 
@@ -339,7 +338,7 @@ class TextField extends Child {
   }
 
   textChange(e) {
-    this.setText(event.target.value);
+    this.setText(e.target.value || "");
   }
 
   render() {
@@ -352,7 +351,7 @@ class TextField extends Child {
     };
 
     return(
-      <input {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} onChange={this.onTextChange}/>
+      <input type="text" {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} onChange={this.onTextChange}/>
     );
   }
 }
@@ -415,7 +414,7 @@ class TextArea extends Child {
   }
 
   textChange(e) {
-    this.setText(event.target.value);
+    this.setText(e.target.value || "");
   }
 
   render() {
@@ -433,7 +432,6 @@ class TextArea extends Child {
 
 class CheckBox extends Child {
   checked() {
-    console.log("CHECKED: " + this.defaultValue());
     return this.defaultValue();
   }
 
