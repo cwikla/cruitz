@@ -27,7 +27,7 @@ import {
 const ID_TO_STATE = {
   0: "New",
   100 : "Accepted",
-  "-100" : "Rejected",
+  "-100" : "Passed",
   200 : "Vetting",
   300 : "On Site",
   400 : "Background Checks",
@@ -57,12 +57,17 @@ class CandidateHeader extends Component {
     //let id ="candidate-header" + this.props.candidate.id;
 
     let fullName = candidate.first_name + " " + candidate.last_name;
-    let phoneNumber = candidate.phone_number || "No Phone";
+    let phoneNumber = Pyr.Util.scramble(candidate.phone_number || "No Phone");
     let email = candidate.email || "No Email";
     let description = candidate.description || "No Description";
 
+    let clazzes = ClassNames("candidate-header flx-noshrink");
+    if (candidate.state < 100) {
+      //clazzes.push("blurry-text");
+    }
+
     return (
-      <div className="candidate-header flx-noshrink">
+      <div className={clazzes} >
           <Pyr.Grid.Row className="title">
             <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
           </Pyr.Grid.Row>
@@ -429,7 +434,7 @@ class ShowSheet extends Sheet.Show {
       <div className="actions flx-row p-1 flx-start">
         <UserScore className="flx-align-content-start">88</UserScore>
         <Pyr.PrimaryButton className="accept ml-auto">Accept</Pyr.PrimaryButton>
-        <Pyr.Button className="reject">Reject</Pyr.Button>
+        <Pyr.Button className="reject">Pass</Pyr.Button>
       </div>
     );
   }

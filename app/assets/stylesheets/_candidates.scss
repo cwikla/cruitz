@@ -4,7 +4,7 @@
     .sheet {
       .header {
           border-bottom: 1px solid rgba(gray, 0.4);
-          .reject {
+          .pass {
               color: $secondary_color !important;
           }
       }
@@ -73,7 +73,7 @@
           color: $primary_color;
         }
   
-        &.rejected {
+        &.passed {
           color: orange;
         }
   

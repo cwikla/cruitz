@@ -156,6 +156,32 @@ function ajaxError(jaXHR, textStatus, errorThrown) {
    alert(errorThrown);
 }
 
+const LETTERS = "abcdefghijklmnopqrstuvwxyz";
+const IGNORE = "_-+@/{}[]()";
+const NUMBERS = "0123456789";
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function scramble(a) {
+  let s = "";
+  for(var x of a) {
+    if (IGNORE.includes(x)) {
+      s = s + x;
+    }
+    else if (NUMBERS.includes(x)) {
+      s = s + '6';
+    }
+    else {
+      s = s + LETTERS[getRandomInt(0, LETTERS.length-1)];
+    }
+  }
+  return s;
+}
+
 function getJSON(stuff) {
   let url = stuff.url;
   if (typeof url == 'string') {
@@ -437,6 +463,8 @@ const Util = {
   times,
   ajaxError,
   getJSON,
+  scramble,
+  getRandomInt,
   Method
 };
 
