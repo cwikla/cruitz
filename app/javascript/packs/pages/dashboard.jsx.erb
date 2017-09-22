@@ -108,6 +108,10 @@ class Dashboard extends Pyr.UserComponent {
     return this.props.subPage;
   }
 
+  getPageTitle() {
+    return Pyr.Util.capFirstLetter(this.getPage());
+  }
+
   getPage() {
     let subPage = this.getSubPage();
     if (subPage) {
@@ -150,11 +154,6 @@ class Dashboard extends Pyr.UserComponent {
 
   userChange(user) {
     console.log("User Change: " + JSON.stringify(user));
-  }
-
-  title() {
-    return this.getPage();
-    //return (this.state.page == CANDIDATES_PAGE) ? (this.state.job ? this.state.job.title : CANDIDATES_PAGE) : this.state.page;
   }
 
   setButtonCount(page, count=0) {
@@ -309,7 +308,7 @@ class Dashboard extends Pyr.UserComponent {
             <UserLabel user={this.context.user} />
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
-            <Pyr.SmallLabel className="nav-item">{this.state.page}</Pyr.SmallLabel>
+            <Pyr.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.SmallLabel>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-8 navbar-nav">
             <div className="nav-item ml-auto">{this.renderSearch()}</div>
@@ -432,9 +431,6 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   renderMain() {
-    let mainTitle = this.title();
-    let me = this;
-
     let page = this.getPage();
     let PageComponent = this.getPageComponent();
 
