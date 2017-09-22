@@ -3,7 +3,7 @@ class CreateInvites < ActiveRecord::Migration[5.1]
     create_table :invites do |t|
       t.timestamps
       t.timestamp :deleted_at
-      t.timestamp :sent_at, null: false
+      t.timestamp :sent_at
 
       t.integer :user_id, null: false
       t.integer :invited_user_id

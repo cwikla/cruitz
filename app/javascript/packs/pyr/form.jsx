@@ -259,7 +259,7 @@ class Child extends Component {
     return this.context.object;
   }
 
-  defaultValue() {
+  modelValue() {
     if (!this.context.object) {
       return null;
     }
@@ -267,7 +267,7 @@ class Child extends Component {
   }
 
   strValue() {
-    let v = this.defaultValue();
+    let v = this.modelValue();
     return v ? v.toString() : null;
   }
 }
@@ -325,7 +325,7 @@ class TextField extends Child {
   }
 
   componentWillMount() {
-    let value = this.props.value || this.defaultValue() || "";
+    let value = this.props.value || this.modelValue() || "";
     this.setState({
       value
     });
@@ -403,7 +403,7 @@ class TextArea extends Child {
 
   componentWillMount() {
     this.setState({
-      value: (this.props.value || this.defaultValue() || "")
+      value: (this.props.value || this.modelValue() || "")
     });
   }
 
@@ -442,7 +442,7 @@ class CheckBox extends Child {
 
   componentWillMount() {
     this.setState({
-      checked: (this.props.checked || this.defaultChecked() || false)
+      checked: (this.props.checked || this.modelChecked() || false)
     });
   }
 
@@ -454,13 +454,12 @@ class CheckBox extends Child {
   }
 
   change(e) {
-    console.log("Checked: " + e.target.checked);
     this.setChecked(e.target.checked);
     this.props.onChange(e);
   }
 
-  defaultChecked() {
-    return this.defaultValue() ? true : false
+  modelChecked() {
+    return this.modelValue() ? true : false;
   }
 
   render() {

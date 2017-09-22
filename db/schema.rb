@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(version: 20170921212654) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.datetime "sent_at", null: false
+    t.datetime "sent_at"
     t.integer "user_id", null: false
     t.integer "invited_user_id"
     t.string "first_name"

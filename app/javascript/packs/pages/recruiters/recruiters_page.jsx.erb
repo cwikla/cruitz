@@ -100,13 +100,8 @@ class InviteForm extends Component {
   }
 
   handleChange(e) {
-    console.log("HANDLE CHANGE: "  + e.target.value);
-    console.log(e.target);
-    console.log($(this.body));
-    console.log(this.body.defaultValue());
-
     if (e.target.checked) {
-      this.body.setText(this.body.defaultValue());
+      this.body.setText(this.body.modelValue());
     } 
     else {
       this.body.setText("");
