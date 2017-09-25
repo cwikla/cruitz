@@ -5,6 +5,14 @@
       #job-description {
         height: 15rem;
       }
+
+      .skill {
+        width: 25rem;
+      }
+    }
+
+    #skill-list {
+      flex-flow: row wrap;
     }
   }
 

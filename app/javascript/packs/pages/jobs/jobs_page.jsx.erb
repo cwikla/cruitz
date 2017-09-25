@@ -94,6 +94,31 @@ class JobItem extends Component {
 }
 
 class JobForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      skills: []
+    };
+
+    this.onAddSkill = this.addSkill.bind(this);
+    this.onRemoveSkill = this.removeSkill.bind(this);
+  }
+
+  addSkill(e) {
+    console.log("Adding skill: " + e.target.value);
+    let skills = this.state.skills.slice();
+    skills.push(e.target.value);
+
+    this.setState({
+      skills
+    });
+    this.skillField.setText("");
+  }
+
+  removeSkill(e) {
+    // FIXME
+  }
 
   methodToName(method) {
     switch (method) {
@@ -155,11 +180,35 @@ class JobForm extends Component {
               <Pyr.Form.Option value="2">Contractor</Pyr.Form.Option>
             </Pyr.Form.Select>
           </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="skill" className="skill">
+            <Pyr.Form.Label>Skill</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder="Add Skill" onSubmit={this.onAddSkill} ref={(node) => {this.skillField = node}}/>
+          </Pyr.Form.Group>
+
+                <Pyr.Form.Group name="skill" >
+          { Pyr.Util.times(this.state.skills.length, (i) => {
+              return (
+                  <Pyr.Form.Hidden key={"skill"+i} value={this.state.skills[i]} />
+              );
+            })
+          }
+                </Pyr.Form.Group>
+
+          <div id="skill-list">
+            { Pyr.Util.times(this.state.skills.length, (i) => {
+                return (
+                  <Pyr.PrimaryButton key={"skb"+i}>{this.state.skills[i]}</Pyr.PrimaryButton>
+                );
+              })
+            }
+          </div>
       
           <Pyr.Form.Group name="description">
             <Pyr.Form.Label>Description</Pyr.Form.Label>
             <Pyr.Form.TextArea placeholder="Enter description" rows="10" />
           </Pyr.Form.Group>
+
       
         </Pyr.Form.Form>
       <div className="form-footer">

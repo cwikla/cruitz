@@ -322,6 +322,7 @@ class TextField extends Child {
     };
 
     this.onTextChange = this.textChange.bind(this);
+    this.onKeyUp = this.keyUp.bind(this);
   }
 
   componentWillMount() {
@@ -331,6 +332,28 @@ class TextField extends Child {
     });
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.value) {
+      console.log("Setting value to: " + nextProps.value);
+      this.setState({
+        value: nextProps.value
+      });
+    }
+  }
+
+
+  keyUp(e) {
+    if ((e.keyCode == 13) && this.props.onSubmit) {
+      e.preventDefault();
+      this.props.onSubmit(e);
+      return;
+    }
+
+    if (this.props.onKeyUp) {
+      this.props.onKeyUp(e);
+    }
+  }
+
   setText(value) {
     this.setState({
       value
@@ -338,6 +361,12 @@ class TextField extends Child {
   }
 
   textChange(e) {
+    if ((e.keyCode == 13) && (this.props.onSubmit)) {
+      console.log(e);
+      this.submit(e);
+      return;
+    }
+
     this.setText(e.target.value || "");
   }
 
@@ -350,8 +379,10 @@ class TextField extends Child {
       value: this.state.value
     };
 
+    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp"]);
+
     return(
-      <input type="text" {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} onChange={this.onTextChange}/>
+      <input type="text" {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>
     );
   }
 }
