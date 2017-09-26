@@ -24,6 +24,9 @@ import {
   CANDIDATES_URL
 } from '../const';
 
+const ACCEPTED_STATE = 100;
+const REJECTED_STATE = -100;
+
 const ID_TO_STATE = {
   0: "New",
   100 : "Accepted",
@@ -69,7 +72,7 @@ class CandidateHeader extends Component {
     return (
       <div className={clazzes} >
           <Pyr.Grid.Row className="title">
-            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Name:</Pyr.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
+            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Candidate:</Pyr.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row>
             <Pyr.Grid.ColHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel><span className="">{phoneNumber}</span></Pyr.Grid.ColHalf>
@@ -382,6 +385,45 @@ class ShowSheet extends Sheet.Show {
       job: null,
       showMessages: true
     };
+
+    this.onAccept = this.accept.bind(this);
+    this.onReject = this.reject.bind(this);
+  }
+
+  stateUpdate(state) {
+    let candidate = this.props.selected;
+
+    let url = Pyr.URL(CANDIDATES_URL).push(candidate.id);
+    candidate = Object.assign({}, candidate, { state });
+
+    Pyr.getJSON({
+      url: url,
+      context: this,
+      type: Pyr.Method.PUT,
+      data: { candidate : { state } },
+      //contentType:"application/json; charset=utf-8",
+
+    }).done((data, textStatus, jaXHR) => {
+      this.setCandidate(data.candidate);
+
+    }).fail((jaXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+
+    });
+  }
+
+  accept(e) {
+    this.stateUpdate(ACCEPTED_STATE);
+  }
+
+  reject(e) {
+    this.stateUpdate(REJECTED_STATE);
+  }
+
+  setCandidate(candidate) {
+    console.log(candidate);
+    this.props.onAddItem(candidate);
+    this.props.onSelect(candidate);
   }
 
   setJob(job) {
@@ -429,12 +471,14 @@ class ShowSheet extends Sheet.Show {
     return CandidatesPage.key(item);
   }
 
-  renderHeader() {
+  renderHeader(candidate) {
+    console.log("RENDER HEADER");
+    console.log(candidate);
     return (
       <div className="actions flx-row p-1 flx-start">
-        <UserScore className="flx-align-content-start">88</UserScore>
-        <Pyr.PrimaryButton className="accept ml-auto">Accept</Pyr.PrimaryButton>
-        <Pyr.Button className="pass">Pass</Pyr.Button>
+        <UserScore className="flx-align-content-start">88</UserScore>:{candidate.state}
+        <Pyr.PrimaryButton className="accept ml-auto" onClick={this.onAccept}>Accept</Pyr.PrimaryButton>
+        <Pyr.Button className="pass" onClick={this.onReject}>Pass</Pyr.Button>
       </div>
     );
   }
@@ -578,6 +622,7 @@ class CandidatesPage extends Page {
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadSelected={this.onLoadSelected}
+        onAddItem={this.onAddItem}
       />
     );
 

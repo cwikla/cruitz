@@ -135,7 +135,7 @@ class Base extends Pyr.UserComponent {
     );
   }
 
-  renderHeader() {
+  renderHeader(selected) {
     return null;
   }
 

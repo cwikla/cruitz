@@ -12,4 +12,23 @@ class CandidatesController < ApplicationController
     cid = hid()
     Message.thread_for_candidate(cid)
   end
+
+  def update
+    puts "PARAMS #{params.inspect}"
+    cid = hid()
+    @candidate = current_user.candidates.find(cid)
+    if @candidate.update(candidates_params)
+      return render json: @candidate
+    else
+      return render_create_error json: @candidate
+    end
+  end
+
+  private
+
+  def candidates_params
+    params.require(:candidate).permit(:state)
+  end
+
+
 end
