@@ -29,23 +29,35 @@ const REJECTED_STATE = -100;
 
 const ID_TO_STATE = {
   0: "New",
-  100 : "Accepted",
-  "-100" : "Passed",
-  200 : "Vetting",
-  300 : "On Site",
-  400 : "Background Checks",
-  1000 : "Hired!",
+  100 : "Accept",
+  "-100" : "Pass",
+  1000 : "Hire",
   "-666" : "SPAM",
-  "-1000" : "Recalled",
-  "-5000" : "Cancelled",
+  "-1000" : "Recall",
+  "-5000" : "Cancel",
 };
 
-function stateString(sid) {
+const NEXT_STATES = {
+  0: [100, -100],
+  100: [1000, -100],
+  "-100": [100],
+  1000: [-1000],
+  "-666": [100],
+  "-5000": [],
+};
+  
+
+function stateToName(sid) {
   if (sid in ID_TO_STATE) {
     return ID_TO_STATE[sid];
   }
 
   return "Unknown";
+}
+
+function validNextState(sid) {
+  let nexts = NEXT_STATES[sid];
+  return nexts ? sid in nexts : false;
 }
 
 class CandidateHeader extends Component {
@@ -104,7 +116,7 @@ class CandidateItem extends Component {
   render() {
     let candidate = this.props.candidate;
     let recruiter = candidate.recruiter;
-    let state = Pyr.Util.squish(stateString(candidate.state));
+    let state = Pyr.Util.squish(stateToName(candidate.state));
 
     let id = "candidate-" + candidate.id;
     let allClass = ClassNames("item candidate-item flx-row");
@@ -386,11 +398,9 @@ class ShowSheet extends Sheet.Show {
       showMessages: true
     };
 
-    this.onAccept = this.accept.bind(this);
-    this.onReject = this.reject.bind(this);
   }
 
-  stateUpdate(state) {
+  candidateStateUpdate(state) {
     let candidate = this.props.selected;
 
     let url = Pyr.URL(CANDIDATES_URL).push(candidate.id);
@@ -412,16 +422,12 @@ class ShowSheet extends Sheet.Show {
     });
   }
 
-  accept(f, e) {
-    //console.log("F");
-    //console.log(f);
-    //console.log("E");
-    //console.log(e);
-    this.stateUpdate(ACCEPTED_STATE);
-  }
-
-  reject(e) {
-    this.stateUpdate(REJECTED_STATE);
+  candidateStateChange(sid, e) {
+    console.log("F");
+    console.log(sid);
+    console.log("E");
+    console.log(e);
+    this.candidateStateUpdate(sid);
   }
 
   setCandidate(candidate) {
@@ -475,15 +481,40 @@ class ShowSheet extends Sheet.Show {
     return CandidatesPage.key(item);
   }
 
+  renderButtons(curState) {
+    let self = this;
+    let nexts = NEXT_STATES[curState];
+
+    return (
+      <div className="ml-auto">
+      {
+        nexts.map( (state, pos) => {
+          let sname = stateToName(state);
+  
+          if (pos == 0) {
+            return (
+              <Pyr.PrimaryButton key={state} className={"ml-auto "+ sname} onClick={self.candidateStateChange.bind(self, state)}>{sname}</Pyr.PrimaryButton>
+            );
+          }
+          return ( 
+            <Pyr.Button key={state} className="pass" onClick={self.candidateStateChange.bind(self, state)}>{sname}</Pyr.Button>
+          );
+        })
+      }
+      </div>
+    );
+  }
+
   renderHeader(candidate) {
     console.log("RENDER HEADER");
     console.log(candidate);
-    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateString(candidate.state));
+    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateToName(candidate.state));
+
+
     return (
       <div className={clazzes}>
         <UserScore className="flx-align-content-start">88</UserScore>:{candidate.state}
-        <Pyr.PrimaryButton className="accept ml-auto" onClick={() => this.onAccept(candidate.state)}>Accept</Pyr.PrimaryButton>
-        <Pyr.Button className="pass" onClick={this.onReject}>Pass</Pyr.Button>
+        { this.renderButtons(candidate.state) }
       </div>
     );
   }
