@@ -1,3 +1,4 @@
+
 .page.candidates {
 
   .show {
@@ -69,28 +70,7 @@
   
   .index .sheet {
     .item {
-        &.new {
-          color: $primary_color;
-        }
-  
-        &.passed {
-          color: orange;
-        }
-  
-        &.spam {
-          color: red;
-        }
-  
-        &.accepted,
-        &.vetting,
-        &.on-site,
-        &.background-checks {
-          color: $secondary_color;
-        }
-  
-        &.hired {
-          color: $primary_color;
-        }
+      @extend %state-hover;
     }
   
     .candidate-item {

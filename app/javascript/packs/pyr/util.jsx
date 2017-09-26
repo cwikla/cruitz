@@ -259,7 +259,7 @@ class ClassNamesObj  {
   }
   
   toString() {
-    return this.arr.join(" ");
+    return this.arr.join(" ").toLowerCase();
   }
   
   classes() {

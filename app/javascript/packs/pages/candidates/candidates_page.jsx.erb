@@ -113,7 +113,7 @@ class CandidateItem extends Component {
        allClass.push("selected");
     }
 
-    allClass.push(state.toLowerCase());
+    allClass.push("state").push(state.toLowerCase());
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -412,7 +412,11 @@ class ShowSheet extends Sheet.Show {
     });
   }
 
-  accept(e) {
+  accept(f, e) {
+    //console.log("F");
+    //console.log(f);
+    //console.log("E");
+    //console.log(e);
     this.stateUpdate(ACCEPTED_STATE);
   }
 
@@ -474,10 +478,11 @@ class ShowSheet extends Sheet.Show {
   renderHeader(candidate) {
     console.log("RENDER HEADER");
     console.log(candidate);
+    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateString(candidate.state));
     return (
-      <div className="actions flx-row p-1 flx-start">
+      <div className={clazzes}>
         <UserScore className="flx-align-content-start">88</UserScore>:{candidate.state}
-        <Pyr.PrimaryButton className="accept ml-auto" onClick={this.onAccept}>Accept</Pyr.PrimaryButton>
+        <Pyr.PrimaryButton className="accept ml-auto" onClick={() => this.onAccept(candidate.state)}>Accept</Pyr.PrimaryButton>
         <Pyr.Button className="pass" onClick={this.onReject}>Pass</Pyr.Button>
       </div>
     );
