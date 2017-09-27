@@ -532,6 +532,9 @@ class ShowSheet extends Sheet.Show {
     let clazzes = ClassNames(this.state.showMessages ? "" : "hide");
     let recruiter = candidate.recruiter;
 
+    console.log("RECRUITER ITEM CANDIDATE");
+    console.log(candidate);
+
     return (
       <Pyr.Grid.Row className="candidate-item">
         <Pyr.Grid.Col className="flx-col left">
