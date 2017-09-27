@@ -5,9 +5,6 @@
     .sheet {
       .header {
           border-bottom: 1px solid rgba(gray, 0.4);
-          .state {
-              color: $secondary_color !important;
-          }
       }
   
       .scroll.inner {
@@ -70,7 +67,7 @@
   
   .index .sheet {
     .item {
-      @extend %state-hover;
+      @extend %state;
     }
   
     .candidate-item {

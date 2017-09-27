@@ -133,7 +133,7 @@ class CandidateItem extends Component {
        allClass.push("selected");
     }
 
-    allClass.push("state").push(state.toLowerCase());
+    allClass.push("state").push(state).push("hover");
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -492,21 +492,22 @@ class ShowSheet extends Sheet.Show {
   renderButtons(curState) {
     let self = this;
     let nexts = NEXT_STATES[curState];
+    let name = stateToName(curState);
 
     return (
       <div className="ml-auto">
       {
         nexts.map( (state, pos) => {
-          let name = stateToName(state);
+          let nextName = stateToName(state);
           let action = stateToAction(state);
   
           if (pos == 0) {
             return (
-              <Pyr.PrimaryButton key={state} className={"ml-auto "+ name} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.PrimaryButton>
+              <Pyr.PrimaryButton key={state} className={"ml-auto "+ nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.PrimaryButton>
             );
           }
           return ( 
-            <Pyr.Button key={state} className={name} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.Button>
+            <Pyr.Button key={state} className={nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.Button>
           );
         })
       }
@@ -515,9 +516,13 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderHeader(candidate) {
+    if (!candidate) {
+      return null;
+    }
+
     console.log("RENDER HEADER");
     console.log(candidate);
-    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateToName(candidate.state));
+    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateToName(candidate.state)).push("background");
 
 
     return (

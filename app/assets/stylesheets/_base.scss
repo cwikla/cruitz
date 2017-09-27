@@ -374,97 +374,84 @@ label {
 .state, %state {
   &.new {
     color: $new_color;
-    b-background-color: rgba($new_color, 0.05);
-  }
-
-  &.passed {
-    color: $passed_color;
-    b-background-color: rgba($passed_color, 0.05);
-  }
-
-  &.spam {
-    color: $spam_color;
-    b-background-color: rgba($spam_color, 0.05);
-  }
-
-  &.accepted {
-    color: $accepted_color;
-    b-background-color: rgba($accepted_color, 0.05);
-  }
-
-  &.vetting {
-    color: $vetting_color;
-    b-background-color: rgba($vetting_color, 0.05);
-  }
-
-  &.on-site {
-    color: $on_site_color;
-    b-background-color: rgba($on_site_color, 0.05);
-  }
-
-  &.background-checks {
-    color: $background_checks_color;
-    b-background-color: rgba($background_checks_color, 0.05);
-  }
-
-  &.hired {
-    color: $hired_color;
-    b-background-color: rgba($hired_color, 0.05);
-  }
-}
-
-.state-hover, %state-hover {
-  @extend %state;
-
-  &.new {
-    &:hover {
+    &.background {
+      background-color: rgba($new_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($new_color, 0.15);
     }
   }
 
   &.passed {
-    &:hover {
+    color: $passed_color;
+    &.background {
+      background-color: rgba($passed_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($passed_color, 0.15);
     }
   }
 
   &.spam {
-    &:hover {
+    color: $spam_color;
+    &.background {
+      background-color: rgba($spam_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($spam_color, 0.15);
     }
   }
 
   &.accepted {
-    &:hover {
+    color: $accepted_color;
+    &.background {
+      background-color: rgba($accepted_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($accepted_color, 0.15);
     }
   }
 
   &.vetting {
-    &:hover {
+    color: $vetting_color;
+    &.background {
+      background-color: rgba($vetting_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($vetting_color, 0.15);
     }
   }
 
   &.on-site {
-    &:hover {
+    color: $on_site_color;
+    &.background {
+      background-color: rgba($on_site_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($on_site_color, 0.15);
     }
   }
 
   &.background-checks {
-    &:hover {
+    color: $background_checks_color;
+    &.background {
+      background-color: rgba($background_checks_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($background_checks_color, 0.15);
     }
   }
 
   &.hired {
-    &:hover {
+    color: $hired_color;
+    &.background {
+      background-color: rgba($hired_color, 0.05);
+    }
+    &.hover:hover {
       background-color: rgba($hired_color, 0.15);
     }
   }
 }
-
 
 @import 'item';
 @import 'messages';
