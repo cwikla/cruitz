@@ -28,13 +28,13 @@ const ACCEPTED_STATE = 100;
 const REJECTED_STATE = -100;
 
 const ID_TO_STATE = {
-  0: "New",
-  100 : "Accept",
-  "-100" : "Pass",
-  1000 : "Hire",
-  "-666" : "SPAM",
-  "-1000" : "Recall",
-  "-5000" : "Cancel",
+  0: { name: "New", action: "New"},
+  100 : {name: "Accepted", action: "Accept"},
+  "-100" : {name: "Passed", action: "Pass"},
+  1000 : {name: "Hired", action: "Hire"},
+  "-666" : {name: "SPAM",action: "SPAM"},
+  "-1000" : {name: "Recalled", action: "Recall"},
+  "-5000" : {name: "Cancelled", action: "Cancel"},
 };
 
 const NEXT_STATES = {
@@ -49,7 +49,15 @@ const NEXT_STATES = {
 
 function stateToName(sid) {
   if (sid in ID_TO_STATE) {
-    return ID_TO_STATE[sid];
+    return ID_TO_STATE[sid].name;
+  }
+
+  return "Unknown";
+}
+
+function stateToAction(sid) {
+  if (sid in ID_TO_STATE) {
+    return ID_TO_STATE[sid].action;
   }
 
   return "Unknown";
@@ -489,15 +497,16 @@ class ShowSheet extends Sheet.Show {
       <div className="ml-auto">
       {
         nexts.map( (state, pos) => {
-          let sname = stateToName(state);
+          let name = stateToName(state);
+          let action = stateToAction(state);
   
           if (pos == 0) {
             return (
-              <Pyr.PrimaryButton key={state} className={"ml-auto "+ sname} onClick={self.candidateStateChange.bind(self, state)}>{sname}</Pyr.PrimaryButton>
+              <Pyr.PrimaryButton key={state} className={"ml-auto "+ name} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.PrimaryButton>
             );
           }
           return ( 
-            <Pyr.Button key={state} className="pass" onClick={self.candidateStateChange.bind(self, state)}>{sname}</Pyr.Button>
+            <Pyr.Button key={state} className={name} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.Button>
           );
         })
       }

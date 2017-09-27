@@ -90,6 +90,10 @@ label {
   background-color: $primary_color !important;
 }
 
+.btn {
+  color: $secondary_color !important;
+}
+
 .btn-primary {
   background-color: $secondary_color !important;
   border-color: $secondary_color !important;
@@ -282,6 +286,7 @@ label {
   padding-left: 5rem;
   padding-right: 5rem;
 }
+
 
 .social {
   padding-left: 1rem;
