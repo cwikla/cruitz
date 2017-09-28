@@ -106,14 +106,16 @@ class JobForm extends Component {
   }
 
   addSkill(e) {
-    console.log("Adding skill: " + e.target.value);
-    let skills = this.state.skills.slice();
-    skills.push(e.target.value);
+    let value = e.target.value;
+    if (value && value.length > 1) {
+      let skills = this.state.skills.slice();
 
-    this.setState({
-      skills
-    });
-    this.skillField.setText("");
+      skills.push(value);
+      this.setState({
+        skills
+      });
+      this.skillField.setText("");
+    }
   }
 
   removeSkill(e) {
@@ -198,7 +200,7 @@ class JobForm extends Component {
           <div id="skill-list">
             { Pyr.Util.times(this.state.skills.length, (i) => {
                 return (
-                  <Pyr.PrimaryButton key={"skb"+i}>{this.state.skills[i]}</Pyr.PrimaryButton>
+                  <Pyr.FancyLabel key={"skb"+i}>{this.state.skills[i]}</Pyr.FancyLabel>
                 );
               })
             }
@@ -333,10 +335,12 @@ class ShowSheet extends Sheet.Show {
 }
 
 class NewSheet extends Sheet.New {
+  static contextTypes = Pyr.NoticeContextTypes;
 
   success(data, textStatus, jqXHR) {
     this.props.onJobCreate(data.job);
     super.success(data, textStatus, jqXHR);
+    this.context.setNotice("Job Created");
   }
 
   title() {
@@ -381,7 +385,6 @@ class JobsPage extends Page {
   }
 
   actionSheet(action) {
-    console.log("JOB ACTION: " + action);
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

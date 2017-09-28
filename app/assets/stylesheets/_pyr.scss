@@ -95,6 +95,20 @@
   }
 }
 
+.notice {
+  z-index: 5000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba($secondary_color, 0.8);
+  color: white;
+  line-height: 2rem;
+  font-size: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+
 @include media-breakpoint-down(xs) {
   .hide-below-xs {
     display: none;

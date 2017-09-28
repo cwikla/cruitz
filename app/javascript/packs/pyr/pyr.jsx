@@ -153,10 +153,12 @@ class MagicDate extends Component {
   }
 }
 
+const UserContextTypes = {
+  user: PropTypes.object
+};
+
 class UserComponent extends Component {
-  static contextTypes = {
-    user: PropTypes.object
-  }
+  static contextTypes = UserContextTypes;
 
   userChange(user) {
     // nothing to see here
@@ -277,6 +279,11 @@ const Fade = (props) => (
     </CSSTransitionGroup>
 );
 
+const NoticeContextTypes = {
+  setNotice: PropTypes.func,
+  notice: PropTypes.node
+};
+
 class NoticeProvider extends Component {
   static childContextTypes = {
     setNotice: PropTypes.func,
@@ -316,14 +323,9 @@ class NoticeProvider extends Component {
   }
 }
 
-class NoticeComponent extends Component {
-  static contextTypes = {
-    setNotice: PropTypes.func,
-    notice: PropTypes.node
-  }
-}
+class Notice extends Component {
+  static contextTypes = NoticeContextTypes;
 
-class Notice extends NoticeComponent {
   constructor(props) {
     super(props);
 
@@ -403,7 +405,7 @@ class Notice extends NoticeComponent {
 
     return (
       <Fade in_or_out={this.state.show ? "in" : "out"}>
-        <div className="notice">{this.context.notice}</div>
+        <div className="notice"><div className="ninner">{this.context.notice}</div></div>
       </Fade>
     );
   }
@@ -472,6 +474,7 @@ const Pyr = {
   ajaxError,
   getJSON,
   Grid,
+  UserContextTypes,
   UserProvider,
   UserComponent,
   Icon,
@@ -495,7 +498,7 @@ const Pyr = {
   FullScreen,
   PieChart,
   RouterProps,
-  NoticeComponent,
+  NoticeContextTypes,
   NoticeProvider,
   Notice
 };
