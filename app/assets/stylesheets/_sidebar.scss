@@ -64,7 +64,7 @@
 }
 
 .sidebar-button:hover {
-  color: $sidebar_hover_color;
+  color: $sidebar_hover_color !important;
   background-color: $sidebar_hover_background_color;
 }
 .sidebar-button.selected, .sidebar-header.selected {
