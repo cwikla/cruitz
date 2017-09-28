@@ -138,7 +138,7 @@ class Content extends Component {
   }
 }
 
-class Footer extends Pyr.NoticeComponent {
+class Footer extends Component {
   constructor(props) {
     super(props);
 
@@ -151,7 +151,6 @@ class Footer extends Pyr.NoticeComponent {
     if (this.props.onSuccess) {
       this.props.onSuccess(data, textStatus, jqXHR)
     }
-    this.context.setNotice("Hello there ball");
   }
 
   render() {
