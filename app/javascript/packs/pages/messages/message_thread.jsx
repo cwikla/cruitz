@@ -139,6 +139,19 @@ class Content extends Component {
 }
 
 class Footer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onPreSubmit = this.preSubmit.bind(this);
+  }
+
+  preSubmit(data, textStatus, jqXHR) {
+    this.textField.setText("");
+    if (this.props.onSuccess) {
+      this.props.onSuccess(data, textStatus, jqXHR)
+    }
+  }
+
   render() {
     return (
       <div className="message-footer z-depth-1">
@@ -146,7 +159,7 @@ class Footer extends Component {
           model="message"
           url={Pyr.URL(MESSAGES_URL).push(this.props.message.id)}
           id={"thread-form" + "-" + this.props.message.id}
-          onSuccess={this.props.onSuccess}
+          onSuccess={this.onPreSubmit}
           ref={(node) => this.form = node}
           reset
         >
@@ -156,6 +169,7 @@ class Footer extends Component {
                 placeholder={this.props.label + "..."}
                 ref={(node) => this.textField = node}
                 autoFocus
+                autoClear
               />
             </Pyr.Form.Group> 
             <Pyr.Form.SubmitButton target={this}>{this.props.label}</Pyr.Form.SubmitButton>

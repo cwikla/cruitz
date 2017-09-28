@@ -379,7 +379,7 @@ class TextField extends Child {
       value: this.state.value
     };
 
-    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp"]);
+    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp", "autoClear"]);
 
     return(
       <input type="text" {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>

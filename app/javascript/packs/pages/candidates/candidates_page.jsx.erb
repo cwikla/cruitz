@@ -608,12 +608,13 @@ class ShowSheet extends Sheet.Show {
 
     console.log("RENDER HEADER");
     console.log(candidate);
-    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateToName(candidate.state)).push("background");
+    let stateName = stateToName(candidate.state);
+    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateName).push("background");
 
 
     return (
       <div className={clazzes}>
-        <UserScore className="flx-align-content-start">88</UserScore>:{candidate.state}
+        <UserScore className="flx-align-content-start">88</UserScore>
         { this.renderButtons(candidate.state) }
       </div>
     );
