@@ -476,6 +476,15 @@ label {
   }
 }
 
+.notice {
+  z-index: 5000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10rem;
+}
+
 @import 'item';
 @import 'message_thread';
 @import 'messages';

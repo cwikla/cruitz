@@ -141,20 +141,45 @@ class Content extends Component {
 class Footer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      notice: false
+    };
 
     this.onPreSubmit = this.preSubmit.bind(this);
+    this.onHideNotice = this.hideNotice.bind(this);
   }
 
   preSubmit(data, textStatus, jqXHR) {
     this.textField.setText("");
+
+    this.setState({
+      notice: true
+    });
+
     if (this.props.onSuccess) {
       this.props.onSuccess(data, textStatus, jqXHR)
     }
   }
 
+  hideNotice() {
+    console.log("Hide Notice");
+    let notice = false;
+    this.setState({
+      notice
+    });
+  }
+
+  renderNotice() {
+    if (this.state.notice) {
+      return (<Pyr.Notice onHide={this.onHideNotice}>Hello there ball</Pyr.Notice>);
+    }
+    return null;
+  }
+
   render() {
     return (
       <div className="message-footer z-depth-1">
+        { this.renderNotice() }
         <Pyr.Form.Form
           model="message"
           url={Pyr.URL(MESSAGES_URL).push(this.props.message.id)}

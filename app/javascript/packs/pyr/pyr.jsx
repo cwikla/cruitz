@@ -37,6 +37,8 @@ const APPEAR_TIME = 250;
 const ENTER_TIME = 250;
 const LEAVE_TIME = 250;
 
+const SHOW_TIME = 3000;
+
 const ESCAPE_KEY = 27;
 
 const Loading = (props) => (
@@ -275,6 +277,73 @@ const Fade = (props) => (
     </CSSTransitionGroup>
 );
 
+class Notice extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      show: true
+    };
+
+    this.timer = null;
+
+    this.onShow = this.show.bind(this);
+    this.onHide = this.hide.bind(this);
+  }
+
+  clear() {
+    if (this.timer) {
+      let tt = this.timer;
+      this.timer = null;
+      clearTimeout(tt);
+    }
+  }
+
+  show() {
+    if (this.props.onShow) {
+      this.props.onShow();
+    }
+  }
+
+  hide() {
+    if (this.props.onHide) {
+      this.props.onHide();
+    }
+  }
+
+  componentWillMount() {
+    if (this.timer) {
+      return;
+    }
+
+    this.timer = setTimeout( () => {
+      this.clear();
+      this.onHide();
+
+      this.setState({
+          show: false
+      });
+    }, this.props.delay || SHOW_TIME);
+    this.onShow();
+  }
+
+  componentWillUnmount() {
+    this.clear();
+  }
+
+  render() {
+    if (!this.state.show) {
+      return null;
+    }
+
+    return (
+      <Fade in_or_out={this.state.show ? "in" : "out"}>
+        <div className="notice red">{this.props.children}</div>
+      </Fade>
+    );
+  }
+}
+
 class FullScreen extends Component {
   constructor(props) {
     super(props);
@@ -359,5 +428,6 @@ const Pyr = {
   FullScreen,
   PieChart,
   RouterProps,
+  Notice
 };
 export default Pyr;
