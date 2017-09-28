@@ -81,11 +81,15 @@ class FlatButton extends Component {
 }
 
 const Label = (props) => (
-    <label {...Util.propsMergeClassName(props, "pyr-label")}>{props.children}</label>
+  <label {...Util.propsMergeClassName(props, "pyr-label")}>{props.children}</label>
 );
 
 const SmallLabel = (props) => (
-    <label {...Util.propsMergeClassName(props, "small-label hidden-sm-down")}>{props.children}</label>
+  <label {...Util.propsMergeClassName(props, "small-label hidden-sm-down")}>{props.children}</label>
+);
+
+const ButtonLabel = (props) => (
+  <label {...Util.propsMergeClassName(props, "btn pyr-label")}>{props.children}</label>
 );
 
 class MagicDate extends Component {
@@ -333,6 +337,7 @@ const Pyr = {
   Icon,
   Label,
   SmallLabel,
+  ButtonLabel,
   Form, 
   Util,
   Method,

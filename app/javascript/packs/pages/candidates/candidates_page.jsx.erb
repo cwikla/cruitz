@@ -369,6 +369,82 @@ class RecruiterBlurb extends Component {
   }
 }
 
+const ExperienceItem = (props) => (
+  <div className="item">
+    <div><Pyr.Label>{props.item.title} @ {props.item.organization}</Pyr.Label> </div>
+    <div><Pyr.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.Label></div>
+    <div>{props.item.description}</div>
+  </div>
+);
+
+class Experience extends Component {
+  render() {
+    if (!this.props.experience || this.props.experience.length == 0) {
+      return null;
+    }
+
+    let experience = this.props.experience;
+
+    return (
+      <div id="experience" className="cv-section">
+      {
+        experience.map( (item, pos) => {
+          return (<ExperienceItem item={item} key={"exp"+pos}/>);
+        })
+      }
+      </div>
+    );
+  }
+}
+
+const EducationItem = (props) => (
+  <div className="item">
+    <div><Pyr.Label>{props.item.degree} @ {props.item.school}</Pyr.Label> </div>
+    <div><Pyr.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.Label></div>
+  </div>
+);
+
+class Education extends Component {
+  render() {
+    if (!this.props.education || this.props.education.length == 0) {
+      return null;
+    }
+
+    let education = this.props.education;
+
+    return (
+      <div id="education" className="cv-section">
+      {
+        education.map( (item, pos) => {
+          return (<EducationItem item={item} key={"ed"+pos}/>);
+        })
+      }
+      </div>
+    );
+  }
+}
+
+class Skills extends Component {
+  render() {
+    if (!this.props.skills || this.props.skills.length == 0) {
+      return null;
+    }
+
+    let skills = this.props.skills;
+
+    return (
+      <div id="skills" className="cv-section">
+        {
+          skills.map( (item, pos) => {
+            return (<Pyr.ButtonLabel key={"sk"+pos}>{item}</Pyr.ButtonLabel>);
+          })
+        }
+      </div>
+    );
+  }
+}
+
+
 class CandidateCVItem extends Component {
   render() {
     let candidate = this.props.candidate;
@@ -390,9 +466,12 @@ class CandidateCVItem extends Component {
           job={job}
           onSetItem={this.props.onSetItem}
         />
+        <Pyr.Label className="cv-label">Experience</Pyr.Label>
+        <Experience experience={candidate.experience} />
         <Pyr.Label className="cv-label">Education</Pyr.Label>
+        <Education education={candidate.education} />
         <Pyr.Label className="cv-label">Skills</Pyr.Label>
-        <Pyr.Label className="cv-label">Notes</Pyr.Label>
+        <Skills skills={candidate.skills} />
         <Pyr.Label className="cv-label">Messages</Pyr.Label>
         <RecruiterMessage 
           className=""
@@ -554,11 +633,13 @@ class ShowSheet extends Sheet.Show {
     return (
       <Pyr.Grid.Row className="candidate-item">
         <Pyr.Grid.Col className="flx-col left">
+          <Pyr.Scroll>
             <CandidateCVItem 
               candidate={candidate} 
               isSelected={isSelected} 
               job={this.state.job}
             />
+          </Pyr.Scroll>
  
         </Pyr.Grid.Col>
         <Pyr.Grid.Col className="col-3 right">

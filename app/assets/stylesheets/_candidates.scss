@@ -34,6 +34,13 @@
           background-color: white;
           border: 1px solid rgba(gray, 0.4);
           border-radius: 10px;
+
+          .cv-section {
+            .item {
+              padding-bottom: 1rem;
+            }
+            padding-bottom: 1rem;
+          }
         }
   
         .recruiter-blurb {
@@ -87,7 +94,10 @@
   }
 
   .cv-label {
-    border-top: 1px solid rgba(gray, 0.4);
+    font-size: 1.2rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(gray, 0.4);
+    margin-bottom: 0.25rem;
   }
   
   .candidate-action {
