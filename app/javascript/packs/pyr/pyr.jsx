@@ -89,7 +89,7 @@ const SmallLabel = (props) => (
 );
 
 const ButtonLabel = (props) => (
-  <label {...Util.propsMergeClassName(props, "btn pyr-label")}>{props.children}</label>
+  <label {...Util.propsMergeClassName(props, "btn-primary")}>{props.children}</label>
 );
 
 class MagicDate extends Component {
