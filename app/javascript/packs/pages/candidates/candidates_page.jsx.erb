@@ -281,7 +281,7 @@ class RecruiterMessage extends Component {
   render() {
     let candidate = this.props.candidate;
     if (!candidate.root_message_id) {
-      return null;
+      return ( <Pyr.Label>No messages</Pyr.Label>);
     }
 
     console.log("message id");
