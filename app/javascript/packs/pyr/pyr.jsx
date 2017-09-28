@@ -277,12 +277,58 @@ const Fade = (props) => (
     </CSSTransitionGroup>
 );
 
-class Notice extends Component {
+class NoticeProvider extends Component {
+  static childContextTypes = {
+    setNotice: PropTypes.func,
+    notice: PropTypes.node
+  };
+
+  getChildContext() {
+    return {
+      setNotice: this.onSetNotice,
+      notice: this.state.notice
+    }
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
-      show: true
+      notice: null
+    };
+
+    this.onSetNotice = this.setNotice.bind(this);
+    this.onHideNotice = this.hideNotice.bind(this);
+  }
+
+  setNotice(notice) {
+    this.setState({
+      notice
+    });
+  }
+
+  hideNotice(notice) {
+    this.setNotice(null);
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
+class NoticeComponent extends Component {
+  static contextTypes = {
+    setNotice: PropTypes.func,
+    notice: PropTypes.node
+  }
+}
+
+class Notice extends NoticeComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      show: false
     };
 
     this.timer = null;
@@ -296,7 +342,26 @@ class Notice extends Component {
       let tt = this.timer;
       this.timer = null;
       clearTimeout(tt);
+      this.context.setNotice(null);
     }
+    this.setState({
+      show: false
+    });
+  }
+
+  kickoff() {
+    if (this.timer) {
+      clear();
+    }
+
+    this.timer = setTimeout( () => {
+      this.clear();
+      this.onHide();
+    }, this.props.delay || SHOW_TIME);
+    this.setState({
+      show: true
+    });
+    this.onShow();
   }
 
   show() {
@@ -312,19 +377,19 @@ class Notice extends Component {
   }
 
   componentWillMount() {
-    if (this.timer) {
-      return;
+    if (this.context.notice) {
+      this.kickoff();
     }
+  }
 
-    this.timer = setTimeout( () => {
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (this.context.notice != nextContext.notice) {
       this.clear();
-      this.onHide();
 
-      this.setState({
-          show: false
-      });
-    }, this.props.delay || SHOW_TIME);
-    this.onShow();
+      if (nextContext.notice) {
+        this.kickoff();
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -332,17 +397,19 @@ class Notice extends Component {
   }
 
   render() {
-    if (!this.state.show) {
+    if (!this.context.notice || !this.state.show) {
       return null;
     }
 
     return (
       <Fade in_or_out={this.state.show ? "in" : "out"}>
-        <div className="notice red">{this.props.children}</div>
+        <div className="notice">{this.context.notice}</div>
       </Fade>
     );
   }
 }
+
+
 
 class FullScreen extends Component {
   constructor(props) {
@@ -428,6 +495,8 @@ const Pyr = {
   FullScreen,
   PieChart,
   RouterProps,
+  NoticeComponent,
+  NoticeProvider,
   Notice
 };
 export default Pyr;
