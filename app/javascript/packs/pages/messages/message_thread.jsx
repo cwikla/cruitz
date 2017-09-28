@@ -34,11 +34,16 @@ class ThreadList extends Component {
     }
   
     let thid = "thread-" + this.props.message.root_message_id || this.props.message.id;
+
+    let skipCount = this.props.skipCount || 0;
   
     return (
       <div id={thid} className="message-thread flx-1">
         {
           this.props.thread.map((msg, pos) => {
+            if (pos < skipCount) {
+              return null;
+            }
             return ( <ThreadItem message={msg}
                       job={this.props.job}
                       isSelected={msg.id == this.props.message.id}
@@ -126,6 +131,7 @@ class Content extends Component {
           thread={this.props.thread}
           message={this.props.message}
           job={this.props.job}
+          skipCount={this.props.skipCount}
         />
       </Pyr.Scroll>
     );
@@ -257,6 +263,7 @@ class MessageThread extends Pyr.UserComponent {
           thread={this.state.thread}
           onScroll={this.props.onScroll}
           job={this.props.job}
+          skipCount={this.props.skipCount}
         >
         </Content>
     );

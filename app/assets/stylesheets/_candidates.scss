@@ -21,13 +21,14 @@
         .left {
           padding-left: 2rem;
           padding-right: 0.5rem;
+          padding-bottom: 1rem;
         }
 
         .right {
           padding-left: 0.5rem;
           padding-right: 2rem;
         }
-  
+
         .cv-item {
           padding: 1rem;
           background-color: white;
@@ -79,11 +80,14 @@
   }
   
   .recruiter-message {
-    background-color: lighten($secondary_navbar_background_color, 0.5);
   }
   
-  .a-candidate-header {
-    padding: 1rem;
+  .candidate-header {
+    padding-bottom: 1rem;
+  }
+
+  .cv-label {
+    border-top: 1px solid rgba(gray, 0.4);
   }
   
   .candidate-action {

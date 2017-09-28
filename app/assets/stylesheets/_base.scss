@@ -352,7 +352,7 @@ label {
 
 .blurry-text {
   color: transparent;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.15);
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.20);
 }
 
 input[type="text"]::placeholder {
@@ -378,7 +378,7 @@ label {
       background-color: rgba($new_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($new_color, 0.15);
+      background-color: rgba($new_color, 0.20);
     }
   }
 
@@ -388,7 +388,7 @@ label {
       background-color: rgba($passed_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($passed_color, 0.15);
+      background-color: rgba($passed_color, 0.20);
     }
   }
 
@@ -398,7 +398,7 @@ label {
       background-color: rgba($spam_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($spam_color, 0.15);
+      background-color: rgba($spam_color, 0.20);
     }
   }
 
@@ -408,7 +408,7 @@ label {
       background-color: rgba($accepted_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($accepted_color, 0.15);
+      background-color: rgba($accepted_color, 0.20);
     }
   }
 
@@ -418,7 +418,7 @@ label {
       background-color: rgba($vetting_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($vetting_color, 0.15);
+      background-color: rgba($vetting_color, 0.20);
     }
   }
 
@@ -428,7 +428,7 @@ label {
       background-color: rgba($on_site_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($on_site_color, 0.15);
+      background-color: rgba($on_site_color, 0.20);
     }
   }
 
@@ -438,7 +438,7 @@ label {
       background-color: rgba($background_checks_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($background_checks_color, 0.15);
+      background-color: rgba($background_checks_color, 0.20);
     }
   }
 
@@ -448,12 +448,13 @@ label {
       background-color: rgba($hired_color, 0.05);
     }
     &.hover:hover {
-      background-color: rgba($hired_color, 0.15);
+      background-color: rgba($hired_color, 0.20);
     }
   }
 }
 
 @import 'item';
+@import 'message_thread';
 @import 'messages';
 @import 'recruiters';
 @import 'candidates';

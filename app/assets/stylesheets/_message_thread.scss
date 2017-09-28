@@ -1,0 +1,90 @@
+.message-thread {
+  
+  .user-avatar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.8rem;
+    img {
+      width: #{$avatar_width}rem;
+      height: #{$avatar_width}rem;
+      border-radius: 50%;
+    }
+  }
+  
+  .thread-item {
+    padding: 0.5rem 0 0.5rem 0;
+    margin: 0rem 1rem 0 1rem;
+  
+    .created-at {
+      font-size: 0.85rem;
+      padding-left: #{$avatar_width+3}rem;
+      padding-right: #{$avatar_width+3}rem;
+      color: $gray_color;
+    }
+  
+    .content {
+       padding: 0.75rem;
+       border-radius: 20px;
+    }
+  
+    &.mine {
+      .content {
+        background-color: lighten($primary_light_color, 0.5);
+      }
+      padding-right: #{$avatar_width + 2}rem;
+    }
+    &.recruiter {
+      .content {
+        background-color: lighten($secondary_light_color, 0.5);
+      }
+      padding-left: #{$avatar_width + 2}rem;
+    }
+  }
+  
+  .message-header {
+    color: white;
+    background-color: $secondary_navbar_background_color;
+  
+    .title {
+      padding: 2rem;
+      font-size: 2rem;
+      line-height: 2rem;
+      text-align: center;
+    }
+  }
+  
+  .message-footer {
+    .form-group {
+      padding: 0;
+    }
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    background-color: white;
+  
+    input::placeholder {
+      color: rgba(#000, 0.5);
+    }
+  
+  }
+}
+  
+@include media-breakpoint-down(xs) {
+  .action.show .sheet {
+    .thread-item.mine {
+      padding-right: #{0.5}rem;
+    }
+    .thread-item.recruiter {
+      padding-right: #{0.5}rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .action.show .sheet {
+    .thread-item.mine {
+      padding-right: #{1.0}rem;
+    }
+    .thread-item.recruiter {
+      padding-left: #{1.0}rem;
+    }
+  }
+}
