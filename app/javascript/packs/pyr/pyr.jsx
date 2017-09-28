@@ -84,6 +84,10 @@ const Label = (props) => (
   <label {...Util.propsMergeClassName(props, "pyr-label")}>{props.children}</label>
 );
 
+const FancyLabel = (props) => (
+  <label {...Util.propsMergeClassName(props, "fancy pyr-label")}>{props.children}</label>
+);
+
 const SmallLabel = (props) => (
   <label {...Util.propsMergeClassName(props, "small-label hidden-sm-down")}>{props.children}</label>
 );
@@ -336,6 +340,7 @@ const Pyr = {
   UserComponent,
   Icon,
   Label,
+  FancyLabel,
   SmallLabel,
   ButtonLabel,
   Form, 
