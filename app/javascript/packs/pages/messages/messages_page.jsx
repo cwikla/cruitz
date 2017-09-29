@@ -146,8 +146,9 @@ class ShowSheet extends Sheet.Show {
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
     return (
-      <div className="flx-row">
-        <div className="d-flex flx-2 flx-col">
+      <Pyr.Grid.Row>
+        <Pyr.Grid.Col className="col-9 flx-col left">
+        <div className="d-flex flx-col">
           <MessageRender
             message={message}
             job={this.props.jobMap[message.job_id]}
@@ -157,8 +158,11 @@ class ShowSheet extends Sheet.Show {
             onAddItem={this.props.onAddItem}
           />
         </div>
-        <RecruiterBlurb className="flx-1" recruiter={getRecruiter(this.user(), message)} />
-      </div>
+        </Pyr.Grid.Col>
+        <Pyr.Grid.Col className="right">
+        <RecruiterBlurb className="" recruiter={getRecruiter(this.user(), message)} />
+        </Pyr.Grid.Col>
+      </Pyr.Grid.Row>
     );
   }
 
