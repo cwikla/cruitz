@@ -376,10 +376,12 @@ class TextField extends Child {
       type: "text", 
       id: this.htmlID() ,
       "aria-describedby": this.htmlID(),
-      value: this.state.value
     };
+    if (!this.props.unmanaged) {
+      myProps.value = this.state.value;
+    }
 
-    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp", "autoClear"]);
+    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
 
     return(
       <input type="text" {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>

@@ -271,8 +271,6 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   selectJob(job, e) {
-    alert("SELECT JOB");
-
     this.setState({
       page: CANDIDATES_PAGE,
       job: job,
@@ -288,13 +286,16 @@ class Dashboard extends Pyr.UserComponent {
     return (
       <div>
         <Pyr.Form.Form
+          id="search"
           model="search"
           object={{search: null}}
           url={url}
           className="search-form"
+          onSuccess={(data) => { this.context.setNotice("Unimplemented"); } }
+          reset
         >
           <Pyr.Form.Group name="search">
-            <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..."/>
+            <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
           </Pyr.Form.Group>
         </Pyr.Form.Form>
       </div>

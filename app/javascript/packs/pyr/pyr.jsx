@@ -157,12 +157,17 @@ class MagicDate extends Component {
   }
 }
 
+const NoticeContextTypes = {
+  setNotice: PropTypes.func,
+  notice: PropTypes.node
+};
+
 const UserContextTypes = {
   user: PropTypes.object
 };
 
 class UserComponent extends Component {
-  static contextTypes = UserContextTypes;
+  static contextTypes = Object.assign({}, UserContextTypes, NoticeContextTypes);
 
   userChange(user) {
     // nothing to see here
@@ -282,11 +287,6 @@ const Fade = (props) => (
       { Util.firstKid(props.children) }
     </CSSTransitionGroup>
 );
-
-const NoticeContextTypes = {
-  setNotice: PropTypes.func,
-  notice: PropTypes.node
-};
 
 class NoticeProvider extends Component {
   static childContextTypes = {

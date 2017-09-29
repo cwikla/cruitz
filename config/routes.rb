@@ -17,6 +17,9 @@ Rails.application.routes.draw do
       get 'settings' => 'settings#show'
       put 'settings' => 'settings#update'
 
+      post 'search(/:model)' => 'search#show'
+      get 'search(/:model)' => 'search#show'
+
       resources :ratings
       resources :companies
       resources :candidates
