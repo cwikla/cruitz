@@ -118,8 +118,16 @@ class JobForm extends Component {
     }
   }
 
-  removeSkill(e) {
-    // FIXME
+  removeSkill(pos, e) {
+    if (pos < 0 || pos >= this.state.skills.length) {
+      return;
+    }
+
+    let skills = this.state.skills;
+    skills = skills.slice(0,pos).concat(skills.slice(pos+1, skills.length));
+    this.setState({
+      skills
+    });
   }
 
   methodToName(method) {
@@ -132,6 +140,22 @@ class JobForm extends Component {
         return "Add";
         break;
     }
+  }
+
+  renderSkillList() {
+    return (
+          <div id="skill-list">
+            { Pyr.Util.times(this.state.skills.length, (i) => {
+                return (
+                  <Pyr.FancyButton 
+                    key={"skb"+i}
+                    onClick={this.removeSkill.bind(this, i)}
+                  >{this.state.skills[i]}</Pyr.FancyButton>
+                );
+              })
+            }
+          </div>
+    );
   }
 
   render() {
@@ -197,15 +221,8 @@ class JobForm extends Component {
             }
           </Pyr.Form.Group>
 
-          <div id="skill-list">
-            { Pyr.Util.times(this.state.skills.length, (i) => {
-                return (
-                  <Pyr.FancyLabel key={"skb"+i}>{this.state.skills[i]}</Pyr.FancyLabel>
-                );
-              })
-            }
-          </div>
-      
+          { this.renderSkillList() }
+
           <Pyr.Form.Group name="description">
             <Pyr.Form.Label>Description</Pyr.Form.Label>
             <Pyr.Form.TextArea placeholder="Enter description" rows="10" />

@@ -90,6 +90,10 @@ const FancyLabel = (props) => (
   <label {...Util.propsMergeClassName(props, "fancy pyr-label")}>{props.children}</label>
 );
 
+const FancyButton = (props) => (
+  <div className="flx-row fancy"><label {...Util.propsMergeClassName(Util.propsRemove(props, "onClick"), "pyr-button")}>{props.children}</label> <Pyr.Icon onClick={props.onClick} name="times-circle"/></div>
+);
+
 const SmallLabel = (props) => (
   <label {...Util.propsMergeClassName(props, "small-label hidden-sm-down")}>{props.children}</label>
 );
@@ -480,6 +484,7 @@ const Pyr = {
   Icon,
   Label,
   FancyLabel,
+  FancyButton,
   SmallLabel,
   ButtonLabel,
   Form, 
