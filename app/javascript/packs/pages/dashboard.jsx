@@ -287,17 +287,16 @@ class Dashboard extends Pyr.UserComponent {
 
     return (
       <div>
-      <Pyr.Form.Form
-        model="search"
-        object={{search: null}}
-        url={url}
-        className="search-form"
-        ref={(node) => {this.form = node;}}
-      >
-        <Pyr.Form.Group name="search">
-          <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..."/>
-        </Pyr.Form.Group>
-      </Pyr.Form.Form>
+        <Pyr.Form.Form
+          model="search"
+          object={{search: null}}
+          url={url}
+          className="search-form"
+        >
+          <Pyr.Form.Group name="search">
+            <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..."/>
+          </Pyr.Form.Group>
+        </Pyr.Form.Form>
       </div>
     );
   }

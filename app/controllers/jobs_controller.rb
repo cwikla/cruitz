@@ -12,11 +12,17 @@ class JobsController < ApplicationController
   end
 
   def create
-    request.headers.each do |k,v|
-      puts "HEADER: #{k} => #{v}"
-    end
+    #request.headers.each do |k,v|
+      #puts "HEADER: #{k} => #{v}"
+    #end
 
-    @job = current_user.jobs.build(job_params)
+    jparms = job_params.dup
+    jparms.delete(:skill) # FIXME
+
+    puts "PARAMS"
+    puts "#{jparms.inspect}"
+
+    @job = current_user.jobs.build(jparms)
     if @job.save
       return render json: @job
     else
@@ -57,6 +63,6 @@ class JobsController < ApplicationController
   private
 
   def job_params
-    params.require(:job).permit(:title, :description, :location, :time_commit)
+    params.require(:job).permit(:title, :description, :location, :time_commit, :skill)
   end
 end
