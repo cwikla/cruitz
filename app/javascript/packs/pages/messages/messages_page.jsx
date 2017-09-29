@@ -1,6 +1,3 @@
-<% include Rails.application.routes.url_helpers %>
-<% include Rails.application.helpers %>
-
 import React, { 
   Component
 } from 'react';
@@ -23,6 +20,7 @@ import {
   UserAvatar
 } from '../../util/user';
 
+import RecruiterBlurb from '../shared/recruiter_blurb';
 
 import ThreadItem, { 
   THREAD_ID 
@@ -38,14 +36,15 @@ function MID(message) {
   return "message-" + message.id;
 }
 
+function getRecruiter(user, message) {
+  if (message.user.id == user.id) {
+    return message.from_user;
+  }
+  return message.user;
+}
+
 class MessageItem extends Sheet.Item {
 
-  other(message) {
-    if (message.user.id == this.user().id) {
-      return message.from_user;
-    }
-    return message.user;
-  }
 
   render() {
     let message = this.props.message;
@@ -68,15 +67,15 @@ class MessageItem extends Sheet.Item {
     }
 
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
-    let recruiter = this.other(message);
+    let theRecruiter = getRecruiter(this.user(), message);
 
     return (
       <div className={allClass} id={id}>
         <Grid.Column className="recruiter col-2 d-flex">
           <UserAvatar
             className={"flx-1"}
-            userId={recruiter.id}
-            name={recruiter.first_name}
+            userId={theRecruiter.id}
+            name={theRecruiter.first_name}
             small
           />
         </Grid.Column>
@@ -147,15 +146,18 @@ class ShowSheet extends Sheet.Show {
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
     return (
-      <div className="d-flex flx-1 flx-col">
-        <MessageRender
-          message={message}
-          job={this.props.jobMap[message.job_id]}
-          onBack={this.onBack}
-          url={Pyr.URL(MESSAGES_URL)}
-          onSetItems={this.props.onSetItems}
-          onAddItem={this.props.onAddItem}
-        />
+      <div className="flx-row">
+        <div className="d-flex flx-2 flx-col">
+          <MessageRender
+            message={message}
+            job={this.props.jobMap[message.job_id]}
+            onBack={this.onBack}
+            url={Pyr.URL(MESSAGES_URL)}
+            onSetItems={this.props.onSetItems}
+            onAddItem={this.props.onAddItem}
+          />
+        </div>
+        <RecruiterBlurb className="flx-1" recruiter={getRecruiter(this.user(), message)} />
       </div>
     );
   }

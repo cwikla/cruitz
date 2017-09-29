@@ -11,6 +11,7 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 import MessageThread from '../messages/message_thread';
+import RecruiterBlurb from '../shared/recruiter_blurb';
 
 import {
   UserAvatar,
@@ -100,7 +101,7 @@ class CandidateHeader extends Component {
           </Pyr.Grid.Row>
           <Pyr.Grid.Row>
             <Pyr.Grid.ColHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Hmmmmmm</Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf className="cost"><Pyr.SmallLabel>Est. Cost:</Pyr.SmallLabel> $27,000</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="cost"><Pyr.SmallLabel>Est. Commission:</Pyr.SmallLabel> $27,000</Pyr.Grid.ColHalf>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row className="flx-row-stretch">
             <Pyr.Icon name="linkedin-square" className="social"/>
@@ -305,68 +306,6 @@ class RecruiterMessage extends Component {
     );
   }
 
-}
-
-class RecruiterBlurb extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: null,
-    };
-  }
-
-  setMessage(message) {
-    this.setState({
-      message
-    });
-  }
-
-  getMessage() {
-    if (!this.props.candidate.root_message_id) {
-      return;
-    }
-
-    console.log(this.props.candidate);
-    let url = Pyr.URL(MESSAGES_URL).push(this.props.candidate.root_message_id);
-
-    Pyr.getJSON({
-      url: url,
-      context: this,
-
-    }).done((data, textStatus, jaXHR) => {
-      this.setMessage(data.message);
-
-    }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
-
-    });
-  }
-
-  componentDidMount() {
-    this.getMessage();
-  }
-  render() {
-    return (
-      <div className="recruiter-blurb">
-        <div className="icon flx-row flx-start">
-          <Pyr.IconButton name="flag" className="spam"/>
-          <Pyr.IconButton name="eye" className="ml-auto"/>
-        </div>
-
-        <UserAvatar
-          userId={this.props.recruiter.id}
-          name={this.props.recruiter.first_name}
-        />
-        <Stars rating={3.7}/>
-        <div className="rate">64% acceptance rate</div>
-        <div className="company">Awesome Recruiting, Inc</div>
-        <div className="location">San Francisco, CA</div>
-        <div className="blurb">I specialize in recruiting software engineers
-        from top 10 schools.  I have worked with Uber, Twitter,
-        BobCo and SallyCo.</div>
-      </div>
-    );
-  }
 }
 
 const ExperienceItem = (props) => (
@@ -644,7 +583,7 @@ class ShowSheet extends Sheet.Show {
  
         </Pyr.Grid.Col>
         <Pyr.Grid.Col className="col-3 right">
-          <RecruiterBlurb candidate={candidate} recruiter={recruiter}/>
+          <RecruiterBlurb recruiter={recruiter}/>
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );
