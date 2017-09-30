@@ -10,6 +10,7 @@ import {
 
 import {
   BrowserRouter as Router,
+  Link
 } from 'react-router-dom';
 
 import Pyr from '../pyr/pyr';
@@ -19,7 +20,8 @@ import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
 import MessagesPage from './messages/messages_page';
 import RecruitersPage from './recruiters/recruiters_page';
-import SettingsPage from './settings_page';
+import SettingsPage from './settings/settings_page';
+import MePage from './me/me_page';
 
 import {
   JOBS_PAGE,
@@ -28,6 +30,7 @@ import {
   SETTINGS_PAGE,
   MESSAGES_PAGE,
   SEARCH_PAGE,
+  ME_PAGE,
 
   JOBS_URL,
   CANDIDATES_URL,
@@ -49,7 +52,8 @@ const PAGE_MAP = {
   [CANDIDATES_PAGE.toLowerCase()]: CandidatesPage,
   [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,
   [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
-  [MESSAGES_PAGE.toLowerCase()]: MessagesPage
+  [MESSAGES_PAGE.toLowerCase()]: MessagesPage,
+  [ME_PAGE.toLowerCase()]: MePage,
 };
 
 
@@ -71,7 +75,7 @@ function same(a,b) {
 }
 
 const UserLabel = (props) => (
-  <div className="nav-item"><Pyr.Icon name="user" className="fa-fw"/><Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel></div>
+  <div className="nav-item" id="user" onClick={props.onClick}><Pyr.Icon name="user" className="fa-fw"/><Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel><Pyr.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
 
 
@@ -284,9 +288,8 @@ class Dashboard extends Pyr.UserComponent {
     let url = Pyr.URL(SEARCH_URL).push(page);
 
     return (
-      <div>
+      <div id="search">
         <Pyr.Form.Form
-          id="search"
           model="search"
           object={{search: null}}
           url={url}
@@ -306,7 +309,7 @@ class Dashboard extends Pyr.UserComponent {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <UserLabel user={this.context.user} />
+            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.context.user} /></Link>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
             <Pyr.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.SmallLabel>
@@ -371,7 +374,7 @@ class Dashboard extends Pyr.UserComponent {
             className="hidden-md-up"
             id="per-jobs"
             icon="hashtag"
-            url={PageURL(CANDIDATES_URL)}
+            url={PageURL(CANDIDATES_PAGE)}
             selected={this.state.job != null}
           />
           <Pyr.Scroll className="sidebar-scroll hidden-sm-down flx-1">
@@ -392,14 +395,14 @@ class Dashboard extends Pyr.UserComponent {
             icon="cubes"
             itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
             selected={isPage(page, RECRUITERS_PAGE)}
-            url={PageURL(RECRUITERS_URL)}
+            url={PageURL(RECRUITERS_PAGE)}
           >Recruiters</Sidebar.Header>
           <Sidebar.Header 
             id="settings"
             icon="gear"
             selected={isPage(page, SETTINGS_PAGE)}
             className="p-b-1"
-            url={PageURL(SETTINGS_URL)}
+            url={PageURL(SETTINGS_PAGE)}
           >Settings</Sidebar.Header>
         </Sidebar.Main>
     );

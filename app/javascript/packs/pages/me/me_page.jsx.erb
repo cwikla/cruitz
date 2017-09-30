@@ -1,0 +1,98 @@
+<% include Rails.application.routes.url_helpers %>
+<% include Rails.application.helpers %>
+
+import React, { 
+  Component
+} from 'react';
+
+import {
+  Redirect
+} from 'react-router-dom';
+
+
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+
+import Pyr from '../../pyr/pyr';
+import Page from '../page';
+import Sheet from '../sheet';
+import {
+  USERS_URL,
+  EDIT_ACTION
+} from '../const';
+
+class EditSheet extends Sheet.Edit {
+  constructor(props) {
+    super(props);
+
+    this.onLogout = this.logout.bind(this);
+  }
+
+  logout(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    Pyr.getJSON({
+      url: "<%= destroy_user_session_path %>",
+      type: Pyr.Method.DELETE
+    }).done(() => {
+      alert("Logged out");
+    });
+  }
+
+  renderForm() {
+    return (
+      <div className="me-index-header">
+          <div className="me-info p-1 d-flex flx-end">
+            <Pyr.PrimaryButton onClick={this.onLogout}><Pyr.Icon name="sign-out"/>Logout</Pyr.PrimaryButton>
+          </div>
+      </div>
+    );
+  }
+
+
+  renderTitle() {
+    let me = this.context.user;
+
+    return (
+      <span>{me.first_name} {me.last_name}</span>
+    );
+  }
+}
+
+class MePage extends Page {
+  showActionSheet() {
+    return true;
+  }
+
+  getAction() {
+    return EDIT_ACTION;
+  }
+
+  loadSelected(unused, onLoading) {
+    this.onSelect(this.context.user);
+  }
+
+
+  actionSheet(action) {
+    return (
+      <EditSheet
+        {...this.props}
+        items={this.state.items}
+        selected={this.state.selected}
+        onAction={this.onAction}
+        onUnaction={this.onUnaction}
+        onLoadSelected={this.onLoadSelected}
+      />
+    );
+    
+  }
+}
+
+function key(item) {
+  return "me-" + item.id;
+}
+MePage.key = key;
+
+export default MePage;

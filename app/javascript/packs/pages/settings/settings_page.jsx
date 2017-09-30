@@ -5,13 +5,13 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Pyr from '../pyr/pyr';
-import Page from './page';
-import Sheet from './sheet';
+import Pyr from '../../pyr/pyr';
+import Page from '../page';
+import Sheet from '../sheet';
 import {
   SETTINGS_URL,
   SHOW_ACTION
-} from './const';
+} from '../const';
 
 class SettingsForm extends Component {
 
@@ -102,8 +102,8 @@ class ShowSheet extends Sheet.Show {
 
   renderHeader() {
     return (
-      <div className="jobs-index-header">
-          <div className="recruiter-info p-1 d-flex flx-end">
+      <div className="settings-index-header">
+          <div className="info p-1 d-flex flx-end">
             <Pyr.Form.SubmitButton 
               target={this.target}
             ><Pyr.Icon name="save"/> Save</Pyr.Form.SubmitButton>

@@ -10,7 +10,6 @@ import {
 
 import {
   Link,
-  Route
 } from 'react-router-dom';
 
 import Pyr from '../pyr/pyr';

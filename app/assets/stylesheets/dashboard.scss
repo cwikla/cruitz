@@ -10,10 +10,15 @@
 
     input {
       border-color: $navbar_menu_color !important;
+
     }
   }
 
-  .small-label, .fa, .form-control {
+  #search:hover {
+    color: white !important;
+  }
+
+  .nav-item, .navbar, .form-control {
     color: $navbar_menu_color !important;
     font-size: 1rem;
    }
@@ -21,6 +26,17 @@
   .nav-item {
     margin: 0;
     padding-left: 0.5rem;
+
+    #arrow {
+      color: $navbar_background_color;
+    }
+
+    &#user:hover {
+      color: white !important;
+      #arrow {
+        color: white !important;
+      }
+    }
   }
 
   input[type=text] {
