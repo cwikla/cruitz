@@ -64,15 +64,20 @@ gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'hashids'
 
 #
-#source "http://pyr:akbash42@gems.cwikla.com" do
-  gem 'pyr_gem', :path => "../pyr/pyr_gem"
-  gem 'pyr_async', :path => "../pyr/pyr_async"
-  gem 'pyr_base', :path => "../pyr/pyr_base"
-  #gem 'pyr_base', '~> 8.0'
-  gem 'pyr_geo', :path => "../pyr/pyr_geo"
+source "http://pyr:akbash42@gems.cwikla.com" do
+  gem 'pyr_gem', "~> 7.0.0"
+  #gem 'pyr_gem', :path => "../pyr/pyr_gem"
+  gem 'pyr_push', "~> 6.1.0"
 #  gem 'pyr_push', :path => "../pyr/pyr_push"
-  gem 'jpyr', :path => "../pyr/jpyr"
-#end
+  gem 'pyr_async', "~> 4.0.0"
+  #gem 'pyr_async', :path => "../pyr/pyr_async"
+  gem 'pyr_geo', "~> 4.1.0"
+  #gem 'pyr_geo', :path => "../pyr/pyr_geo"
+  gem 'jpyr', "~> 4.0.0"
+  #gem 'jpyr', :path => "../pyr/jpyr"
+  gem 'pyr_base', '~> 10.0.0'
+  #gem 'pyr_base', :path => "../pyr/pyr_base"
+end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
