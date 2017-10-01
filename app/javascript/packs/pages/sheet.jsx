@@ -347,6 +347,17 @@ class Edit extends ModalForm {
     super(props);
   }
 
+  title() {
+    return "Edit.Sheet title goes here";
+  }
+
+  renderTitle() {
+    return (
+      <h3 className="ml-auto mr-auto">{this.title()}</h3>
+    );
+  }
+
+
 }
 
 const Sheet = {

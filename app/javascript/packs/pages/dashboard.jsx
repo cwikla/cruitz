@@ -75,7 +75,11 @@ function same(a,b) {
 }
 
 const UserLabel = (props) => (
-  <div className="nav-item" id="user" onClick={props.onClick}><Pyr.Icon name="user" className="fa-fw"/><Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel><Pyr.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
+  <div 
+    className="nav-item"
+    id="user" 
+    onClick={props.onClick}
+  ><Pyr.Icon name="user" className="fa-fw" /><Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel><Pyr.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
 
 

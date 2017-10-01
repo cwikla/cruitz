@@ -18,14 +18,29 @@ import Page from '../page';
 import Sheet from '../sheet';
 import {
   USERS_URL,
-  EDIT_ACTION
+  NEW_ACTION
 } from '../const';
 
-class EditSheet extends Sheet.Edit {
+class NewSheet extends Sheet.New {
+  getInitState(props) {
+    return {
+      open: false
+    };
+  }
   constructor(props) {
     super(props);
 
     this.onLogout = this.logout.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({
+      open: true
+    });
+  }
+
+  toRoot() {
+    window.location = "/"; // HMMMm
   }
 
   logout(e) {
@@ -34,14 +49,31 @@ class EditSheet extends Sheet.Edit {
     }
 
     Pyr.getJSON({
+      remote: "/", // don't use /api/v1
       url: "<%= destroy_user_session_path %>",
       type: Pyr.Method.DELETE
     }).done(() => {
-      alert("Logged out");
+      this.toRoot();
     });
   }
 
+  close(e) {
+    this.setState({
+      open: false
+    });
+
+    super.close(e);
+  }
+
+  render() {
+    if (!this.state.open) {
+      return (<Redirect to="/messages" />);
+    }
+    return super.render();
+  }
+
   renderForm() {
+
     return (
       <div className="me-index-header">
           <div className="me-info p-1 d-flex flx-end">
@@ -52,12 +84,9 @@ class EditSheet extends Sheet.Edit {
   }
 
 
-  renderTitle() {
+  title() {
     let me = this.context.user;
-
-    return (
-      <span>{me.first_name} {me.last_name}</span>
-    );
+    return me.first_name + " " + me.last_name;
   }
 }
 
@@ -67,23 +96,20 @@ class MePage extends Page {
   }
 
   getAction() {
-    return EDIT_ACTION;
+    return NEW_ACTION;
   }
 
   loadSelected(unused, onLoading) {
     this.onSelect(this.context.user);
   }
 
-
   actionSheet(action) {
     return (
-      <EditSheet
+      <NewSheet
         {...this.props}
-        items={this.state.items}
-        selected={this.state.selected}
+        selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
-        onLoadSelected={this.onLoadSelected}
       />
     );
     

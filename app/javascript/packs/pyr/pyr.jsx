@@ -276,6 +276,7 @@ class UserProvider extends Component {
 
 const Fade = (props) => (
     <CSSTransitionGroup
+      id="fade"
       transitionName={"fade-" + (props.in_or_out || "in")}
       transitionAppear={true}
       transitionEnter={false}

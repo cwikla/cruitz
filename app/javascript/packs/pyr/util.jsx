@@ -36,6 +36,7 @@ class URLObj {
     
     this.searchParams = new URLSearchParams(this.parser.search);
     this.pathList = this.ptol(this.parser.pathname);
+    this.remote = REMOTE_URL;
   }
   
   parser() {
@@ -126,8 +127,12 @@ class URLObj {
     return (a ? a : '');
   }
 
+  setRemote(base) {
+    this.remote = base;
+  }
+
   toRemote() {
-    return (new URLObj(REMOTE_URL)).push(this.toString());
+    return (new URLObj(this.remote)).push(this.toString());
   }
 
   toString() {
@@ -191,6 +196,11 @@ function getJSON(stuff) {
   if (!data) {
     data = url.data().toString();
   }
+
+  if (stuff.remote) {
+    url.setRemote(stuff.remote);
+  }
+
   url = url.toRemote();
 
   console.log("GETJSON: " + url);

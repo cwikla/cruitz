@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 
   authenticated :user do
     root 'dashboard#index'
-    match "*path", to: redirect('/'), via: :all
+    #match "*path", to: redirect('/'), via: :all
   end
 
 end
