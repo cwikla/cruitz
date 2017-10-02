@@ -1,3 +1,4 @@
+
 Rails.application.routes.draw do
 
   scope :api, defaults: { format: :json } do
@@ -41,5 +42,6 @@ Rails.application.routes.draw do
     root 'dashboard#index'
     #match "*path", to: redirect('/'), via: :all
   end
+
 
 end

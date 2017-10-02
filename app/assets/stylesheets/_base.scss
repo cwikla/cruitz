@@ -150,6 +150,12 @@ label {
   background-color: $primary_color;
 }
 
+.devise-info {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 7rem;
+}
+
 
 .navbar {
   font-size: 1rem;
@@ -174,12 +180,11 @@ label {
 .navbar-brand {
   color: $navbar_color !important;
   font-size: 1rem;
-  margin: 0;
+  padding-left: 1rem;
 }
 
 .navbar-brand:hover {
     color: $navbar_color !important;
-    font-weight: bold;
 }
 
 

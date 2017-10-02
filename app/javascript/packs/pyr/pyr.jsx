@@ -91,7 +91,7 @@ const FancyLabel = (props) => (
 );
 
 const FancyButton = (props) => (
-  <div className="flx-row fancy"><label {...Util.propsMergeClassName(Util.propsRemove(props, "onClick"), "pyr-button")}>{props.children}</label> <Pyr.Icon onClick={props.onClick} name="times-circle"/></div>
+  <div className="flx-row fancy"><label {...Util.propsMergeClassName(Util.propsRemove(props, "onClick"), "")}>{props.children}</label> <Pyr.Icon onClick={props.onClick} name="times-circle"/></div>
 );
 
 const SmallLabel = (props) => (

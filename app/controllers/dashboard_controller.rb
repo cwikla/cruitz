@@ -6,6 +6,10 @@ class DashboardController < ApplicationController
     #redirect_to employers_url
   end
 
+  def info
+    @user = current_user
+  end
+
   private 
 
   def check_registration

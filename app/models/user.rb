@@ -23,6 +23,10 @@ class User < ApplicationRecord
 
   belongs_to :company
 
+  def enough_info?
+    return !self.first_name.blank? && !self.last_name.blank?
+  end
+
   def new_candidates
     candidates.isnew
   end
@@ -73,6 +77,7 @@ class User < ApplicationRecord
   private
 
   def on_before_create
+    self.jti = SecureRandom.uuid
   end
 
   def on_after_create
