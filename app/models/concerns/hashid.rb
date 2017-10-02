@@ -15,7 +15,9 @@ module Hashid
     end
 
     def hashid(rid)
-      return rid if Rails.env.development?
+      return rid 
+
+      #if Rails.env.development?
 
       SIG[rid % SIG.length] + hashid_generator.encode(rid * MULT)
     end
