@@ -22,4 +22,10 @@ test:
   <<: *default
 
 production:
-  <<: *default
+  adapter: postgresql
+  encoding: utf8
+  database: d3k08inv482pi1
+  pool: 10
+  username: mdwzgblyobmfyl
+  password: 00b9e68883c646cd1097d674c70c4edbe6bb8f93466691fd7d995d74ff8d5a62
+
