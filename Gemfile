@@ -66,7 +66,7 @@ gem 'hashids'
 
 group :production do
   gem 'unicorn'
-  gem 'rails_12factor'
+  #gem 'rails_12factor'
 end
 
 #
