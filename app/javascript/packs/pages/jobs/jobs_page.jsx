@@ -334,6 +334,18 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
+  renderNone() {
+    return (
+      <div className="empty flx-col flx-align-center flx-justify-center">
+        <div className="">Welcome to <b>cruitz</b>!</div>
+        <p/>
+        <div>You currently have no open jobs. To begin receiving candidates from our recruiting network</div>
+        <div>add a new job.</div>
+      </div>
+    );
+  }
+
+
 }
 
 class ShowSheet extends Sheet.Show {

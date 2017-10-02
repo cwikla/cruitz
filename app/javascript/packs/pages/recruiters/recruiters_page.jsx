@@ -280,7 +280,7 @@ class RecruitersPage extends Page {
       context: this,
       loading: onLoading,
     }).done(function(data, textStatus, jaXHR) {
-        this.onSetItems(data.recruiters);
+        this.onSetItems(data.recruiters || []);
 
     }).fail(function(jaXHR, textStatus, errorThrown) {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);

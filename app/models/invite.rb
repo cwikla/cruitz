@@ -4,7 +4,7 @@ I'd like to invite you to #{APP_NAME} where I am managing all of my recruiters a
 candidates.
 
 It's free for you to sign up, use and send me candidates.  You can manage your outgoing candidates
-for free and find other openings to send candidates too.
+for free and find other companies and openings to send candidates to.
 EOM
 
 class Invite < ApplicationRecord

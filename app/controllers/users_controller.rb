@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def recruiters
-    @recruiters = params[:all] ? User.is_recruiter.all : current_user.recruiters # FIXME
+    @recruiters = params[:all] || true ? User.is_recruiter.all : current_user.recruiters # FIXME
     render json: @recruiters, each_serializer: RecruiterSerializer
   end
 

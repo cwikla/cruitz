@@ -5,12 +5,19 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
+import {
+  Link
+} from 'react-router-dom';
+
+
 import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
 
 import {
-  MESSAGES_URL
+  MESSAGES_URL,
+  JOBS_URL,
+
 } from '../const';
 
 import Page from '../page';
@@ -110,6 +117,21 @@ class IndexSheet extends Sheet.Index {
     return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
   }
 
+  renderNone() {
+    return (
+      <div className="empty flx-1 flx-row-stretch">
+        <div className="flx-1 flx-col-stretch flx-align-center ml-auto mr-auto">
+          <div className="">Welcome to <b>cruitz</b>!</div>
+          <p/>
+          <div>Since you are new here, you have no messages.  To begin, start by creating a <Link to={JOBS_URL}>new Job</Link></div>
+          <div>which will automatically alert our network of recruiters to your needs. As recruiters find</div>
+          <div>and submit candidates, you will begin to receive messages that might be questions about the job</div>
+          <div>or candidates for you to review.</div>
+        </div>
+      </div>
+    );
+  }
+
 }
 
 
@@ -196,6 +218,7 @@ class MessagesPage extends Page {
 
   reduceItems(messages) { // throw out all but the last from the thread
 
+    messages = messages || [];
     let threads = messages.reduce((mmap, msg) => {
       let threadId = msg.root_message_id || msg.id;
 
