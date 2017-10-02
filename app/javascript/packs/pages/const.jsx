@@ -18,6 +18,7 @@ export const SEARCH_URL = "/search";
 
 export const USERS_URL = "/users";
 export const INVITES_URL = "/invites";
+export const DESTROY_SESSION_URL = "/auth/sign_out";
 
 export const INDEX_ACTION = null;
 export const SHOW_ACTION = 'show';

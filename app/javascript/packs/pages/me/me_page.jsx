@@ -1,6 +1,3 @@
-<% include Rails.application.routes.url_helpers %>
-<% include Rails.application.helpers %>
-
 import React, { 
   Component
 } from 'react';
@@ -18,7 +15,8 @@ import Page from '../page';
 import Sheet from '../sheet';
 import {
   USERS_URL,
-  NEW_ACTION
+  NEW_ACTION,
+  DESTROY_SESSION_URL,
 } from '../const';
 
 class NewSheet extends Sheet.New {
@@ -50,7 +48,7 @@ class NewSheet extends Sheet.New {
 
     Pyr.getJSON({
       remote: "/", // don't use /api/v1
-      url: "<%= destroy_user_session_path %>",
+      url: DESTROY_SESSION_URL,
       type: Pyr.Method.DELETE
     }).done(() => {
       this.toRoot();
