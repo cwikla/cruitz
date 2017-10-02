@@ -89,6 +89,10 @@ class NewSheet extends Sheet.New {
 }
 
 class MePage extends Page {
+  name() {
+    return "Me";
+  }
+
   showActionSheet() {
     return true;
   }

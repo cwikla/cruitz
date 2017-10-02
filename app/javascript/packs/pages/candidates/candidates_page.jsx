@@ -651,6 +651,10 @@ class CandidatesPage extends Page {
     };
   }
 
+  name() {
+    return "Candidates";
+  }
+
   render_table() {
     return (
       <CandidateTable 

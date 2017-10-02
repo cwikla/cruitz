@@ -274,6 +274,10 @@ class ShowSheet extends Sheet.Show {
 }
 
 class RecruitersPage extends Page {
+  name() {
+    return "Recruiters";
+  }
+
   loadItems(onLoading) {
     Pyr.getJSON({
       url: this.props.url,

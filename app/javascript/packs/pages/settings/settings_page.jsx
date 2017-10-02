@@ -125,6 +125,10 @@ class ShowSheet extends Sheet.Show {
 }
 
 class SettingsPage extends Page {
+  name() {
+    return "Settings";
+  }
+
   showActionSheet() {
     return true;
   }

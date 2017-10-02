@@ -390,6 +390,10 @@ class NewSheet extends Sheet.New {
 }
 
 class JobsPage extends Page {
+  name() {
+    return "Jobs";
+  }
+
   getItems() {
     return this.props.jobs;
   }

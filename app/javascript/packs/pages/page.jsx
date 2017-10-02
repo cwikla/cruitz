@@ -51,6 +51,7 @@ class Page extends Pyr.UserComponent {
     let pos = fullName.search("Page");
     if (pos == -1) {
       alert("page.jsx: You need to define a name cuz you didn't name your subclass *Page");
+      alert(fullName);
     }
     let name = fullName.substring(0, pos);
     return name;

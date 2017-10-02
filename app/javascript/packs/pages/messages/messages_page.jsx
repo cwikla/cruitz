@@ -209,6 +209,10 @@ class MessagesPage extends Page {
     //this.onSetItems = this.setItems.bind(this);
   }
 
+  name() {
+    return "Messages";
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.props.jobs != prevProps.jobs) {
       let jobs = this.props.jobs || [];
