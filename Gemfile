@@ -63,7 +63,11 @@ gem 'tether-rails'
 gem 'bootstrap', '= 4.0.0.alpha6'
 
 gem 'hashids'
-gem 'unicorn'
+
+group :production do
+  gem 'unicorn'
+  gem 'rails_12factor'
+end
 
 #
 source "http://pyr:akbash42@gems.cwikla.com" do
