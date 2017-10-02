@@ -483,9 +483,8 @@ GEM
     aws-sigv4 (1.0.2)
     bcrypt (3.1.11)
     bindex (0.5.0)
-    bootstrap (4.0.0.beta)
+    bootstrap (4.0.0.alpha6)
       autoprefixer-rails (>= 6.0.3)
-      popper_js (~> 1.11.1)
       sass (>= 3.4.19)
     builder (3.2.3)
     byebug (9.1.0)
@@ -587,16 +586,15 @@ GEM
     paranoia (2.3.1)
       activerecord (>= 4.0, < 5.2)
     pg (0.21.0)
-    popper_js (1.11.1)
     puma (3.10.0)
     pyr_async (4.0.0)
       rails (~> 5.1.1)
       resque
       resque-scheduler
-    pyr_base (10.0.1)
+    pyr_base (10.1.0)
       aws-sdk
       aws-sdk-rails
-      bootstrap (~> 4.0.0.alpha6)
+      bootstrap (= 4.0.0.alpha6)
       cancan
       coffee-rails
       dalli
@@ -759,7 +757,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  bootstrap (~> 4.0.0.alpha6)
+  bootstrap (= 4.0.0.alpha6)
   byebug
   coffee-rails (~> 4.2)
   factory_girl_rails
@@ -772,7 +770,7 @@ DEPENDENCIES
   pg
   puma (~> 3.0)
   pyr_async (~> 4.0.0)!
-  pyr_base (~> 10.0.1)!
+  pyr_base (~> 10.1.0)!
   pyr_gem (~> 7.0.0)!
   pyr_geo (~> 4.1.0)!
   pyr_push (~> 6.1.0)!

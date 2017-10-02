@@ -374,13 +374,6 @@ class Dashboard extends Pyr.UserComponent {
             url={PageURL(CANDIDATES_PAGE)}
           >Candidates</Sidebar.Header>
 
-          <Sidebar.Header
-            className="hidden-md-up"
-            id="per-jobs"
-            icon="hashtag"
-            url={PageURL(CANDIDATES_PAGE)}
-            selected={this.state.job != null}
-          />
           <Pyr.Scroll className="sidebar-scroll hidden-sm-down flx-1">
             <Sidebar.Menu>
               {jobKids}
