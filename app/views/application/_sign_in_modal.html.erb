@@ -1,0 +1,49 @@
+<% content_for :modal_id, "sign-in" %>
+<% content_for :title, "Sign In" %>
+
+<div>
+For best demo experience use:<br/><br/>
+<b>Email: demo@cruitz.com</b><br/>
+<b>Password: demodemo</b>
+</div>
+<br/>
+<hr/>
+
+<form id="sign-in"
+      class="pyr-form form-horizontal"
+      action="<%= user_session_url :format => :json %>"
+      method="POST">
+    <%= token_tag nil %>
+
+    <div class="form-group">
+        <label for="user_email" class="form-label">Email</label>
+        <input type="text" id="user_email" name="user[email]" placeholder="Email" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+        <label for="user_password" class="form-label">Password</label>
+        <input id="user_password" type="password" id="user_password" name="user[password]" placeholder="Password" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+        <div class="controls">
+            <label class="checkbox">
+                <input type="hidden" name="user[remember_me]" value="0" />
+                <input type="checkbox" name="user[remember_me]" value="1"/>
+                Remember Me
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+      <div class="controls">
+        <a href="#" class="pyr-button ml-10" data-pyr-target-modal="register-modal">No Account?</a>
+        <span class="pipe"> | </span>
+        <a href="#" class="pyr-button mr-10" data-pyr-target-modal="forgot-password-modal">Forgot Your Password?</a>
+      </div>
+    </div>
+</form>
+
+<% content_for :footer do %>
+    <a href="#" class="btn btn-primary pyr-button" data-pyr-target-form="sign-in">Sign In</a>
+<% end %>
