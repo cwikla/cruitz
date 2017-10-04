@@ -27,6 +27,10 @@ class User < ApplicationRecord
   validates :last_name, presence: true
   validates :email, uniqueness: true # FIXME, this isn't good
 
+  def serializable_hash(options = nil) 
+    super(options).merge(confirmed_at: confirmed_at, unconfirmed_email: unconfirmed_email)
+  end
+
   def enough_info?
     return !self.first_name.blank? && !self.last_name.blank?
   end

@@ -37,7 +37,7 @@ module Hashid
     end
 
     def find_safe(hid, opts={})
-      hid = hashid(hid)
+      hid = dehashid(hid)
       super(hid, opts)
     end
 
