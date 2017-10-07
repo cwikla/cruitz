@@ -187,7 +187,6 @@ class NewSheet extends Sheet.New {
       this.setState({
         invite: data.invite
       });
-      this.context.setNotice("Job Created");
     }).fail((jaXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
 
@@ -200,6 +199,11 @@ class NewSheet extends Sheet.New {
 
   title() {
     return "Invite a Recruiter";
+  }
+
+  success(data, textStatus, jqXHR) {
+    super.success(data, textStatus, jqXHR);
+    this.context.setNotice("Invite Sent!");
   }
 
   renderForm() {
