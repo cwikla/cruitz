@@ -39,12 +39,12 @@ class CandidateSerializer < ActiveModel::Serializer
   end
 
   def root_message_id
-    m = Message.thread_for_candidate(object).first
+    m = Message.threads_for_candidate(object).first
     m ? m.hashid : nil
   end
 
   def description
-    m = Message.thread_for_candidate(object).first
+    m = Message.threads_for_candidate(object).first
     m ? m.body : ""
   end
 

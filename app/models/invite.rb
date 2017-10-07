@@ -8,8 +8,8 @@ for free and find other companies and openings to send candidates to.
 EOM
 
 class Invite < ApplicationRecord
-  belongs_to :invited_user, class_name: "User"
-  belongs_to :user
+  cached_belongs_to :user
+  cached_belongs_to :from_user, class_name: "User"
 
   after_initialize :set_defaults, :if => :new_record?
 

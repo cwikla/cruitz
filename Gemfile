@@ -42,6 +42,7 @@ gem 'active_model_serializers'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'bullet'
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -69,6 +70,8 @@ group :production do
   #gem 'rails_12factor'
 end
 
+#gem 'valium'
+
 #
 source "http://pyr:akbash42@gems.cwikla.com" do
   gem 'pyr_gem', "~> 7.0.0"
@@ -81,7 +84,7 @@ source "http://pyr:akbash42@gems.cwikla.com" do
   #gem 'pyr_geo', :path => "../pyr/pyr_geo"
   gem 'jpyr', "~> 4.0.0"
   #gem 'jpyr', :path => "../pyr/jpyr"
-  gem 'pyr_base', '~> 10.3.1'
+  gem 'pyr_base', '~> 10.4.0'
   #gem 'pyr_base', :path => "../pyr/pyr_base"
 end
 

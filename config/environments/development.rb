@@ -53,4 +53,12 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.x.webpacker[:dev_server_host] = "http://127.0.0.1:8080"
+
+config.after_initialize do
+  Bullet.enable = true
+  Bullet.alert = true
+  Bullet.bullet_logger = true
+  Bullet.console = true
+  Bullet.rails_logger = true
+end
 end

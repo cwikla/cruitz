@@ -25,10 +25,6 @@ class MessageSerializer < ActiveModel::Serializer
     object.root_message_id ? object.root_message.hashid : nil
   end
 
-  def job_id
-    object.job.hashid
-  end
-
   def created_at
     object.created_at.in_time_zone.iso8601 if object.created_at
   end
@@ -38,7 +34,7 @@ class MessageSerializer < ActiveModel::Serializer
   end
 
   def thread_count
-    object.thread.count()
+    object.thread_count
   end
 
 
@@ -48,38 +44,35 @@ class MessageSerializer < ActiveModel::Serializer
 
   def user
     result = nil
-    if object.user
-      u = object.user
-      result = { 
-        id: u.hashid,
-        first_name: u.first_name,
-        last_name: u.last_name
-      }
-    end
+    u = User.find(object.user_id)
+    result = { 
+      id: u.hashid,
+      first_name: u.first_name,
+      last_name: u.last_name
+    }
     return result
   end
 
   def from_user
     result = nil
-    if object.from_user
-      u = object.from_user
-      result = { 
-        id: u.hashid,
-        first_name: u.first_name,
-        last_name: u.last_name
-      }
-    end
+    u = User.find(object.from_user_id)
+    result = { 
+      id: u.hashid,
+      first_name: u.first_name,
+      last_name: u.last_name
+    }
     return result
   end
 
   def candidate
     result = nil
-    if object.candidate
-      candy = object.candidate
+    if object.candidate_id
+      candy = Candidate.find(object.candidate_id)
+      head = candy.head
       result = { 
-        id: candy.head.hashid,
-        first_name: candy.head.first_name,
-        last_name: candy.head.last_name
+        id: candy.id,
+        first_name: head.first_name,
+        last_name: head.last_name
       }
     end
     return result

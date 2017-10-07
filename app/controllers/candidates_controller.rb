@@ -1,6 +1,6 @@
 class CandidatesController < ApplicationController
   def index
-    render json: current_user.candidates.order(:created_at).all
+    render json: current_user.candidates
   end
 
   def show

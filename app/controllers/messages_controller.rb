@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   def index
-    mjson = Message.roots(Message.all_for(current_user))
+    mjson = current_user.roots # Message.roots(Message.all_for(current_user))
     render json: mjson
   end
 
@@ -41,7 +41,8 @@ class MessagesController < ApplicationController
 
   def show
     mid = hid()
-    @message = Message.for(current_user, mid)
+    @message = Message.find(mid)
+    @message = nil if @message.user_id != current_user.id
     @thread = nil
 
     if @message

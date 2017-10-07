@@ -13,7 +13,7 @@ class ReadThreadJob < Pyr::Async::BaseJob
     puts "GOT MESSAGE #{message.inspect}"
     return if message.nil?
 
-    messages = Message.thread_for_message(message).where("id <= ?", message_id).where(:read_at => nil)
+    messages = message.thread()
     puts "GOT #{messages.count} MESSAGES"
     messages.each do |m|
       m.read_at = Time.zone.now

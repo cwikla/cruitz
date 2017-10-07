@@ -1,6 +1,6 @@
 class CandidateState < ApplicationRecord
-  belongs_to :candidate
-  belongs_to :user
-  belongs_to :recruiter, :class_name => "User"
-  belongs_to :message
+  cached_belongs_to :candidate
+  cached_belongs_to :user
+  cached_belongs_to :recruiter, :class_name => "User"
+  cached_belongs_to :message
 end

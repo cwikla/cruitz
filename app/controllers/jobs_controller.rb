@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   def index
-    render json: current_user.jobs.order(:created_at).all
+    render json: current_user.jobs.includes(:user)
   end
 
   def candidate_counts
@@ -33,7 +33,7 @@ class JobsController < ApplicationController
 
   def update
     jid = hid()
-    @job = current_user.jobs.find(jid)
+    @job = current_user.jobs.includes(:user).find(jid)
     if @job.update(job_params)
       return render json: @job
     else
@@ -43,7 +43,7 @@ class JobsController < ApplicationController
 
   def show
     jid = hid()
-    @job = current_user.jobs.find(jid)
+    @job = current_user.jobs.includes(:user).find(jid)
 
     getCands = params[:candidates] && params[:candidates].downcase == 'candidates'
 

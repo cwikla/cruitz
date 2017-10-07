@@ -46,6 +46,14 @@ class Page extends Pyr.UserComponent {
     this.state = Object.assign(myState, this.getInitState(props));
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.itemId != this.props.itemId) {
+      this.setState({
+        selected: null
+      });
+    }
+  }
+
   name() {
     let fullName = this.constructor.name;
     let pos = fullName.search("Page");
