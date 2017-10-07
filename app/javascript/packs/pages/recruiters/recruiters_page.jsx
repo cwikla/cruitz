@@ -167,7 +167,9 @@ class InviteForm extends Component {
   }
 }
 
+
 class NewSheet extends Sheet.New {
+
   getInitState(props) {
     return  {
       invite: null
@@ -185,7 +187,7 @@ class NewSheet extends Sheet.New {
       this.setState({
         invite: data.invite
       });
-
+      this.context.setNotice("Job Created");
     }).fail((jaXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
 

@@ -595,7 +595,7 @@ GEM
       rails (~> 5.1.1)
       resque
       resque-scheduler
-    pyr_base (10.4.0)
+    pyr_base (10.5.0)
       aws-sdk
       aws-sdk-rails
       bootstrap (= 4.0.0.alpha6)
@@ -780,7 +780,7 @@ DEPENDENCIES
   pg
   puma (~> 3.0)
   pyr_async (~> 4.0.0)!
-  pyr_base (~> 10.4.0)!
+  pyr_base (~> 10.5.0)!
   pyr_gem (~> 7.0.0)!
   pyr_geo (~> 4.1.0)!
   pyr_push (~> 6.1.0)!
