@@ -168,10 +168,6 @@ class Dashboard extends Pyr.UserComponent {
     return act;
   }
 
-  userChange(user) {
-    console.log("User Change: " + JSON.stringify(user));
-  }
-
   setButtonCount(page, count=0) {
     console.log("BUTTON COUNT: " + page + ":" + count);
     let buttonItemCount = Object.assign({}, this.state.buttonItemCount);
@@ -339,7 +335,7 @@ class Dashboard extends Pyr.UserComponent {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.context.user} /></Link>
+            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
             <Pyr.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.SmallLabel>

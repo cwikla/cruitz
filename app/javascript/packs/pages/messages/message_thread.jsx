@@ -196,7 +196,7 @@ class MessageThread extends Pyr.UserComponent {
 
   threadExtra(thread) {
     let all = [];
-    let userId = this.context.user.id;
+    let userId = this.user().id;
 
     thread.map((item, pos) => {
       item.is_root = !item.root_message_id;

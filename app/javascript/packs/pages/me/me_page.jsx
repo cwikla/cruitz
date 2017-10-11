@@ -83,7 +83,7 @@ class NewSheet extends Sheet.New {
 
 
   title() {
-    let me = this.context.user;
+    let me = this.user();
     return me.first_name + " " + me.last_name;
   }
 }
@@ -102,7 +102,7 @@ class MePage extends Page {
   }
 
   loadSelected(unused, onLoading) {
-    this.onSelect(this.context.user);
+    this.onSelect(this.user());
   }
 
   actionSheet(action) {

@@ -229,8 +229,8 @@ class MessagesPage extends Page {
       if (!mmap[threadId] || mmap[threadId].id < msg.id) {
 
         let job = this.jobMap[msg.job_id]; // FIXME, if job not here go fetch it
-        console.log("MINE: " + msg.from_user_id + ":" + this.context.user.id);
-        let mine = (msg.from_user.id == this.context.user.id);
+        console.log("MINE: " + msg.from_user_id + ":" + this.user().id);
+        let mine = (msg.from_user.id == this.user().id);
         let is_root = !msg.root_message_id;
 
         mmap[threadId] = Object.assign({}, msg, { job, mine, is_root});

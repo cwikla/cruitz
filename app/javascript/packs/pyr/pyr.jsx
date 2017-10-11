@@ -168,22 +168,8 @@ const UserContextTypes = {
 class UserComponent extends Component {
   static contextTypes = Object.assign({}, UserContextTypes, NoticeContextTypes);
 
-  userChange(user) {
-    // nothing to see here
-  }
-
   user() {
     return this.context.user;
-  }
-
-  componentDidUpdate(prevProps, prevState, prevContext) {
-    let prevID = prevContext.user ? prevContext.user.id : null;
-    let id = this.context.user ? this.context.user.id : null;
-
-    if (prevID != id && this.userChange) {
-      //alert(prevID + " => " + id);
-      this.userChange(this.context.user);
-    }
   }
 }
 
