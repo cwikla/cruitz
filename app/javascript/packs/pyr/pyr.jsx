@@ -6,7 +6,6 @@ import React, {
 import PropTypes from 'prop-types';
 import { 
   Transition,
-  CSSTransition
 } from 'react-transition-group';
 
 import { 
@@ -34,7 +33,7 @@ import PieChart from './pie_chart';
 
 const USERS_URL = "/users";
 
-const DURATION_TIME = 250;
+const DURATION_TIME = 7250;
 
 const SHOW_TIME = 3000;
 
@@ -284,11 +283,20 @@ function toClassNames(classNames, state, appear) {
   if (state[0] == "entering") {
     state = ["enter", "entering"];
   }
+  if (state[0] == "entered") {
+    state = ["enter", "entered"];
+  }
   if (state[0] == "appearing") {
     state = ["appear", "appearing"];
   }
+  if (state[0] == "appeared") {
+    state = ["appear", "appeared"];
+  }
   if (state[0] == "exiting") {
     state = ["exit", "exiting"];
+  }
+  if (state[0] == "exited") {
+    state = ["exit", "exited"];
   }
   //console.log(state);
   let cz = ClassNames(classNames);
@@ -315,18 +323,31 @@ class CSSAnimation extends Component {
     this.delayTimer = null;
   }
 
+  reset() {
+    let tt = this.delayTimer;
+    this.delayTimer = null;
+    if (tt) {
+      clearTimeout(tt);
+    }
+  }
+
+  kickoff(goValue) {
+    this.reset();
+    this.delayTimer = setTimeout(() => { this.setState({go: goValue});}, 0.05);
+  }
+
   componentDidMount() {
-    if (!this.state.go) {
-      this.delayTimer = setTimeout(() => { this.setState({go: true});}, 0.05);
+    this.kickoff(this.props.in);
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (this.props.in != nextProps.in) {
+      this.kickoff(nextProps.in);
     }
   }
 
   componentWillUnmount() {
-    if (this.delayTimer) {
-      let tt = this.delayTimer;
-      this.delayTimer = null;
-      clearTimeout(tt);
-    }
+    this.reset();
   }
 
   renderInner(state) {
@@ -353,13 +374,6 @@ class CSSAnimation extends Component {
   }
 }
 
-
-const transitionStyles = {
-  entering: { opacity: 0 },
-  entered: { opacity: 1 },
-  appeared: { opacity: 1 },
-};
-
 const Fade = (props) => (
     <CSSAnimation
       in={!props.out}
@@ -371,13 +385,13 @@ const Fade = (props) => (
 );
 
 const Slide = (props) => (
-  <Transition in={props.in} timeout={DURATION_TIME}>
-    {(state) => (
-      <div style={{opacity: 0}, transitionStyles[state]}>
-        I'm A fade Transition!
-      </div>
-    )}
-  </Transition>
+    <CSSAnimation
+      in={props.show}
+      timeout={(props.duration || DURATION_TIME)}
+      classNames={"slide-"+(!props.left ? "right" : "left")}
+    >
+      { props.children }
+    </CSSAnimation>
 );
 
 class NoticeProvider extends Component {

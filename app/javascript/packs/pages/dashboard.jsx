@@ -381,7 +381,7 @@ class Dashboard extends Pyr.UserComponent {
 
 
     return (
-        <Sidebar.Main className="col col-1 col-sm-1 col-md-2 flx-col h-100">
+        <Sidebar.Main className="flx-col h-100">
           <Sidebar.Header 
             id="messages"
             icon="envelope-open-o"
@@ -460,13 +460,11 @@ class Dashboard extends Pyr.UserComponent {
     let PageComponent = this.getPageComponent();
 
     let props = this.pageProps(page);
-    console.log("MAIN");
-    console.log(props);
 
     return (
         <main 
-          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page" 
           id="main-page"
+          className="flx-col flx-1 main-page" 
         >
           <div className="d-flex flx-1">
             <PageComponent {...props} />

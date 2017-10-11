@@ -61,33 +61,21 @@
 
 
 
-.slide-enter {
-  opacity: 0.01;
-  background-color: red;
-}
-
-.slide-enter.slide-enter-active {
-  opacity: 1;
-  transition: opacity 1000ms ease-in;
-}
-
-.slide-exit {
-  opacity: 1;
-}
-
-.slide-exit.slide-exit-active {
-  opacity: 0.01;
-  transition: opacity 800ms ease-in;
-}
-
-.fake-thing {
-  width: 10rem;
+.slide-right {
+  width: 50rem;
   height: 100%;
-  top: 0;
-  right: 0;
-  position: absolute;
-  z-index: 5001;
   background-color: red;
+  right: -50rem;
+
+  &.slide-right-entering {
+    display: inline;
+    right: 0;
+    transition: right 7240ms ease-in;
+  }
+
+  &.slide-right-entered {
+    right: 0;
+  }
 }
 
 .notice {
