@@ -327,9 +327,11 @@ class Dashboard extends Pyr.UserComponent {
 
   renderSlide() {
     return(
-      <div className="fake-thing" key="fake-thing">
-        Hello
-      </div>
+      <Pyr.Slide show={this.state.slide}>
+        <div className="fake-thing flx-col h-100" key="fake-thing">
+          Hello
+        </div>
+      </Pyr.Slide>
     );
   }
 
@@ -491,6 +493,7 @@ class Dashboard extends Pyr.UserComponent {
         <div className="flx-row flx-1">
           { this.renderSideBar() }
           { this.renderMain() }
+          { this.renderSlide() }
         </div>
       <Pyr.Notice />
       </Pyr.Grid.FullContainer>

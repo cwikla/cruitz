@@ -15,3 +15,5 @@ Pyr.addJob = {
   },
 };
 */
+
+//console.log = () => {}

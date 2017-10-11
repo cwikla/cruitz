@@ -323,8 +323,7 @@ class CSSAnimation extends Component {
       state = ["enter", "enter-active"];
     }
     if (state[0] == "entered") {
-      cz.clear();
-      state = [];
+      state = ["enter", "entered"];
     }
     if (state[0] == "appearing") {
       state = ["appear", "appear-active"];
@@ -352,9 +351,9 @@ class CSSAnimation extends Component {
   }
   
   renderInner(state) {
-    //console.log("STATE: " + state);
+    console.log("STATE: " + state);
     let clazzes = this.toClassNames(this.props.classNames, state, this.props.appear, this.props.in);
-    //console.log("CLAZZES: " + clazzes.toString());
+    console.log("CLAZZES: " + clazzes.toString());
 
     let stuff = Pyr.Util.childrenWithProps(this.props.children, {className: clazzes.toString(), key: "fade-inner"})[0];
     //console.log("INNER STUFF:");
@@ -364,6 +363,8 @@ class CSSAnimation extends Component {
   }
 
   render() {
+    console.log("CSS");
+    console.log(this.props);
     return (
       <Transition
         {...this.props}
@@ -379,7 +380,7 @@ const Fade = (props) => (
     <CSSAnimation
       in={props.show}
       timeout={(props.duration || DURATION_TIME)}
-      classNames={"fade"}
+      classNames={"pyr-fade"}
     >
       { props.children }
     </CSSAnimation>
@@ -389,7 +390,7 @@ const Slide = (props) => (
     <CSSAnimation
       in={props.show}
       timeout={(props.duration || DURATION_TIME)}
-      classNames={"slide-"+(!props.left ? "right" : "left")}
+      classNames={"pyr-slide-"+(!props.left ? "right" : "left")}
     >
       { props.children }
     </CSSAnimation>
@@ -523,7 +524,7 @@ class Notice extends Component {
     return (
       <Fade show={this.state.show}>
         <div
-          className={ClassNames("notice").push(this.props.className)}
+          className={ClassNames("pyr-notice").push(this.props.className)}
         ><div className="ninner">{this.context.notice}</div></div>
       </Fade>
     );
