@@ -27,7 +27,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-router-dom": "next",
-    "react-transition-group": "1.x",
+    "react-transition-group": "^2.2.1",
     "react-virtualized": "^9.9.0",
     "redux": "^3.7.1",
     "redux-logger": "^3.0.6",

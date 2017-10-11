@@ -9,6 +9,11 @@ import {
 } from 'react-dom';
 
 import {
+  Transition,
+  CSSTransition
+} from 'react-transition-group';
+
+import {
   BrowserRouter as Router,
   Link
 } from 'react-router-dom';
@@ -93,7 +98,8 @@ class Dashboard extends Pyr.UserComponent {
       jobMap: {},
       loading: true,
       buttonItemCount: {},
-      notice: null
+      notice: null,
+      slide: false
     };
 
     this.lastPage = null;
@@ -111,6 +117,7 @@ class Dashboard extends Pyr.UserComponent {
     this.onSetButtonCount = this.setButtonCount.bind(this);
 
     this.onLoading = this.setLoading.bind(this);
+    this.onShowSlide = this.showSlide.bind(this);
   }
 
   getSubPage() {
@@ -286,6 +293,13 @@ class Dashboard extends Pyr.UserComponent {
     });
   }
 
+  showSlide() {
+    let slide = !this.state.slide;
+    this.setState({
+      slide
+    });
+  }
+
   renderSearch() {
     let page = this.getPage();
     let model = page;
@@ -302,9 +316,19 @@ class Dashboard extends Pyr.UserComponent {
           reset
         >
           <Pyr.Form.Group name="search">
-            <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
+            <div onClick={this.onShowSlide}>
+              <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
+            </div>
           </Pyr.Form.Group>
         </Pyr.Form.Form>
+      </div>
+    );
+  }
+
+  renderSlide() {
+    return(
+      <div className="fake-thing" key="fake-thing">
+        Hello
       </div>
     );
   }

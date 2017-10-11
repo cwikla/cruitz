@@ -5,7 +5,8 @@ import React, {
 
 import PropTypes from 'prop-types';
 import { 
-  CSSTransitionGroup 
+  Transition,
+  CSSTransition
 } from 'react-transition-group';
 
 import { 
@@ -33,9 +34,7 @@ import PieChart from './pie_chart';
 
 const USERS_URL = "/users";
 
-const APPEAR_TIME = 250;
-const ENTER_TIME = 250;
-const LEAVE_TIME = 250;
+const DURATION_TIME = 250;
 
 const SHOW_TIME = 3000;
 
@@ -274,19 +273,111 @@ class UserProvider extends Component {
   }
 }
 
+function toClassNames(classNames, state, appear) {
+  state = [ state ];
+  if (appear && state[0] == "entering") {
+    state = ["appearing"];
+  }
+  if (appear && state[0] == "entered") {
+    state = ["appeared"];
+  }
+  if (state[0] == "entering") {
+    state = ["enter", "entering"];
+  }
+  if (state[0] == "appearing") {
+    state = ["appear", "appearing"];
+  }
+  if (state[0] == "exiting") {
+    state = ["exit", "exiting"];
+  }
+  //console.log(state);
+  let cz = ClassNames(classNames);
+  //console.log(cz.all());
+
+  let cnames = cz.all().slice();
+
+  let results = cnames.reduce((acc, cname) => {
+     return acc.push(state.map((x) => cname + "-" + x));
+    }, cz);
+
+  //console.log("RESULTS");
+  //console.log(results);
+
+  return results;
+}
+
+class CSSAnimation extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      go: false
+    };
+    this.delayTimer = null;
+  }
+
+  componentDidMount() {
+    if (!this.state.go) {
+      this.delayTimer = setTimeout(() => { this.setState({go: true});}, 0.05);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.delayTimer) {
+      let tt = this.delayTimer;
+      this.delayTimer = null;
+      clearTimeout(tt);
+    }
+  }
+
+  renderInner(state) {
+    //console.log("STATE: " + state);
+    let clazzes = toClassNames(this.props.classNames, state, this.props.appear);
+    //console.log("CLAZZES: " + clazzes.toString());
+
+    let stuff = Pyr.Util.childrenWithProps(this.props.children, {className: clazzes.toString(), key: "fade-inner"})[0];
+    //console.log("INNER STUFF:");
+    //console.log(stuff);
+
+    return stuff;
+  }
+
+  render() {
+    return (
+      <Transition
+        {...this.props}
+        in={this.state.go}
+      >
+        {(state) => this.renderInner(state)}
+      </Transition>
+    );
+  }
+}
+
+
+const transitionStyles = {
+  entering: { opacity: 0 },
+  entered: { opacity: 1 },
+  appeared: { opacity: 1 },
+};
+
 const Fade = (props) => (
-    <CSSTransitionGroup
-      id="fade"
-      transitionName={"fade-" + (props.in_or_out || "in")}
-      transitionAppear={true}
-      transitionEnter={false}
-      transitionLeave={false}
-      transitionAppearTimeout={props.appearTime || APPEAR_TIME}
-      transitionEnterTimeout={props.enterTime || ENTER_TIME}
-      transitionLeaveTimeout={props.leaveTime || LEAVE_TIME}
+    <CSSAnimation
+      in={!props.out}
+      timeout={(props.duration || DURATION_TIME)}
+      classNames={"fade-"+(!props.out ? "in" : "out")}
     >
-      { Util.firstKid(props.children) }
-    </CSSTransitionGroup>
+      { props.children }
+    </CSSAnimation>
+);
+
+const Slide = (props) => (
+  <Transition in={props.in} timeout={DURATION_TIME}>
+    {(state) => (
+      <div style={{opacity: 0}, transitionStyles[state]}>
+        I'm A fade Transition!
+      </div>
+    )}
+  </Transition>
 );
 
 class NoticeProvider extends Component {
@@ -365,6 +456,7 @@ class Notice extends Component {
       this.clear();
       this.onHide();
     }, this.props.delay || SHOW_TIME);
+
     this.setState({
       show: true
     });
@@ -383,7 +475,7 @@ class Notice extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.context.notice) {
       this.kickoff();
     }
@@ -404,13 +496,20 @@ class Notice extends Component {
   }
 
   render() {
-    if (!this.context.notice || !this.state.show) {
+    if (!this.context.notice) {
       return null;
     }
 
+    let stuff = Util.propsMergeClassName(this.props, "notice");
+
+    //console.log("STUFF");
+    //console.log(stuff);
+
     return (
-      <Fade in_or_out={this.state.show ? "in" : "out"}>
-        <div className="notice"><div className="ninner">{this.context.notice}</div></div>
+      <Fade out={!this.state.show}>
+        <div
+          className={ClassNames("notice").push(this.props.className)}
+        ><div className="ninner">{this.context.notice}</div></div>
       </Fade>
     );
   }
@@ -451,13 +550,14 @@ class FullScreen extends Component {
     }
   }
 
-  render() {
+  renderInner() {
     return (
-      <div className="fullscreen"
+      <div 
+        className={ClassNames("fullscreen").push(this.props.className)}
         ref={(node) => this.me = node }
       >
         <div 
-          className="flx-row flx-end"
+          className="flx-row flx-end controls"
           onClick={this.onClose}
         >
           <Pyr.Icon name="close"
@@ -471,6 +571,30 @@ class FullScreen extends Component {
     );
   }
 
+/*
+  renderOld() {
+    return (
+      <Transition
+        in={true}
+        timeout={this.props.duration || DURATION_TIME}
+        appear
+      >
+        {(state) => {
+          console.log("STATE: " + state);
+          return (
+            <div className={ClassNames("fullscreen fade-in").push("fade-in-" + state)}>
+              { this.renderInner() }
+            </div>
+          );
+        }}
+      </Transition>
+    );
+  }
+*/
+
+  render() {
+    return this.renderInner();
+  }
 }
 
 
@@ -506,6 +630,7 @@ const Pyr = {
   RouterProps,
   NoticeContextTypes,
   NoticeProvider,
-  Notice
+  Notice,
+  Slide,
 };
 export default Pyr;

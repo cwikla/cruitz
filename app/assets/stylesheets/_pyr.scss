@@ -12,7 +12,7 @@
 
 .fullscreen {
   position: fixed;
-  z-index: 1001;
+  z-index: 5001;
   left: 0;
   top: 0;
   width: 100%;
@@ -40,64 +40,59 @@
   }
 }
 
-
-.fade-in-appear {
-  opacity: 0.0;
- 
-  &.fade-in-appear-active {
-    opacity: 1.0;
-    transition: opacity 250ms ease-in;
-  }
-}
-
-.fade-out-appear {
-  opacity: 1.0;
- 
-  &.fade-out-appear-active {
-    opacity: 0.0;
-    transition: opacity 250ms ease-out;
-  }
-}
-
-.fade-in-enter {
+.fade-in {
   opacity: 0.0;
 
-  &.fade-in-enter-active {
-    opacity: 1.0;
-    transition: opacity 250ms linear;
+  &.fade-in-appearing, &.fade-in-entering {
+    transition: opacity 240ms ease-in;
+    opacity: 1;
   }
-}
 
-.fade-in-leave {
-  opacity: 1.0;
-
-  &.fade-in-leave-active {
+  &.fade-out-exiting {
+    transition: opacity 240ms ease-in;
     opacity: 0.0;
-    transition: opacity 250ms linear;
+  }
+
+  &.fade-in-appeared, &.fade-in-entered {
+    opacity: 1;
   }
 }
 
-.fade-out-enter {
-  opacity: 1.0;
 
-  &.fade-out-enter-active {
-    opacity: 0.0;
-    transition: opacity 250ms linear;
-  }
+
+
+.slide-enter {
+  opacity: 0.01;
+  background-color: red;
 }
 
-.fade-out-leave {
-  opacity: 0.0;
+.slide-enter.slide-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+}
 
-  &.fade-out-leave-active {
-    opacity: 1.0;
-    transition: opacity 250ms linear;
-  }
+.slide-exit {
+  opacity: 1;
+}
+
+.slide-exit.slide-exit-active {
+  opacity: 0.01;
+  transition: opacity 800ms ease-in;
+}
+
+.fake-thing {
+  width: 10rem;
+  height: 100%;
+  top: 0;
+  right: 0;
+  position: absolute;
+  z-index: 5001;
+  background-color: red;
 }
 
 .notice {
   z-index: 5000;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

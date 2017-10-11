@@ -203,8 +203,8 @@ function getJSON(stuff) {
 
   url = url.toRemote();
 
-  console.log("GETJSON: " + url);
-  console.log(data);
+  //console.log("GETJSON: " + url);
+  //console.log(data);
 
   stuff = Object.assign({
     dataType: "json",
@@ -254,6 +254,10 @@ class ClassNamesObj  {
 
   concat(...args) {
     return new ClassNamesObj(this.arr).push(...args);
+  }
+
+  all() {
+    return this.arr;
   }
 
   innerPush(val) {
@@ -393,7 +397,8 @@ function capFirstLetter(string) {
 function childrenWithProps(children, props, kidType) {
   return React.Children.map(children, (child) => {
     if (!kidType || child.type == kidType) {
-      return React.cloneElement(child, props);
+      let merge = propsMerge(child.props, props);
+      return React.cloneElement(child, merge);
     }
     return child;
   });

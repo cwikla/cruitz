@@ -11,14 +11,20 @@ import {
 
 import Pyr from '../pyr/pyr';
 
-class Modal extends Component {
+class Modal extends Pyr.UserComponent {
   constructor(props) {
     super(props);
     this.state = {
-      show: 'in'
+      show: false
     };
 
     this.onClose = this.close.bind(this);
+  }
+
+  show() {
+    this.state({
+      show: true
+    });
   }
 
   close(e) {
@@ -26,7 +32,7 @@ class Modal extends Component {
       e.preventDefault();
     }
     this.setState({
-      show: 'out'
+      show: false
     });
     if (this.props.onClose) {
       this.props.onClose();
@@ -35,7 +41,7 @@ class Modal extends Component {
 
   render() {
     return (
-      <Pyr.Fade in_or_out={this.state.show}>
+      <Pyr.Fade>
         <Pyr.FullScreen
           onEscape={this.onClose}
           onClose={this.onClose}
@@ -321,6 +327,25 @@ class ModalForm extends Form {
       <Modal onClose={this.onClose}>
         { super.renderInner() }
       </Modal>
+    );
+  }
+}
+
+class SearchForm extends Form {
+  constructor(props) {
+    super(props);
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
+    this.onClose();
+  }
+
+  renderInner() {
+    return (
+      <Side onClose={this.onClose}>
+        { super.renderInner() }
+      </Side>
     );
   }
 }
