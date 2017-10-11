@@ -41,7 +41,7 @@ class Modal extends Pyr.UserComponent {
 
   render() {
     return (
-      <Pyr.Fade>
+      <Pyr.Fade show={true}>
         <Pyr.FullScreen
           onEscape={this.onClose}
           onClose={this.onClose}

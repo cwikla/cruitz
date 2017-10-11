@@ -6,6 +6,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { 
   Transition,
+  CSSTransition,
 } from 'react-transition-group';
 
 import { 
@@ -33,7 +34,7 @@ import PieChart from './pie_chart';
 
 const USERS_URL = "/users";
 
-const DURATION_TIME = 7250;
+const DURATION_TIME = 500;
 
 const SHOW_TIME = 3000;
 
@@ -272,48 +273,6 @@ class UserProvider extends Component {
   }
 }
 
-function toClassNames(classNames, state, appear) {
-  state = [ state ];
-  if (appear && state[0] == "entering") {
-    state = ["appearing"];
-  }
-  if (appear && state[0] == "entered") {
-    state = ["appeared"];
-  }
-  if (state[0] == "entering") {
-    state = ["enter", "entering"];
-  }
-  if (state[0] == "entered") {
-    state = ["enter", "entered"];
-  }
-  if (state[0] == "appearing") {
-    state = ["appear", "appearing"];
-  }
-  if (state[0] == "appeared") {
-    state = ["appear", "appeared"];
-  }
-  if (state[0] == "exiting") {
-    state = ["exit", "exiting"];
-  }
-  if (state[0] == "exited") {
-    state = ["exit", "exited"];
-  }
-  //console.log(state);
-  let cz = ClassNames(classNames);
-  //console.log(cz.all());
-
-  let cnames = cz.all().slice();
-
-  let results = cnames.reduce((acc, cname) => {
-     return acc.push(state.map((x) => cname + "-" + x));
-    }, cz);
-
-  //console.log("RESULTS");
-  //console.log(results);
-
-  return results;
-}
-
 class CSSAnimation extends Component {
   constructor(props) {
     super(props)
@@ -350,9 +309,51 @@ class CSSAnimation extends Component {
     this.reset();
   }
 
+  toClassNames(classNames, state, appear, isIn) {
+    let cz = ClassNames(classNames);
+
+    state = [ state ];
+    if (appear && state[0] == "entering") {
+      state = ["appearing"];
+    }
+    if (appear && state[0] == "entered") {
+      state = ["appeared"];
+    }
+    if (state[0] == "entering") {
+      state = ["enter", "enter-active"];
+    }
+    if (state[0] == "entered") {
+      cz.clear();
+      state = [];
+    }
+    if (state[0] == "appearing") {
+      state = ["appear", "appear-active"];
+    }
+    if (state[0] == "appeared") {
+      state = ["appear", "appeared"];
+    }
+    if (state[0] == "exiting") {
+      state = ["exit", "exit-active"];
+    }
+    if (state[0] == "exited") {
+      state = [];
+    }
+  
+    let cnames = cz.all().slice();
+  
+    let results = cnames.reduce((acc, cname) => {
+       return acc.push(state.map((x) => cname + "-" + x));
+      }, cz);
+  
+    //console.log("RESULTS");
+    //console.log(results);
+  
+    return results;
+  }
+  
   renderInner(state) {
     //console.log("STATE: " + state);
-    let clazzes = toClassNames(this.props.classNames, state, this.props.appear);
+    let clazzes = this.toClassNames(this.props.classNames, state, this.props.appear, this.props.in);
     //console.log("CLAZZES: " + clazzes.toString());
 
     let stuff = Pyr.Util.childrenWithProps(this.props.children, {className: clazzes.toString(), key: "fade-inner"})[0];
@@ -376,9 +377,9 @@ class CSSAnimation extends Component {
 
 const Fade = (props) => (
     <CSSAnimation
-      in={!props.out}
+      in={props.show}
       timeout={(props.duration || DURATION_TIME)}
-      classNames={"fade-"+(!props.out ? "in" : "out")}
+      classNames={"fade"}
     >
       { props.children }
     </CSSAnimation>
@@ -520,7 +521,7 @@ class Notice extends Component {
     //console.log(stuff);
 
     return (
-      <Fade out={!this.state.show}>
+      <Fade show={this.state.show}>
         <div
           className={ClassNames("notice").push(this.props.className)}
         ><div className="ninner">{this.context.notice}</div></div>

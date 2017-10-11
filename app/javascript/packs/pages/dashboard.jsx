@@ -486,7 +486,7 @@ class Dashboard extends Pyr.UserComponent {
     }
 
     return(
-      <Pyr.Grid.FullContainer key="react-top">
+      <Pyr.Grid.FullContainer key="react-top" className="d-flex flx-col">
         { this.renderNav() }
         <div className="flx-row flx-1">
           { this.renderSideBar() }

@@ -40,41 +40,45 @@
   }
 }
 
-.fade-in {
-  opacity: 0.0;
+.fade {
+  &.fade-enter {
+    opacity: 0.01;
 
-  &.fade-in-appearing, &.fade-in-entering {
-    transition: opacity 240ms ease-in;
-    opacity: 1;
+    &.fade-enter-active {
+      opacity: 1;
+      transition: opacity 500ms ease-in;
+    }
   }
 
-  &.fade-out-exiting {
-    transition: opacity 240ms ease-in;
-    opacity: 0.0;
-  }
-
-  &.fade-in-appeared, &.fade-in-entered {
+  &.fade-exit {
     opacity: 1;
+
+    &.fade-exit-active {
+     opacity: 0.01;
+     transition: opacity 300ms ease-in;
+    }
   }
 }
 
 
-
-
 .slide-right {
+  position: relative;
   width: 50rem;
   height: 100%;
   background-color: red;
-  right: -50rem;
+  flex-grow: 0.001;
 
   &.slide-right-entering {
-    display: inline;
-    right: 0;
-    transition: right 7240ms ease-in;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    transition: all 7240ms ease-in;
   }
 
   &.slide-right-entered {
-    right: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
   }
 }
 
