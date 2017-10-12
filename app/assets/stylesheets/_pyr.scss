@@ -65,10 +65,10 @@
 
 
 .pyr-slide-right {
-  width: 20rem;
+  width: 25rem;
   background-color: red;
   transform: translateX(100%);
-  margin-left: -20rem;
+  margin-left: -25rem;
 
   &.pyr-slide-right-enter {
 
@@ -80,7 +80,7 @@
   }
 
   &.pyr-slide-right-exit-active {
-    margin-left: -20rem;
+    margin-left: -25rem;
     transform: translateX(100%);
     un-transition: all 500ms linear;
   }
