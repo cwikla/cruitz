@@ -37,7 +37,12 @@ import MessageThread, {
   MessageThreadHeader,
   MessageThreadIndexHeader
 } from './message_thread';
-import MessageQA, { MessageQAHeader } from './message_qa';
+
+import MessageQA, { 
+  MessageQAHeader 
+} from './message_qa';
+
+import NavBar from './messages_nav';
 
 function MID(message) {
   return "message-" + message.id;
@@ -353,5 +358,8 @@ class MessagesPage extends Page {
 function key(item) {
   return "message-" + item.id;
 }
+
 MessagesPage.key = key;
+MessagesPage.NavBar = NavBar;
+
 export default MessagesPage;

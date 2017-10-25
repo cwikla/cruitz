@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   def index
-    mjson = current_user.roots # Message.roots(Message.all_for(current_user))
+    mjson = current_user.roots[0..20] # FIXME Message.roots(Message.all_for(current_user))
     render json: mjson
   end
 

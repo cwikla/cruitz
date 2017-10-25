@@ -40,7 +40,7 @@ class URLObj {
   }
   
   parser() {
-    return this.bake(this.pathList).parser;
+    return this.bake().parser;
   }
   
   search(d) {
@@ -113,9 +113,10 @@ class URLObj {
     return this;
   }
   
-  bake(pathList) {
+  bake() {
+    let plist = this.pathList;
     this.parser.search = this.searchParams.toString();
-    let pathname = pathList.join("/");
+    let pathname = plist.join("/");
     this.parser.pathname = pathname;
     if (this.parser.hostname.startsWith("null.")) { // hack
         this.parser.hostname = this.parser.hostname.substring(5, this.parser.hostname.length);
@@ -136,12 +137,12 @@ class URLObj {
   }
 
   toString() {
-    this.bake(this.pathList);
-    return (this.parser.pathname).toLowerCase();
+    this.bake();
+    return (this.parser.pathname.toString() + this.parser.search.toString()).toLowerCase();
   }
   
   fullString() {
-    this.bake(this.pathList);
+    this.bake();
     let parser = this.parser;
     let ifa = this.ifa;
     let url = ifa(parser.protocol);

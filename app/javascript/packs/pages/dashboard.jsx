@@ -331,6 +331,20 @@ class Dashboard extends Pyr.UserComponent {
     );
   }
 
+  renderSearchNav() {
+    let page = this.getPageComponent();
+
+    let NavBar = page.NavBar;
+
+    if (!NavBar) {
+      return (<div className="nav-item ml-auto">&nbsp;</div>);
+    }
+
+    return (
+      <div className="nav-item ml-auto flx-row"><NavBar />{ this.renderSearch() }</div>
+    );
+  }
+
   renderNav() {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
@@ -341,7 +355,7 @@ class Dashboard extends Pyr.UserComponent {
             <Pyr.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.SmallLabel>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-8 navbar-nav">
-            <div className="nav-item ml-auto">{this.renderSearch()}</div>
+            { this.renderSearchNav() }
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
     );
@@ -379,7 +393,7 @@ class Dashboard extends Pyr.UserComponent {
 
 
     return (
-        <Sidebar.Main className="flx-col h-100">
+        <Sidebar.Main className="col col-1 col-sm-1 col-md-2 flx-col h-100">
           <Sidebar.Header 
             id="messages"
             icon="envelope-open-o"
@@ -462,7 +476,7 @@ class Dashboard extends Pyr.UserComponent {
     return (
         <main 
           id="main-page"
-          className="flx-col flx-1 main-page" 
+          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page"
         >
           <div className="d-flex flx-1">
             <PageComponent {...props} />

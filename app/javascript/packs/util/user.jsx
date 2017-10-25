@@ -6,7 +6,20 @@ import ReactDOM from 'react-dom';
 
 import Pyr from '../pyr/pyr';
 
+const logos = ["/Dropbox-Logo-High-Res_1.jpg",
+              "google-logo-1200x630.jpg",
+              "github-512.png",
+              "slack-logo-vector-download.jpg",
+              "Chase_logo_2007.svg.png",
+              ];
+
 const avatars = ["emilia", "snow", "sophie", "thetick"];
+
+function getLogo(uid) {
+  let pos = Math.abs(Pyr.Util.hash(uid)) % logos.length;
+  let av = "/assets/images/" + logos[pos];
+  return av;
+}
 
 function getAvatar(uid) {
   let pos = Math.abs(Pyr.Util.hash(uid)) % avatars.length;
@@ -59,5 +72,7 @@ const UserScore = (props) => (
 export {
   UserAvatar,
   UserScore,
-  Stars
+  Stars,
+  getLogo,
+  getAvatar
 }

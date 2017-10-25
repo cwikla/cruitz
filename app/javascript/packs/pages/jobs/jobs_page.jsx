@@ -11,6 +11,10 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 
+import { 
+  getLogo 
+} from '../../util/user';
+
 import {
   JOBS_URL,
   SEARCH_URL,
@@ -19,50 +23,50 @@ import {
   SHOW_ACTION
 } from '../const';
 
-class JobItem extends Component {
 
-  renderCard() {
+class JobCard extends Component {
+  render() {
     let job = this.props.job;
+
     let id = "job-" + job.id;
+    let allClass = ClassNames("item job-item");
 
-    let rejectedCount = 1;
-    let acceptedCount = 4;
-    let waitingCount = 2;
-    
-    let allCount = rejectedCount + acceptedCount + waitingCount;
-
-    let slices = [{ 
-      color: '#CCD', 
-      value: acceptedCount
-    },
-    {
-      color: '#FF0',
-      value: waitingCount,
-    },
-    {
-      color: '#F00',
-      value: rejectedCount,
-    }];
+    if (this.props.selected) {
+       allClass.push("selected");
+    }
+    let description = job.description || "No Description";
 
     return (
-      <div className="job-item card" id={id} key={id}>
-        <div className="card-header flx-row">
-          <h4 className="card-title">{job.title}</h4><Pyr.IconButton name="edit"/>
-        </div>
-        <div>
-          <Pyr.PieChart
-            className="chart"
-            slices={slices}
-          />
+      <div className={ClassNames("card").push(allClass)}>
+        <div className="view overlay hm-white-slight">
+          <img src={getLogo(id)} className="img-fluid" alt="" />
+          <a>
+              <div className="mask"></div>
+          </a>
         </div>
         <div className="card-body">
-          <p className="card-text">{job.description}</p>
+            <a className="activator"><i className="fa fa-share-alt"></i></a>
+            <h4 className="card-title">Card title</h4>
+            <hr/>
+            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" className="black-text d-flex flex-row-reverse">
+                <h5 className="waves-effect p-2">Read more <i className="fa fa-chevron-right"></i></h5>
+            </a>
         </div>
       </div>
     );
   }
+}
+
+class JobItem extends Component {
 
   render() {
+    if (this.props.card) {
+      return (
+        <JobCard {...this.props}/>
+      );
+    }
+
     let job = this.props.job;
     
     let id = "job-" + job.id;
@@ -281,6 +285,7 @@ class IndexSheet extends Sheet.Index {
       <JobItem 
         job={job} 
         isSelected={isSelected}
+        card
       />
     );
   }
@@ -296,6 +301,13 @@ class IndexSheet extends Sheet.Index {
         }
       </div>
     );
+  }
+
+  renderChildren(items, isSelected) {
+    if (this.props.card) {
+      return this.renderChildrenCard(items, isSelected);
+    }
+    return super.renderChildren(items, isSelected);
   }
 
   renderSearch() {
@@ -413,6 +425,7 @@ class JobsPage extends Page {
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onLoadItems={this.onLoadItems}
+        card
       />
     );
   }
@@ -441,6 +454,33 @@ function key(item) {
   return item.id;
 }
 JobsPage.key = key;
+
+class SearchForm extends Component {
+  render() {
+    return (
+      <div className="job-search">
+        <Pyr.Form.Form
+          url={JOBS_SEARCH_URL}
+          method={Pyr.Method.POST}
+          ref={(node) =>{ this.form = node; }}
+          onPreSubmit={this.props.onPreSubmit}
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.props.onSuccess}
+          onError={this.props.onError}
+        >
+          <Pyr.Form.Group name="title">
+            <Pyr.Form.Label>Title</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder= "Enter job title"/>
+          </Pyr.Form.Group>
+
+        </Pyr.Form.Form>
+      </div>
+    );
+  }
+}
+
+JobsPage.SearchForm = SearchForm;
+
  
 
 export default JobsPage;

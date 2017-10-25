@@ -181,6 +181,7 @@ label {
   color: $navbar_color !important;
   font-size: 1rem;
   padding-left: 1rem;
+  width: 15rem;
 }
 
 .navbar-brand:hover {
@@ -487,6 +488,14 @@ label {
 
   .blurb {
     padding-top: 1.5rem;
+  }
+}
+
+.page-nav-bar {
+  padding-right: 0.5rem;
+
+  .nav-item.dropdown {
+    padding-right: 0.5rem;
   }
 }
 
