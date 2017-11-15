@@ -9,13 +9,9 @@ import {
 } from 'react-dom';
 
 import {
-  Transition,
-  CSSTransition
-} from 'react-transition-group';
-
-import {
   BrowserRouter as Router,
-  Link
+  Link,
+  Redirect
 } from 'react-router-dom';
 
 import Pyr from '../pyr/pyr';
@@ -27,6 +23,7 @@ import MessagesPage from './messages/messages_page';
 import RecruitersPage from './recruiters/recruiters_page';
 import SettingsPage from './settings/settings_page';
 import MePage from './me/me_page';
+import RegistrationsPage from './registration/registrations_page';
 
 import {
   JOBS_PAGE,
@@ -47,6 +44,7 @@ import {
   USERS_URL,
 
   INDEX_ACTION,
+  NEW_ACTION,
   SHOW_ACTION,
 } from './const';
 
@@ -84,8 +82,70 @@ const UserLabel = (props) => (
     className="nav-item"
     id="user" 
     onClick={props.onClick}
-  ><Pyr.Icon name="user" className="fa-fw" /><Pyr.SmallLabel>{props.user ? props.user.first_name : ""}</Pyr.SmallLabel><Pyr.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
+  ><Pyr.Icon name="user" className="fa-fw" /><Pyr.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
+
+class PagePicker extends Pyr.UserComponent {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    if (this.user().first_time) {
+      return (
+        <RegistrationsPage {...this.props} showing/>
+      );
+    }
+
+    return (
+      <Dashboard {...this.props} />
+    );
+  }
+}
+
+class NavMenuButton extends Component {
+  render() {
+    let url = Pyr.URL(MESSAGES_URL).set("sort", this.props.sort);
+
+    console.log("NavMenuButton: " + this.props.sort);
+
+    url.bake();
+    console.log(url.parser.pathname.toString());
+    console.log(url.parser.search.toString());
+    console.log(url.parser);
+
+    let us = url.toString();
+    console.log("US: " + us);
+
+    let icon = <Pyr.Icon name="sort-asc" className={!this.props.dir ? "ghost" : ""}/>;
+
+    return (
+      <Link className={this.props.className} to={url.toString()}>{icon}{this.props.children}</Link>
+    );
+  }
+}
+
+
+class NavView extends Component {
+  render () {
+    return (
+      <div className="flx-row page-nav-bar">
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.Icon name="sort"/></a>
+            <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+              <NavMenuButton className="dropdown-item" sort="received" dir="asc">Received</NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="job">Job</NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="rank">Rank</NavMenuButton>
+              <hr/>
+              <NavMenuButton className="dropdown-item" sort="list"><Pyr.Icon name="list"/> List</NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="grid"><Pyr.Icon name="th"/> Grid</NavMenuButton>
+            </div>
+        </li>
+      </div>
+    );
+  }
+}
+
 
 
 class Dashboard extends Pyr.UserComponent {
@@ -110,6 +170,7 @@ class Dashboard extends Pyr.UserComponent {
     this.onJobCreate = this.jobCreate.bind(this);
     this.onJobUpdate = this.jobUpdate.bind(this);
     this.onJobDelete = this.jobDelete.bind(this);
+    this.onJobNew = this.jobNew.bind(this);
 
     this.onSetAction = this.setAction.bind(this);
     this.onSetUnaction = this.setAction.bind(this, null);
@@ -137,7 +198,11 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   getItemId() {
-    return this.props.itemId;
+    let iid = this.props.itemId;
+    if (!iid) {
+      return iid;
+    }
+    return (iid.toLowerCase() != NEW_ACTION.toLowerCase() ? iid : null);
   }
 
   getSubItemId() {
@@ -151,25 +216,30 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   getAction() {
-    let act = this.state.action;
+    let act = this.props.action; //this.state.action;
     let page = this.props.page;
     let subPage = this.props.subPage;
     let itemId = this.props.itemId;
     let subId = this.props.subItemId;
 
     if (act) {
-      return act;
+      if (act && (act.toLowerCase() == NEW_ACTION.toLowerCase())) {
+        act = NEW_ACTION;
+      }
     }
 
-    if (subId || (itemId && !subPage)) {
+    if (!act && (subId || (itemId && !subPage))) {
       act = SHOW_ACTION;
     }
+
+    console.log("PROPS ACTION IS: " + this.props.action);
+    console.log("ACTION IS: " + act);
 
     return act;
   }
 
   setButtonCount(page, count=0) {
-    console.log("BUTTON COUNT: " + page + ":" + count);
+    //console.log("BUTTON COUNT: " + page + ":" + count);
     let buttonItemCount = Object.assign({}, this.state.buttonItemCount);
     buttonItemCount[page] = count;
 
@@ -179,13 +249,14 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   setAction(action, e) {
-    console.log("Action set to " + action);
+    //console.log("Action set to " + action);
     if (e) {
       e.preventDefault();
     }
 
     this.setState({
-      action
+      action,
+      slide: false
     });
   }
 
@@ -224,14 +295,21 @@ class Dashboard extends Pyr.UserComponent {
         (this.props.itemId != nextProps.itemId) ||
         (this.props.subPageId != nextProps.subPageId)) {
       let page = Pyr.Util.capFirstLetter(this.props.page || DEFAULT_PAGE);
+
       console.log("WILL RECEIVE");
       console.log(nextProps);
       console.log(page);
-      this.setState({
-        action: null
-      });
+
+      this.setAction(null);
       
     }
+  }
+
+  jobNew() {
+    this.setState({
+      page: JOBS_PAGE,
+      action: NEW_ACTION,
+    });
   }
 
   jobIndex(jobs) {
@@ -322,26 +400,55 @@ class Dashboard extends Pyr.UserComponent {
   }
 
   renderSlide() {
+    if (!this.state.slide) {
+      return null;
+    }
+
     return(
-      <Pyr.Slide show={this.state.slide}>
-        <div className="fake-thing flx-col h-100" key="fake-thing">
-          Hello
-        </div>
-      </Pyr.Slide>
+      <div className="search-side fake-thing flx-col h-100" key="fake-thing">
+        Hello
+      </div>
     );
   }
 
   renderSearchNav() {
     let page = this.getPageComponent();
 
-    let NavBar = page.NavBar;
+    let NavBar = page.NavBar || Pyr.Empty;
 
     if (!NavBar) {
       return (<div className="nav-item ml-auto">&nbsp;</div>);
     }
 
     return (
-      <div className="nav-item ml-auto flx-row"><NavBar />{ this.renderSearch() }</div>
+      <div className="nav-item ml-auto flx-row"><NavView /><NavBar />{ this.renderSearch() }</div>
+    );
+  }
+
+  renderTopNav() {
+    return (
+       <Pyr.Grid.Row className="navbar flx-row align-items-center">
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
+            <Link to="/"><Pyr.SmallLabel className="nav-item">cruitz</Pyr.SmallLabel></Link>
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down flx-row">
+            <Pyr.IconButton name="list" className="nav-item">Recruiters</Pyr.IconButton>
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav ml-auto">
+            <div id="alerts" className="nav-item"><Pyr.Icon name="bell-o" className="fa-fw"/></div>
+            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
+    );
+  }
+
+  render3() {
+    return (
+      <div>
+            <Link to={"/jobs/new"}><Pyr.IconButton name="plus" className="nav-item" >Add Job</Pyr.IconButton></Link>
+            &nbsp;&nbsp;
+            <Link to={"/recruiters"}><Pyr.IconButton name="list" className="nav-item">Recruiters</Pyr.IconButton></Link>
+      </div>
     );
   }
 
@@ -349,11 +456,22 @@ class Dashboard extends Pyr.UserComponent {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down">
             <Pyr.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.SmallLabel>
           </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
+            { this.renderSearchNav() }
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row">
+            <div id="alerts" className="nav-item"><Pyr.Icon name="bell-o" className="fa-fw"/></div>
+            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
+    );
+  }
+
+  renderBottomNav() {
+    return (
+       <Pyr.Grid.Row className="navbar bottom flx-row align-items-center">
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-8 navbar-nav">
             { this.renderSearchNav() }
           </Pyr.Grid.Col>
@@ -381,6 +499,12 @@ class Dashboard extends Pyr.UserComponent {
     let jobKids = jobs.map( (job, pos) => {
         let isJob = isPage(page, CANDIDATES_PAGE);
         let jobId = itemId;
+
+        let candCount = job.candidate_counts.total;
+
+        if (candCount == 0) {
+          return null;
+        }
 
         return (<Sidebar.Button 
                   key={job.id} 
@@ -459,6 +583,8 @@ class Dashboard extends Pyr.UserComponent {
       itemId: this.getItemId(),
       subPage: this.getSubPage(),
       subItemId: this.getSubItemId(),
+
+      location: this.props.location,
 
       showing: true,
       url: PageURL(page),

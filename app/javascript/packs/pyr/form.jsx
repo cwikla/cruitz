@@ -389,6 +389,26 @@ class TextField extends Child {
   }
 }
 
+class PasswordField extends TextField {
+  render() {
+    let myProps = { 
+      name: this.name(), 
+      type: "password", 
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID(),
+    };
+    if (!this.props.unmanaged) {
+      myProps.value = this.state.value;
+    }
+
+    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
+
+    return(
+      <input {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>
+    );
+  }
+}
+
 class Select extends Child {
   render() {
     let myProps = { 
@@ -521,6 +541,7 @@ const PyrForm = {
   Child, 
   Label, 
   TextField, 
+  PasswordField, 
   Select, 
   Option, 
   TextArea, 

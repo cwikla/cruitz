@@ -41,14 +41,12 @@ class Modal extends Pyr.UserComponent {
 
   render() {
     return (
-      <Pyr.Fade show={true}>
         <Pyr.FullScreen
           onEscape={this.onClose}
           onClose={this.onClose}
         >
         { this.props.children }
         </Pyr.FullScreen>
-      </Pyr.Fade>
     );
   }
 }
@@ -182,6 +180,72 @@ function sheetID(name, action) {
   action = action || "Index";
   let idName = "sheet" + "-" + action.toLowerCase();
   return idName;
+}
+
+class Wizard extends Base {
+  getInitState(props) {
+    return  {
+      page: 0,
+    };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.stack = [0];
+
+    this.onNext = this.next.bind(this);
+    this.onPrev = this.prev.bind(this);
+    this.toPage = this.page.bind(this);
+  }
+
+  pageCount() {
+    return 0;
+  }
+
+  page(nextPage) {
+    if ((nextPage < 0) || (nextPage >= this.pageCount())) {
+      console.log("Page outside boundaries: " +  nextPage);
+    }
+
+    this.stack.push(nextPage);
+
+    this.setState({
+      page: nextPage
+    });
+  }
+
+  next(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    if (this.state.page < (this.pageCount() - 1)) {
+      this.page(this.state.page + 1);
+    }
+  }
+
+  prev(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    if (this.stack.length <= 1) {
+      return;
+    }
+
+    this.stack.pop(); // this page
+    let p = this.stack.pop(); // prev page
+
+    console.log("PRE: " + p);
+    if (p >= 0) {
+      this.page(p);
+    }
+  }
+
+  render() {
+      return this.props.children;
+  }
+
 }
 
 class Index extends Base {
@@ -356,7 +420,7 @@ class New extends ModalForm {
   }
 
   title() {
-    return "New.Sheet title goes here";
+    return null;
   }
 
   renderTitle() {
@@ -385,6 +449,7 @@ class Edit extends ModalForm {
 
 }
 
+
 const Sheet = {
   sheetComponent,
   sheetID,
@@ -396,7 +461,8 @@ const Sheet = {
   Edit,
   Form,
   Modal,
-  ModalForm
+  ModalForm,
+  Wizard,
 };
 
 export default Sheet;

@@ -410,6 +410,15 @@ function firstKid(children) {
   return childrenArray[0] || null;
 }
 
+function kidAt(children, pos) {
+  const childrenArray = React.Children.toArray(children);
+  return childrenArray[pos];
+}
+
+function kidCount(children) {
+  return React.Children.count(children);
+}
+
 function propsRemove(props, ripOut) {
   if (!Array.isArray(ripOut)) {
     ripOut = [ ripOut ];
@@ -475,6 +484,8 @@ const Util = {
   propsMerge,
   propsMergeClassName,
   firstKid,
+  kidAt,
+  kidCount,
   hash,
   times,
   ajaxError,

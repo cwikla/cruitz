@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171006173454) do
+ActiveRecord::Schema.define(version: 20171114023901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,9 +88,13 @@ ActiveRecord::Schema.define(version: 20171006173454) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.string "name", null: false
+    t.string "name"
     t.text "description"
+    t.integer "user_id", null: false
+    t.string "url"
+    t.string "location"
     t.index ["name"], name: "index_companies_on_name"
+    t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
   create_table "heads", id: :serial, force: :cascade do |t|
@@ -269,6 +273,7 @@ ActiveRecord::Schema.define(version: 20171006173454) do
     t.string "first_name"
     t.string "last_name"
     t.string "jti", null: false
+    t.boolean "first_time", default: true, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["digits_user_id", "deleted_at"], name: "index_users_on_digits_user_id_and_deleted_at", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

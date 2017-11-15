@@ -21,7 +21,8 @@ import {
 } from 'react-router-dom';
 
 
-const PURL = Util.PURL;
+const URL = Util.PURL;
+
 const ajaxError = Util.ajaxError;
 const getJSON = Util.getJSON;
 const Method = Util.Method;
@@ -34,15 +35,130 @@ import PieChart from './pie_chart';
 
 const USERS_URL = "/users";
 
-const DURATION_TIME = 500;
+const DURATION_TIME = 300;
 
 const SHOW_TIME = 3000;
 
 const ESCAPE_KEY = 27;
 
+class Empty extends Component {
+  render() {
+    return null;
+  }
+}
+
+class ChildSelector extends Component {
+
+  render() {
+    let val = this.props.page;
+    console.log("RENDER CHILD: " + val);
+
+    if ((val < 0) || (val >= Util.kidCount(this.props.children))) {
+      console.log("ChildSelector: Error: " + val);
+      return Util.kidAt(this.props.children, 0) || null;
+    }
+
+    return Util.kidAt(this.props.children, val) || null;
+  }
+
+}
+
 const Loading = (props) => (
   <div className="loading" />
 );
+
+const RouterContextTypes = {
+  location: PropTypes.object,
+  history: PropTypes.object,
+};
+
+class RouterComponent extends Component {
+  static contextTypes = RouterContextTypes;
+
+  constructor(props) {
+    super(props);
+
+    this.onGoBack = this.goBack.bind(this);
+  }
+
+  goBack() {
+    console.log(this.context.history.goBack());
+  }
+}
+
+class RouterProvider extends Component {
+  static childContextTypes = {
+    location: PropTypes.object,
+    history: PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      location: this.props.location,
+      history: this.props.history,
+    }
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
+class RouterProps extends Component {
+  render() {
+    let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
+    let Component = this.props.component;
+    let dashboard = this.props.dashboard;
+
+    let url = "/:page?/:pid?/:sub?/:subid?";
+
+    return (
+      <Route
+        path={url}
+        render={(props) => {
+          let location = props.location;
+          let history = props.history;
+
+          console.log("ROUTE: " + location.pathname);
+          console.log(props);
+          console.log(location);
+
+          let action = null;
+          let params = props.match.params;
+
+          let pid = params.pid;
+
+          if (pid && isNaN(parseInt(pid))) {
+            action = pid;
+            pid = null;
+          }
+
+          let sendProps = { 
+            location: location,
+            history: history,
+            page: params.page,
+            action: action,
+            itemId: pid,
+            subPage: params.sub,
+            subItemId: params.subid,
+          };
+
+          if (!sendProps.page && dashboard) {
+            return (
+              <Redirect to={URL(dashboard).toString()}/>
+            );
+          }
+  
+          return (
+            <RouterProvider route={sendProps} location={props.location}  history={props.history}>
+              <Component {...rest} {...sendProps} />
+            </RouterProvider>
+          );
+        }}
+      />
+    );
+  }
+}
 
 const Icon = (props) => (
   <i {...Util.propsMergeClassName(props, "fa fa-" + props.name)}/>
@@ -63,7 +179,7 @@ const Button = (props) => (
 const IconButton = (props) => (
   <label
     {...Util.propsMergeClassName(props, "icon-btn")}
-  ><Pyr.Icon name={props.name}/></label>
+  ><Icon name={props.name}/> {props.children}</label>
 );
 
 class FlatButton extends Component {
@@ -81,6 +197,22 @@ class FlatButton extends Component {
   }
 }
 
+class BackButton extends RouterComponent {
+  render() {
+    return (
+      <label
+        {...Util.propsMergeClassName(this.props, "btn")}
+        onClick={this.onGoBack}
+      >{this.props.children}</label>
+    );
+  }
+}
+
+
+const ImageButton = (props) => (
+  <div className="pyr-image-btn"><img {...props}/></div>
+);
+
 const Label = (props) => (
   <label {...Util.propsMergeClassName(props, "pyr-label")}>{props.children}</label>
 );
@@ -90,7 +222,7 @@ const FancyLabel = (props) => (
 );
 
 const FancyButton = (props) => (
-  <div className="flx-row fancy"><label {...Util.propsMergeClassName(Util.propsRemove(props, "onClick"), "")}>{props.children}</label> <Pyr.Icon onClick={props.onClick} name="times-circle"/></div>
+  <div className="flx-row fancy"><label {...Util.propsMergeClassName(Util.propsRemove(props, "onClick"), "")}>{props.children}</label> <Icon onClick={props.onClick} name="times-circle"/></div>
 );
 
 const SmallLabel = (props) => (
@@ -173,41 +305,6 @@ class UserComponent extends Component {
   }
 }
 
-class RouterProps extends Component {
-  render() {
-    let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
-    let Component = this.props.component;
-    let dashboard = this.props.dashboard;
-
-    let url = "/:page?/:pid?/:sub?/:subid?";
-
-    return (
-      <Route
-        path={url}
-        render={(props) => {
-          let params = props.match.params;
-          let sendProps = { 
-            page: params.page,
-            itemId: params.pid,
-            subPage: params.sub,
-            subItemId: params.subid,
-          };
-
-          if (!sendProps.page && dashboard) {
-            return (
-              <Redirect to={Pyr.URL(dashboard).toString()}/>
-            );
-          }
-  
-          return (
-            <Component {...rest} {...sendProps} />
-          );
-        }}
-      />
-    );
-  }
-}
-
 class UserProvider extends Component {
   static childContextTypes = {
     user: PropTypes.object
@@ -250,7 +347,7 @@ class UserProvider extends Component {
         user: data.user
       });
     }).fail(function(jaXHR, textStatus, errorThrown) {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+      ajaxError(jaXHR, textStatus, errorThrown);
     });
   }
 
@@ -508,6 +605,12 @@ class Notice extends Component {
     //console.log(stuff);
 
     return (
+        <div
+          className={ClassNames("pyr-notice").push(this.props.className)}
+        ><div className="ninner">{this.context.notice}</div></div>
+    );
+
+    return (
       <Fade show={this.state.show}>
         <div
           className={ClassNames("pyr-notice").push(this.props.className)}
@@ -562,9 +665,9 @@ class FullScreen extends Component {
           className="flx-row flx-end controls"
           onClick={this.onClose}
         >
-          <Pyr.Icon name="close"
+          <Pyr.BackButton name="close"
               className="close"
-              />
+              >Go Back</Pyr.BackButton>
         </div>
         <div className="content">
           {this.props.children}
@@ -599,8 +702,10 @@ class FullScreen extends Component {
   }
 }
 
+const PassThru = (props) => (
+  props.children
+);
 
-const URL = PURL;
 const Pyr = { 
   ajaxError,
   getJSON,
@@ -624,6 +729,7 @@ const Pyr = {
   Scroll,
   Button,
   PrimaryButton,
+  BackButton,
   FlatButton,
   IconButton,
   Fade,
@@ -634,5 +740,9 @@ const Pyr = {
   NoticeProvider,
   Notice,
   Slide,
+  Empty,
+  ChildSelector,
+  PassThru,
+  ImageButton
 };
 export default Pyr;

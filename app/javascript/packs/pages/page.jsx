@@ -20,8 +20,8 @@ class Page extends Pyr.UserComponent {
   constructor(props) {
     super(props);
 
-    console.log("PAGE PARAMS: ");
-    console.log(props);
+    //console.log("PAGE PARAMS: ");
+    //console.log(props);
 
     let myState = {
       items: null,
@@ -106,7 +106,7 @@ class Page extends Pyr.UserComponent {
   }
 
   setItems(items) {
-    console.log("ITEMS NO LONGER NULL");
+   // console.log("ITEMS NO LONGER NULL");
     this.setState({ 
       items
     });
@@ -249,8 +249,8 @@ class Page extends Pyr.UserComponent {
 
     let id = this.name().toLowerCase() + "-page";
 
-    console.log("PAGE props");
-    console.log(this.props);
+    //console.log("PAGE props");
+    //console.log(this.props);
 
     let cname = ClassNames("d-flex flx-1 page flx-col").push(this.props.page.toLowerCase());
 

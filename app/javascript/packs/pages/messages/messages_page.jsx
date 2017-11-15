@@ -360,6 +360,6 @@ function key(item) {
 }
 
 MessagesPage.key = key;
-MessagesPage.NavBar = NavBar;
+//MessagesPage.NavBar = NavBar;
 
 export default MessagesPage;

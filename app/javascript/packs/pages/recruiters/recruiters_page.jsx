@@ -5,6 +5,13 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
+import {
+  Link,
+  Redirect
+} from 'react-router-dom';
+
+
+
 import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
@@ -250,7 +257,7 @@ class IndexSheet extends Sheet.Index {
     return (
       <div className="recruiters-index-header">
           <div className="recruiter-new p-1 d-flex flx-end">
-              <Pyr.PrimaryButton onClick={this.onAddJob}><Pyr.Icon name="plus"/> Invite Recruiter</Pyr.PrimaryButton>
+              <Link to="/recruiters/new"><Pyr.PrimaryButton><Pyr.Icon name="plus"/> Invite Recruiter</Pyr.PrimaryButton></Link>
           </div>
       </div>
     );

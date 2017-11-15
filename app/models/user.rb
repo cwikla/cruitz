@@ -20,8 +20,7 @@ class User < ApplicationRecord
 
   cached_has_one :setting
 
-  cached_belongs_to :company
-
+  cached_has_one :company
 
   before_create :on_before_create
   after_create :on_after_create
@@ -165,6 +164,7 @@ class User < ApplicationRecord
 
   def on_after_create
     create_setting
+    create_company
   end
 
   def check_jti

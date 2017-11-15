@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       get 'search(/:model)' => 'search#show'
 
       resources :ratings
-      resources :companies
+      resource :company
       resources :candidates
       resources :heads
       resources :jobs

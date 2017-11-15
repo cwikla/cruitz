@@ -116,10 +116,12 @@ class ShowSheet extends Sheet.Show {
   renderItem(item) {
     console.log(item);
     return (
+      <Pyr.FullScreen>
       <SettingsForm 
         settings={item}
         ref={(node) => this.target = node}
       />
+      </Pyr.FullScreen>
     );
   }
 }

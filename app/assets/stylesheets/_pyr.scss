@@ -18,7 +18,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: $light_gray_color;
+  background-color: $white_color;
 
   .close {
     padding-top: 1.5rem;
@@ -41,13 +41,13 @@
 }
 
 .pyr-fade {
-  opacity: 0.01;
+  opacity: 0.00;
 
   &.pyr-fade-enter {
 
     &.pyr-fade-enter-active, &.pyr-fade-entered {
       opacity: 1;
-      transition: opacity 500ms ease-in;
+      transition: opacity 300ms ease-in;
     }
 
   }
@@ -57,8 +57,8 @@
     opacity: 1;
 
     &.pyr-fade-exit-active {
-     opacity: 0.01;
-     transition: opacity 300ms ease-in;
+     opacity: 0.00;
+     transition: opacity 200ms ease-in;
     }
   }
 }
@@ -75,14 +75,14 @@
     &.pyr-slide-right-enter-active, &.pyr-slide-right-entered, &.pyr-slide-right-exit {
       margin-left: 0rem;
       transform: translateX(0);
-      un-transition: all 500ms linear;
+      un-transition: all 300ms linear;
     }
   }
 
   &.pyr-slide-right-exit-active {
     margin-left: -25rem;
     transform: translateX(100%);
-    un-transition: all 500ms linear;
+    un-transition: all 300ms linear;
   }
 }
 
