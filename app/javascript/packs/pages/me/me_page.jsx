@@ -102,7 +102,7 @@ class NewSheet extends Sheet.New {
       e.preventDefault();
     }
 
-    Pyr.getJSON({
+    this.getJSON({
       remote: "/", // don't use /api/v1
       url: DESTROY_SESSION_URL,
       type: Pyr.Method.DELETE

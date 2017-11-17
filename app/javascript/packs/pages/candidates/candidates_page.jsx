@@ -439,7 +439,7 @@ class ShowSheet extends Sheet.Show {
     let url = Pyr.URL(CANDIDATES_URL).push(candidate.id);
     candidate = Object.assign({}, candidate, { state });
 
-    Pyr.getJSON({
+    this.getJSON({
       url: url,
       context: this,
       type: Pyr.Method.PUT,
@@ -482,7 +482,7 @@ class ShowSheet extends Sheet.Show {
       job: null
     });
 
-    Pyr.getJSON({
+    this.getJSON({
       url: url,
       context: this,
 
@@ -714,7 +714,7 @@ class CandidatesPage extends Page {
 
     let me = this;
 
-    Pyr.getJSON({
+    this.getJSON({
       url: Pyr.URL(CANDIDATES_URL).push(itemId),
       context: me,
       loading: onLoading,
@@ -742,7 +742,7 @@ class CandidatesPage extends Page {
       url = Pyr.URL(CANDIDATES_URL);
     }
 
-    Pyr.getJSON({
+    this.getJSON({
       url: url,
       context: this,
       loading: this.onLoading,

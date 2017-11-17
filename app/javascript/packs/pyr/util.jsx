@@ -161,7 +161,7 @@ function PURL(a) {
 }
 
 function ajaxError(jaXHR, textStatus, errorThrown) {
-   alert(errorThrown);
+   console.log("AJAX Error: " + errorThrown);
 }
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyz";
@@ -241,40 +241,6 @@ function getJSON(stuff) {
   });
   ajx.uuid = uuid.v4();
   return ajx;
-}
-
-class Network {
-  constructor() {
-    this.ajaxii = {};
-  }
-
-  abort(uuid) {
-    let old = this.ajaxii;
-
-    this.ajaxii = {};
-
-    if (uuid) {
-      xhr = old[uuid];
-      xhr.abort();
-    }
-
-    for(let key in old) {
-      alert("AJAX ABORTING!!!: " + key);
-      if (!uuid || old[key] == uuid) {
-        old[uuid].abort();
-      }
-    }
-  }
-
-  getJSON(stuff) {
-    let ax = Util.getJSON(stuff);
-    this.ajaxii[ax.uuid] = ax;
-
-    return ax.done(() => {
-      delete this.ajaxii[ax.uuid];
-    });
-  }
-
 }
 
 class ClassNamesObj  {
@@ -527,7 +493,6 @@ const Util = {
   times,
   ajaxError,
   getJSON,
-  Network,
   scramble,
   getRandomInt,
   Method

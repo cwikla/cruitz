@@ -58,10 +58,11 @@ class NetworkComponent extends Component {
       xhr.abort();
     }
 
+    console.log(old);
+
     for(let key in old) {
-      alert("AJAX ABORTING!!!: " + key);
       if (!uuid || old[key] == uuid) {
-        old[uuid].abort();
+        old[key].abort();
       }
     }
   }

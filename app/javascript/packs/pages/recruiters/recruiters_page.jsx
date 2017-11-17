@@ -186,7 +186,7 @@ class NewSheet extends Sheet.New {
   getTemplate() {
     let url = Pyr.URL(INVITES_URL).push("new");
 
-    Pyr.getJSON({
+    this.getJSON({
       url: url,
       context: this,
 
@@ -292,7 +292,7 @@ class RecruitersPage extends Page {
   }
 
   loadItems(onLoading) {
-    Pyr.getJSON({
+    this.getJSON({
       url: this.props.url,
       context: this,
       loading: onLoading,

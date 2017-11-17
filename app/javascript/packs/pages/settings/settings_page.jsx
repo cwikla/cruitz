@@ -141,7 +141,7 @@ class SettingsPage extends Page {
   }
 
   loadSelected(unused, onLoading) {
-    Pyr.getJSON({
+    this.getJSON({
       url: this.props.url,
       context: this,
       loading: onLoading,
