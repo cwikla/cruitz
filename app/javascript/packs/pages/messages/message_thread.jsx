@@ -192,6 +192,12 @@ class MessageThread extends Pyr.UserComponent {
 
     this.onLoading = null;
     this.onSuccess = this.success.bind(this);
+
+    this.network = new Pyr.Network();
+  }
+
+  componentWillUnmount() {
+    this.network.abort();
   }
 
   threadExtra(thread) {
@@ -219,7 +225,7 @@ class MessageThread extends Pyr.UserComponent {
 
     let url =  Pyr.URL(MESSAGES_URL).push(mid);
 
-    return Pyr.getJSON({
+    return this.network.getJSON({
       url: url,
       context: self,
       loading: self.onLoading

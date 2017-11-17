@@ -41,6 +41,51 @@ const SHOW_TIME = 3000;
 
 const ESCAPE_KEY = 27;
 
+class NetworkComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.ajaxii = {};
+  }
+
+  abortJSON(uuid) {
+    let old = this.ajaxii;
+
+    this.ajaxii = {};
+
+    if (uuid) {
+      xhr = old[uuid];
+      xhr.abort();
+    }
+
+    for(let key in old) {
+      alert("AJAX ABORTING!!!: " + key);
+      if (!uuid || old[key] == uuid) {
+        old[uuid].abort();
+      }
+    }
+  }
+
+  getJSON(stuff) {
+    let ax = Util.getJSON(stuff);
+    this.ajaxii[ax.uuid] = ax;
+
+    return ax.done(() => {
+      delete this.ajaxii[ax.uuid];
+    });
+  }
+
+  componentWillMount() {
+    this.ajaxii = {};
+  }
+
+  componentWillUnmount() {
+    this.abortJSON();
+  }
+
+}
+
+
 class Empty extends Component {
   render() {
     return null;
@@ -297,7 +342,7 @@ const UserContextTypes = {
   user: PropTypes.object
 };
 
-class UserComponent extends Component {
+class UserComponent extends NetworkComponent {
   static contextTypes = Object.assign({}, UserContextTypes, NoticeContextTypes);
 
   user() {
@@ -743,6 +788,7 @@ const Pyr = {
   Empty,
   ChildSelector,
   PassThru,
-  ImageButton
+  ImageButton,
+  NetworkComponent
 };
 export default Pyr;

@@ -5,6 +5,8 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
+import uuid from 'uuid';
+
 const ONE_MINUTE = (60 * 1000);
 const ONE_HOUR = (ONE_MINUTE * 60);
 const ONE_DAY = (ONE_HOUR * 24);
@@ -229,7 +231,7 @@ function getJSON(stuff) {
 
   stuff.beforeSend = beforeSend;
 
-  return $.getJSON(
+  let ajx = $.getJSON(
     stuff
   )
   .always(() => {
@@ -237,8 +239,43 @@ function getJSON(stuff) {
       onLoading(false);
     }
   });
+  ajx.uuid = uuid.v4();
+  return ajx;
 }
 
+class Network {
+  constructor() {
+    this.ajaxii = {};
+  }
+
+  abort(uuid) {
+    let old = this.ajaxii;
+
+    this.ajaxii = {};
+
+    if (uuid) {
+      xhr = old[uuid];
+      xhr.abort();
+    }
+
+    for(let key in old) {
+      alert("AJAX ABORTING!!!: " + key);
+      if (!uuid || old[key] == uuid) {
+        old[uuid].abort();
+      }
+    }
+  }
+
+  getJSON(stuff) {
+    let ax = Util.getJSON(stuff);
+    this.ajaxii[ax.uuid] = ax;
+
+    return ax.done(() => {
+      delete this.ajaxii[ax.uuid];
+    });
+  }
+
+}
 
 class ClassNamesObj  {
   constructor(...args) {
@@ -490,6 +527,7 @@ const Util = {
   times,
   ajaxError,
   getJSON,
+  Network,
   scramble,
   getRandomInt,
   Method

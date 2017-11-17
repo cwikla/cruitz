@@ -276,7 +276,7 @@ class MessagesPage extends Page {
 
     let me = this;
 
-    Pyr.getJSON({
+    this.getJSON({
       url: Pyr.URL(MESSAGES_URL).push(itemId),
       context: me,
       loading: onLoading,
@@ -299,7 +299,7 @@ class MessagesPage extends Page {
 
     let me = this;
 
-    Pyr.getJSON({
+    this.getJSON({
       url: Pyr.URL(MESSAGES_URL),
       context: me,
       loading: onLoading,
