@@ -24,6 +24,7 @@ import RecruitersPage from './recruiters/recruiters_page';
 import SettingsPage from './settings/settings_page';
 import MePage from './me/me_page';
 import RegistrationsPage from './registration/registrations_page';
+import CompaniesPage from './companies/companies_page';
 
 import {
   JOBS_PAGE,
@@ -33,12 +34,15 @@ import {
   MESSAGES_PAGE,
   SEARCH_PAGE,
   ME_PAGE,
+  COMPANIES_PAGE,
 
   JOBS_URL,
   CANDIDATES_URL,
   RECRUITERS_URL,
   SETTINGS_URL,
   MESSAGES_URL,
+  COMPANIES_URL,
+
   SEARCH_URL,
 
   USERS_URL,
@@ -57,6 +61,7 @@ const PAGE_MAP = {
   [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
   [MESSAGES_PAGE.toLowerCase()]: MessagesPage,
   [ME_PAGE.toLowerCase()]: MePage,
+  [COMPANIES_PAGE.toLowerCase()]: CompaniesPage,
 };
 
 
@@ -425,23 +430,6 @@ class Dashboard extends Pyr.UserComponent {
     );
   }
 
-  renderTopNav() {
-    return (
-       <Pyr.Grid.Row className="navbar flx-row align-items-center">
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <Link to="/"><Pyr.SmallLabel className="nav-item">cruitz</Pyr.SmallLabel></Link>
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav hidden-sm-down flx-row">
-            <Pyr.IconButton name="list" className="nav-item">Recruiters</Pyr.IconButton>
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav ml-auto">
-            <div id="alerts" className="nav-item"><Pyr.Icon name="bell-o" className="fa-fw"/></div>
-            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
-          </Pyr.Grid.Col>
-        </Pyr.Grid.Row>
-    );
-  }
-
   render3() {
     return (
       <div>
@@ -462,7 +450,7 @@ class Dashboard extends Pyr.UserComponent {
             { this.renderSearchNav() }
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row">
-            <div id="alerts" className="nav-item"><Pyr.Icon name="bell-o" className="fa-fw"/></div>
+            <div id="alerts" className="alerts nav-item"><Pyr.Icon name="bell-o" className="fa-fw"/></div>
             <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
@@ -629,7 +617,6 @@ class Dashboard extends Pyr.UserComponent {
         <div className="flx-row flx-1">
           { this.renderSideBar() }
           { this.renderMain() }
-          { this.renderSlide() }
         </div>
       <Pyr.Notice />
       </Pyr.Grid.FullContainer>

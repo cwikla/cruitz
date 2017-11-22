@@ -37,6 +37,9 @@
         color: white !important;
       }
     }
+    &.alerts:hover {
+      color: white !important;
+    }
   }
 
   input[type=text] {
@@ -50,6 +53,7 @@
     color: rgba($navbar_menu_color, 0.5);
     font-size: 1rem;
   }
+
 }
 
 .page-nav-bar {

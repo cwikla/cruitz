@@ -1,5 +1,11 @@
 class CompanySerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id,
+            :name,
+            :description,
+            :url,
+            :location
+
+  belongs_to :user
 
   def id
     object.hashid

@@ -25,7 +25,6 @@ import {
 import {
   JOBS_URL,
   SEARCH_URL,
-  COMPANY_URL,
 
   NEW_ACTION,
   SHOW_ACTION
@@ -40,94 +39,6 @@ function methodToName(method) {
     default:
       return "Add";
       break;
-  }
-}
-
-class CompanyForm extends Component {
-  constructor(props) {
-    super(props);
-    this.company = {};
-  }
-
-  render() {
-    let method = Pyr.Method.PUT;
-
-    return (
-      <div className="form-parent">
-        <Pyr.Form.Form
-          model="Company"
-          object={this.company}
-          url={COMPANY_URL}
-          method={method}
-          id="company-form" 
-          key="company-form"
-          ref={(node) => { this.form = node; }} 
-          onPreSubmit={this.props.onPreSubmit} 
-          onPostSubmit={this.props.onPostSubmit}
-          onSuccess={this.props.onSuccess}
-          onError={this.props.onError}
-        >
-      
-          <Pyr.Form.Group name="name">
-            <Pyr.Form.Label>Name</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Company Name"/>
-          </Pyr.Form.Group>
-      
-          <Pyr.Form.Group name="url">
-            <Pyr.Form.Label>URL</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Company Web Page" />
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="location">
-            <Pyr.Form.Label>Location</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Location" />
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="description">
-            <Pyr.Form.Label>Description</Pyr.Form.Label>
-            <Pyr.Form.TextArea placeholder="Company description" rows="10" />
-          </Pyr.Form.Group>
-
-      
-          </Pyr.Form.Form>
-            <div className="form-footer">
-          <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>Next</Pyr.Form.SubmitButton>
-        </div>
-      </div>
-      
-    );
-  }
-}
-
-
-class NewCompanySheet extends Sheet.New {
-  static contextTypes = Pyr.NoticeContextTypes;
-
-  success(data, textStatus, jqXHR) {
-    super.success(data, textStatus, jqXHR);
-  }
-
-  notitle() {
-    return "Before posting your first job, tell us a bit about your company.";
-  }
-
-  renderForm() { 
-    return ( 
-      <Pyr.Grid.Row>
-        <Pyr.Grid.Col>
-          <div className="helper">
-            Before you post your first job, tell us a bit about your company.
-          </div>
-        </Pyr.Grid.Col>
-        <Pyr.Grid.Col>
-        <CompanyForm 
-          onPreSubmit={this.onPreSubmit} 
-          onPostSubmit={this.onPostSubmit} 
-          onSuccess={this.onSuccess}
-        />
-        </Pyr.Grid.Col>
-      </Pyr.Grid.Row>
-    );
   }
 }
 
@@ -472,6 +383,10 @@ class ShowSheet extends Sheet.Show {
 }
 
 class NewSheet extends Sheet.New {
+  getInitState(props) {
+    return {
+    };
+  }
 
   success(data, textStatus, jqXHR) {
     this.props.onJobCreate(data.job);
@@ -484,12 +399,6 @@ class NewSheet extends Sheet.New {
   }
 
   renderForm() { 
-    if (!this.user().company || !this.user().company.title) {
-      return (
-        <NewCompanySheet {...this.props}/>
-      );
-    }
-
     return ( 
       <JobForm 
         onPreSubmit={this.onPreSubmit} 

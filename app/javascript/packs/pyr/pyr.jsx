@@ -247,7 +247,7 @@ class BackButton extends RouterComponent {
   render() {
     return (
       <label
-        {...Util.propsMergeClassName(this.props, "btn")}
+        {...Util.propsMergeClassName(this.props, "btn-flat")}
         onClick={this.onGoBack}
       >{this.props.children}</label>
     );
@@ -713,7 +713,7 @@ class FullScreen extends Component {
         >
           <Pyr.BackButton name="close"
               className="close"
-              >Go Back</Pyr.BackButton>
+              ><Pyr.IconButton name="arrow-left">Back</Pyr.IconButton></Pyr.BackButton>
         </div>
         <div className="content">
           {this.props.children}

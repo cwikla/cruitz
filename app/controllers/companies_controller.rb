@@ -1,7 +1,7 @@
 class CompaniesController < ApplicationController
 
   def update
-    @company = current_user.build_company
+    @company = current_user.company || current_user.build_company
     if @company.update(company_params)
       return render json: @company
     else
