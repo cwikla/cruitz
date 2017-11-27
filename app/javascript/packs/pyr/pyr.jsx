@@ -279,6 +279,53 @@ const ButtonLabel = (props) => (
   <label {...Util.propsMergeClassName(props, "btn-primary")}>{props.children}</label>
 );
 
+class Collapse extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onToggle = this.toggle.bind(this);
+
+    this.state = {
+      open: props.open || false
+    };
+  }
+
+  toggle(e) {
+    let open = !this.state.open;
+    this.setState( {
+      open
+    });
+  }
+
+  renderButton(text, open) {
+    let name = !open ? "plus" : "minus";
+    return (
+      <Pyr.IconButton name={name} onClick={this.onToggle}>{text}</Pyr.IconButton>
+    );
+  }
+
+  renderChildren(open) {
+    if (!open) {
+      return null;
+    }
+    return (
+      <div className="children">
+        {this.props.children}
+      </div>
+    );
+  }
+
+  render() {
+    let clz = ClassNames("pyr-collapse", this.state.open ? "" : "collapsed");
+    return (
+      <div {...Util.propsMergeClassName(this.props, clz)}>
+        { this.renderButton(this.props.label, this.state.open) }
+        { this.renderChildren(this.state.open) }
+      </div>
+    );
+  }
+}
+
 class MagicDate extends Component {
   constructor(props) {
     super(props);
@@ -790,6 +837,7 @@ const Pyr = {
   ChildSelector,
   PassThru,
   ImageButton,
-  NetworkComponent
+  NetworkComponent,
+  Collapse
 };
 export default Pyr;

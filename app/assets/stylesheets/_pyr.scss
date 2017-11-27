@@ -130,6 +130,12 @@
   }
 }
 
+.pyr-collapse {
+  .children {
+    margin-left: 1.5rem;
+  }
+}
+
 
 
 @include media-breakpoint-down(xs) {

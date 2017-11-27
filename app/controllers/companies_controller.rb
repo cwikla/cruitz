@@ -12,6 +12,10 @@ class CompaniesController < ApplicationController
   private
 
   def company_params
+    params[:company].delete :size
+    params[:company].delete :notes
+    # FIXME
+
     params.require(:company).permit(:name, :url, :description, :location)
   end
 

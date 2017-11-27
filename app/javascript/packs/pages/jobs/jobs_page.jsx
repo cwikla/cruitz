@@ -407,6 +407,16 @@ class NewSheet extends Sheet.New {
       />
     );
   }
+
+  render() {
+    if (true || !this.user().company || !this.user().company.title) {
+      return (
+        <Redirect to="/company/new" />
+      );
+    }
+
+    super.render();
+  }
 }
 
 class JobsPage extends Page {

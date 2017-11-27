@@ -123,7 +123,7 @@ class Page extends Pyr.UserComponent {
 ////// COPY ME INTO SUBCLASS //////
 
   indexSheet() {
-    alert("page.jsx: IF YOU ARE SEEING THIS, COPY THESE INTO SUBCLASS");
+    alert("page.jsx: IF YOU ARE SEEING THIS, COPY indexSheet() INTO SUBCLASS");
 
     return (
       <IndexSheet 
@@ -136,7 +136,7 @@ class Page extends Pyr.UserComponent {
   }
 
   actionSheet(action) {
-    alert("page.jsx: IF YOU ARE SEEING THIS, COPY THESE INTO SUBCLASS");
+    alert("page.jsx: IF YOU ARE SEEING THIS, COPY actionSheet() INTO SUBCLASS");
 
     let sheet = Sheet.sheetComponent(action || SHOW_ACTION);
     let ActionSheet = eval(sheet);
