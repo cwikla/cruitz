@@ -409,13 +409,13 @@ class NewSheet extends Sheet.New {
   }
 
   render() {
-    if (true || !this.user().company || !this.user().company.title) {
+    if (!this.user().company || !this.user().company.name) {
       return (
         <Redirect to="/company/new" />
       );
     }
 
-    super.render();
+    return super.render();
   }
 }
 

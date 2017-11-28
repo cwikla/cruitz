@@ -12,8 +12,8 @@ import {
 import Pyr from '../pyr/pyr';
 
 class Modal extends Pyr.UserComponent {
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
     this.state = {
       show: false
     };
@@ -56,14 +56,14 @@ class Item extends Pyr.UserComponent {
 
 
 class Base extends Pyr.UserComponent {
-  getInitState(props) {
+  getInitState(...args) {
     return  {};
   }
 
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
 
-    this.state = Object.assign({ isLoading: false}, this.getInitState(props));
+    this.state = Object.assign({ isLoading: false}, this.getInitState(...args));
 
     this.onClicks = {};
     this.onLoading = this.setLoading.bind(this);
@@ -183,14 +183,14 @@ function sheetID(name, action) {
 }
 
 class Wizard extends Base {
-  getInitState(props) {
+  getInitState(...args) {
     return  {
       page: 0,
     };
   }
 
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
 
     this.stack = [0];
 
@@ -249,10 +249,6 @@ class Wizard extends Base {
 }
 
 class Index extends Base {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     if (!this.props.items) {
       console.log("LOADING ITEMS");
@@ -319,9 +315,6 @@ class Index extends Base {
 }
 
 class Show extends Base {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     if (!this.props.selected) {
@@ -377,8 +370,9 @@ class Form extends Base {
 }
 
 class ModalForm extends Form {
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
+
     this.onSuccess = this.success.bind(this);
   }
 
@@ -396,8 +390,9 @@ class ModalForm extends Form {
 }
 
 class SearchForm extends Form {
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
+
     this.onSuccess = this.success.bind(this);
   }
 
@@ -415,9 +410,6 @@ class SearchForm extends Form {
 }
 
 class New extends ModalForm {
-  constructor(props) {
-    super(props);
-  }
 
   title() {
     return null;
@@ -432,10 +424,6 @@ class New extends ModalForm {
 }
 
 class Edit extends ModalForm {
-  constructor(props) {
-    super(props);
-  }
-
   title() {
     return "Edit.Sheet title goes here";
   }

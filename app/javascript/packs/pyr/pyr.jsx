@@ -51,6 +51,10 @@ class NetworkComponent extends Component {
   abortJSON(uuid) {
     let old = this.ajaxii;
 
+    if ($.isEmptyObject(old)) {
+      return;
+    }
+
     this.ajaxii = {};
 
     if (uuid) {
@@ -58,6 +62,7 @@ class NetworkComponent extends Component {
       xhr.abort();
     }
 
+    console.log("abortJSON(" + uuid + ")");
     console.log(old);
 
     for(let key in old) {
@@ -398,7 +403,7 @@ class UserComponent extends NetworkComponent {
   }
 }
 
-class UserProvider extends Component {
+class UserProvider extends NetworkComponent {
   static childContextTypes = {
     user: PropTypes.object
   };
@@ -423,15 +428,12 @@ class UserProvider extends Component {
     this.getSelf(this.props.url);
   }
 
-  componentWillUnmount() {
-  }
-
   getSelf(url) {
     let self = this;
 
     //alert("GET SELF CALLED");
 
-    getJSON({
+    this.getJSON({
       type: Method.GET,
       url: url,
       context: this

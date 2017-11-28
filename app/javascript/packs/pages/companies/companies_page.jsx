@@ -103,6 +103,11 @@ class CompanyForm extends Component {
           onError={this.props.onError}
         >
       
+          <Pyr.Form.Group name="logo">
+            <Pyr.Form.Label>Logo</Pyr.Form.Label>
+            <Pyr.Form.TextField placeholder= "Logo"/>
+          </Pyr.Form.Group>
+
           <Pyr.Form.Group name="name">
             <Pyr.Form.Label>Name</Pyr.Form.Label>
             <Pyr.Form.TextField placeholder= "Company Name"/>
@@ -166,7 +171,7 @@ class CompanyForm extends Component {
 
           </Pyr.Form.Form>
             <div className="form-footer">
-          <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>Next</Pyr.Form.SubmitButton>
+          <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>Save</Pyr.Form.SubmitButton>
         </div>
       </div>
       
@@ -176,8 +181,14 @@ class CompanyForm extends Component {
 
 
 class NewSheet extends Sheet.New {
-  getInitState(props) {
-    company: null
+  getInitState(props, context) {
+    let st = super.getInitState(props, context);
+    console.log("COMPANY?");
+    console.log(context.user);
+
+    return null;
+
+    return Object.assign({}, st, { company : context.user.company });
   }
 
   success(data, textStatus, jqXHR) {
@@ -186,7 +197,12 @@ class NewSheet extends Sheet.New {
     console.log("COMPANY");
     console.log(company);
 
-    this.user().company = company;
+    let user = this.user();
+    user.company = company;
+
+    console.log("COMPANY 2");
+    console.log(this.user().company);
+
     super.success(data, textStatus, jqXHR);
     this.setState({
       company: company
@@ -208,7 +224,8 @@ class NewSheet extends Sheet.New {
   }
 
   renderForm() { 
-    let company = this.user() ? this.user().company : null;
+    let company = this.state.company;
+
     company = company || {};
 
     return ( 

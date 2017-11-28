@@ -13,12 +13,12 @@ import {
 } from './const';
 
 class Page extends Pyr.UserComponent {
-  getInitState(props) {
+  getInitState(...args) {
     return {};
   }
 
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
 
     //console.log("PAGE PARAMS: ");
     //console.log(props);
@@ -29,6 +29,7 @@ class Page extends Pyr.UserComponent {
       fullDetail: false,
     };
 
+    this.state = Object.assign(myState, this.getInitState(...args));
 
     let jobs = this.props.jobs || [];
     this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
@@ -43,7 +44,6 @@ class Page extends Pyr.UserComponent {
 
     this.onLoadSelected = this.loadSelected.bind(this);
 
-    this.state = Object.assign(myState, this.getInitState(props));
   }
 
   componentWillReceiveProps(nextProps) {

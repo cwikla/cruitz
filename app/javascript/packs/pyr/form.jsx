@@ -217,6 +217,16 @@ class Group extends Component {
     };
   }
 
+  error() {
+    if (!this.state.errorString) {
+      return null;
+    }
+  
+    return (
+      <div className="errorString"><label className="error">{this.props.name} {this.state.errorString}</label></div>
+    );
+  }
+
   render() { 
     let className = Util.ClassNames("mdb-form-unused form-group");
     if (this.state.errorString) {
@@ -226,6 +236,7 @@ class Group extends Component {
     return (
       <div {...Util.propsMergeClassName(this.props,className)}>
         {this.props.children}
+        { this.error() }
       </div>
     );
   }
