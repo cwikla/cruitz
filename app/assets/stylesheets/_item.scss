@@ -2,6 +2,7 @@
   .item {
     border-bottom: 1px solid rgba(gray, 0.4);
     background-color: $light_gray_color;
+    font-weight: 400;
 
     &:hover {
       background-color: rgba($light_gray_color, 0.5);
