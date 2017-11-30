@@ -1,5 +1,6 @@
 class ApplicationRecord < ActiveRecord::Base
   include Pyr::Base::SimpleCache
+  include Pyr::Base::S3::ActsAsS3Asset
 
   self.abstract_class = true
 
@@ -19,6 +20,11 @@ class ApplicationRecord < ActiveRecord::Base
 
   def hashid
     return self.id
+  end
+
+  def s3_upload_col(col, options)
+    puts "S3 upload col"
+    super
   end
 
 end

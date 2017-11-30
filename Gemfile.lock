@@ -1,3 +1,29 @@
+PATH
+  remote: ../pyr/pyr_base
+  specs:
+    pyr_base (10.5.1)
+      aws-sdk
+      aws-sdk-rails
+      bootstrap (= 4.0.0.alpha6)
+      cancan
+      coffee-rails
+      dalli
+      devise
+      elasticsearch-model
+      elasticsearch-rails
+      geminabox
+      jpyr (~> 4.0.0)
+      jquery-rails (~> 4.3.1)
+      jquery-ui-rails (~> 6.0.0)
+      json
+      paranoia
+      pyr_async (~> 4.0.0)
+      rails (~> 5.1.1)
+      sass-rails
+      tether-rails
+      uglifier
+      uuidtools
+
 GEM
   remote: https://rubygems.org/
   remote: http://pyr:akbash42@gems.cwikla.com/
@@ -595,28 +621,6 @@ GEM
       rails (~> 5.1.1)
       resque
       resque-scheduler
-    pyr_base (10.5.0)
-      aws-sdk
-      aws-sdk-rails
-      bootstrap (= 4.0.0.alpha6)
-      cancan
-      coffee-rails
-      dalli
-      devise
-      elasticsearch-model
-      elasticsearch-rails
-      geminabox
-      jpyr (~> 4.0.0)
-      jquery-rails (~> 4.3.1)
-      jquery-ui-rails (~> 6.0.0)
-      json
-      paranoia
-      pyr_async (~> 4.0.0)
-      rails (~> 5.1.1)
-      sass-rails
-      tether-rails
-      uglifier
-      uuidtools
     pyr_gem (7.0.0)
       geminabox (>= 0.13.5)
       rails (~> 5.1.1)
@@ -780,7 +784,7 @@ DEPENDENCIES
   pg
   puma (~> 3.0)
   pyr_async (~> 4.0.0)!
-  pyr_base (~> 10.5.0)!
+  pyr_base!
   pyr_gem (~> 7.0.0)!
   pyr_geo (~> 4.1.0)!
   pyr_push (~> 6.1.0)!

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171114023901) do
+ActiveRecord::Schema.define(version: 20171129232422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,10 @@ ActiveRecord::Schema.define(version: 20171114023901) do
     t.integer "user_id", null: false
     t.string "url"
     t.string "location"
+    t.string "logo"
+    t.string "logo_url"
+    t.datetime "logo_uploaded_at"
+    t.text "logo_data"
     t.index ["name"], name: "index_companies_on_name"
     t.index ["user_id"], name: "index_companies_on_user_id"
   end

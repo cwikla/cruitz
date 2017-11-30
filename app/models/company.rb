@@ -1,4 +1,6 @@
 class Company < ApplicationRecord
+  acts_as_s3_asset :logo
+
   cached_belongs_to :user
   cached_has_many :jobs, through: :users
 
