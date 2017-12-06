@@ -13,3 +13,4 @@ Pyr::Base::Engine.config.pyr_api_secret = "RecruitMe"
 #}
 
 ActionMailer::Base.default :from => "no-reply@cruitz.com"
+

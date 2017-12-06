@@ -21,6 +21,8 @@ Rails.application.routes.draw do
       post 'search(/:model)' => 'search#show'
       get 'search(/:model)' => 'search#show'
 
+      get 'post_url' => 's3#get'
+
       resources :ratings
       resource :company
       resources :candidates
