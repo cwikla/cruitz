@@ -423,7 +423,7 @@ const UserContextTypes = {
   user: PropTypes.object
 };
 
-class UserComponent extends NetworkComponent {
+class UserReceiver extends NetworkComponent {
   static contextTypes = Object.assign({}, UserContextTypes, NoticeContextTypes);
 
   user() {
@@ -641,7 +641,7 @@ class NoticeProvider extends Component {
   }
 }
 
-class Notice extends Component {
+class NoticeReceiver extends Component {
   static contextTypes = NoticeContextTypes;
 
   constructor(props) {
@@ -832,10 +832,18 @@ const PassThru = (props) => (
 const Pyr = { 
   ajaxError,
   getJSON,
-  Grid,
+
+  NetworkComponent,
+
+  NoticeContextTypes,
+  NoticeProvider,
+  NoticeReceiver,
+
   UserContextTypes,
   UserProvider,
-  UserComponent,
+  UserReceiver,
+
+  Grid,
   Icon,
   Label,
   FancyLabel,
@@ -859,15 +867,11 @@ const Pyr = {
   FullScreen,
   PieChart,
   RouterProps,
-  NoticeContextTypes,
-  NoticeProvider,
-  Notice,
   Slide,
   Empty,
   ChildSelector,
   PassThru,
   ImageButton,
-  NetworkComponent,
   Collapse,
   ImageFile
 };

@@ -90,7 +90,7 @@ const UserLabel = (props) => (
   ><Pyr.Icon name="user" className="fa-fw" /><Pyr.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
 
-class PagePicker extends Pyr.UserComponent {
+class PagePicker extends Pyr.UserReceiver {
   constructor(props) {
     super(props);
   }
@@ -153,7 +153,7 @@ class NavView extends Component {
 
 
 
-class Dashboard extends Pyr.UserComponent {
+class Dashboard extends Pyr.UserReceiver {
   constructor(props) {
     super(props);
 
@@ -618,7 +618,7 @@ class Dashboard extends Pyr.UserComponent {
           { this.renderSideBar() }
           { this.renderMain() }
         </div>
-      <Pyr.Notice />
+      <Pyr.NoticeReceiver />
       </Pyr.Grid.FullContainer>
     );
   }

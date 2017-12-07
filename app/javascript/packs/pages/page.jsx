@@ -12,7 +12,7 @@ import {
   SHOW_ACTION
 } from './const';
 
-class Page extends Pyr.UserComponent {
+class Page extends Pyr.UserReceiver {
   getInitState(...args) {
     return {};
   }

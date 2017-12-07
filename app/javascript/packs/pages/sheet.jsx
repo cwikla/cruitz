@@ -11,7 +11,7 @@ import {
 
 import Pyr from '../pyr/pyr';
 
-class Modal extends Pyr.UserComponent {
+class Modal extends Pyr.UserReceiver {
   constructor(...args) {
     super(...args);
     this.state = {
@@ -51,11 +51,11 @@ class Modal extends Pyr.UserComponent {
   }
 }
 
-class Item extends Pyr.UserComponent {
+class Item extends Pyr.UserReceiver {
 }
 
 
-class Base extends Pyr.UserComponent {
+class Base extends Pyr.UserReceiver {
   getInitState(...args) {
     return  {};
   }

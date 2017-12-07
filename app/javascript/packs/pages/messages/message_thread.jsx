@@ -187,7 +187,7 @@ class Footer extends Component {
 }
 
 
-class MessageThread extends Pyr.UserComponent {
+class MessageThread extends Pyr.UserReceiver {
 
   constructor(props) {
     super(props);
