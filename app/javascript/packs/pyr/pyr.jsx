@@ -259,6 +259,34 @@ class BackButton extends RouterComponent {
   }
 }
 
+class ImageFile extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      srcUrl : URl.createObjectURL(this.props.file)
+    };
+
+    this.onLoad = this.loaded.bind(this);
+  }
+
+  loaded(e) {
+    if (this.state.srcURL) {
+      URL.revokeObjectURL(this.state.srcUrl);
+    }
+  }
+
+  render() {
+    return (
+      <img 
+        {...Util.propsMergeClassName(props, "pyr-image-file")} 
+        src={this.state.srcUrl} 
+        onLoad={e => URL.revokeObjectURL(this.state.srcUrl)} 
+      />
+    );
+  }
+}
+
 
 const ImageButton = (props) => (
   <div className="pyr-image-btn"><img {...props}/></div>
@@ -840,6 +868,7 @@ const Pyr = {
   PassThru,
   ImageButton,
   NetworkComponent,
-  Collapse
+  Collapse,
+  ImageFile
 };
 export default Pyr;

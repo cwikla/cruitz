@@ -539,11 +539,96 @@ class CheckBox extends Child {
     return(
       <div className="form-checkbox flx-row">
         <input name={this.name()} type="hidden" value={false} />
-        <input type="checkbox" {...myProps} {...Util.propsMergeClassName(rest, "f-form-control")} onChange={this.onChange}/>
+        <input type="checkbox" {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onChange}/>
         <span className="mt-auto mb-auto">{this.props.children}</span>
       </div>
     );
   }
+}
+
+class FileSelector extends Child {
+  constructor(props) {
+    super(props);
+    this.state = {
+      files: null,
+      dragging: false,
+    };
+
+    this.onDragEnter = this.dragging.bind(this, true);
+    this.onDragLeave = this.dragging.bind(this, false);
+    this.onDragOver = this.dragOver.bind(this);
+
+    this.onDrop = this.drop.bind(this);
+
+  }
+
+  componentWillMount() {
+    this.setState({
+      files: null,
+      dragging: false
+    });
+  }
+
+  //https://stackoverflow.com/questions/21339924/drop-event-not-firing-in-chrome
+
+  dragOver(e) {
+    e.preventDefault();
+  }
+
+  dragging(dragging, e) {
+    this.setState({
+      dragging
+    });
+    console.log("DRAGGING: " + dragging);
+  }
+
+  drop(e) {
+    console.log("DROPPED");
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    let files = e.dataTransfer.files;
+    this.setState({
+      files,
+      dragging: false
+    });
+  }
+
+  renderImage() {
+    if (!this.state.files) {
+      return null;
+    }
+
+    return (
+      <Util.ImageFile file={this.state.files[0]} className="file-selector-image"/>
+    );
+  }
+
+  render() {
+    let myProps = {
+      name: this.name(),
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID(),
+    };
+
+    let clz = Util.ClassNames("form-control form-file-selector", (this.state.dragging ? "dragging" : null));
+
+    return(
+      <div 
+        {...Util.propsMergeClassName(this.props, clz)}
+        onDragEnter={this.onDragEnter}
+        onDragLeave={this.onDragLeave}
+        onDragOver={this.onDragOver}
+        onDrop={this.onDrop}
+      >
+        { this.renderImage() }
+        { this.props.children }
+      </div>
+    );
+  }
+
 }
 
 const PyrForm = { 
@@ -558,7 +643,8 @@ const PyrForm = {
   TextArea, 
   SubmitButton, 
   Hidden,
-  CheckBox
+  CheckBox,
+  FileSelector
 };
 
 export { 

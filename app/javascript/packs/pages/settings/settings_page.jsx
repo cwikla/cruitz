@@ -41,6 +41,12 @@ class SettingsForm extends Component {
         >
 
           <div className="flx-row">
+            <Pyr.Form.Group name="logo">
+              <Pyr.Form.FileSelector className="" > Hello </Pyr.Form.FileSelector>
+            </Pyr.Form.Group>
+          </div>
+
+          <div className="flx-row">
             <Pyr.Form.Group name="use_ignore_recruiters" className="">
               <Pyr.Form.CheckBox className="">Ignore recruiters with score under</Pyr.Form.CheckBox>
             </Pyr.Form.Group>
