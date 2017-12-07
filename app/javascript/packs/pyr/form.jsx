@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Util from './util';
+import UI from './ui';
 
 class Form extends Component {
   static childContextTypes = {
@@ -602,7 +603,7 @@ class FileSelector extends Child {
     }
 
     return (
-      <Util.ImageFile file={this.state.files[0]} className="file-selector-image"/>
+      <UI.ImageFile file={this.state.files[0]} className="file-selector-image"/>
     );
   }
 

@@ -475,48 +475,6 @@ function times(x,f) {
   return result;
 }
 
-class ImageFile extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      srcUrl : URL.createObjectURL(this.props.file)
-    };
-
-    this.onLoad = this.loaded.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (this.props.file != nextProps.file) {
-      if (this.state.srcURL) {
-        URL.revokeObjectURL(this.state.srcURL);
-      }
-
-      let srcUrl = URL.createObjectURL(nextProps.file);
-      this.setState({
-        srcUrl
-      });
-    }
-  }
-
-
-  loaded(e) {
-    if (this.state.srcURL) {
-      URL.revokeObjectURL(this.state.srcUrl);
-    }
-  }
-
-  render() {
-    return (
-      <img
-        {...Util.propsMergeClassName(this.props, "pyr-image-file")}
-        src={this.state.srcUrl}
-        onLoad={e => URL.revokeObjectURL(this.state.srcUrl)}
-      />
-    );
-  }
-}
-
 
 const Util = {
   PURL,
@@ -539,7 +497,6 @@ const Util = {
   scramble,
   getRandomInt,
   Method,
-  ImageFile
 };
 
 export default Util;
