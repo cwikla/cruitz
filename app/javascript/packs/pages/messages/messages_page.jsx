@@ -97,7 +97,7 @@ class MessageItem extends Sheet.Item {
               <Header className="title" message={message} job={job} isNew={message.is_root}/>
             </Grid.Column>
             <Grid.Column className="col-4 created-at text-right">
-              <Pyr.MagicDate date={message.created_at} />
+              <Pyr.UI.MagicDate date={message.created_at} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row> 
@@ -147,7 +147,7 @@ class ShowSheet extends Sheet.Show {
 
   renderHeader(item) {
     if (this.state.isLoading || !item) {
-      return (<Pyr.Loading />);
+      return (<Pyr.UI.Loading />);
     }
 
     let message = item.message;
@@ -164,7 +164,7 @@ class ShowSheet extends Sheet.Show {
 
   renderItem(item, isSelected) {
     if (this.state.isLoading || !item) {
-      return (<Pyr.Loading />);
+      return (<Pyr.UI.Loading />);
     }
 
     let message = item.message;

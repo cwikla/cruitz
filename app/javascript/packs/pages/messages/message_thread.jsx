@@ -35,7 +35,7 @@ const MessageThreadHeader = (props) => (
 class ThreadList extends Component {
   render() {
     if (!this.props.thread || this.props.thread.length < 1) {
-      return (<Pyr.Loading />);
+      return (<Pyr.UI.Loading />);
     }
   
     let thid = "thread-" + this.props.message.root_message_id || this.props.message.id;
@@ -123,11 +123,11 @@ class Content extends Component {
   render() {
 
     if (!this.props.thread || this.props.thread.length < 1) {
-      return (<Pyr.Loading />);
+      return (<Pyr.UI.Loading />);
     }
 
     return (
-      <Pyr.Scroll
+      <Pyr.UI.Scroll
         ref={(node) => this.scroll = node}
         id="message-show" 
         onScroll={this.props.onScroll}
@@ -138,7 +138,7 @@ class Content extends Component {
           job={this.props.job}
           skipCount={this.props.skipCount}
         />
-      </Pyr.Scroll>
+      </Pyr.UI.Scroll>
     );
   }
 }
@@ -198,11 +198,6 @@ class MessageThread extends Pyr.UserReceiver {
     this.onLoading = null;
     this.onSuccess = this.success.bind(this);
 
-    this.network = new Pyr.Network();
-  }
-
-  componentWillUnmount() {
-    this.network.abort();
   }
 
   threadExtra(thread) {
@@ -230,7 +225,7 @@ class MessageThread extends Pyr.UserReceiver {
 
     let url =  Pyr.URL(MESSAGES_URL).push(mid);
 
-    return this.network.getJSON({
+    return this.getJSON({
       url: url,
       context: self,
       loading: self.onLoading
@@ -312,7 +307,7 @@ class MessageThread extends Pyr.UserReceiver {
   render() {
     let message = this.state.thread ? this.state.thread[this.state.thread.length-1] : null;
     if (!message) {
-      return <Pyr.Loading />
+      return <Pyr.UI.Loading />
     }
 
     return (

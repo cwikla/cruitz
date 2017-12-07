@@ -69,10 +69,10 @@ class CompanyForm extends Component {
           <div id="link-list">
             { Pyr.Util.times(this.state.links.length, (i) => {
                 return (
-                  <Pyr.FancyButton
+                  <Pyr.UI.FancyButton
                     key={"llb"+i}
                     onClick={this.removeLink.bind(this, i)}
-                  >{this.state.links[i]}</Pyr.FancyButton>
+                  >{this.state.links[i]}</Pyr.UI.FancyButton>
                 );
               })
             }

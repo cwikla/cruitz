@@ -46,7 +46,7 @@ class Header extends Component {
     }
 
     return (
-      <Pyr.Icon name={this.props.icon} className="header-icon fa-fw"/>
+      <Pyr.UI.Icon name={this.props.icon} className="header-icon fa-fw"/>
     );
   }
 
@@ -72,7 +72,7 @@ class Header extends Component {
 
     return (
       <Link to={this.props.url.toString()}>
-        <div {...Pyr.Util.propsMergeClassName(restProps, myClass)}><span className="inner">{this.renderIcon()}<Pyr.SmallLabel>{this.props.children}{this.renderCount()}</Pyr.SmallLabel></span></div>
+        <div {...Pyr.Util.propsMergeClassName(restProps, myClass)}><span className="inner">{this.renderIcon()}<Pyr.UI.SmallLabel>{this.props.children}{this.renderCount()}</Pyr.UI.SmallLabel></span></div>
       </Link>
     );
   }

@@ -132,7 +132,7 @@ class NewSheet extends Sheet.New {
       <div className="me-index-header">
         <MeForm me={this.user()}/>
         <div className="me-info p-1 d-flex flx-end">
-          <Pyr.PrimaryButton onClick={this.onLogout}><Pyr.Icon name="sign-out"/>Logout</Pyr.PrimaryButton>
+          <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out"/>Logout</Pyr.UI.PrimaryButton>
         </div>
       </div>
     );

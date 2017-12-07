@@ -100,7 +100,7 @@ class JobItem extends Component {
       <div className={allClass} id={id}>
         <Pyr.Grid.Column className="job col-6">
           <div>{job.title}</div>
-          <div>Created: <Pyr.MagicDate date={job.created_at}/></div>
+          <div>Created: <Pyr.UI.MagicDate date={job.created_at}/></div>
         </Pyr.Grid.Column>
         <Pyr.Grid.Column className="content">
           <div>Total: {job.candidate_counts.total}</div>
@@ -158,10 +158,10 @@ class JobForm extends Component {
           <div id="skill-list">
             { Pyr.Util.times(this.state.skills.length, (i) => {
                 return (
-                  <Pyr.FancyButton 
+                  <Pyr.UI.FancyButton 
                     key={"skb"+i}
                     onClick={this.removeSkill.bind(this, i)}
-                  >{this.state.skills[i]}</Pyr.FancyButton>
+                  >{this.state.skills[i]}</Pyr.UI.FancyButton>
                 );
               })
             }
@@ -337,7 +337,7 @@ class IndexSheet extends Sheet.Index {
   renderButtons() {
     return(
       <div className="d-flex flx-row flx-1 flx-end">
-        <Pyr.Button onClick={this.onAddJob}><Pyr.Icon name="plus">Add Job</Pyr.Icon></Pyr.Button>
+        <Pyr.UI.Button onClick={this.onAddJob}><Pyr.UI.Icon name="plus">Add Job</Pyr.UI.Icon></Pyr.UI.Button>
       </div>
     );
   }
@@ -347,7 +347,7 @@ class IndexSheet extends Sheet.Index {
     return (
       <div className="jobs-index-header">
           <div className="job-new p-1 d-flex flx-end">
-              <Link to="/jobs/new"><Pyr.PrimaryButton><Pyr.Icon name="plus"/> Add Job</Pyr.PrimaryButton></Link>
+              <Link to="/jobs/new"><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Job</Pyr.UI.PrimaryButton></Link>
           </div>
       </div>
     );

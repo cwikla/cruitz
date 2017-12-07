@@ -87,7 +87,7 @@ const UserLabel = (props) => (
     className="nav-item"
     id="user" 
     onClick={props.onClick}
-  ><Pyr.Icon name="user" className="fa-fw" /><Pyr.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
+  ><Pyr.UI.Icon name="user" className="fa-fw" /><Pyr.UI.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
 
 class PagePicker extends Pyr.UserReceiver {
@@ -122,7 +122,7 @@ class NavMenuButton extends Component {
     let us = url.toString();
     console.log("US: " + us);
 
-    let icon = <Pyr.Icon name="sort-asc" className={!this.props.dir ? "ghost" : ""}/>;
+    let icon = <Pyr.UI.Icon name="sort-asc" className={!this.props.dir ? "ghost" : ""}/>;
 
     return (
       <Link className={this.props.className} to={url.toString()}>{icon}{this.props.children}</Link>
@@ -136,14 +136,14 @@ class NavView extends Component {
     return (
       <div className="flx-row page-nav-bar">
         <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.Icon name="sort"/></a>
+          <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.UI.Icon name="sort"/></a>
             <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               <NavMenuButton className="dropdown-item" sort="received" dir="asc">Received</NavMenuButton>
               <NavMenuButton className="dropdown-item" sort="job">Job</NavMenuButton>
               <NavMenuButton className="dropdown-item" sort="rank">Rank</NavMenuButton>
               <hr/>
-              <NavMenuButton className="dropdown-item" sort="list"><Pyr.Icon name="list"/> List</NavMenuButton>
-              <NavMenuButton className="dropdown-item" sort="grid"><Pyr.Icon name="th"/> Grid</NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="list"><Pyr.UI.Icon name="list"/> List</NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="grid"><Pyr.UI.Icon name="th"/> Grid</NavMenuButton>
             </div>
         </li>
       </div>
@@ -396,7 +396,7 @@ class Dashboard extends Pyr.UserReceiver {
         >
           <Pyr.Form.Group name="search">
             <div onClick={this.onShowSlide}>
-              <Pyr.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
+              <Pyr.UI.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
             </div>
           </Pyr.Form.Group>
         </Pyr.Form.Form>
@@ -419,7 +419,7 @@ class Dashboard extends Pyr.UserReceiver {
   renderSearchNav() {
     let page = this.getPageComponent();
 
-    let NavBar = page.NavBar || Pyr.Empty;
+    let NavBar = page.NavBar || Pyr.UI.Empty;
 
     if (!NavBar) {
       return (<div className="nav-item ml-auto">&nbsp;</div>);
@@ -433,9 +433,9 @@ class Dashboard extends Pyr.UserReceiver {
   render3() {
     return (
       <div>
-            <Link to={"/jobs/new"}><Pyr.IconButton name="plus" className="nav-item" >Add Job</Pyr.IconButton></Link>
+            <Link to={"/jobs/new"}><Pyr.UI.IconButton name="plus" className="nav-item" >Add Job</Pyr.UI.IconButton></Link>
             &nbsp;&nbsp;
-            <Link to={"/recruiters"}><Pyr.IconButton name="list" className="nav-item">Recruiters</Pyr.IconButton></Link>
+            <Link to={"/recruiters"}><Pyr.UI.IconButton name="list" className="nav-item">Recruiters</Pyr.UI.IconButton></Link>
       </div>
     );
   }
@@ -444,13 +444,13 @@ class Dashboard extends Pyr.UserReceiver {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <Pyr.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.SmallLabel>
+            <Pyr.UI.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.UI.SmallLabel>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
             { this.renderSearchNav() }
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row">
-            <div id="alerts" className="alerts nav-item"><Pyr.Icon name="bell-o" className="fa-fw"/></div>
+            <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
             <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
@@ -522,11 +522,11 @@ class Dashboard extends Pyr.UserReceiver {
             url={PageURL(CANDIDATES_PAGE)}
           >Candidates</Sidebar.Header>
 
-          <Pyr.Scroll className="sidebar-scroll hidden-sm-down flx-1">
+          <Pyr.UI.Scroll className="sidebar-scroll hidden-sm-down flx-1">
             <Sidebar.Menu>
               {jobKids}
             </Sidebar.Menu>
-          </Pyr.Scroll>
+          </Pyr.UI.Scroll>
 
           <Sidebar.Header 
             id="jobs"
@@ -606,7 +606,7 @@ class Dashboard extends Pyr.UserReceiver {
     if (this.state.loading || !this.state.jobs) {
       return (
         <Pyr.Grid.FullContainer key="react-top">
-          <Pyr.Loading />
+          <Pyr.UI.Loading />
         </Pyr.Grid.FullContainer>
       );
     }
@@ -618,7 +618,7 @@ class Dashboard extends Pyr.UserReceiver {
           { this.renderSideBar() }
           { this.renderMain() }
         </div>
-      <Pyr.NoticeReceiver />
+      <Pyr.UI.NoticeReceiver />
       </Pyr.Grid.FullContainer>
     );
   }
@@ -634,11 +634,11 @@ const Footer = (props) => (
 
 render (
   <Pyr.UserProvider url={Pyr.URL().push(USERS_URL).push("/me")}>
-    <Pyr.NoticeProvider>
+    <Pyr.UI.NoticeProvider>
       <Router>
         <Pyr.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}/>
       </Router>
-    </Pyr.NoticeProvider>
+    </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 
   document.getElementById('react-container')

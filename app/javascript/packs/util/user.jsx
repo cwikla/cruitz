@@ -34,7 +34,7 @@ class Stars extends Component {
     }
 
     return (
-      <Pyr.Icon name="star-half" key={"star"+pos} className="star"/>
+      <Pyr.UI.Icon name="star-half" key={"star"+pos} className="star"/>
     );
   }
   render() {
@@ -44,7 +44,7 @@ class Stars extends Component {
     return (
       <div className="rating">
         { Pyr.Util.times(rating, (i) => {
-              return (<Pyr.Icon name="star" key={"star"+i} className="star"/>);
+              return (<Pyr.UI.Icon name="star" key={"star"+i} className="star"/>);
           })
         }
         {

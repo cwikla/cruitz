@@ -216,7 +216,7 @@ class NewSheet extends Sheet.New {
   renderForm() {
     if (!this.state.invite) {
       return (
-        <Pyr.Loading />
+        <Pyr.UI.Loading />
       );
     }
 
@@ -257,7 +257,7 @@ class IndexSheet extends Sheet.Index {
     return (
       <div className="recruiters-index-header">
           <div className="recruiter-new p-1 d-flex flx-end">
-              <Link to="/recruiters/new"><Pyr.PrimaryButton><Pyr.Icon name="plus"/> Invite Recruiter</Pyr.PrimaryButton></Link>
+              <Link to="/recruiters/new"><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Invite Recruiter</Pyr.UI.PrimaryButton></Link>
           </div>
       </div>
     );

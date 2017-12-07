@@ -72,7 +72,7 @@ function validNextState(sid) {
 class CandidateHeader extends Component {
   render() {
     if (!this.props.candidate) {
-      return <Pyr.Loading />
+      return <Pyr.UI.Loading />
     }
 
     let candidate = this.props.candidate;
@@ -93,21 +93,21 @@ class CandidateHeader extends Component {
     return (
       <div className={clazzes} >
           <Pyr.Grid.Row className="title">
-            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.SmallLabel>Candidate:</Pyr.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
+            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.UI.SmallLabel>Candidate:</Pyr.UI.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf className="phone-number"><Pyr.SmallLabel>PhoneNumber:</Pyr.SmallLabel><span className="">{phoneNumber}</span></Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf className="email"><Pyr.SmallLabel>Email:</Pyr.SmallLabel>{email}</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="phone-number"><Pyr.UI.SmallLabel>PhoneNumber:</Pyr.UI.SmallLabel><span className="">{phoneNumber}</span></Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="email"><Pyr.UI.SmallLabel>Email:</Pyr.UI.SmallLabel>{email}</Pyr.Grid.ColHalf>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf className="employer"><Pyr.SmallLabel>Employer:</Pyr.SmallLabel> Hmmmmmm</Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf className="cost"><Pyr.SmallLabel>Est. Commission:</Pyr.SmallLabel> $27,000</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="employer"><Pyr.UI.SmallLabel>Employer:</Pyr.UI.SmallLabel> Hmmmmmm</Pyr.Grid.ColHalf>
+            <Pyr.Grid.ColHalf className="cost"><Pyr.UI.SmallLabel>Est. Commission:</Pyr.UI.SmallLabel> $27,000</Pyr.Grid.ColHalf>
           </Pyr.Grid.Row>
           <Pyr.Grid.Row className="flx-row-stretch">
-            <Pyr.Icon name="linkedin-square" className="social"/>
-            <Pyr.Icon name="github" className="social"/>
-            <Pyr.Icon name="dribbble" className="social"/>
-            <Pyr.Icon name="quora" className="social"/>
+            <Pyr.UI.Icon name="linkedin-square" className="social"/>
+            <Pyr.UI.Icon name="github" className="social"/>
+            <Pyr.UI.Icon name="dribbble" className="social"/>
+            <Pyr.UI.Icon name="quora" className="social"/>
           </Pyr.Grid.Row>
       </div>
     );
@@ -258,7 +258,7 @@ class IndexSheet extends Sheet.Index {
     return (
       <div className="empty flx-1 flx-col-stretch">
         <div className="flx-1 flx-row-stretch flx-align-center ml-auto mr-auto">
-          <Pyr.Icon name="user-times"/> No candidates have been submitted for this job.
+          <Pyr.UI.Icon name="user-times"/> No candidates have been submitted for this job.
         </div>
       </div>
     );
@@ -282,14 +282,14 @@ class RecruiterMessage extends Component {
   render() {
     let candidate = this.props.candidate;
     if (!candidate.root_message_id) {
-      return ( <Pyr.Label>No messages</Pyr.Label>);
+      return ( <Pyr.UI.Label>No messages</Pyr.UI.Label>);
     }
 
     console.log("message id");
     console.log(this.props.candidate);
 
     if (!this.props.job) {
-      return <Pyr.Loading />
+      return <Pyr.UI.Loading />
     }
 
     let clazzes = ClassNames("recruiter-message").push(this.props.className);
@@ -310,8 +310,8 @@ class RecruiterMessage extends Component {
 
 const ExperienceItem = (props) => (
   <div className="item">
-    <div><Pyr.Label>{props.item.title} @ {props.item.organization}</Pyr.Label> </div>
-    <div><Pyr.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.Label></div>
+    <div><Pyr.UI.Label>{props.item.title} @ {props.item.organization}</Pyr.UI.Label> </div>
+    <div><Pyr.UI.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.UI.Label></div>
     <div>{props.item.description}</div>
   </div>
 );
@@ -338,8 +338,8 @@ class Experience extends Component {
 
 const EducationItem = (props) => (
   <div className="item">
-    <div><Pyr.Label>{props.item.degree} @ {props.item.school}</Pyr.Label> </div>
-    <div><Pyr.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.Label></div>
+    <div><Pyr.UI.Label>{props.item.degree} @ {props.item.school}</Pyr.UI.Label> </div>
+    <div><Pyr.UI.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.UI.Label></div>
   </div>
 );
 
@@ -375,7 +375,7 @@ class Skills extends Component {
       <div id="skills" className="cv-section">
         {
           skills.map( (item, pos) => {
-            return (<Pyr.FancyLabel key={"sk"+pos}>{item}</Pyr.FancyLabel>);
+            return (<Pyr.UI.FancyLabel key={"sk"+pos}>{item}</Pyr.UI.FancyLabel>);
           })
         }
       </div>
@@ -405,13 +405,13 @@ class CandidateCVItem extends Component {
           job={job}
           onSetItem={this.props.onSetItem}
         />
-        <Pyr.Label className="cv-label">Experience</Pyr.Label>
+        <Pyr.UI.Label className="cv-label">Experience</Pyr.UI.Label>
         <Experience experience={candidate.experience} />
-        <Pyr.Label className="cv-label">Education</Pyr.Label>
+        <Pyr.UI.Label className="cv-label">Education</Pyr.UI.Label>
         <Education education={candidate.education} />
-        <Pyr.Label className="cv-label">Skills</Pyr.Label>
+        <Pyr.UI.Label className="cv-label">Skills</Pyr.UI.Label>
         <Skills skills={candidate.skills} />
-        <Pyr.Label className="cv-label">Messages</Pyr.Label>
+        <Pyr.UI.Label className="cv-label">Messages</Pyr.UI.Label>
         <RecruiterMessage 
           className=""
           job={job}
@@ -528,11 +528,11 @@ class ShowSheet extends Sheet.Show {
   
           if (pos == 0) {
             return (
-              <Pyr.PrimaryButton key={state} className={"ml-auto "+ nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.PrimaryButton>
+              <Pyr.UI.PrimaryButton key={state} className={"ml-auto "+ nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.UI.PrimaryButton>
             );
           }
           return ( 
-            <Pyr.Button key={state} className={nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.Button>
+            <Pyr.UI.Button key={state} className={nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.UI.Button>
           );
         })
       }
@@ -567,19 +567,19 @@ class ShowSheet extends Sheet.Show {
     console.log(candidate);
 
     if (!this.state.job) {
-      return ( <Pyr.Loading /> );
+      return ( <Pyr.UI.Loading /> );
     }
 
     return (
       <Pyr.Grid.Row className="candidate-item">
         <Pyr.Grid.Col className="flx-col left">
-          <Pyr.Scroll>
+          <Pyr.UI.Scroll>
             <CandidateCVItem 
               candidate={candidate} 
               isSelected={isSelected} 
               job={this.state.job}
             />
-          </Pyr.Scroll>
+          </Pyr.UI.Scroll>
  
         </Pyr.Grid.Col>
         <Pyr.Grid.Col className="col-3 right">
@@ -646,7 +646,7 @@ class CandidateTable extends Sheet.Index {
 class CandidatesPage extends Page {
   getInitState(props) {
     return {
-      job: this.jobMap[props.itemId], // placeholder until we can fetch the full one
+      job: props.jobMap[props.itemId], // placeholder until we can fetch the full one
       fullDetail: false
     };
   }
@@ -697,7 +697,7 @@ class CandidatesPage extends Page {
         itemId={this.props.subItemId}
         jobId={this.props.itemId}
         selected={this.getItem(this.props.subItemId)}
-        jobMap={this.jobMap}
+        jobMap={this.props.jobMap}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
         onSelect={this.onSelect}

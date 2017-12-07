@@ -79,7 +79,7 @@ class RegistrationItem extends Component {
       <div className={allClass} id={id}>
         <Pyr.Grid.Column className="registration col-6">
           <div>{registration.title}</div>
-          <div>Created: <Pyr.MagicDate date={registration.created_at}/></div>
+          <div>Created: <Pyr.UI.MagicDate date={registration.created_at}/></div>
         </Pyr.Grid.Column>
         <Pyr.Grid.Column className="content">
           <div>Total: {registration.candidate_counts.total}</div>
@@ -297,14 +297,14 @@ class WizardSheet extends Sheet.Wizard {
     };
 
     return (
-      <Pyr.ChildSelector page={this.state.page}>
+      <Pyr.UI.ChildSelector page={this.state.page}>
         <Choose {...kidProps}/>
         <div className="fullscreen">
           <label onClick={this.onPrev}>Prev</label>
           <label onClick={this.onNext}>Next</label>
         </div>
         <UserForm {...kidProps}/>
-      </Pyr.ChildSelector>
+      </Pyr.UI.ChildSelector>
     );
   }
 }
@@ -325,7 +325,6 @@ class ShowSheet extends Sheet.Show {
 }
 
 class NewSheet extends Sheet.New {
-  static contextTypes = Pyr.NoticeContextTypes;
 
   success(data, textStatus, jqXHR) {
     this.props.onRegistrationCreate(data.registration);

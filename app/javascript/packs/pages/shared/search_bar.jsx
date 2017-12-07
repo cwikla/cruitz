@@ -32,8 +32,8 @@ class SearchBar extends Component {
     return (
       <div {...Pyr.Util.propsMergeClassName(rest, "search-blurb")} >
         <div className="icon flx-row flx-start">
-          <Pyr.IconButton name="flag" className="spam"/>
-          <Pyr.IconButton name="eye" className="ml-auto"/>
+          <Pyr.UI.IconButton name="flag" className="spam"/>
+          <Pyr.UI.IconButton name="eye" className="ml-auto"/>
         </div>
 
         <UserAvatar

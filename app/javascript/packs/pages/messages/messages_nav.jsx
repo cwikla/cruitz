@@ -43,9 +43,9 @@ class NavBar extends Component {
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort</a>
             <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-              <NavMenuButton className="dropdown-item" sort="received">Received <Pyr.Icon name="sort-asc"/></NavMenuButton>
-              <NavMenuButton className="dropdown-item" sort="recruiter">Recruiter <Pyr.Icon name="sort-asc"/></NavMenuButton>
-              <NavMenuButton className="dropdown-item" sort="candidate">Candidate <Pyr.Icon name="sort-asc"/></NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="received">Received <Pyr.UI.Icon name="sort-asc"/></NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="recruiter">Recruiter <Pyr.UI.Icon name="sort-asc"/></NavMenuButton>
+              <NavMenuButton className="dropdown-item" sort="candidate">Candidate <Pyr.UI.Icon name="sort-asc"/></NavMenuButton>
             </div>
         </li>
       </div>

@@ -112,7 +112,7 @@ class ShowSheet extends Sheet.Show {
           <div className="info p-1 d-flex flx-end">
             <Pyr.Form.SubmitButton 
               target={this.target}
-            ><Pyr.Icon name="save"/> Save</Pyr.Form.SubmitButton>
+            ><Pyr.UI.Icon name="save"/> Save</Pyr.Form.SubmitButton>
           </div>
       </div>
     );
@@ -122,12 +122,12 @@ class ShowSheet extends Sheet.Show {
   renderItem(item) {
     console.log(item);
     return (
-      <Pyr.FullScreen>
+      <Pyr.UI.FullScreen>
       <SettingsForm 
         settings={item}
         ref={(node) => this.target = node}
       />
-      </Pyr.FullScreen>
+      </Pyr.UI.FullScreen>
     );
   }
 }

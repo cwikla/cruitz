@@ -54,7 +54,7 @@ class ThreadItem extends Sheet.Item {
     return (
       <div className={allClass} id={id}>
         <div className={justify.concat("created-at")}>
-          <Pyr.MagicDate date={message.created_at} />
+          <Pyr.UI.MagicDate date={message.created_at} />
         </div>
         <div className={justify}>
           { leftAvatar }

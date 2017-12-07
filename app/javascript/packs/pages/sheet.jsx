@@ -41,12 +41,12 @@ class Modal extends Pyr.UserReceiver {
 
   render() {
     return (
-        <Pyr.FullScreen
+        <Pyr.UI.FullScreen
           onEscape={this.onClose}
           onClose={this.onClose}
         >
         { this.props.children }
-        </Pyr.FullScreen>
+        </Pyr.UI.FullScreen>
     );
   }
 }
@@ -129,7 +129,7 @@ class Base extends Pyr.UserReceiver {
 
   renderLoading() {
     return (
-      <Pyr.Loading />
+      <Pyr.UI.Loading />
     );
   }
 
@@ -153,7 +153,7 @@ class Base extends Pyr.UserReceiver {
 
   render() {
     if (this.state.isLoading) {
-      return (<Pyr.Loading />);
+      return (<Pyr.UI.Loading />);
     }
 
     return (
@@ -306,9 +306,9 @@ class Index extends Base {
     let items = this.sortItems(this.props.items) || [];
 
     return (
-      <Pyr.Scroll className="inner flx-col flx-1">
+      <Pyr.UI.Scroll className="inner flx-col flx-1">
         { this.renderChildren(items, this.props.selected) }
-      </Pyr.Scroll>
+      </Pyr.UI.Scroll>
     );
   }
 
@@ -333,15 +333,15 @@ class Show extends Base {
   renderInner() {
     if (!this.props.selected) {
       return (
-          <Pyr.Loading />
+          <Pyr.UI.Loading />
       );
     }
 
     // hmm was just a div
     return (
-      <Pyr.Scroll className="inner flx-col flx-1"> 
+      <Pyr.UI.Scroll className="inner flx-col flx-1"> 
         {this.renderItem(this.props.selected, false) }
-      </Pyr.Scroll>
+      </Pyr.UI.Scroll>
     );
   }
 }

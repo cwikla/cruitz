@@ -25,7 +25,7 @@ class MessageQA extends MessageThread {
   render() {
     let message = this.state.thread ? this.state.thread[this.state.thread.length-1] : null;
     if (!message) {
-      return <Pyr.Loading />
+      return <Pyr.UI.Loading />
     }
 
 
