@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       post 'search(/:model)' => 'search#show'
       get 'search(/:model)' => 'search#show'
 
-      get 'post_url' => 's3#get'
+      get 'upload_url' => 's3#get', as: :api_v1_upload_url
 
       resources :ratings
       resource :company

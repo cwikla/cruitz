@@ -520,23 +520,30 @@ async function s3Upload(files) {
     return;
   }
 
+  let waiters = [];
+  let upfiles = [];
+
   for(let f of Array.from(files)) {
     let fileName = f.name;
     let ftype = f.type;
     let flength = f.size;
 
-    console.log(PURL("/post_url"));
-    console.log("FTYPE: " + ftype);
+ //   console.log(PURL("/upload_url"));
+  //  console.log("FTYPE: " + ftype);
 
     let query = {
-      url : PURL("/post_url"),
-      data : { "s3[name]" : fileName },
+      url : PURL("/upload_url"),
+      data : { "upload[name]" : fileName },
     };
 
     let result = await Util.getJSON(query);
     let s3Url = result['url'];
 
-      Util.getJSON({
+    let big = Object.assign({}, result, {file: f});
+
+    upfiles.push(big);
+
+    let api = Util.getJSON({
         type: Method.PUT,
         url: result['url'],
         data: f,
@@ -544,11 +551,13 @@ async function s3Upload(files) {
         contentType: ftype,
         mimeType: ftype,
         processData: false,
-      
+   
+/*   
         beforeSend: function(xhr){
           console.log("SETTING REQUEST HEADER: " + ftype);
           console.log(xhr);
         }
+*/
   
       }).done(function(retData, textState, jqXHR) {
         console.log("SUCCESS FOR " + fileName);
@@ -557,7 +566,18 @@ async function s3Upload(files) {
         Util.ajaxError(jqXHR, textStatus, errorThrown);
   
       });
+    waiters.push(api);
   }
+
+  await Promise.all(waiters).then(value => {
+    console.log("PROMISE COMPLETE");
+  }).catch(reason => {
+    console.log(reason); // FIXME
+  });
+
+  console.log("RETURNING upfiles");
+  console.log(upfiles);
+  return upfiles;
 }
 
 

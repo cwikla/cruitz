@@ -594,7 +594,7 @@ class FileSelector extends Child {
   constructor(props) {
     super(props);
     this.state = {
-      files: null,
+      fileInfos: [],
       dragging: false,
     };
 
@@ -610,7 +610,7 @@ class FileSelector extends Child {
 
   componentWillMount() {
     this.setState({
-      files: null,
+      fileInfos: [],
       dragging: false,
     });
   }
@@ -637,7 +637,7 @@ class FileSelector extends Child {
 
     let files = e.dataTransfer.files;
 
-    this.setFiles(files);
+    this.addFiles(files);
   }
 
   change(e) {
@@ -647,17 +647,33 @@ class FileSelector extends Child {
 
     let files = e.target.files;
 
-    this.setFiles(files);
+    this.addFiles(files);
   }
 
-  setFiles(files) {
+  async addFiles(newFiles) {
+
     this.setState({
-      files,
       dragging: false,
     });
 
-    if (files) {
-      Util.s3Upload(files);
+    if (!this.props.multiple && newFiles.length > 1) {
+      alert("Only 1 file can be selected here!");
+      return;
+    }
+
+    if (newFiles) {
+      let upfileInfos = await Util.s3Upload(newFiles);
+      let oldFileInfos = this.state.fileInfos || [];
+
+      if (!this.props.multiple) {
+        oldFileInfos = [];
+      }
+      oldFileInfos.concat(upfileInfos);
+
+      this.setState({
+        fileInfos : upfileInfos,
+        dragging: false,
+      });
     }
   }
 
@@ -666,15 +682,17 @@ class FileSelector extends Child {
   }
 
   renderHiddens() {
-    if (!this.state.files) {
+    if (!this.state.fileInfos) {
       return null;
     }
 
-    console.log(this.state.files);
+    console.log("FILE INFOS");
+    console.log(this.state.fileInfos);
+    console.log("*FILE INFOS");
 
-    let hiddens = Array.from(this.state.files).map((file, pos) => {
+    let hiddens = this.state.fileInfos.map((file, pos) => {
       return (
-        <input key={file.name} name={this.name()} type="hidden" value={file.name} data-pyr-file/>
+        <input key={file.url_name} name={this.name()} type="hidden" value={file.url_name} data-pyr-file/>
       );
     });
 
@@ -687,14 +705,16 @@ class FileSelector extends Child {
   }
 
   renderImage() {
-    if (!this.state.files) {
+    if (!this.state.fileInfos || (this.state.fileInfos.length == 0)) {
       return null;
     }
 
-    let afile = this.state.files[0];
+    let afile = this.state.fileInfos[0];
+
+    console.log("RENDERING IMAGE\n");
 
     return (
-      <UI.ImageFile file={afile} {...this.props.image} />
+      <UI.ImageFile file={afile.file} src={afile.url} contentType={afile.content_type} {...this.props.image} />
     );
   }
 
@@ -704,9 +724,15 @@ class FileSelector extends Child {
     }
 
     let afile = this.state.files ? this.state.files[0]: "";
+    let extra = {
+    };
+
+    if (this.props.multiple) {
+      extra.multiple = true
+    };
 
     return (
-        <input ref={node => this.fileInput = node} type="file" {...this.props.input} onChange={this.onChange} />
+        <input ref={node => this.fileInput = node} type="file" {...this.props.input} onChange={this.onChange} {...extra}/>
     );
   }
 

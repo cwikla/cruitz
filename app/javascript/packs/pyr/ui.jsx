@@ -143,28 +143,30 @@ class ImageFile extends Component {
   constructor(props) {
     super(props);
 
+    let localUrl = this.props.file ? URL.createObjectURL(this.props.file) : null;
+
     this.state = {
-      srcUrl : URL.createObjectURL(this.props.file)
+      localUrl,
     };
 
     this.onLoad = this.loaded.bind(this);
   }
 
   release() {
-    if (this.state.srcURL) {
-      URL.revokeObjectURL(this.state.srcURL);
+    if (this.state.localUrl) {
+      URL.revokeObjectURL(this.state.localUrl);
     }
-    this.state.srcURL = null;
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (this.props.file != nextProps.file) {
+    if ((this.props.file != nextProps.file) || (this.props.url != nextProps.url)) {
       this.release();
 
-      let srcUrl = URL.createObjectURL(nextProps.file);
-      this.setState({
-        srcUrl
-      });
+      this.state = {
+        localUrl : (nextProps.file ? URL.createObjectURL(nextProps.file) : null),
+      };
+
+      this.setState(state);
     }
   }
 
@@ -172,19 +174,22 @@ class ImageFile extends Component {
     this.release();
   }
 
-
   loaded(e) {
     this.release();
   }
 
   getType() {
-    console.log(this.props.file.type);
+//    ark();
 
-    if (!this.props.file || !this.props.file.type) {
+    let ftype = this.props.contentType;
+
+    console.log(ftype);
+
+    if (!ftype) {
       return "file";
     }
 
-    let ftype = this.props.file.type.split("/");
+    ftype = ftype.split("/");
     if (ftype.length < 2) {
       return "file";
     }
@@ -209,12 +214,12 @@ class ImageFile extends Component {
       );
     }
 
-    let rest = Util.propsRemove(this.props, ["file"]);
+    let rest = Util.propsRemove(this.props, ["file", "url", "contentType"]);
     
     return (
       <img
         {...Util.propsMergeClassName(rest, "pyr-image-file")}
-        src={this.state.srcUrl}
+        src={this.state.localUrl ? this.state.localUrl : this.url}
         onLoad={this.onLoad}
       />
     );
