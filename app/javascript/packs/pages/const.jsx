@@ -18,6 +18,7 @@ export const MESSAGES_URL = "/messages";
 export const SEARCH_URL = "/search";
 export const POSTINGS_URL = "/postings";
 export const COMPANY_URL = "/company";
+export const ME_URL = "/me";
 
 export const USERS_URL = "/users";
 export const INVITES_URL = "/invites";

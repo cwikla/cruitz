@@ -40,8 +40,8 @@ class NetworkComponent extends Component {
       xhr.abort();
     }
 
-    console.log("abortJSON(" + uuid + ")");
-    console.log(old);
+    //console.log("abortJSON(" + uuid + ")");
+    //console.log(old);
 
     for(let key in old) {
       if (!uuid || old[key] == uuid) {
@@ -84,9 +84,9 @@ class RouterProps extends Component {
           let location = props.location;
           let history = props.history;
 
-          console.log("ROUTE: " + location.pathname);
-          console.log(props);
-          console.log(location);
+          //console.log("ROUTE: " + location.pathname);
+          //console.log(props);
+          //console.log(location);
 
           let action = null;
           let params = props.match.params;
@@ -109,6 +109,11 @@ class RouterProps extends Component {
           };
 
           if (!sendProps.page && dashboard) {
+            let dest = Util.PURL(dashboard);
+            //console.log("************ REDIRECT TO");
+            //console.log(dest);
+            //console.log(dest.toString());
+            //console.log("+++++++++++");
             return (
               <Redirect to={Util.PURL(dashboard).toString()}/>
             );
@@ -171,12 +176,12 @@ class UserProvider extends NetworkComponent {
       type: Util.Method.GET,
       url: url,
       context: this
-    }).done(function(data, textStatus, jaXHR) {
+    }).done(function(data, textStatus, jqXHR) {
       self.setState({
         user: data.user
       });
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      ajaxError(jaXHR, textStatus, errorThrown);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

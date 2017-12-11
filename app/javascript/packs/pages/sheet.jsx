@@ -205,7 +205,7 @@ class Wizard extends Base {
 
   page(nextPage) {
     if ((nextPage < 0) || (nextPage >= this.pageCount())) {
-      console.log("Page outside boundaries: " +  nextPage);
+      //console.log("Page outside boundaries: " +  nextPage);
     }
 
     this.stack.push(nextPage);
@@ -236,7 +236,7 @@ class Wizard extends Base {
     this.stack.pop(); // this page
     let p = this.stack.pop(); // prev page
 
-    console.log("PRE: " + p);
+    //console.log("PRE: " + p);
     if (p >= 0) {
       this.page(p);
     }
@@ -251,7 +251,7 @@ class Wizard extends Base {
 class Index extends Base {
   componentDidMount() {
     if (!this.props.items) {
-      console.log("LOADING ITEMS");
+      //console.log("LOADING ITEMS");
       this.props.onLoadItems(this.onLoading);
     }
   }
@@ -279,8 +279,8 @@ class Index extends Base {
 
   renderChildren(items, selected) {
     let self = this;
-    console.log("render children");
-    console.log(this.props);
+    //console.log("render children");
+    //console.log(this.props);
 
               /*onClick={this.onClicks[this.key(item)] }  */
     return (
@@ -318,7 +318,7 @@ class Show extends Base {
 
   componentDidMount() {
     if (!this.props.selected) {
-      console.log("GETTING SELECTED");
+      //console.log("GETTING SELECTED");
       this.props.onLoadSelected(this.props.itemId, this.onLoading);
     }
   }
@@ -344,6 +344,15 @@ class Show extends Base {
       </Pyr.UI.Scroll>
     );
   }
+
+  render() {
+    return (
+      <Pyr.UI.FullScreen>
+        { super.render() }
+      </Pyr.UI.FullScreen>
+    );
+  }
+
 }
 
 class Form extends Base {

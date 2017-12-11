@@ -1,17 +1,31 @@
 class S3Controller < ApplicationController
-  def self.bucket
+  BUCKET_CH = "abcdefghijklmnopqrstuvwxyz0123456789".split('')
+  MULT = 1029
+
+  def self.rand_string(size=8)
+    BUCKET_CH.shuffle[0,size].join
   end
 
-  def self.signed(name)
-    self.bucket.signed_put_url(name)
-  end
 
   def get
-    bucket = Pyr::Base::S3::Bucket.new(::S3_BUCKET_NAME, ::S3_BUCKET_SUBDIR, rand_sub_dir: true)
-    url = bucket.signed_put_url(params[:name])
+    spar = s3_params
+    name = spar[:name]
+
+    name = File.basename(name) # only filename
+
+    bucket = Pyr::Base::S3::Bucket.new(::S3_BUCKET_NAME)
+
+    randDir = File.join((current_user.id * MULT).to_s, self.class.rand_string)
+    randDir = nil
+
+    url = bucket.signed_put_url(name, path: randDir)
+
+    fullName = randDir ? File.join(randDir, name) : name
+
+    puts "SIGNED URL [#{url}]"
 
     if url
-      return render json: { url: url }
+      return render json: { url: url, name: fullName, path: randDir }
     else
       return render_create_error json: { url: url }
     end

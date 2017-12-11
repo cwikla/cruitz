@@ -12,7 +12,7 @@ const ONE_HOUR = (ONE_MINUTE * 60);
 const ONE_DAY = (ONE_HOUR * 24);
 const TWO_DAYS = (ONE_DAY * 2);
 
-const REMOTE_URL = "/api/v1";
+const REMOTE_PATH = "/api/v1";
 
 const POST = 'POST';
 const PUT = 'PUT';
@@ -31,14 +31,19 @@ class URLObj {
   constructor(path) {
     path = path || "/";
     if (path.constructor.name == this.constructor.name) {
-      path = path.fullString();
+      path = path.toString();
     }
     this.parser = document.createElement('a');
     this.parser.href = path;
     
     this.searchParams = new URLSearchParams(this.parser.search);
+
+    var re = /^((http|https):)/;
+    this.fullURL = (re.test(path)); // passed in full path,respect it
+
     this.pathList = this.ptol(this.parser.pathname);
-    this.remote = REMOTE_URL;
+
+    this.remote = REMOTE_PATH;
   }
   
   parser() {
@@ -103,6 +108,12 @@ class URLObj {
     return this.path();
   }
   
+  prepend(a) {
+    let stuff = this.ptol(a);
+    this.pathList = stuff.concat(this.pathList);
+    return this;
+  }
+  
   push(a) {
     this.pathList = this.pathList.concat(this.ptol(a));
     return this;
@@ -134,34 +145,48 @@ class URLObj {
     this.remote = base;
   }
 
+  unusedToPath() {
+    this.bake();
+    let pathName = this.pathList.join("/");
+    pathName = "/" + pathName;
+    return pathName;
+  }
+
   toRemote() {
-    return (new URLObj(this.remote)).push(this.toString());
+    if (this.fullURL) {
+      return this.toString();
+    }
+
+    let rem = (new URLObj(this).prepend(this.remote)).toString();
+
+    return rem;
   }
 
   toString() {
     this.bake();
-    return (this.parser.pathname.toString() + this.parser.search.toString()).toLowerCase();
+
+    //console.log("THIS");
+    //console.log(this);
+
+    if (this.fullURL) {
+      return this.parser.href;
+    }
+
+    return this.parser.pathname;
+
+    //return (this.parser.pathname.toString() + this.parser.search.toString()).toLowerCase();
   }
   
-  fullString() {
-    this.bake();
-    let parser = this.parser;
-    let ifa = this.ifa;
-    let url = ifa(parser.protocol);
-    if (url.length) {
-      url = url + "//";
-    }
-    url = url + ifa(parser.hostname);
-    return (url + this.toString()).toLowerCase();
-  }
 }
 
 function PURL(a) {
   return new URLObj(a);
 }
 
-function ajaxError(jaXHR, textStatus, errorThrown) {
-   console.log("AJAX Error: " + errorThrown);
+function ajaxError(jqXHR, textStatus, errorThrown) {
+  console.log(jqXHR);
+  console.log(textStatus)
+  console.log("AJAX Error: " + errorThrown);
 }
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyz";
@@ -192,13 +217,14 @@ function scramble(a) {
 
 function getJSON(stuff) {
   let url = stuff.url;
+  let data = stuff.data;
+  let method = stuff.method || stuff.type || GET;
+
   if (typeof url == 'string') {
     url = PURL(url);
   }
-  let data = stuff.data;
-  if (!data) {
-    data = url.data().toString();
-  }
+
+  data = data || url.data().toString();
 
   if (stuff.remote) {
     url.setRemote(stuff.remote);
@@ -206,16 +232,17 @@ function getJSON(stuff) {
 
   url = url.toRemote();
 
-  //console.log("GETJSON: " + url);
+  console.log("GETJSON: " + url);
   //console.log(data);
 
   stuff = Object.assign({
     dataType: "json",
-    type: GET,
+    type: method,
   }, stuff, {
     url: url,
     data: data
   });
+
 
   let onLoading = stuff.loading ? stuff.loading : null;
 
@@ -231,7 +258,10 @@ function getJSON(stuff) {
 
   stuff.beforeSend = beforeSend;
 
-  let ajx = $.getJSON(
+  console.log("STUFF");
+  console.log(stuff);
+
+  let ajx = $.ajax(
     stuff
   )
   .always(() => {
@@ -475,6 +505,61 @@ function times(x,f) {
   return result;
 }
 
+function convertUint8ArrayToBinaryString(u8Array) {
+	var i, len = u8Array.length, b_str = "";
+
+	for (i=0; i<len; i++) {
+		b_str += String.fromCharCode(u8Array[i]);
+	}
+
+	return b_str;
+}
+
+async function s3Upload(files) {
+  if (!files) {
+    return;
+  }
+
+  for(let f of Array.from(files)) {
+    let fileName = f.name;
+    let ftype = f.type;
+    let flength = f.size;
+
+    console.log(PURL("/post_url"));
+    console.log("FTYPE: " + ftype);
+
+    let query = {
+      url : PURL("/post_url"),
+      data : { "s3[name]" : fileName },
+    };
+
+    let result = await Util.getJSON(query);
+    let s3Url = result['url'];
+
+      Util.getJSON({
+        type: Method.PUT,
+        url: result['url'],
+        data: f,
+        dataType: null,
+        contentType: ftype,
+        mimeType: ftype,
+        processData: false,
+      
+        beforeSend: function(xhr){
+          console.log("SETTING REQUEST HEADER: " + ftype);
+          console.log(xhr);
+        }
+  
+      }).done(function(retData, textState, jqXHR) {
+        console.log("SUCCESS FOR " + fileName);
+  
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+        Util.ajaxError(jqXHR, textStatus, errorThrown);
+  
+      });
+  }
+}
+
 
 const Util = {
   PURL,
@@ -497,6 +582,7 @@ const Util = {
   scramble,
   getRandomInt,
   Method,
+  s3Upload,
 };
 
 export default Util;

@@ -234,7 +234,7 @@ class MessagesPage extends Page {
       if (!mmap[threadId] || mmap[threadId].id < msg.id) {
 
         let job = this.jobMap[msg.job_id]; // FIXME, if job not here go fetch it
-        console.log("MINE: " + msg.from_user_id + ":" + this.user().id);
+        //console.log("MINE: " + msg.from_user_id + ":" + this.user().id);
         let mine = (msg.from_user.id == this.user().id);
         let is_root = !msg.root_message_id;
 
@@ -272,7 +272,7 @@ class MessagesPage extends Page {
   }
 
   loadSelected(itemId, onLoading) {
-    console.log("GET ITEM: " + itemId);
+    //console.log("GET ITEM: " + itemId);
 
     let me = this;
 
@@ -294,8 +294,8 @@ class MessagesPage extends Page {
   }
 
   loadItems(onLoading) {
-    console.log("GET ITEMS..." + this.constructor.name);
-    console.log(MESSAGES_URL);
+    //console.log("GET ITEMS..." + this.constructor.name);
+    //console.log(MESSAGES_URL);
 
     let me = this;
 

@@ -62,6 +62,45 @@ class Form extends Component {
     }
   }
 
+  static async fileRequest(fileName) {
+    let query = {
+      url : Util.PURL("/post_url"),
+      data : { "s3[name]" : fileName },
+    };
+
+    console.log("QUERY");
+    console.log(query);
+
+    let result = await Util.getJSON(query);
+
+    Util.getJSON({
+      method: Util.Method.PUT,
+      url: result['url'],
+      data: new FileReader(new File(fileName))
+
+    }).done(function(retData, textState, jqXHR) {
+      console.log("SUCCESS FOR " + fileName);
+
+    }).fail(function(retData, textState, errorThrown) {
+      self.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+
+    return json;
+  }
+
+  uploadFiles($form) {
+    console.log("CHECKING KIDS");
+    console.log($form);
+
+    $($form).find('[data-pyr-file]').each(function(f) {
+      let $me = $(this);
+      let value = $me.val();
+      let result = Form.fileRequest(value);
+      console.log(result);
+    });
+    console.log("CHECKING KIDS END");
+  }
+
   submit(e) {
     if (e) {
       e.preventDefault();
@@ -72,6 +111,10 @@ class Form extends Component {
     }
 
     let $item = $(this.form);
+
+    //this.uploadFiles($item);
+
+
     let data = $item.serialize();
 
     this.preSubmit();
@@ -90,17 +133,17 @@ class Form extends Component {
     }).always(function() {
       this.postSubmit();
 
-    }).done(function(retData, textStatus, jaXHR) {
+    }).done(function(retData, textStatus, jqXHR) {
       if (self.props.reset) {
         //$("#" + $(self.form).attr("id")).trigger("reset");
         $(this.form).trigger("reset");
         //console.log("TRIGGER");
       }
-    }).done(function(retData, textStatus, jaXHR) {
-      self.ajaxSuccess(retData, textStatus, jaXHR);
+    }).done(function(retData, textStatus, jqXHR) {
+      self.ajaxSuccess(retData, textStatus, jqXHR);
 
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      self.ajaxError(jaXHR, textStatus, errorThrown);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      self.ajaxError(jqXHR, textStatus, errorThrown);
 
 
     });
@@ -561,12 +604,14 @@ class FileSelector extends Child {
 
     this.onDrop = this.drop.bind(this);
 
+    this.onChange = this.change.bind(this);
+    this.onClick = this.click.bind(this);
   }
 
   componentWillMount() {
     this.setState({
       files: null,
-      dragging: false
+      dragging: false,
     });
   }
 
@@ -591,10 +636,54 @@ class FileSelector extends Child {
     }
 
     let files = e.dataTransfer.files;
+
+    this.setFiles(files);
+  }
+
+  change(e) {
+    if (!e.target.value) {
+      return;
+    }
+
+    let files = e.target.files;
+
+    this.setFiles(files);
+  }
+
+  setFiles(files) {
     this.setState({
       files,
-      dragging: false
+      dragging: false,
     });
+
+    if (files) {
+      Util.s3Upload(files);
+    }
+  }
+
+  click(e) {
+    return this.fileInput.click();
+  }
+
+  renderHiddens() {
+    if (!this.state.files) {
+      return null;
+    }
+
+    console.log(this.state.files);
+
+    let hiddens = Array.from(this.state.files).map((file, pos) => {
+      return (
+        <input key={file.name} name={this.name()} type="hidden" value={file.name} data-pyr-file/>
+      );
+    });
+
+    return (
+      <div id={this.name()+"-files-to-upload"}>
+        { hiddens }
+      </div>
+    );
+
   }
 
   renderImage() {
@@ -602,29 +691,44 @@ class FileSelector extends Child {
       return null;
     }
 
+    let afile = this.state.files[0];
+
     return (
-      <UI.ImageFile file={this.state.files[0]} className="file-selector-image"/>
+      <UI.ImageFile file={afile} {...this.props.image} />
+    );
+  }
+
+  renderFileInput() {
+    if (this.props.noInput) {
+      return null;
+    }
+
+    let afile = this.state.files ? this.state.files[0]: "";
+
+    return (
+        <input ref={node => this.fileInput = node} type="file" {...this.props.input} onChange={this.onChange} />
     );
   }
 
   render() {
-    let myProps = {
-      name: this.name(),
-      id: this.htmlID() ,
-      "aria-describedby": this.htmlID(),
-    };
-
     let clz = Util.ClassNames("form-control form-file-selector", (this.state.dragging ? "dragging" : null));
 
+    if (this.state.files) {
+      clz.push("value");
+    }
+
     return(
-      <div 
+      <div id={this.htmlID()}
         {...Util.propsMergeClassName(this.props, clz)}
         onDragEnter={this.onDragEnter}
         onDragLeave={this.onDragLeave}
         onDragOver={this.onDragOver}
         onDrop={this.onDrop}
+        onClick={this.onClick}
       >
+        { this.renderHiddens() }
         { this.renderImage() }
+        { this.renderFileInput() }
         { this.props.children }
       </div>
     );

@@ -42,6 +42,7 @@ import {
   SETTINGS_URL,
   MESSAGES_URL,
   COMPANIES_URL,
+  ME_URL,
 
   SEARCH_URL,
 
@@ -66,7 +67,7 @@ const PAGE_MAP = {
 
 
 function PageURL(page) {
-  return Pyr.URL().push(page);
+  return Pyr.URL(page.toLowerCase());
 }
 
 function isPage(page1, page2, isDefault=false) {
@@ -112,15 +113,15 @@ class NavMenuButton extends Component {
   render() {
     let url = Pyr.URL(MESSAGES_URL).set("sort", this.props.sort);
 
-    console.log("NavMenuButton: " + this.props.sort);
+    //console.log("NavMenuButton: " + this.props.sort);
 
     url.bake();
-    console.log(url.parser.pathname.toString());
-    console.log(url.parser.search.toString());
-    console.log(url.parser);
+    //console.log(url.parser.pathname.toString());
+    //console.log(url.parser.search.toString());
+    //console.log(url.parser);
 
     let us = url.toString();
-    console.log("US: " + us);
+    //console.log("US: " + us);
 
     let icon = <Pyr.UI.Icon name="sort-asc" className={!this.props.dir ? "ghost" : ""}/>;
 
@@ -237,8 +238,8 @@ class Dashboard extends Pyr.UserReceiver {
       act = SHOW_ACTION;
     }
 
-    console.log("PROPS ACTION IS: " + this.props.action);
-    console.log("ACTION IS: " + act);
+    //console.log("PROPS ACTION IS: " + this.props.action);
+    //console.log("ACTION IS: " + act);
 
     return act;
   }
@@ -301,9 +302,9 @@ class Dashboard extends Pyr.UserReceiver {
         (this.props.subPageId != nextProps.subPageId)) {
       let page = Pyr.Util.capFirstLetter(this.props.page || DEFAULT_PAGE);
 
-      console.log("WILL RECEIVE");
-      console.log(nextProps);
-      console.log(page);
+      //console.log("WILL RECEIVE");
+      //console.log(nextProps);
+      //console.log(page);
 
       this.setAction(null);
       
@@ -451,7 +452,7 @@ class Dashboard extends Pyr.UserReceiver {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row">
             <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
-            <Link to={Pyr.URL(ME_PAGE).toString()}><UserLabel user={this.user()} /></Link>
+            <Link to={ME_URL}><UserLabel user={this.user()} /></Link>
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
     );
@@ -496,7 +497,7 @@ class Dashboard extends Pyr.UserReceiver {
 
         return (<Sidebar.Button 
                   key={job.id} 
-                  url={Pyr.URL(JOBS_URL).push(job.id).push(CANDIDATES_PAGE).toString()}
+                  url={Pyr.URL(JOBS_URL).push(job.id).push(CANDIDATES_PAGE)}
                   selected={isJob && (job.id == jobId)}
                 ><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
         );
@@ -633,10 +634,10 @@ const Footer = (props) => (
 ///
 
 render (
-  <Pyr.UserProvider url={Pyr.URL().push(USERS_URL).push("/me")}>
+  <Pyr.UserProvider url={Pyr.URL(USERS_URL).push("/me")}>
     <Pyr.UI.NoticeProvider>
       <Router>
-        <Pyr.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}/>
+        <Pyr.RouterProps component={Dashboard} dashboard={MESSAGES_URL}/>
       </Router>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,

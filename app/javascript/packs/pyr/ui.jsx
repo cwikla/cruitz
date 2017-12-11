@@ -150,11 +150,16 @@ class ImageFile extends Component {
     this.onLoad = this.loaded.bind(this);
   }
 
+  release() {
+    if (this.state.srcURL) {
+      URL.revokeObjectURL(this.state.srcURL);
+    }
+    this.state.srcURL = null;
+  }
+
   componentWillReceiveProps(nextProps, nextContext) {
     if (this.props.file != nextProps.file) {
-      if (this.state.srcURL) {
-        URL.revokeObjectURL(this.state.srcURL);
-      }
+      this.release();
 
       let srcUrl = URL.createObjectURL(nextProps.file);
       this.setState({
@@ -163,19 +168,54 @@ class ImageFile extends Component {
     }
   }
 
-
-  loaded(e) {
-    if (this.state.srcURL) {
-      URL.revokeObjectURL(this.state.srcUrl);
-    }
+  componentWillUnmount() {
+    this.release();
   }
 
+
+  loaded(e) {
+    this.release();
+  }
+
+  getType() {
+    console.log(this.props.file.type);
+
+    if (!this.props.file || !this.props.file.type) {
+      return "file";
+    }
+
+    let ftype = this.props.file.type.split("/");
+    if (ftype.length < 2) {
+      return "file";
+    }
+
+    let fapp = ftype[0].toLowerCase();
+
+    if (fapp == "application") {
+      return ftype[1].toLowerCase();
+    }
+    
+    return ftype[0];
+  }
+
+ 
   render() {
+    let ftype = this.getType().toLowerCase();
+
+    if (!["img", "image"].includes(ftype)) {
+      console.log(ftype);
+      return (
+        <Icon name={"file-" + ftype + "-o"}/>
+      );
+    }
+
+    let rest = Util.propsRemove(this.props, ["file"]);
+    
     return (
       <img
-        {...Util.propsMergeClassName(this.props, "pyr-image-file")}
+        {...Util.propsMergeClassName(rest, "pyr-image-file")}
         src={this.state.srcUrl}
-        onLoad={e => URL.revokeObjectURL(this.state.srcUrl)}
+        onLoad={this.onLoad}
       />
     );
   }

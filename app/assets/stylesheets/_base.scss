@@ -359,6 +359,10 @@ label {
     width: 5rem;
     height: 5rem;
   }
+
+  input[type="file"] {
+    display: none;
+  }
 }
 
 .icon-btn:hover {

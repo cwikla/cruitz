@@ -5,14 +5,13 @@
       {
         "modules": false,
         "targets": {
-          "browsers": "> 1%",
-          "uglify": true
-        },
-        "useBuiltIns": true
+          "node": "current"
+        }
       }
     ],
     "react"
   ],
+
   "plugins": [
     "syntax-dynamic-import",
     [

@@ -42,7 +42,7 @@ class SettingsForm extends Component {
 
           <div className="flx-row">
             <Pyr.Form.Group name="logo">
-              <Pyr.Form.FileSelector className="" > Hello </Pyr.Form.FileSelector>
+              <Pyr.Form.FileSelector > Hello </Pyr.Form.FileSelector>
             </Pyr.Form.Group>
           </div>
 
@@ -107,6 +107,8 @@ class SettingsForm extends Component {
 class ShowSheet extends Sheet.Show {
 
   renderHeader() {
+    console.log("RENDER HEADER");
+
     return (
       <div className="settings-index-header">
           <div className="info p-1 d-flex flx-end">
@@ -122,12 +124,10 @@ class ShowSheet extends Sheet.Show {
   renderItem(item) {
     console.log(item);
     return (
-      <Pyr.UI.FullScreen>
       <SettingsForm 
         settings={item}
         ref={(node) => this.target = node}
       />
-      </Pyr.UI.FullScreen>
     );
   }
 }
