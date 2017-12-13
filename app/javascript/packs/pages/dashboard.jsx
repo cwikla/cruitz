@@ -67,7 +67,7 @@ const PAGE_MAP = {
 
 
 function PageURL(page) {
-  return Pyr.URL(page.toLowerCase());
+  return Pyr.URL("/" + page.toLowerCase());
 }
 
 function isPage(page1, page2, isDefault=false) {
@@ -534,7 +534,7 @@ class Dashboard extends Pyr.UserReceiver {
             icon="bullseye"
             itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
             selected={isPage(page, JOBS_PAGE)}
-            url={PageURL(JOBS_URL)}
+            url={PageURL(JOBS_PAGE)}
           >Jobs</Sidebar.Header>
           <Sidebar.Header 
             id="recruiters"

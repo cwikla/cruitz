@@ -33,6 +33,9 @@ class URLObj {
     if (path.constructor.name == this.constructor.name) {
       path = path.toString();
     }
+    path = path || "/";
+
+
     this.parser = document.createElement('a');
     this.parser.href = path;
     
@@ -40,6 +43,11 @@ class URLObj {
 
     var re = /^((http|https):)/;
     this.fullURL = (re.test(path)); // passed in full path,respect it
+    if (!this.fullURL) {
+      if (path[0] != "/") { // HMMMMMMMMMM. If I don't do this it will merge in the page path
+        path = "/" + path;
+      }
+    }
 
     this.pathList = this.ptol(this.parser.pathname);
 
@@ -145,7 +153,7 @@ class URLObj {
     this.remote = base;
   }
 
-  unusedToPath() {
+  toPath() {
     this.bake();
     let pathName = this.pathList.join("/");
     pathName = "/" + pathName;
@@ -172,7 +180,11 @@ class URLObj {
       return this.parser.href;
     }
 
-    return this.parser.pathname;
+    console.log("PURL toString");
+    console.log(this);
+    console.log(this.toPath());
+
+    return this.toPath();
 
     //return (this.parser.pathname.toString() + this.parser.search.toString()).toLowerCase();
   }

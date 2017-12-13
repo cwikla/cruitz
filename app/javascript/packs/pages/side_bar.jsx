@@ -30,7 +30,7 @@ class Button extends Component {
     let props = Pyr.Util.propsRemove(this.props, "url");
 
     return(
-      <Link to={url.toString()}>
+      <Link to={url.toString().toLowerCase()}>
         <li {...Pyr.Util.propsMergeClassName(props, myClass)} >
           <span className="inner"><span className="name">{props.children}</span></span>
         </li>
@@ -70,8 +70,12 @@ class Header extends Component {
     //console.log(this.props.children);
     let restProps = Pyr.Util.propsRemove(this.props, ["itemCount", "url"]);
 
+    console.log("HEADER");
+    console.log(this.props.url);
+    console.log(this.props.url.toString().toLowerCase());
+
     return (
-      <Link to={this.props.url.toString()}>
+      <Link to={this.props.url.toString().toLowerCase()}>
         <div {...Pyr.Util.propsMergeClassName(restProps, myClass)}><span className="inner">{this.renderIcon()}<Pyr.UI.SmallLabel>{this.props.children}{this.renderCount()}</Pyr.UI.SmallLabel></span></div>
       </Link>
     );
