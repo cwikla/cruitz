@@ -352,19 +352,6 @@ label {
   }
 }
 
-.form-file-selector {
-  width: 10rem;
-  height: 10rem;
-  img {
-    width: 5rem;
-    height: 5rem;
-  }
-
-  input[type="file"] {
-    display: none;
-  }
-}
-
 .icon-btn:hover {
   color: lighten($secondary_color, 5%) !important;
 }
@@ -533,10 +520,6 @@ label {
   background-color: $light_gray_color;
 }
 
-.dragging {
-  border: 2px solid yellow;
-}
-
 
 @import 'item';
 @import 'message_thread';
@@ -546,3 +529,4 @@ label {
 @import 'jobs';
 @import 'settings';
 @import 'registration';
+@import 'companies';

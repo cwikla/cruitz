@@ -162,7 +162,7 @@ class ImageFile extends Component {
     if ((this.props.file != nextProps.file) || (this.props.url != nextProps.url)) {
       this.release();
 
-      this.state = {
+      let state = {
         localUrl : (nextProps.file ? URL.createObjectURL(nextProps.file) : null),
       };
 
@@ -207,8 +207,7 @@ class ImageFile extends Component {
   render() {
     let ftype = this.getType().toLowerCase();
 
-    if (!["img", "image"].includes(ftype)) {
-      console.log(ftype);
+    if (!Util.isImageType(this.props.file || this.props.contentType)) {
       return (
         <Icon name={"file-" + ftype + "-o"}/>
       );
@@ -271,7 +270,7 @@ class Collapse extends Component {
   renderButton(text, open) {
     let name = !open ? "plus" : "minus";
     return (
-      <Pyr.IconButton name={name} onClick={this.onToggle}>{text}</Pyr.IconButton>
+      <IconButton name={name} onClick={this.onToggle}>{text}</IconButton>
     );
   }
 
@@ -663,11 +662,12 @@ class FullScreen extends Component {
         ref={(node) => this.me = node }
       >
         <div 
-          className="flx-row flx-end controls"
+          className="navbar flx-row controls"
           onClick={this.onClose}
         >
+          <label className="mr-auto">This is a title</label>
           <BackButton name="close"
-              className="close"
+              className="pyr-back-button ml-auto navitem"
               ><IconButton name="arrow-left">Back</IconButton></BackButton>
         </div>
         <div className="content">

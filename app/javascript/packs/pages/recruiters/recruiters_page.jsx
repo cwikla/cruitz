@@ -73,7 +73,7 @@ class RecruiterItem extends Component {
             small
           />
         </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="content">
+        <Pyr.Grid.Column className="item-content">
           <div className="info col-md-5 col-sm-5">
             <div>{recruiter.first_name}</div>
             <div>FakeCompany Placeholder</div>

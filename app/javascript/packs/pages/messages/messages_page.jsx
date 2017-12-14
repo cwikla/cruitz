@@ -91,7 +91,7 @@ class MessageItem extends Sheet.Item {
             small
           />
         </Grid.Column>
-        <Grid.Column className="content">
+        <Grid.Column className="item-content">
           <Grid.Row className=""> 
             <Grid.Column className="col-8">
               <Header className="title" message={message} job={job} isNew={message.is_root}/>

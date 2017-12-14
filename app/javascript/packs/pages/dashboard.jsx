@@ -132,7 +132,7 @@ class NavMenuButton extends Component {
 }
 
 
-class NavView extends Component {
+class NavViewMenu extends Component {
   render () {
     return (
       <div className="flx-row page-nav-bar">
@@ -153,6 +153,21 @@ class NavView extends Component {
 }
 
 
+class NavUserMenu extends Component {
+  render () {
+    return (
+      <div className="flx-row page-nav-bar">
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.UI.Icon name="user"/></a>
+            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+              <Link to={PageURL(ME_PAGE).toString()} className="dropdown-item">My Profile</Link>
+              <Link to={PageURL(COMPANIES_PAGE).toString()} className="dropdown-item">My Company</Link>
+            </div>
+        </li>
+      </div>
+    );
+  }
+}
 
 class Dashboard extends Pyr.UserReceiver {
   constructor(props) {
@@ -427,7 +442,7 @@ class Dashboard extends Pyr.UserReceiver {
     }
 
     return (
-      <div className="nav-item ml-auto flx-row"><NavView /><NavBar />{ this.renderSearch() }</div>
+      <div className="nav-item ml-auto flx-row"><NavViewMenu /><NavBar />{ this.renderSearch() }</div>
     );
   }
 
@@ -440,6 +455,7 @@ class Dashboard extends Pyr.UserReceiver {
       </div>
     );
   }
+            //<Link to={ME_URL}><UserLabel user={this.user()} /></Link>
 
   renderNav() {
     return (
@@ -452,7 +468,7 @@ class Dashboard extends Pyr.UserReceiver {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row">
             <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
-            <Link to={ME_URL}><UserLabel user={this.user()} /></Link>
+            <NavUserMenu user={this.user()}/>
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
     );

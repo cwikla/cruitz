@@ -81,7 +81,7 @@ class RegistrationItem extends Component {
           <div>{registration.title}</div>
           <div>Created: <Pyr.UI.MagicDate date={registration.created_at}/></div>
         </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="content">
+        <Pyr.Grid.Column className="item-content">
           <div>Total: {registration.candidate_counts.total}</div>
           <div>Accepted: {registration.candidate_counts.accepted}</div>
           <div>New: {registration.candidate_counts.waiting}</div>

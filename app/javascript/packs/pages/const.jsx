@@ -8,7 +8,7 @@ export const SETTINGS_PAGE = 'Settings';
 export const MESSAGES_PAGE = 'Messages';
 export const SEARCH_PAGE = 'Search';
 export const ME_PAGE = 'Me';
-export const COMPANIES_PAGE = 'Company';
+export const COMPANIES_PAGE = 'Companies';
 
 export const JOBS_URL = "/jobs";
 export const CANDIDATES_URL = "/candidates";
@@ -17,7 +17,7 @@ export const SETTINGS_URL = "/settings";
 export const MESSAGES_URL = "/messages";
 export const SEARCH_URL = "/search";
 export const POSTINGS_URL = "/postings";
-export const COMPANY_URL = "/company";
+export const COMPANY_URL = "/companies";
 export const ME_URL = "/me";
 
 export const USERS_URL = "/users";

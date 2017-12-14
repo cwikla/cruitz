@@ -59,7 +59,7 @@ class ThreadItem extends Sheet.Item {
         <div className={justify}>
           { leftAvatar }
           <div className="flx-col justify-content-center">
-            <div className={" content flx-0"}>{message.body}</div>
+            <div className="item-content flx-0">{message.body}</div>
           </div>
           { rightAvatar }
         </div>

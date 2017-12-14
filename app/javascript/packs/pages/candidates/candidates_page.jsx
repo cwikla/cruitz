@@ -137,7 +137,7 @@ class CandidateItem extends Component {
 
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="content">
+        <Pyr.Grid.Column className="item-content">
           <div className="flx-row">
             <div className="state col-md-2">{state}</div>
             <div className="name col-md-3">{fullName}</div>

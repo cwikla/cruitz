@@ -370,7 +370,7 @@ class Form extends Base {
         <div className="title flx-col" >
           { this.renderTitle() }
         </div>
-        <div className="content flx-1">
+        <div className="form-content flx-1">
           { this.renderForm() }
         </div>
       </div>

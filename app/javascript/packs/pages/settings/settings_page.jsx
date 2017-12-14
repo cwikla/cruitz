@@ -42,7 +42,7 @@ class SettingsForm extends Component {
 
           <div className="flx-row">
             <Pyr.Form.Group name="logo">
-              <Pyr.Form.FileSelector > Hello </Pyr.Form.FileSelector>
+              <Pyr.Form.FileSelector imageOnly> Hello </Pyr.Form.FileSelector>
             </Pyr.Form.Group>
           </div>
 

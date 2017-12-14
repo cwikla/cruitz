@@ -18,16 +18,20 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: $white_color;
+  background-color: $navbar_background_color;
 
-  .close {
-    padding-top: 1.5rem;
-    padding-right: 2.5rem;
+  .controls {
+    padding: 0.5rem;
     text-shadow: none;
     font-size: 2rem;
+    background-color: rgba($primary_light_color, 0.25);
+    color: white;
+  }
 
-    &:hover {
-      color: lighten($secondary_color, 5%) !important;
+  .pyr-back-button {
+    background-color: rgba(255,255,255,0) !important;
+    hover {
+      font-weight: bold;
     }
   }
 
@@ -135,6 +139,33 @@
     margin-left: 1.5rem;
   }
   margin-bottom: 1rem;
+}
+
+.pyr-file-selector {
+  width: 10rem;
+  height: 10rem;
+
+  border: 1px solid black;
+
+  input[type="file"] {
+    display: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  &.dragging {
+    border: 1px solid $primary_color;
+    background-color: rgba($primary_light_color, 0.5);
+  }
+}
+
+.pyr-back-button {
+  &:hover {
+    color: lighten($secondary_color, 5%) !important;
+  }
 }
 
 

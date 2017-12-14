@@ -596,11 +596,14 @@ class FileSelector extends Child {
     this.state = {
       fileInfos: [],
       dragging: false,
+      valid: true,
     };
 
     this.onDragEnter = this.dragging.bind(this, true);
     this.onDragLeave = this.dragging.bind(this, false);
     this.onDragOver = this.dragOver.bind(this);
+    this.onDragStart = this.dragStart.bind(this);
+    this.onDragEnd = this.dragEnd.bind(this);
 
     this.onDrop = this.drop.bind(this);
 
@@ -612,20 +615,74 @@ class FileSelector extends Child {
     this.setState({
       fileInfos: [],
       dragging: false,
+      valid: true,
     });
   }
 
   //https://stackoverflow.com/questions/21339924/drop-event-not-firing-in-chrome
 
   dragOver(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  eventFiles(e) {
+    return e.dataTransfer.files || e.target.files;
+  }
+
+  isValidFiles(e) {
+    if (!this.props.imageOnly) {
+      return true;
+    }
+
+    let files = this.eventFiles(e);
+
+    if (!files) {
+      return false;
+    }
+
+    console.log("IS VALID FILES");
+    console.log(files);
+
+    for(f in Array.from(files)) {
+      if (!Util.isImageType(f)) {
+        console.log("BUMMER");
+        return false;
+      }
+    }
+
+    return true;
   }
 
   dragging(dragging, e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    let valid = this.isValidFiles(e);
+
     this.setState({
-      dragging
+      dragging,
+      valid,
     });
     console.log("DRAGGING: " + dragging);
+    console.log(e.dataTransfer.types);
+    console.log(e);
+  }
+
+  dragStart(e) {
+    console.log("DRAG START");
+  }
+
+  dragEnd(e) {
+    console.log("DRAG END");
+    this.setState({
+      dragging : false,
+      valid: true,
+    });
   }
 
   drop(e) {
@@ -635,7 +692,7 @@ class FileSelector extends Child {
       e.preventDefault();
     }
 
-    let files = e.dataTransfer.files;
+    let files = this.eventFiles(e);
 
     this.addFiles(files);
   }
@@ -650,14 +707,45 @@ class FileSelector extends Child {
     this.addFiles(files);
   }
 
+  pruneByType(files) {
+    if (!this.props.imageOnly) {
+      return files;
+    }
+
+    let result = Array.from(files).reduce((arr, f) => {
+      if (Util.isImageType(f)) {
+        console.log("PUSHING");
+        arr.push(f);
+        console.log(arr);
+      }
+      return arr;
+    }, []);
+
+    console.log("RESULT prune");
+    console.log(result);
+
+    return result;
+  }
+
   async addFiles(newFiles) {
 
     this.setState({
       dragging: false,
+      valid: true
     });
+
+    if (!newFiles) {
+      return;
+    }
 
     if (!this.props.multiple && newFiles.length > 1) {
       alert("Only 1 file can be selected here!");
+      return;
+    }
+
+    newFiles = this.pruneByType(newFiles);
+
+    if (newFiles.length == 0) {
       return;
     }
 
@@ -704,9 +792,18 @@ class FileSelector extends Child {
 
   }
 
+  renderDefault() {
+    return (
+      <div>
+        <UI.IconButton name="upload" />
+        Click or Drag to Select File
+      </div>
+    );
+  }
+
   renderImage() {
     if (!this.state.fileInfos || (this.state.fileInfos.length == 0)) {
-      return null;
+      return this.renderDefault();
     }
 
     let afile = this.state.fileInfos[0];
@@ -714,7 +811,7 @@ class FileSelector extends Child {
     console.log("RENDERING IMAGE\n");
 
     return (
-      <UI.ImageFile file={afile.file} src={afile.url} contentType={afile.content_type} {...this.props.image} />
+      <UI.ImageFile file={afile.file} src={afile.url} {...this.props.image} />
     );
   }
 
@@ -728,7 +825,7 @@ class FileSelector extends Child {
     };
 
     if (this.props.multiple) {
-      extra.multiple = true
+      extra.multiple = true;
     };
 
     return (
@@ -737,15 +834,21 @@ class FileSelector extends Child {
   }
 
   render() {
-    let clz = Util.ClassNames("form-control form-file-selector", (this.state.dragging ? "dragging" : null));
+    let clz = Util.ClassNames("form-control pyr-file-selector", (this.state.dragging ? "dragging" : null));
 
     if (this.state.files) {
       clz.push("value");
     }
 
+    if (!this.state.valid) {
+      clz.push("red");
+    }
+
     return(
       <div id={this.htmlID()}
         {...Util.propsMergeClassName(this.props, clz)}
+        onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}
         onDragEnter={this.onDragEnter}
         onDragLeave={this.onDragLeave}
         onDragOver={this.onDragOver}

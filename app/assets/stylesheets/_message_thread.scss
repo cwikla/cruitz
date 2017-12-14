@@ -22,19 +22,19 @@
       color: $gray_color;
     }
   
-    .content {
+    .item-content {
        padding: 0.75rem;
        border-radius: 20px;
     }
   
     &.mine {
-      .content {
+      .item-content {
         background-color: lighten($primary_light_color, 0.5);
       }
       padding-right: #{$avatar_width + 2}rem;
     }
     &.recruiter {
-      .content {
+      .item-content {
         background-color: lighten($secondary_light_color, 0.5);
       }
       padding-left: #{$avatar_width + 2}rem;

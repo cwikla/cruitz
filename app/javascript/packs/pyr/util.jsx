@@ -563,6 +563,7 @@ async function s3Upload(files) {
         contentType: ftype,
         mimeType: ftype,
         processData: false,
+        cache: false,
    
 /*   
         beforeSend: function(xhr){
@@ -592,6 +593,25 @@ async function s3Upload(files) {
   return upfiles;
 }
 
+function isImageType(f) {
+  console.log("CHECKING ISIMAGETYPE");
+  console.log(f);
+
+  f = f.type || f;
+
+  console.log("A");
+  console.log(f);
+
+  let re = /^image\/(.*)/;
+  return f.match(re) != null;
+}
+
+function isVideoType(f) {
+  f = f.type || f;
+
+  let re = /^video\/(.*)/;
+  return f.match(re) != null;
+}
 
 const Util = {
   PURL,
@@ -615,6 +635,8 @@ const Util = {
   getRandomInt,
   Method,
   s3Upload,
+  isImageType,
+  isVideoType,
 };
 
 export default Util;

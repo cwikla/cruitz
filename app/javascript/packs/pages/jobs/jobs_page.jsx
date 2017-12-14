@@ -102,7 +102,7 @@ class JobItem extends Component {
           <div>{job.title}</div>
           <div>Created: <Pyr.UI.MagicDate date={job.created_at}/></div>
         </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="content">
+        <Pyr.Grid.Column className="item-content">
           <div>Total: {job.candidate_counts.total}</div>
           <div>Accepted: {job.candidate_counts.accepted}</div>
           <div>New: {job.candidate_counts.waiting}</div>
