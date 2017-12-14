@@ -426,7 +426,7 @@ class New extends ModalForm {
 
   renderTitle() {
     return (
-      <h3 className="ml-auto mr-auto">{this.title()}</h3>
+      <h3 className="mr-auto">{this.title()}</h3>
     );
   }
 
@@ -439,7 +439,7 @@ class Edit extends ModalForm {
 
   renderTitle() {
     return (
-      <h3 className="ml-auto mr-auto">{this.title()}</h3>
+      <h3 className="mr-auto">{this.title()}</h3>
     );
   }
 

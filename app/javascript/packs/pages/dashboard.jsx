@@ -156,8 +156,8 @@ class NavViewMenu extends Component {
 class NavUserMenu extends Component {
   render () {
     return (
-      <div className="flx-row page-nav-bar">
-        <li className="nav-item dropdown">
+      <div className="nav-item flx-row page-nav-bar align-items-center">
+        <li className="dropdown">
           <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.UI.Icon name="user"/></a>
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <Link to={PageURL(ME_PAGE).toString()} className="dropdown-item">My Profile</Link>
@@ -466,7 +466,7 @@ class Dashboard extends Pyr.UserReceiver {
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
             { this.renderSearchNav() }
           </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row">
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row align-items-center">
             <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
             <NavUserMenu user={this.user()}/>
           </Pyr.Grid.Col>

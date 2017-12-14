@@ -131,10 +131,12 @@ class FlatButton extends Component {
 class BackButton extends RouterReceiver {
   render() {
     return (
+      <div className="ml-auto">
       <label
         {...Util.propsMergeClassName(this.props, "btn-flat")}
         onClick={this.onGoBack}
       >{this.props.children}</label>
+      </div>
     );
   }
 }
@@ -662,13 +664,14 @@ class FullScreen extends Component {
         ref={(node) => this.me = node }
       >
         <div 
-          className="navbar flx-row controls"
+          className="navbar flx-row controls align-items-center"
           onClick={this.onClose}
         >
-          <label className="mr-auto">This is a title</label>
-          <BackButton name="close"
-              className="pyr-back-button ml-auto navitem"
+          <div className="col navbar-nav" >
+            <BackButton name="close"
+              className="pyr-back-button ml-auto nav-item"
               ><IconButton name="arrow-left">Back</IconButton></BackButton>
+          </div>
         </div>
         <div className="content">
           {this.props.children}

@@ -28,7 +28,7 @@ class MeForm extends Component {
     let method = this.props.method || Pyr.Method.PUT;
 
     return (
-      <div className="form-parent">
+      <div className="form-parent section">
         <Pyr.Form.Form
           model="User"
           object={this.props.me}
@@ -43,33 +43,46 @@ class MeForm extends Component {
           onError={this.props.onError}
         >
 
-          <div className="flx-row">
-            <Pyr.Form.Group name="first_name">
-              <Pyr.Form.Label>First Name</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder= "First Name"/>
-            </Pyr.Form.Group>
-
-            <Pyr.Form.Group name="last_name">
-              <Pyr.Form.Label>Last Name</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder= "Last Name"/>
-            </Pyr.Form.Group>
-          </div>
-
-          <Pyr.Form.Group name="email">
-            <Pyr.Form.Label>Email</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Email"/>
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="password">
-            <Pyr.Form.Label>Password</Pyr.Form.Label>
-            <Pyr.Form.PasswordField />
-          </Pyr.Form.Group>
-
+         <Pyr.Grid.Row>
+           <Pyr.Grid.Col className="col-2">
+             <Pyr.Form.Group name="logo">
+               <Pyr.Form.FileSelector />
+             </Pyr.Form.Group>
+           </Pyr.Grid.Col>
+ 
+           <Pyr.Grid.Col>
+             <div className="flx-row">
+               <Pyr.Grid.Col>
+               <Pyr.Form.Group name="first_name">
+                 <Pyr.Form.Label>First Name</Pyr.Form.Label>
+                 <Pyr.Form.TextField placeholder= "First Name"/>
+               </Pyr.Form.Group>
+               </Pyr.Grid.Col>
+ 
+               <Pyr.Grid.Col>
+               <Pyr.Form.Group name="last_name">
+                 <Pyr.Form.Label>Last Name</Pyr.Form.Label>
+                 <Pyr.Form.TextField placeholder= "Last Name"/>
+               </Pyr.Form.Group>
+               </Pyr.Grid.Col>
+             </div>
+ 
+             <Pyr.Grid.Col>
+               <Pyr.Form.Group name="email">
+                 <Pyr.Form.Label>Email</Pyr.Form.Label>
+                 <Pyr.Form.TextField placeholder= "Email"/>
+               </Pyr.Form.Group>
+             </Pyr.Grid.Col>
+ 
+             <Pyr.Grid.Col>
+               <Pyr.Form.Group name="password">
+                 <Pyr.Form.Label>Password</Pyr.Form.Label>
+                 <Pyr.Form.PasswordField />
+               </Pyr.Form.Group>
+             </Pyr.Grid.Col>
+            </Pyr.Grid.Col>
+          </Pyr.Grid.Row>
         </Pyr.Form.Form>
-
-        <div className="form-footer">
-          <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>Save</Pyr.Form.SubmitButton>
-        </div>
       </div>
     );
   }
@@ -140,8 +153,7 @@ class NewSheet extends Sheet.New {
 
 
   title() {
-    let me = this.user();
-    return me.first_name + " " + me.last_name;
+    return "My Profile";
   }
 }
 

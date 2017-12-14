@@ -35,7 +35,7 @@ class CompanyHeaderForm extends Component {
     console.log(this.props.company);
 
     return (
-      <div className="form-header-parent">
+      <div className="form-header-parent section">
         <Pyr.Form.Form
           model="Company"
           object={this.props.company}
@@ -86,7 +86,7 @@ class CompanyDetailsForm extends Component {
     let method = Pyr.Method.PUT;
 
     return (
-      <div className="form-details-parent">
+      <div className="form-details-parent section">
         <Pyr.Form.Form
           model="Company"
           object={this.props.company}
@@ -185,7 +185,7 @@ class CompanyLinksForm extends Component {
     console.log(this.props.company);
 
     return (
-      <div className="form-links-parent">
+      <div className="form-links-parent section">
         <Pyr.Form.Form
           model="Company"
           object={this.props.company}
@@ -416,7 +416,7 @@ class NewSheet extends Sheet.New {
   }
 
   title() {
-    return "Company";
+    return "Company Information";
   }
 
   message() {
