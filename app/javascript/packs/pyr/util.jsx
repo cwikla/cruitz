@@ -244,8 +244,8 @@ function getJSON(stuff) {
 
   url = url.toRemote();
 
-  //console.log("GETJSON: " + url);
-  //console.log(data);
+  console.log("GETJSON: " + url);
+  console.log(data);
 
   stuff = Object.assign({
     dataType: "json",
@@ -527,70 +527,41 @@ function convertUint8ArrayToBinaryString(u8Array) {
 	return b_str;
 }
 
-async function s3Upload(files) {
-  if (!files) {
-    return;
-  }
-
-  let waiters = [];
-  let upfiles = [];
-
-  for(let f of Array.from(files)) {
-    let fileName = f.name;
-    let ftype = f.type;
-    let flength = f.size;
-
- //   console.log(PURL("/upload_url"));
-  //  console.log("FTYPE: " + ftype);
-
-    let query = {
-      url : PURL("/upload_url"),
-      data : { "upload[name]" : fileName },
-    };
-
-    let result = await Util.getJSON(query);
-    let s3Url = result['url'];
-
-    let big = Object.assign({}, result, {file: f});
-
-    upfiles.push(big);
-
-    let api = Util.getJSON({
-        type: Method.PUT,
-        url: result['url'],
-        data: f,
-        dataType: null,
-        contentType: ftype,
-        mimeType: ftype,
-        processData: false,
-        cache: false,
-   
-/*   
-        beforeSend: function(xhr){
-          console.log("SETTING REQUEST HEADER: " + ftype);
-          console.log(xhr);
-        }
-*/
-  
-      }).done(function(retData, textState, jqXHR) {
-        console.log("SUCCESS FOR " + fileName);
-  
-      }).fail(function(jqXHR, textStatus, errorThrown) {
-        Util.ajaxError(jqXHR, textStatus, errorThrown);
-  
-      });
-    waiters.push(api);
-  }
-
-  await Promise.all(waiters).then(value => {
-    console.log("PROMISE COMPLETE");
-  }).catch(reason => {
-    console.log(reason); // FIXME
+function getSignedURL(file) {
+  return Util.getJSON({
+    url : PURL("/upload_url"),
+    data : { upload: { name : file.name } },
   });
+}
 
-  console.log("RETURNING upfiles");
-  console.log(upfiles);
-  return upfiles;
+function S3Put(file) {
+  console.log("S3");
+  console.log(file);
+
+  return getSignedURL(file).done((info, textStatus, jqXHR) => {
+    let fileName = file.name;
+    let ftype = file.type;
+    let flength = file.size;
+
+    let s3Info = info;
+
+    return Util.getJSON({
+      type: Method.PUT,
+      url: info['url'],
+      data: file,
+      dataType: null,
+      contentType: ftype,
+      mimeType: ftype,
+      processData: false,
+      cache: false,
+    }).done((result, textStatus, jqXHR) => {
+      console.log("S3PUT RETURNING");
+      console.log(s3Info);
+
+      return s3Info; // FROM getSignedURL
+
+    });
+  });
 }
 
 function isImageType(f) {
@@ -634,7 +605,7 @@ const Util = {
   scramble,
   getRandomInt,
   Method,
-  s3Upload,
+  S3Put,
   isImageType,
   isVideoType,
 };

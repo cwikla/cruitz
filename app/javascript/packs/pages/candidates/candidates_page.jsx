@@ -719,10 +719,10 @@ class CandidatesPage extends Page {
       context: me,
       loading: onLoading,
 
-    }).done(function(data, textStatus, jaXHR) {
+    }).done((data, textStatus, jaXHR) => {
         me.onSelect(data.candidate);
 
-    }).fail(function(jaXHR, textStatus, errorThrown) {
+    }).fail((jaXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);
     });
   }

@@ -59,45 +59,6 @@ class Form extends Component {
     }
   }
 
-  static async fileRequest(fileName) {
-    let query = {
-      url : Util.PURL("/post_url"),
-      data : { "s3[name]" : fileName },
-    };
-
-    console.log("QUERY");
-    console.log(query);
-
-    let result = await Util.getJSON(query);
-
-    Util.getJSON({
-      method: Util.Method.PUT,
-      url: result['url'],
-      data: new FileReader(new File(fileName))
-
-    }).done(function(retData, textState, jqXHR) {
-      console.log("SUCCESS FOR " + fileName);
-
-    }).fail(function(retData, textState, errorThrown) {
-      self.ajaxError(jqXHR, textStatus, errorThrown);
-    });
-
-    return json;
-  }
-
-  uploadFiles($form) {
-    console.log("CHECKING KIDS");
-    console.log($form);
-
-    $($form).find('[data-pyr-file]').each(function(f) {
-      let $me = $(this);
-      let value = $me.val();
-      let result = Form.fileRequest(value);
-      console.log(result);
-    });
-    console.log("CHECKING KIDS END");
-  }
-
   submit(e) {
     if (e) {
       e.preventDefault();
@@ -108,9 +69,6 @@ class Form extends Component {
     }
 
     let $item = $(this.form);
-
-    //this.uploadFiles($item);
-
 
     let data = $item.serialize();
 
@@ -593,7 +551,8 @@ class FileSelector extends Child {
   constructor(props) {
     super(props);
     this.state = {
-      fileInfos: [],
+      files: [],
+      infos: {},
       dragging: false,
       valid: true,
     };
@@ -612,10 +571,15 @@ class FileSelector extends Child {
 
   componentWillMount() {
     this.setState({
-      fileInfos: [],
+      files: [],
+      infos: {},
       dragging: false,
       valid: true,
     });
+  }
+
+  fhash(file) {
+    return (file.name + file.lastModified.toString());
   }
 
   //https://stackoverflow.com/questions/21339924/drop-event-not-firing-in-chrome
@@ -645,12 +609,12 @@ class FileSelector extends Child {
     console.log("IS VALID FILES");
     console.log(files);
 
-    for(f in Array.from(files)) {
+    Array.from(files).forEach((f) => {
       if (!Util.isImageType(f)) {
         console.log("BUMMER");
         return false;
       }
-    }
+    });
 
     return true;
   }
@@ -726,14 +690,31 @@ class FileSelector extends Child {
     return result;
   }
 
-  async addFiles(newFiles) {
+  setInfo(file, info) {
+    let fh = this.fhash(file);
+
+    let mini = {};
+    mini[fh] = info;
+
+    console.log("Setting URL: " + info);
+
+    this.setState({
+      infos : Object.assign({}, this.state.infos, mini)
+    });
+  }
+
+  getInfo(file) {
+    return this.state.infos[this.fhash(file)];
+  }
+
+  addFiles(newFiles) {
 
     this.setState({
       dragging: false,
       valid: true
     });
 
-    if (!newFiles) {
+    if (!newFiles || newFiles.length == 0) {
       return;
     }
 
@@ -744,24 +725,55 @@ class FileSelector extends Child {
 
     newFiles = this.pruneByType(newFiles);
 
-    if (newFiles.length == 0) {
+    if (!newFiles || newFiles.length == 0) {
       return;
     }
 
-    if (newFiles) {
-      let upfileInfos = await Util.s3Upload(newFiles);
-      let oldFileInfos = this.state.fileInfos || [];
+    let oldFiles = this.state.files || [];
 
-      if (!this.props.multiple) {
-        oldFileInfos = [];
-      }
-      oldFileInfos.concat(upfileInfos);
-
-      this.setState({
-        fileInfos : upfileInfos,
-        dragging: false,
-      });
+    if (!this.props.multiple) {
+      oldFiles = [];
     }
+
+    console.log("A");
+    console.log(oldFiles);
+    console.log(newFiles);
+
+    oldFiles = oldFiles.concat(newFiles);
+
+    console.log("B");
+    console.log(oldFiles);
+    console.log(newFiles);
+
+    this.setState({
+      files : oldFiles,
+      dragging: false,
+    });
+
+    console.log("NEWFILES");
+    console.log(oldFiles);
+
+    let me = this;
+    Array.from(newFiles).forEach((file) => {
+      console.log("FILE");
+      console.log(file);
+
+      me.setInfo(file, null);
+
+      Util.S3Put(file).done((info) => {
+        console.log("S3PUT RESULT");
+        console.log(info);
+
+        me.setInfo(file, info);
+
+      }).fail((jqXHR, textStatus, errorThrown) => {
+        Util.ajaxError(jqXHR, textStatus, errorThrown);
+
+      });
+    });
+
+    console.log("FILES NOW AT");
+    console.log(this.state.files);
   }
 
   click(e) {
@@ -769,17 +781,23 @@ class FileSelector extends Child {
   }
 
   renderHiddens() {
-    if (!this.state.fileInfos) {
+    if (!this.state.files) {
       return null;
     }
 
     console.log("FILE INFOS");
-    console.log(this.state.fileInfos);
+    console.log(this.state.files);
     console.log("*FILE INFOS");
 
-    let hiddens = this.state.fileInfos.map((file, pos) => {
+    let hiddens = this.state.files.map((file, pos) => {
+      let info = this.getInfo(file);
+
+      if (!info) {
+        return null; // NOT READY YET!
+      }
+
       return (
-        <input key={file.url_name} name={this.name()} type="hidden" value={file.url_name} data-pyr-file/>
+        <input key={this.fhash(file)} name={this.name()} type="hidden" value={info['url_name']} data-pyr-file/>
       );
     });
 
@@ -793,7 +811,7 @@ class FileSelector extends Child {
 
   renderDefault() {
     return (
-      <div>
+      <div className="flx-col">
         <UI.IconButton name="upload" />
         Click or Drag to Select File
       </div>
@@ -801,16 +819,18 @@ class FileSelector extends Child {
   }
 
   renderImage() {
-    if (!this.state.fileInfos || (this.state.fileInfos.length == 0)) {
+    if (!this.state.files || (this.state.files.length == 0)) {
       return this.renderDefault();
     }
 
-    let afile = this.state.fileInfos[0];
+    let file = this.state.files[0];
+    let info = this.getInfo(file);
+    let url = info ? info['url'] : null;
 
-    console.log("RENDERING IMAGE\n");
+    console.log("RENDERING IMAGE: " + info);
 
     return (
-      <UI.ImageFile file={afile.file} src={afile.url} {...this.props.image} />
+      <UI.ImageFile file={file} src={url} {...this.props.image} />
     );
   }
 
