@@ -70,9 +70,9 @@ class Header extends Component {
     //console.log(this.props.children);
     let restProps = Pyr.Util.propsRemove(this.props, ["itemCount", "url"]);
 
-    console.log("HEADER");
-    console.log(this.props.url);
-    console.log(this.props.url.toString().toLowerCase());
+    //console.log("HEADER");
+    //console.log(this.props.url);
+    //console.log(this.props.url.toString().toLowerCase());
 
     return (
       <Link to={this.props.url.toString().toLowerCase()}>

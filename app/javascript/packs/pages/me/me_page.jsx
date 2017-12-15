@@ -15,7 +15,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 import {
   USERS_URL,
-  NEW_ACTION,
+  EDIT_ACTION,
   DESTROY_SESSION_URL,
 } from '../const';
 
@@ -46,7 +46,7 @@ class MeForm extends Component {
          <Pyr.Grid.Row>
            <Pyr.Grid.Col className="col-2">
              <Pyr.Form.Group name="logo">
-               <Pyr.Form.FileSelector />
+               <Pyr.Form.FileSelector imageOnly/>
              </Pyr.Form.Group>
            </Pyr.Grid.Col>
  
@@ -88,7 +88,7 @@ class MeForm extends Component {
   }
 }
 
-class NewSheet extends Sheet.New {
+class EditSheet extends Sheet.Edit {
   getInitState(props) {
     return {
       open: false
@@ -140,7 +140,6 @@ class NewSheet extends Sheet.New {
   }
 
   renderForm() {
-
     return (
       <div className="me-index-header">
         <MeForm me={this.user()}/>
@@ -167,7 +166,7 @@ class MePage extends Page {
   }
 
   getAction() {
-    return NEW_ACTION;
+    return EDIT_ACTION;
   }
 
   loadSelected(unused, onLoading) {
@@ -176,11 +175,12 @@ class MePage extends Page {
 
   actionSheet(action) {
     return (
-      <NewSheet
+      <EditSheet
         {...this.props}
         selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
+        onLoadSelected={this.onLoadSelected}
       />
     );
     

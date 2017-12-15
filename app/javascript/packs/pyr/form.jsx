@@ -18,7 +18,8 @@ class Form extends Component {
   constructor(props) {
     super(props);
 
-    //alert("FORM " + props.object.id);
+    console.log("FORM OBJECT");
+    console.log(props);
 
     this.state = {
       isLoading: false,
@@ -26,10 +27,6 @@ class Form extends Component {
     };
 
     this.onSubmit = this.submitHandler.bind(this);
-  }
-
-  componentWillUnmount() {
-    //console.log("FORM WILL UNMOUNT");
   }
 
   getChildContext() {
@@ -389,7 +386,7 @@ class TextField extends Child {
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.value) {
-      console.log("Setting value to: " + nextProps.value);
+      //console.log("Setting value to: " + nextProps.value);
       this.setState({
         value: nextProps.value
       });
@@ -417,7 +414,7 @@ class TextField extends Child {
 
   textChange(e) {
     if ((e.keyCode == 13) && (this.props.onSubmit)) {
-      console.log(e);
+      //console.log(e);
       this.submit(e);
       return;
     }
@@ -567,6 +564,8 @@ class CheckBox extends Child {
   }
 
   modelChecked() {
+    //console.log("THIS MODELVALUE: " + this.modelValue());
+
     return this.modelValue() ? true : false;
   }
 
@@ -584,7 +583,7 @@ class CheckBox extends Child {
       <div className="form-checkbox flx-row">
         <input name={this.name()} type="hidden" value={false} />
         <input type="checkbox" {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onChange}/>
-        <span className="mt-auto mb-auto">{this.props.children}</span>
+        <span className="mt-auto mb-auto"><label>{this.props.children}</label></span>
       </div>
     );
   }
@@ -844,9 +843,11 @@ class FileSelector extends Child {
       clz.push("red");
     }
 
+    let rest = Util.propsRemove(this.props, ["imageOnly"]);
+
     return(
       <div id={this.htmlID()}
-        {...Util.propsMergeClassName(this.props, clz)}
+        {...Util.propsMergeClassName(rest, clz)}
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
         onDragEnter={this.onDragEnter}

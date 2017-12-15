@@ -182,6 +182,76 @@ function sheetID(name, action) {
   return idName;
 }
 
+
+class Form extends Base {
+
+  renderTitle() {
+    return (
+      <h3 className="mr-auto">{this.title()}</h3>
+    );
+  }
+
+
+  render() {
+    return (
+      <Pyr.UI.FullScreen>
+        <div className="title flx-col" >
+          { this.renderTitle() }
+        </div>
+        <div className="form-content flx-1">
+          { this.renderForm() }
+        </div>
+      </Pyr.UI.FullScreen>
+    );
+  }
+
+  renderOld() {
+
+    return (
+      <Pyr.UI.FullScreen>
+        { this.renderForm() }
+      </Pyr.UI.FullScreen>
+    );
+  }
+}
+
+
+class ModalForm extends Form {
+  constructor(...args) {
+    super(...args);
+
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
+    this.onClose();
+  }
+
+  renderTitle() {
+    return (
+      <h3 className="mr-auto">{this.title()}</h3>
+    );
+  }
+
+
+  renderInner() {
+    return (
+      <Modal onClose={this.onClose}>
+        { super.renderInner() }
+      </Modal>
+    );
+  }
+
+  render() {
+    if (!this.props.selected) {
+      return (
+          <Pyr.UI.Loading />
+      );
+    }
+    return this.render();
+  }
+}
+
 class Wizard extends Base {
   getInitState(...args) {
     return  {
@@ -345,7 +415,7 @@ class Show extends Base {
     );
   }
 
-  renderUnused() {
+  render() {
     return (
       <Pyr.UI.FullScreen>
         { super.render() }
@@ -353,49 +423,6 @@ class Show extends Base {
     );
   }
 
-}
-
-class Form extends Base {
-  renderForm() {
-    alert("Sheet:New If you are seeing this you need to implement renderForm!");
-  }
-
-  renderTitle() {
-    return null;
-  }
-
-  renderInner() {
-    return (
-      <div className="form-main">
-        <div className="title flx-col" >
-          { this.renderTitle() }
-        </div>
-        <div className="form-content flx-1">
-          { this.renderForm() }
-        </div>
-      </div>
-    );
-  }
-}
-
-class ModalForm extends Form {
-  constructor(...args) {
-    super(...args);
-
-    this.onSuccess = this.success.bind(this);
-  }
-
-  success(data, textStatus, jqXHR) {
-    this.onClose();
-  }
-
-  renderInner() {
-    return (
-      <Modal onClose={this.onClose}>
-        { super.renderInner() }
-      </Modal>
-    );
-  }
 }
 
 class SearchForm extends Form {
@@ -418,31 +445,32 @@ class SearchForm extends Form {
   }
 }
 
-class New extends ModalForm {
+class New extends Form {
 
   title() {
     return null;
   }
 
-  renderTitle() {
-    return (
-      <h3 className="mr-auto">{this.title()}</h3>
-    );
-  }
-
 }
 
-class Edit extends ModalForm {
-  title() {
-    return "Edit.Sheet title goes here";
+class Edit extends Form {
+
+  componentDidMount() {
+    if (!this.props.selected) {
+      console.log("GETTING SELECTED");
+      this.props.onLoadSelected(this.props.itemId, this.onLoading);
+    }
   }
 
-  renderTitle() {
-    return (
-      <h3 className="mr-auto">{this.title()}</h3>
-    );
-  }
+  render() {
+    if (!this.props.selected) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
 
+    return super.render();
+  }
 
 }
 

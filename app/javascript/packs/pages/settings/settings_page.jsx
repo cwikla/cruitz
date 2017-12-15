@@ -10,7 +10,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 import {
   SETTINGS_URL,
-  SHOW_ACTION
+  EDIT_ACTION
 } from '../const';
 
 class SettingsForm extends Component {
@@ -19,16 +19,18 @@ class SettingsForm extends Component {
     let key = "settings-form";
     let url = Pyr.URL(SETTINGS_URL);
 
-    console.log("SAVE BUTTON: " + this.props.saveButton);
-    console.log("SAVE URL: " + url);
-
     let method = Pyr.Method.PUT;
 
+    let settings = this.props.settings;
+
     return (
-      <div id="settings-form-parent" className="flx-col flx-1">
+      <div 
+        id="settings-form-parent" 
+        className="flx-col flx-1 section"
+      >
         <Pyr.Form.Form
           model="Setting"
-          object={this.props.settings}
+          object={settings}
           url={url}
           method={method}
           id="setting-form"
@@ -39,13 +41,6 @@ class SettingsForm extends Component {
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
         >
-
-          <div className="flx-row">
-            <Pyr.Form.Group name="logo">
-              <Pyr.Form.FileSelector imageOnly> Hello </Pyr.Form.FileSelector>
-            </Pyr.Form.Group>
-          </div>
-
           <div className="flx-row">
             <Pyr.Form.Group name="use_ignore_recruiters" className="">
               <Pyr.Form.CheckBox className="">Ignore recruiters with score under</Pyr.Form.CheckBox>
@@ -70,7 +65,10 @@ class SettingsForm extends Component {
             </Pyr.Form.Group>
             <Pyr.Form.Group name="reject_candidate_days" data-checkbox="use_reject_candidates">
               <Pyr.Form.TextField />
-            </Pyr.Form.Group> days of no response
+            </Pyr.Form.Group>
+            <Pyr.Form.Group>
+                <label className="detail">days of no response</label>
+            </Pyr.Form.Group>
           </div>
 
           <div className="flx-row">
@@ -85,7 +83,10 @@ class SettingsForm extends Component {
             </Pyr.Form.Group>
             <Pyr.Form.Group name="recruiter_limit" data-checkbox="use_recruiter_limit">
               <Pyr.Form.TextField />
-            </Pyr.Form.Group> candidates per day
+            </Pyr.Form.Group>
+            <Pyr.Form.Group>
+              <label className="detail">candidates per day</label>
+            </Pyr.Form.Group>
           </div>
 
           <div className="flx-row">
@@ -94,7 +95,10 @@ class SettingsForm extends Component {
             </Pyr.Form.Group>
             <Pyr.Form.Group name="agency_limit" data-checkbox="use_agency_limit">
               <Pyr.Form.TextField />
-            </Pyr.Form.Group> candidates per day
+            </Pyr.Form.Group>
+            <Pyr.Form.Group>
+              <label className="detail">candidates per day</label>
+            </Pyr.Form.Group>
           </div>
 
         </Pyr.Form.Form>
@@ -104,28 +108,17 @@ class SettingsForm extends Component {
   }
 }
 
-class ShowSheet extends Sheet.Show {
+class EditSheet extends Sheet.Edit {
 
-  renderHeader() {
-    console.log("RENDER HEADER");
-
-    return (
-      <div className="settings-index-header">
-          <div className="info p-1 d-flex flx-end">
-            <Pyr.Form.SubmitButton 
-              target={this.target}
-            ><Pyr.UI.Icon name="save"/> Save</Pyr.Form.SubmitButton>
-          </div>
-      </div>
-    );
+  title() {
+    return "Settings";
   }
 
 
-  renderItem(item) {
-    console.log(item);
+  renderForm() {
     return (
       <SettingsForm 
-        settings={item}
+        settings={this.props.selected}
         ref={(node) => this.target = node}
       />
     );
@@ -142,8 +135,7 @@ class SettingsPage extends Page {
   }
 
   getAction() {
-    console.log("SENDING BCK SHOW_ACTION");
-    return SHOW_ACTION;
+    return EDIT_ACTION;
   }
 
   loadSelected(unused, onLoading) {
@@ -163,15 +155,15 @@ class SettingsPage extends Page {
 
 
   actionSheet(action) {
-    console.log("SETTINGS ACTION SHEET");
     return (
-      <ShowSheet
+      <EditSheet
         {...this.props}
-        items={this.state.items}
-        selected={this.state.selected}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
+        onSelect={this.onSelect}
+        onAddItem={this.onAddItem}
         onLoadSelected={this.onLoadSelected}
+
+        selected={this.getSelected()}
+        loading={this.state.loading}
       />
     );
     

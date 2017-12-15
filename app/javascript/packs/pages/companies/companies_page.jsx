@@ -22,8 +22,7 @@ import {
   SEARCH_URL,
   COMPANY_URL,
 
-  NEW_ACTION,
-  SHOW_ACTION
+  EDIT_ACTION,
 } from '../const';
 
 class CompanyHeaderForm extends Component {
@@ -53,7 +52,7 @@ class CompanyHeaderForm extends Component {
         <Pyr.Grid.Row>
           <Pyr.Grid.Col className="col-2">
             <Pyr.Form.Group name="logo">
-              <Pyr.Form.FileSelector />
+              <Pyr.Form.FileSelector imageOnly/>
             </Pyr.Form.Group>
           </Pyr.Grid.Col>
 
@@ -388,7 +387,7 @@ class CompanyForm extends Component {
 }
 
 
-class NewSheet extends Sheet.New {
+class EditSheet extends Sheet.Edit {
   getInitState(props, context) {
     let st = super.getInitState(props, context);
     console.log("COMPANY?");
@@ -475,7 +474,7 @@ class CompaniesPage extends Page {
   }
 
   getAction() {
-    return NEW_ACTION;
+    return EDIT_ACTION;
   }
 
   loadSelected(unused, onLoading) {
@@ -484,11 +483,12 @@ class CompaniesPage extends Page {
 
   actionSheet(action) {
     return (
-      <NewSheet
+      <EditSheet
         {...this.props}
         selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
+        onLoadSelected={this.onLoadSelected}
       />
     );
 

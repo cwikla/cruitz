@@ -180,9 +180,9 @@ class URLObj {
       return this.parser.href;
     }
 
-    console.log("PURL toString");
-    console.log(this);
-    console.log(this.toPath());
+    //console.log("PURL toString");
+    //console.log(this);
+    //console.log(this.toPath());
 
     return this.toPath();
 
@@ -244,7 +244,7 @@ function getJSON(stuff) {
 
   url = url.toRemote();
 
-  console.log("GETJSON: " + url);
+  //console.log("GETJSON: " + url);
   //console.log(data);
 
   stuff = Object.assign({
@@ -270,8 +270,8 @@ function getJSON(stuff) {
 
   stuff.beforeSend = beforeSend;
 
-  console.log("STUFF");
-  console.log(stuff);
+  //console.log("STUFF");
+  //console.log(stuff);
 
   let ajx = $.ajax(
     stuff

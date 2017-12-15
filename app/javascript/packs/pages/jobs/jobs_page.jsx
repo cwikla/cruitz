@@ -184,7 +184,7 @@ class JobForm extends Component {
 
 
     return (
-      <div className="form-parent">
+      <div className="form-parent section">
         <Pyr.Form.Form
           model="Job"
           object={this.props.selected}

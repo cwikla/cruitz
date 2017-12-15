@@ -345,11 +345,16 @@ label {
   input[type="radio"] {
     height: 2.1rem;
     font-size: 1rem;
+    width: 1.5rem;
   }
 
   span {
     padding-left: 0.25rem;
   }
+}
+
+.form-label {
+  color: $primary_color;
 }
 
 .icon-btn:hover {
@@ -361,7 +366,7 @@ label {
 }
 
 .sheet .header {
-  border-bottom: 1px solid rgba(gray, 0.4);
+  b-border-bottom: 1px solid rgba(gray, 0.4);
 }
 
 .fullscreen {

@@ -130,6 +130,7 @@ class Page extends Pyr.UserReceiver {
         {...this.props} 
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
+        onLoadSelected ={this.onLoadSelected}
         loading={this.state.loading}
       />
     );
@@ -153,7 +154,9 @@ class Page extends Pyr.UserReceiver {
         {...this.props}
         item={item}
         onSelect={this.onSelect} 
-        onAddItems={this.onAddItems}
+        onAddItem={this.onAddItem}
+        onLoadSelected={this.onLoadSelected}
+
         loading={this.state.loading}
       />
     );
@@ -167,12 +170,12 @@ class Page extends Pyr.UserReceiver {
 ///// END ////
 
   setSelected(selected) {
-    //console.log("SELECTED " + JSON.stringify(selected));
+    console.log("SELECTED " + JSON.stringify(selected));
 
     this.setState({
       selected
     });
-    this.props.onSetAction(SHOW_ACTION);
+    //this.props.onSetAction(SHOW_ACTION);
   }
 
   getItemId() {
@@ -184,6 +187,10 @@ class Page extends Pyr.UserReceiver {
   }
 
   getSelected() {
+    if (this.state.selected) {
+      return this.state.selected;
+    }
+
     let sid = this.getItemId();
     return this.getItem(sid);
   }
@@ -196,8 +203,12 @@ class Page extends Pyr.UserReceiver {
     return null;
   }
 
+  defaultAction() {
+    return SHOW_ACTION;
+  }
+
   getAction() {
-    return this.props.action || SHOW_ACTION;
+    return this.props.action;
   }
 
   renderIndexSheet() {
@@ -255,11 +266,11 @@ class Page extends Pyr.UserReceiver {
     let cname = ClassNames("d-flex flx-1 page flx-col").push(this.props.page.toLowerCase());
 
     return (
-        <div className={cname}>
-          {this.renderHeader()}
-          {this.renderIndexSheet()}
-          {this.renderActionSheet()}
-        </div>
+      <div className={cname}>
+        {this.renderHeader()}
+        {this.renderIndexSheet()}
+        {this.renderActionSheet()}
+      </div>
     );
   }
 

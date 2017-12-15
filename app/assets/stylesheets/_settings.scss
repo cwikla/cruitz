@@ -1,18 +1,11 @@
 
 
 .page.settings {
-  .show .sheet {
-    .header {
-      border-bottom: 1px solid rgba(gray, 0.4);
-    }
-  
-    #settings-form-parent {
-      background-color: white;
-      padding: 3rem;
-  
-      form {
-        background-color: white;
-      }
+
+  label {
+    &.detail {
+      padding-left: 1.5rem;
+      margin-top: 0.5rem;
     }
   }
 }

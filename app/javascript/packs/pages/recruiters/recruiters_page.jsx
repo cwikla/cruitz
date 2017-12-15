@@ -119,7 +119,7 @@ class InviteForm extends Component {
     let method = Pyr.Method.POST;
 
     return (
-      <div className="form-parent">
+      <div className="form-parent section">
         <Pyr.Form.Form
           model="Invite"
           object={this.props.invite}
@@ -135,35 +135,45 @@ class InviteForm extends Component {
         >
      
           <div className="flx-row"> 
-            <Pyr.Form.Group name="first_name">
-              <Pyr.Form.Label>Name</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder= "First"/>
-            </Pyr.Form.Group>
-  
-            <Pyr.Form.Group name="last_name">
-              <Pyr.Form.Label>&nbsp;</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder= "Last"/>
-            </Pyr.Form.Group>
+            <Pyr.Grid.Col>
+              <Pyr.Form.Group name="first_name">
+                <Pyr.Form.Label>Name</Pyr.Form.Label>
+                <Pyr.Form.TextField placeholder= "First"/>
+              </Pyr.Form.Group>
+            </Pyr.Grid.Col>
+ 
+            <Pyr.Grid.Col> 
+              <Pyr.Form.Group name="last_name">
+                <Pyr.Form.Label>&nbsp;</Pyr.Form.Label>
+                <Pyr.Form.TextField placeholder= "Last"/>
+              </Pyr.Form.Group>
+            </Pyr.Grid.Col>
           </div>
-      
-          <Pyr.Form.Group name="email">
-            <Pyr.Form.Label>Email</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Email"/>
-          </Pyr.Form.Group>
+     
+          <Pyr.Grid.Col> 
+            <Pyr.Form.Group name="email">
+              <Pyr.Form.Label>Email</Pyr.Form.Label>
+              <Pyr.Form.TextField placeholder="Email"/>
+            </Pyr.Form.Group>
+          </Pyr.Grid.Col>
 
-          <Pyr.Form.Group name="use_default">
-            <Pyr.Form.CheckBox value="1" onChange={this.onHandleChange} > Default Introduction</Pyr.Form.CheckBox>
-          </Pyr.Form.Group>
+          <Pyr.Grid.Col>
+            <Pyr.Form.Group name="use_default">
+              <Pyr.Form.CheckBox value="1" onChange={this.onHandleChange} > Default Introduction</Pyr.Form.CheckBox>
+            </Pyr.Form.Group>
+          </Pyr.Grid.Col>
 
-          <Pyr.Form.Group name="body">
-            <Pyr.Form.Label>Introduction</Pyr.Form.Label>
-            <Pyr.Form.TextArea 
-              rows="10" 
-              id="body" 
-              ref={node => this.body = node} 
-              onChange={this.onTextChange}
-            />
-          </Pyr.Form.Group>
+          <Pyr.Grid.Col>
+            <Pyr.Form.Group name="body">
+              <Pyr.Form.Label>Introduction</Pyr.Form.Label>
+              <Pyr.Form.TextArea 
+                rows="10" 
+                id="body" 
+                ref={node => this.body = node} 
+                onChange={this.onTextChange}
+              />
+            </Pyr.Form.Group>
+          </Pyr.Grid.Col>
         </Pyr.Form.Form>
 
       <div className="form-footer">
