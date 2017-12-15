@@ -293,11 +293,11 @@ class Dashboard extends Pyr.UserReceiver {
       context: this,
       loading: this.onLoading,
 
-    }).done(function(data, textStatus, jaXHR) {
+    }).done((data, textStatus, jqXHR) => {
         this.onJobIndex(data.jobs);
 
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
 
     });
   }

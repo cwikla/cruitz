@@ -200,12 +200,12 @@ class NewSheet extends Sheet.New {
       url: url,
       context: this,
 
-    }).done((data, textStatus, jaXHR) => {
+    }).done((data, textStatus, jqXHR) => {
       this.setState({
         invite: data.invite
       });
-    }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
 
     });
   }
@@ -306,11 +306,11 @@ class RecruitersPage extends Page {
       url: this.props.url,
       context: this,
       loading: onLoading,
-    }).done(function(data, textStatus, jaXHR) {
+    }).done((data, textStatus, jqXHR) => {
         this.onSetItems(data.recruiters || []);
 
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

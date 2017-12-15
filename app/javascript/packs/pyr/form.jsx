@@ -88,16 +88,16 @@ class Form extends Component {
     }).always(function() {
       this.postSubmit();
 
-    }).done(function(retData, textStatus, jqXHR) {
+    }).done((retData, textStatus, jqXHR) => {
       if (self.props.reset) {
         //$("#" + $(self.form).attr("id")).trigger("reset");
         $(this.form).trigger("reset");
         //console.log("TRIGGER");
       }
-    }).done(function(retData, textStatus, jqXHR) {
+    }).done((retData, textStatus, jqXHR) => {
       self.ajaxSuccess(retData, textStatus, jqXHR);
 
-    }).fail(function(jqXHR, textStatus, errorThrown) {
+    }).fail((jqXHR, textStatus, errorThrown) => {
       self.ajaxError(jqXHR, textStatus, errorThrown);
 
 

@@ -144,12 +144,12 @@ class SettingsPage extends Page {
       context: this,
       loading: onLoading,
 
-    }).done(function(data, textStatus, jaXHR) {
+    }).done((data, textStatus, jqXHR) => {
         this.onSelect(data.setting);
 
-    }).fail(function(jaXHR, textStatus, errorThrown) {
+    }).fail((jqXHR, textStatus, errorThrown) => {
 
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

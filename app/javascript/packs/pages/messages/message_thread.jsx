@@ -229,11 +229,11 @@ class MessageThread extends Pyr.UserReceiver {
       url: url,
       context: self,
       loading: self.onLoading
-    }).done(function(data, textStatus, jaXHR) {
+    }).done((data, textStatus, jqXHR) => {
       self.setThread(data.thread);
 
-    }).fail(function(jaXHR, textStatus, errorThrown) {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
