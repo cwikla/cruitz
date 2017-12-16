@@ -5,20 +5,20 @@
       {
         "modules": false,
         "targets": {
-          "node": "current"
-        }
+          "browsers": "> 1%",
+          "uglify": true
+        },
+        "useBuiltIns": true
       }
     ],
     "es2015",
     "react"
   ],
-
   "plugins": [
-    "transform-es2015-shorthand-properties",
     "syntax-dynamic-import",
-    [
+    [ 
       "transform-class-properties",
-      {
+      { 
         "spec": true
       }
     ]
