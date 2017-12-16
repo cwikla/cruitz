@@ -415,7 +415,7 @@ class Show extends Base {
     );
   }
 
-  render() {
+  renderNone() {
     return (
       <Pyr.UI.FullScreen>
         { super.render() }
