@@ -13,6 +13,7 @@
   ],
 
   "plugins": [
+    "transform-es2015-shorthand-properties",
     "syntax-dynamic-import",
     [
       "transform-class-properties",
