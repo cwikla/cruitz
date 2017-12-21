@@ -33,7 +33,7 @@ import {
 function methodToName(method) {
   switch (method) {
     case Pyr.Method.PUT:
-      return "Update";
+      return "Save";
       break
 
     default:
@@ -251,20 +251,35 @@ class JobForm extends Component {
 
 class EditSheet extends Sheet.Edit {
   success(data, textStatus, jqXHR) {
-    this.props.onJobUpdate(data.job);
+    this.props.onJobCreate(data.job);
+    super.success(data, textStatus, jqXHR);
+    this.context.setNotice("Job Saved");
+  }
+
+  title() {
+    return "Edit Job";
   }
 
   renderForm() {
-    //alert("JOB EDIT " + this.props.selected.id);
     return (
-      <JobForm 
-        onPreSubmit={this.onPreSubmit} 
-        onPostSubmit={this.onPostSubmit} 
-        job={this.props.selected} 
+      <JobForm
+        selected={this.props.selected}
+        onPreSubmit={this.onPreSubmit}
+        onPostSubmit={this.onPostSubmit}
         onSuccess={this.onSuccess}
-        method={Pyr.Method.PUT} 
-        isLoading={this.state.isLoading}/>
+        method={Pyr.Method.PUT}
+      />
     );
+  }
+
+  render() {
+    if (!this.user().company || !this.user().company.name) {
+      return (
+        <Redirect to="/company/new" />
+      );
+    }
+
+    return super.render();
   }
 }
 
@@ -449,6 +464,12 @@ class JobsPage extends Page {
   }
 
   actionSheet(action) {
+    action = action || "Show";
+
+    if (action.toLowerCase() == "show") {
+      action = 'Edit';
+    }
+
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
