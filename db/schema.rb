@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129232422) do
+ActiveRecord::Schema.define(version: 20171220011940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -241,6 +241,21 @@ ActiveRecord::Schema.define(version: 20171129232422) do
     t.integer "agency_limit", null: false
     t.index ["user_id"], name: "index_settings_on_user_id", unique: true
     t.index ["uuid"], name: "index_settings_on_uuid", unique: true
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.string "bucket_name", null: false
+    t.string "key", null: false
+    t.string "file_name", null: false
+    t.string "path", null: false
+    t.string "full_name", null: false
+    t.string "content_type", null: false
+    t.string "url", null: false
+    t.string "sub_type"
+    t.index ["user_id", "key", "url"], name: "index_uploads_on_user_id_and_key_and_url"
   end
 
   create_table "users", force: :cascade do |t|

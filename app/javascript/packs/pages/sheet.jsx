@@ -415,14 +415,17 @@ class Show extends Base {
     );
   }
 
-  renderNone() {
+
+}
+
+class ShowFull extends Show {
+  render() {
     return (
       <Pyr.UI.FullScreen>
         { super.render() }
       </Pyr.UI.FullScreen>
     );
   }
-
 }
 
 class SearchForm extends Form {
@@ -482,6 +485,7 @@ const Sheet = {
   Item,
   Index,
   Show,
+  ShowFull,
   New, 
   Edit,
   Form,

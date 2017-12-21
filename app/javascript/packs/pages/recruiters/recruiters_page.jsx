@@ -286,7 +286,7 @@ class IndexSheet extends Sheet.Index {
 
 }
 
-class ShowSheet extends Sheet.Show {
+class ShowSheet extends Sheet.ShowFull {
   key(a) {
     return RecruitersPage.key(a)
   }

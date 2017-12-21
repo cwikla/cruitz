@@ -2,9 +2,21 @@
 .page.candidates {
 
   .show {
+    .content {
+      padding: 0;
+      .inner {
+        padding: 2.5rem;
+        .col.left {
+          padding: 2.5rem;
+          background-color: white;
+          border: 1px solid black;
+        }
+      }
+    }
+
     .sheet {
       .header {
-          border-bottom: 1px solid rgba(gray, 0.4);
+          border-bottom: 1px solid black;
       }
   
       .scroll.inner {
@@ -13,7 +25,7 @@
   
       .candidate-item {
         .actions {
-          border-bottom: 1px solid rgba(gray, 0.4);
+          border-bottom: 1px solid black;
           margin-bottom: 1rem;
   
         }
@@ -32,7 +44,7 @@
         .cv-item {
           padding: 1rem;
           background-color: white;
-          border: 1px solid rgba(gray, 0.4);
+          border: 1px solid black;
           border-radius: 10px;
 
           .cv-section {
@@ -54,7 +66,7 @@
   
     .candidate-item {
       .recruiter {
-        border-left: 1px solid rgba(gray, 0.4);
+        border-left: 1px solid black;
         border-right: 0;
       }
     }
@@ -70,7 +82,7 @@
   .cv-label {
     font-size: 1.2rem;
     padding-bottom: 0.25rem;
-    border-bottom: 1px solid rgba(gray, 0.4);
+    border-bottom: 1px solid black;
     margin-bottom: 0.25rem;
   }
   

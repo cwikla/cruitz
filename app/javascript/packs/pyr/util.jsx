@@ -538,23 +538,26 @@ function S3Put(file) {
   console.log("S3");
   console.log(file);
 
-  return getSignedURL(file).done((info, textStatus, jqXHR) => {
+  return getSignedURL(file).then((info, textStatus, jqXHR) => {
     let fileName = file.name;
     let ftype = file.type;
     let flength = file.size;
 
-    let s3Info = info;
+    console.log("************ INFO");
+    console.log(info);
+
+    let s3Info = info.upload;
 
     return Util.getJSON({
       type: Method.PUT,
-      url: info['url'],
+      url: s3Info['url'],
       data: file,
       dataType: null,
       contentType: ftype,
       mimeType: ftype,
       processData: false,
       cache: false,
-    }).done((result, textStatus, jqXHR) => {
+    }).then((result, textStatus, jqXHR) => {
       console.log("S3PUT RETURNING");
       console.log(s3Info);
 

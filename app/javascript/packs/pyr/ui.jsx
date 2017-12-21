@@ -657,6 +657,10 @@ class FullScreen extends Component {
     }
   }
 
+  renderHeader() {
+    return null;
+  }
+
   renderInner() {
     return (
       <div 
@@ -673,6 +677,7 @@ class FullScreen extends Component {
               ><IconButton name="arrow-left">Back</IconButton></BackButton>
           </div>
         </div>
+        {  this.renderHeader() }
         <div className="content">
           {this.props.children}
         </div>

@@ -411,19 +411,13 @@ class CandidateCVItem extends Component {
         <Education education={candidate.education} />
         <Pyr.UI.Label className="cv-label">Skills</Pyr.UI.Label>
         <Skills skills={candidate.skills} />
-        <Pyr.UI.Label className="cv-label">Messages</Pyr.UI.Label>
-        <RecruiterMessage 
-          className=""
-          job={job}
-          candidate={candidate} 
-          onSetItem={this.props.onSetItem}
-        />
+        <Pyr.UI.Label className="cv-label">Files</Pyr.UI.Label>
       </div>
     );
   }
 }
 
-class ShowSheet extends Sheet.Show {
+class ShowSheet extends Sheet.ShowFull {
   constructor(props) {
     super(props);
     this.state = {
@@ -571,7 +565,7 @@ class ShowSheet extends Sheet.Show {
     }
 
     return (
-      <Pyr.Grid.Row className="candidate-item">
+      <Pyr.Grid.Row className="item flx-1">
         <Pyr.Grid.Col className="flx-col left">
           <Pyr.UI.Scroll>
             <CandidateCVItem 
@@ -586,6 +580,25 @@ class ShowSheet extends Sheet.Show {
           <RecruiterBlurb recruiter={recruiter}/>
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
+    );
+  
+  }
+
+  renderUnused() {
+    return (
+    <div>
+      <Pyr.Grid.Row className="flx-1 high">
+        <Pyr.Grid.Col>
+          <Pyr.UI.Label className="cv-label">Messages</Pyr.UI.Label>
+          <RecruiterMessage 
+            className=""
+            job={this.state.job}
+            candidate={candidate} 
+            onSetItem={this.props.onSetItem}
+          />
+        </Pyr.Grid.Col>
+      </Pyr.Grid.Row>
+      </div>
     );
   }
 }

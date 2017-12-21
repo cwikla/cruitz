@@ -22,6 +22,8 @@ class User < ApplicationRecord
 
   cached_has_one :company
 
+  cached_has_many :uploads
+
   before_create :on_before_create
   after_create :on_after_create
 

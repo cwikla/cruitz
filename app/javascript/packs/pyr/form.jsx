@@ -796,8 +796,11 @@ class FileSelector extends Child {
         return null; // NOT READY YET!
       }
 
+      console.log("THE INFO");
+      console.log(info);
+
       return (
-        <input key={this.fhash(file)} name={this.name()} type="hidden" value={info['url_name']} data-pyr-file/>
+        <input key={this.fhash(file)} name={this.name()} type="hidden" value={info['full_name']} data-pyr-file/>
       );
     });
 
