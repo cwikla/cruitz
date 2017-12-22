@@ -34,18 +34,23 @@ class Message < ApplicationRecord
     )
   end
 
-  def thread_last_id_cached(clear=false)
+  def thread_last_cached(clear=false)
     return self if self.root_message_id.nil?
 
     key = "tlast_#{self.root_message_id}"
     cache_fetch(key, force: clear) {
-      obj = messages.where("root_message_id = ? or id = ?", self.root_message_id, self.root_message_id).order("-id").first
-      obj ? obj.id : id
+      Message.where("root_message_id = ? or id = ?", self.root_message_id, self.root_message_id).order("-id").first
     }
   end
 
   def thread_last
-    @the_thread_last ||= thread_last_id_cached
+    @the_thread_last ||= thread_last_cached
+  end
+
+  def self.for(user, mid)
+    message = self.find(mid)
+    return nil if message.user_id != user.id && message.from_user_id != user.id
+    return message.thread_last
   end
 
   def thread_ids_cached(clear=false)
