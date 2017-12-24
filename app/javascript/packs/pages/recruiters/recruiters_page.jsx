@@ -20,7 +20,8 @@ import Page from './../page';
 import Sheet from './../sheet';
 import {
   UserAvatar,
-  UserScore
+  UserScore,
+  Stars
 } from '../../util/user';
 
 import {
@@ -32,21 +33,22 @@ import {
   NEW_ACTION
 } from '../const';
 
-class RecruiterItem extends Component {
+class ReviewItem extends Component {
   render() {
-    let recruiter = this.props.recruiter;
+    let review = this.props.review;
 
     return (
-      <div id={"recruiter-item-" + recruiter.id} className="recruiter-item row-stretch flx-row">
-        <div className="score col-md-1 col-sm-2 blue">
-          <UserScore score={recruiter.id} />
-        </div>
-        <div className="icon hidden-md-down col-md-1 red">
-          <UserAvatar userId={recruiter.id} />
-        </div>
+      <div key={review.id} className="review">
+        <div><Stars rating={review.score} /></div>
+        <div><Pyr.UI.MagicDate date={review.created_at} /></div>
+        <div>{review.from_user.first_name}</div>
+        <div>{review.description}</div>
       </div>
     );
   }
+}
+
+class RecruiterItem extends Component {
 
   render() {
     let recruiter = this.props.recruiter;
@@ -72,14 +74,15 @@ class RecruiterItem extends Component {
             name={recruiter.first_name}
             small
           />
+          <Stars rating={recruiter.score} />
         </Pyr.Grid.Column>
         <Pyr.Grid.Column className="item-content">
-          <div className="info col-md-5 col-sm-5">
+          <div className="info">
             <div>{recruiter.first_name}</div>
             <div>FakeCompany Placeholder</div>
             <div>Description goes here</div>
           </div>
-          <div className="stats col-5">
+          <div className="stats">
             <div>22 successful placements</div>
             <div>Last Active: 3/3/2017</div>
             <div>27 Reviews</div>
@@ -91,6 +94,69 @@ class RecruiterItem extends Component {
 
 }
 
+
+class FullRecruiterItem extends Pyr.NetworkComponent {
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      reviews: []
+    };
+  }
+
+  setReviews(reviews) {
+    this.setState({
+      reviews
+    });
+  }
+
+  getReviews() {
+    let url = Pyr.URL(RECRUITERS_URL).push(this.props.recruiter.id).set("reviews", "1");
+
+    console.log("REVIEWS URL");
+    console.log(url);
+
+    this.getJSON({
+      url: url,
+
+    }).done((data, textStatus, jqXHR) => {
+      this.setReviews(data.recruiter.reviews);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+
+    });
+  }
+
+  componentWillMount() {
+    super.componentWillMount();
+    this.getReviews();
+  }
+
+  renderReviews() {
+    if (!this.state.reviews || this.state.reviews.length == 0) {
+      return null;
+    }
+
+    return this.state.reviews.map((review) => {
+      return (
+        <ReviewItem key={review.id} review={review} />
+      );
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <RecruiterItem recruiter={this.props.recruiter} />
+  
+        <div className="reviews">
+          {this.renderReviews()}
+        </div>
+      </div>
+    );
+  }
+}
 
 class InviteForm extends Component {
   constructor(props) {
@@ -292,7 +358,7 @@ class ShowSheet extends Sheet.ShowFull {
   }
 
   renderItem() {
-    return ( <RecruiterItem recruiter={this.props.selected}/> );
+    return ( <FullRecruiterItem recruiter={this.props.selected} needReviews/> );
   }
 }
 

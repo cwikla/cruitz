@@ -7,6 +7,8 @@ class Message < ApplicationRecord
   cached_belongs_to :root_message, :class_name => 'Message'
   cached_belongs_to :parent_message, :class_name => 'Message'
 
+  cache_notify :user
+
   before_create :on_before_create
 
   validates :user_id, presence: true

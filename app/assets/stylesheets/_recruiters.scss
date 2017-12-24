@@ -33,18 +33,14 @@
   }
   
   .show .sheet {
-    .col, .row {
-      margin-left: 0;
-      margin-right: 0;
-      padding-left: 0;
-      padding-right: 0;
+    background-color: $light_gray_color;
+
+    .review {
+      padding: 1.5rem;
+      background-color: white;
+      border: 1px solid $light_gray_color;
     }
   
-    .recruiter-thread {
-      //border-width: 4px;
-      //border-color: black;
-      //border-style: solid;
-    }
   
     .user-avatar {
       padding-left: 1rem;

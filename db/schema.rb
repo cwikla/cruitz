@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171220011940) do
+ActiveRecord::Schema.define(version: 20171223231034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,6 +207,18 @@ ActiveRecord::Schema.define(version: 20171220011940) do
     t.integer "user_id", null: false
     t.integer "recruiter_id", null: false
     t.index ["user_id", "recruiter_id"], name: "index_ratings_on_user_id_and_recruiter_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "user_id", null: false
+    t.integer "from_user_id", null: false
+    t.integer "score", default: 0, null: false
+    t.text "description"
+    t.index ["from_user_id", "score"], name: "index_reviews_on_from_user_id_and_score"
+    t.index ["user_id", "score"], name: "index_reviews_on_user_id_and_score"
   end
 
   create_table "sessions", force: :cascade do |t|

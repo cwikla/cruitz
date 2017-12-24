@@ -24,6 +24,9 @@ class User < ApplicationRecord
 
   cached_has_many :uploads
 
+  cached_has_many :reviews
+  cached_has_many :sent_reviews, class_name: "Review", foreign_key: :from_user_id
+
   before_create :on_before_create
   after_create :on_after_create
 
@@ -46,6 +49,11 @@ class User < ApplicationRecord
     u.candidates_uncache
     u.candidate_heads_uncache
     u.recruiters_uncache
+  end
+
+  def self.after_cached_review(review)
+    u = User.new(:id => review.user_id)
+    u.score_cached(true)
   end
 
   def self.after_cached_recruiter(recruiter)
@@ -152,6 +160,17 @@ class User < ApplicationRecord
 
   def jwt_payload
     {:uuid => self.uuid}
+  end
+
+  def score_cached(clear=false)
+    key = 'scr'
+    cache_fetch(key, delete: clear) {
+      reviews.average(:score) || 0
+    }
+  end
+
+  def score
+    score_cached
   end
 
   def after_cache
