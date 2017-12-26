@@ -1,4 +1,7 @@
 .page.messages {
+  .sheet.thread {
+    background-color: white;
+  }
 
   .index .sheet {
     .message-item {
@@ -22,8 +25,9 @@
     }
 
     .message-header {
-      color: white;
-      background-color: $secondary_navbar_background_color;
+      border: 1px solid black;
+      background-color: white;
+      b-background-color: $secondary_navbar_background_color;
   
       .title {
         padding: 2rem;

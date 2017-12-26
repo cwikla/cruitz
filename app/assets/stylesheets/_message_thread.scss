@@ -27,13 +27,13 @@
        border-radius: 20px;
     }
   
-    &.mine {
+    &.yours {
       .item-content {
         background-color: lighten($primary_light_color, 0.5);
       }
       padding-right: #{$avatar_width + 2}rem;
     }
-    &.recruiter {
+    &.mine {
       .item-content {
         background-color: lighten($secondary_light_color, 0.5);
       }
@@ -69,10 +69,10 @@
   
 @include media-breakpoint-down(xs) {
   .action.show .sheet {
-    .thread-item.mine {
+    .thread-item.yours {
       padding-right: #{0.5}rem;
     }
-    .thread-item.recruiter {
+    .thread-item.mine {
       padding-right: #{0.5}rem;
     }
   }
@@ -80,10 +80,10 @@
 
 @include media-breakpoint-down(sm) {
   .action.show .sheet {
-    .thread-item.mine {
+    .thread-item.yours {
       padding-right: #{1.0}rem;
     }
-    .thread-item.recruiter {
+    .thread-item.mine {
       padding-left: #{1.0}rem;
     }
   }

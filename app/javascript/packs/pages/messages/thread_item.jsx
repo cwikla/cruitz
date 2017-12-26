@@ -31,23 +31,24 @@ class ThreadItem extends Sheet.Item {
     let job = this.props.job;
 
     let mine = message.mine;
-    let ownerClass = (mine ? "mine" : "recruiter");
+    let ownerClass = (mine ? "mine" : "yours");
 
     let id = THREAD_ID(message);
     //console.log("RENDER THREADID: " + id);
+
     let allClass = ClassNames("thread-item", ownerClass);
-    if (!message.mine && !message.read_at) {
+    if (!mine && !message.read_at) {
       allClass.push("unread");
     }
     if (!message.root_message_id) {
       allClass.push("root");
     }
 
-    let leftAvatar = mine ? this.renderAvatar(message) : null;
-    let rightAvatar = mine ? null : this.renderAvatar(message);
+    let leftAvatar = !mine ? this.renderAvatar(message) : null;
+    let rightAvatar = !mine ? null : this.renderAvatar(message);
 
     let justify = ClassNames("flx-row flx-1");
-    if (!mine) {
+    if (mine) {
       justify.push("justify-content-end");
     }
 
