@@ -11,7 +11,7 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 import MessageThread from '../messages/message_thread';
-import RecruiterBlurb from '../shared/recruiter_blurb';
+import Recruiter from '../shared/recruiter';
 
 import {
   UserAvatar,
@@ -577,7 +577,7 @@ class ShowSheet extends Sheet.ShowFull {
  
         </Pyr.Grid.Col>
         <Pyr.Grid.Col className="col-3 right">
-          <RecruiterBlurb recruiter={recruiter}/>
+          <Recruiter.Blurb recruiter={recruiter}/>
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );

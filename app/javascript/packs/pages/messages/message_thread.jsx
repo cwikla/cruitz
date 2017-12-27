@@ -26,6 +26,12 @@ const MessageThreadIndexHeader = (props) => (
 );
 
 
+const MessageThreadHeaderOne = (props) => (
+  <div className={ClassNames("message-header").push(props.className)}>
+      <div className="align-self-center title">{props.job.title}</div>
+  </div>
+);
+
 const MessageThreadHeader = (props) => (
   <div className={ClassNames("message-header").push(props.className)}>
       <div className="align-self-center title">{props.job.title}</div>

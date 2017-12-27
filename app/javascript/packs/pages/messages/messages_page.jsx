@@ -27,7 +27,7 @@ import {
   UserAvatar
 } from '../../util/user';
 
-import RecruiterBlurb from '../shared/recruiter_blurb';
+import Recruiter from '../shared/recruiter';
 
 import ThreadItem, { 
   THREAD_ID 
@@ -153,6 +153,10 @@ class ShowSheet extends Sheet.Show {
     let message = item.message;
 
     return (
+      <Recruiter.Header className="z-depth-1" recruiter={getRecruiter(this.user(), message)} />
+    );
+
+    return (
         <MessageThreadHeader
           message={message}
           job={this.props.jobMap[message.job_id]}
@@ -174,7 +178,7 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <Pyr.Grid.Row>
-        <Pyr.Grid.Col className="col-9 flx-col left">
+        <Pyr.Grid.Col className="flx-col">
         <div className="d-flex flx-col">
           <MessageRender
             message={message}
@@ -185,9 +189,6 @@ class ShowSheet extends Sheet.Show {
             onAddItem={this.props.onAddItem}
           />
         </div>
-        </Pyr.Grid.Col>
-        <Pyr.Grid.Col className="right">
-        <RecruiterBlurb className="" recruiter={getRecruiter(this.user(), message)} />
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );

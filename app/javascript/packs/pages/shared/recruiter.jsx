@@ -23,8 +23,7 @@ import {
 } from '../const';
 
 
-
-class RecruiterBlurb extends Component {
+class Blurb extends Component {
   render() {
     let rest = Pyr.Util.propsRemove(this.props, "recruiter");
     let recruiter = this.props.recruiter;
@@ -52,4 +51,36 @@ class RecruiterBlurb extends Component {
   }
 }
 
-export default RecruiterBlurb;
+class Header extends Component {
+  render() {
+    let rest = Pyr.Util.propsRemove(this.props, "recruiter");
+    let recruiter = this.props.recruiter;
+
+    return (
+      <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-header flx-row")} >
+        <div className="flx-col flx-align-center">
+          <UserAvatar
+            userId={recruiter.id}
+            name={recruiter.first_name}
+          />
+          <Stars rating={3.7}/>
+        </div>
+        <div className="flx-col">
+          <div className="rate">64% acceptance rate</div>
+          <div className="company">Awesome Recruiting, Inc</div>
+          <div className="location">San Francisco, CA</div>
+          <div className="blurb">I specialize in recruiting software engineers
+          from top 10 schools.  I have worked with Uber, Twitter,
+          BobCo and SallyCo.</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+const Recruiter = {
+  Blurb,
+  Header,
+}
+
+export default Recruiter;
