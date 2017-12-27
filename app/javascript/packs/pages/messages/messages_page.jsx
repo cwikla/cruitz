@@ -25,7 +25,7 @@ import Sheet from '../sheet';
 
 import {
   UserAvatar
-} from '../../util/user';
+} from '../shared/user';
 
 import Recruiter from '../shared/recruiter';
 
@@ -140,7 +140,7 @@ class IndexSheet extends Sheet.Index {
 }
 
 
-class ShowSheet extends Sheet.Show {
+class ShowSheet extends Sheet.ShowFull {
   constructor(props) {
     super(props);
   }
@@ -153,7 +153,7 @@ class ShowSheet extends Sheet.Show {
     let message = item.message;
 
     return (
-      <Recruiter.Header className="z-depth-1" recruiter={getRecruiter(this.user(), message)} />
+      <Recruiter.Header className="" recruiter={getRecruiter(this.user(), message)} />
     );
 
     return (
@@ -177,20 +177,16 @@ class ShowSheet extends Sheet.Show {
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
     return (
-      <Pyr.Grid.Row>
-        <Pyr.Grid.Col className="flx-col">
-        <div className="d-flex flx-col">
-          <MessageRender
-            message={message}
-            job={this.props.jobMap[message.job_id]}
-            onBack={this.onBack}
-            url={Pyr.URL(MESSAGES_URL)}
-            onSetItems={this.props.onSetItems}
-            onAddItem={this.props.onAddItem}
-          />
-        </div>
-        </Pyr.Grid.Col>
-      </Pyr.Grid.Row>
+      <div className="d-flex flx-col p-t-2">
+        <MessageRender
+          message={message}
+          job={this.props.jobMap[message.job_id]}
+          onBack={this.onBack}
+          url={Pyr.URL(MESSAGES_URL)}
+          onSetItems={this.props.onSetItems}
+          onAddItem={this.props.onAddItem}
+        />
+      </div>
     );
   }
 

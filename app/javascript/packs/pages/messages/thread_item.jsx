@@ -10,7 +10,7 @@ const ClassNames = Pyr.ClassNames;
 import Sheet from '../sheet';
 import {
   UserAvatar 
-} from '../../util/user';
+} from '../shared/user';
 
 function THREAD_ID(message) {
   return "thread-item-" + message.id;
@@ -22,6 +22,7 @@ class ThreadItem extends Sheet.Item {
       <UserAvatar 
         userId={message.from_user.id}
         name={message.from_user.first_name}
+        small={true}
       />
     );
   }

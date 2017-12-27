@@ -664,7 +664,7 @@ class FullScreen extends Component {
   renderInner() {
     return (
       <div 
-        className={ClassNames("fullscreen").push(this.props.className)}
+        className={ClassNames("fullscreen flx-col flx-1").push(this.props.className)}
         ref={(node) => this.me = node }
       >
         <div 
@@ -678,7 +678,7 @@ class FullScreen extends Component {
           </div>
         </div>
         {  this.renderHeader() }
-        <div className="content">
+        <div className="content flx-col flx-1">
           {this.props.children}
         </div>
       </div>

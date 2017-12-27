@@ -22,7 +22,7 @@ import {
   UserAvatar,
   UserScore,
   Stars
-} from '../../util/user';
+} from '../shared/user';
 
 import {
   RECRUITERS_URL,

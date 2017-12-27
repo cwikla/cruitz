@@ -409,7 +409,7 @@ class Show extends Base {
 
     // hmm was just a div
     return (
-      <Pyr.UI.Scroll className="inner flx-col flx-1"> 
+      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll"> 
         {this.renderItem(this.props.selected, false) }
       </Pyr.UI.Scroll>
     );

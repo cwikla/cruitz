@@ -2,7 +2,7 @@
 .page.recruiters {
   .index .sheet {
     .header {
-      border-bottom: 1px solid rgba(gray, 0.4);
+      border-bottom: 1px solid $border_color;
     }
   
     .recruiter-item {
@@ -38,7 +38,8 @@
     .review {
       padding: 1.5rem;
       background-color: white;
-      border: 1px solid $light_gray_color;
+      border: 1px solid $border_color;
+      margin: 1rem;
     }
   
   

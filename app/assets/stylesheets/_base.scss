@@ -171,16 +171,16 @@ label {
   margin-bottom: 0px;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  z-index: 100;
   font-weight: 300;
   min-height: 3.5rem;
   height: 3.5rem;
-  padding-left: 0;
   padding-right: 0;
+  z-index: 0;
 
   &.bottom {
     background-color: $secondary_navbar_background_color !important;
   }
+  box-shadow: none !important;
 }
 
 
@@ -381,7 +381,7 @@ label {
   }
 
   .section {
-    border: 1px solid black;
+    border: 1px solid $border_color;
     padding: 2rem;
     margin: 0.5rem;
     background-color: white;
@@ -496,7 +496,7 @@ label {
   font-size: 0.9rem;
 
   padding: 0.75rem;
-  border: 1px solid black;
+  border: 1px solid $border_color;
   b-border-radius: 10px;
   background-color: white;
 
@@ -538,7 +538,7 @@ label {
 
 .helper {
   padding: 0.75rem;
-  border: 1px solid rgba(gray, 0.4);
+  border: 1px solid $border_color;
   border-radius: 10px;
   background-color: $light_gray_color;
 }

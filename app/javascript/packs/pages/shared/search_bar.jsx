@@ -16,7 +16,7 @@ import {
   UserAvatar,
   UserScore,
   Stars,
-} from '../../util/user';
+} from '../shared/user';
 
 import {
   MESSAGES_URL,

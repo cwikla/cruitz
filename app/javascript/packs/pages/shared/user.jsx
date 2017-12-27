@@ -4,7 +4,7 @@ import React, {
 
 import ReactDOM from 'react-dom';
 
-import Pyr from '../pyr/pyr';
+import Pyr from '../../pyr/pyr';
 
 const logos = ["/Dropbox-Logo-High-Res_1.jpg",
               "google-logo-1200x630.jpg",

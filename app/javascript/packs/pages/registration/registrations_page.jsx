@@ -12,7 +12,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 
 import { 
-} from '../../util/user';
+} from '../shared/user';
 
 import {
   USERS_URL,

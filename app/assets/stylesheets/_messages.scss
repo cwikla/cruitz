@@ -17,6 +17,16 @@
   
   
   .show .sheet {
+    border: 1px solid $border_color;
+
+    .header, .inner {
+      background-color: white;
+    }
+
+    .header {
+      border-bottom: 1px solid $border_color;
+    }
+
     .col, .row {
       margin-left: 0;
       margin-right: 0;
@@ -25,7 +35,7 @@
     }
 
     .message-header {
-      border: 1px solid black;
+      border: 1px solid $border_color;
       background-color: white;
       b-background-color: $secondary_navbar_background_color;
   

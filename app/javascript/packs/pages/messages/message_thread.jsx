@@ -318,7 +318,7 @@ class MessageThread extends Pyr.UserReceiver {
 
     return (
       <div 
-        className={ClassNames("flx-col flx-1 sheet thread").push(this.props.className)}
+        className={ClassNames("flx-col flx-1 thread").push(this.props.className)}
       >
         {this.renderContent(message)}
         {this.renderFooter(message)}

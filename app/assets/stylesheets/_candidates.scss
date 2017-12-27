@@ -9,14 +9,14 @@
         .col.left {
           padding: 2.5rem;
           background-color: white;
-          border: 1px solid black;
+          border: 1px solid $border_color;
         }
       }
     }
 
     .sheet {
       .header {
-          border-bottom: 1px solid black;
+          border-bottom: 1px solid $border_color;
       }
   
       .scroll.inner {
@@ -25,7 +25,7 @@
   
       .candidate-item {
         .actions {
-          border-bottom: 1px solid black;
+          border-bottom: 1px solid $border_color;
           margin-bottom: 1rem;
   
         }
@@ -44,7 +44,7 @@
         .cv-item {
           padding: 1rem;
           background-color: white;
-          border: 1px solid black;
+          border: 1px solid $border_color;
           border-radius: 10px;
 
           .cv-section {
@@ -66,7 +66,7 @@
   
     .candidate-item {
       .recruiter {
-        border-left: 1px solid black;
+        border-left: 1px solid $border_color;
         border-right: 0;
       }
     }
@@ -82,7 +82,7 @@
   .cv-label {
     font-size: 1.2rem;
     padding-bottom: 0.25rem;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid $border_color;
     margin-bottom: 0.25rem;
   }
   

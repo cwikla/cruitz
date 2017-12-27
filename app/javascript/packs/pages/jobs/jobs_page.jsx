@@ -20,7 +20,7 @@ import Sheet from '../sheet';
 
 import { 
   getLogo 
-} from '../../util/user';
+} from '../shared/user';
 
 import {
   JOBS_URL,

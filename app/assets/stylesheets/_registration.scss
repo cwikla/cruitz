@@ -14,7 +14,7 @@
   }
 
   .choice {
-    border: 1px solid rgba(gray, 0.4);
+    border: 1px solid $border_color;
     &:hover {
       background-color: $white_color;
 
