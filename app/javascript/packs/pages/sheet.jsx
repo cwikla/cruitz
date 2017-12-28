@@ -195,10 +195,10 @@ class Form extends Base {
   render() {
     return (
       <Pyr.UI.FullScreen>
-        <div className="title flx-col" >
+        <div className="title flx-0" >
           { this.renderTitle() }
         </div>
-        <div className="form-content flx-1">
+        <div className="form-content flx-1 mt-auto">
           { this.renderForm() }
         </div>
       </Pyr.UI.FullScreen>

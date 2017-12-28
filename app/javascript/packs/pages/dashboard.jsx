@@ -459,7 +459,7 @@ class Dashboard extends Pyr.UserReceiver {
 
   renderNav() {
     return (
-       <Pyr.Grid.Row className="navbar flx-row align-items-center z-depth-1">
+       <Pyr.Grid.Row className="navbar flx-row align-items-center">
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
             <Pyr.UI.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.UI.SmallLabel>
           </Pyr.Grid.Col>
