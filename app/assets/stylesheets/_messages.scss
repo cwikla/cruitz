@@ -1,4 +1,8 @@
 .page.messages {
+    .pyr-back-button {
+      background-color: rgba(255, 255, 255, 0) !important;
+    }
+
   .sheet {
     background-color: $background_color;
     .thread {
@@ -12,6 +16,7 @@
   }
 
   .index .sheet {
+
     .message-item {
     }
   }

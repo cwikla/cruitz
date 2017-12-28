@@ -33,9 +33,19 @@ const MessageThreadHeaderOne = (props) => (
 );
 
 const MessageThreadHeader = (props) => (
-  <div className={ClassNames("message-header navbar").push(props.className)}>
-      <div className="flx-align-start nav-item">{props.job.title}</div>
-  </div>
+        <div
+          className="navbar flx-row controls align-items-center message-header"
+        >
+          <div className="nav-item col mr-auto">{props.job.title}</div>
+
+          <div className="nav-item col"><Pyr.UI.IconButton name="chevron-left" /> <Pyr.UI.IconButton name="chevron-right" /></div>
+
+          <div className="col navbar-nav" >
+            <Pyr.UI.BackButton name="close"
+              className="pyr-back-button ml-auto nav-item"
+              ><Pyr.UI.IconButton name="arrow-left">Back</Pyr.UI.IconButton></Pyr.UI.BackButton>
+          </div>
+        </div>
 );
 
 class ThreadList extends Component {
