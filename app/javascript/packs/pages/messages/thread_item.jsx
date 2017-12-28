@@ -45,8 +45,14 @@ class ThreadItem extends Sheet.Item {
       allClass.push("root");
     }
 
-    let leftAvatar = !mine ? this.renderAvatar(message) : null;
-    let rightAvatar = !mine ? null : this.renderAvatar(message);
+    let leftAvatar = null;
+    let rightAvatar = null;
+
+    if (!mine) {
+      leftAvatar = !mine ? this.renderAvatar(message) : null;
+    }
+
+    //let rightAvatar = !mine ? this.renderAvatar(message) : null;
 
     let justify = ClassNames("flx-row flx-1");
     if (mine) {
@@ -60,8 +66,8 @@ class ThreadItem extends Sheet.Item {
         </div>
         <div className={justify}>
           { leftAvatar }
-          <div className="flx-col justify-content-center">
-            <div className="item-content flx-0">{message.body}</div>
+          <div className="flx-col justify-content-center item-content">
+            <div className="item-body flx-0">{message.body}</div>
           </div>
           { rightAvatar }
         </div>

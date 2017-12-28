@@ -1,15 +1,9 @@
 .message-thread {
   padding: 1.5rem;
   
-  .b-user-avatar {
-    padding-left: 1rem;
+  .user-avatar {
     padding-right: 1rem;
-    font-size: 0.8rem;
-    img {
-      width: #{$avatar_width}rem;
-      height: #{$avatar_width}rem;
-      border-radius: 50%;
-    }
+    width: #{$avatar_width}rem;
   }
   
   .thread-item {
@@ -18,39 +12,28 @@
   
     .created-at {
       font-size: 0.85rem;
-      padding-left: #{$avatar_width+3}rem;
-      padding-right: #{$avatar_width+3}rem;
+      padding-left: #{$avatar_small_width+1.5}rem;
       color: $gray_color;
     }
   
     .item-content {
-       padding: 0.75rem;
-       border-radius: 20px;
+      padding: 0.75rem;
+      border: solid 1px $primary_light_color;
+      border-radius: 15px;
     }
   
     &.yours {
       .item-content {
-        background-color: lighten($primary_light_color, 0.5);
+        border-color: $primary_light_color;
+        background-color: rgba($primary_light_color, 0.05);
       }
-      padding-right: #{$avatar_width + 2}rem;
     }
     &.mine {
       .item-content {
-        background-color: lighten($secondary_light_color, 0.5);
+        border-color: $secondary_light_color;
+        background-color: rgba($secondary_light_color, 0.05);
       }
-      padding-left: #{$avatar_width + 2}rem;
-    }
-  }
-  
-  .message-header {
-    color: white;
-    background-color: $secondary_navbar_background_color;
-  
-    .title {
-      padding: 2rem;
-      font-size: 2rem;
-      line-height: 2rem;
-      text-align: center;
+      padding-left: #{$avatar_small_width + 2}rem;
     }
   }
   

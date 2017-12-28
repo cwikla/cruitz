@@ -70,6 +70,7 @@ class User < ApplicationRecord
   end
 
   def self.after_cached_message(message)
+
     from = User.new(:id => message.from_user_id)
     user = User.new(:id => message.user_id)
 

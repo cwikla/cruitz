@@ -1,6 +1,14 @@
 .page.messages {
-  .sheet.thread {
-    background-color: white;
+  .sheet {
+    background-color: $background_color;
+    .thread {
+      border: 1px solid $border_color;
+      background-color: white;
+    }
+
+    .left {
+      padding: 1rem;
+    }
   }
 
   .index .sheet {
@@ -14,37 +22,35 @@
       text-align: center;
     }
   }
-  
-  
-  .show .sheet {
-    border: 1px solid $border_color;
 
-    .header, .inner {
+  .show .sheet {
+
+    .header {
       background-color: white;
     }
 
     .header {
-      border-bottom: 1px solid $border_color;
     }
 
     .col, .row {
       margin-left: 0;
       margin-right: 0;
-      padding-left: 0;
-      padding-right: 0;
     }
 
     .message-header {
-      border: 1px solid $border_color;
-      background-color: white;
-      b-background-color: $secondary_navbar_background_color;
-  
+      border-bottom: 1px solid $border_color;
+      border-top: 1px solid $border_color;
+
       .title {
         padding: 2rem;
         font-size: 2rem;
         line-height: 2rem;
         text-align: center;
       }
+    }
+
+    .message-footer {
+      border-top: 1px solid $border_color;
     }
 
     .right {

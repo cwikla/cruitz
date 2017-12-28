@@ -140,7 +140,7 @@ class IndexSheet extends Sheet.Index {
 }
 
 
-class ShowSheet extends Sheet.ShowFull {
+class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
   }
@@ -151,10 +151,6 @@ class ShowSheet extends Sheet.ShowFull {
     }
 
     let message = item.message;
-
-    return (
-      <Recruiter.Header className="" recruiter={getRecruiter(this.user(), message)} />
-    );
 
     return (
         <MessageThreadHeader
@@ -177,16 +173,21 @@ class ShowSheet extends Sheet.ShowFull {
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
     return (
-      <div className="d-flex flx-col p-t-2">
-        <MessageRender
-          message={message}
-          job={this.props.jobMap[message.job_id]}
-          onBack={this.onBack}
-          url={Pyr.URL(MESSAGES_URL)}
-          onSetItems={this.props.onSetItems}
-          onAddItem={this.props.onAddItem}
-        />
-      </div>
+     <Pyr.Grid.Row className="item flx-1">
+        <Pyr.Grid.Col className="flx-col left">
+          <MessageRender
+            message={message}
+            job={this.props.jobMap[message.job_id]}
+            onBack={this.onBack}
+            url={Pyr.URL(MESSAGES_URL)}
+            onSetItems={this.props.onSetItems}
+            onAddItem={this.props.onAddItem}
+          />
+        </Pyr.Grid.Col>
+        <Pyr.Grid.Col className="col-3 right">
+          <Recruiter.Blurb recruiter={getRecruiter(this.user(), message)}/>
+        </Pyr.Grid.Col>
+      </Pyr.Grid.Row>
     );
   }
 

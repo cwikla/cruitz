@@ -33,8 +33,8 @@ const MessageThreadHeaderOne = (props) => (
 );
 
 const MessageThreadHeader = (props) => (
-  <div className={ClassNames("message-header").push(props.className)}>
-      <div className="align-self-center title">{props.job.title}</div>
+  <div className={ClassNames("message-header navbar").push(props.className)}>
+      <div className="flx-align-start nav-item">{props.job.title}</div>
   </div>
 );
 
@@ -166,7 +166,7 @@ class Footer extends Component {
 
   render() {
     return (
-      <div className="message-footer z-depth-1">
+      <div className="message-footer">
         <Pyr.Form.Form
           model="message"
           url={Pyr.URL(MESSAGES_URL).push(this.props.message.id)}

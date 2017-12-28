@@ -166,6 +166,7 @@ label {
 
 
 .navbar {
+  border-radius: 0;
   font-size: 1rem;
   background-color: $navbar_background_color !important;
   margin-bottom: 0px;
@@ -229,7 +230,6 @@ label {
 
 .main-page {
   margin: 0;
-  margin-left: 1px;
   padding: 0;
 }
 
@@ -287,8 +287,8 @@ label {
 
     font-size: 0.6rem;
     img {
-      width: #{$avatar_width/2}rem;
-      height: #{$avatar_width/2}rem;
+      width: #{$avatar_small_width}rem;
+      height: #{$avatar_small_width}rem;
     }
   }
 }
