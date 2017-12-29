@@ -3,7 +3,6 @@ class MessageSerializer < ActiveModel::Serializer
     :body,
     :parent_message_id,
     :root_message_id,
-    :thread_count,
     :job_id,
     :candidate,
     :user,
@@ -29,10 +28,6 @@ class MessageSerializer < ActiveModel::Serializer
 
   def updated_at
     object.updated_at.in_time_zone.iso8601 if object.created_at
-  end
-
-  def thread_count
-    object.thread_count
   end
 
 
