@@ -66,11 +66,12 @@ class MessageThreadHeader extends Component {
   }
 
   render() {
+    let title = this.props.job ? this.props.job.title : "";
     return (
         <div
           className="navbar flx-row controls align-items-center message-header"
         >
-          <div className="nav-item col mr-auto">{this.props.job.title}</div>
+          <div className="nav-item col mr-auto">{title}</div>
 
           <div className="nav-item col">{this.leftChevron()} {this.rightChevron()}</div>
 

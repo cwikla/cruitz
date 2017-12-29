@@ -146,16 +146,17 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderHeader(item) {
-    if (this.state.isLoading || !item) {
-      return (<Pyr.UI.Loading />);
-    }
+    //if (this.state.isLoading || !item) {
+      //return (<Pyr.UI.Loading />);
+    //}
 
     let message = item;
+    let job = message ? this.props.jobMap[message.job_id] : null;
 
     return (
         <MessageThreadHeader
           message={message}
-          job={this.props.jobMap[message.job_id]}
+          job={job}
           onBack={this.onBack}
           url={Pyr.URL(MESSAGES_URL)}
           nextId={this.props.nextId}

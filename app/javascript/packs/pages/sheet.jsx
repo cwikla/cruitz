@@ -152,9 +152,9 @@ class Base extends Pyr.UserReceiver {
   }
 
   render() {
-    if (this.state.isLoading) {
-      return (<Pyr.UI.Loading />);
-    }
+    //if (this.state.isLoading) {
+      //return (<Pyr.UI.Loading />);
+    //}
 
     return (
       <div className="sheet flx-col flx-1">
