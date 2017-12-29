@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171223231034) do
+ActiveRecord::Schema.define(version: 20171229233348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,16 @@ ActiveRecord::Schema.define(version: 20171223231034) do
     t.index ["job_id"], name: "index_candidates_on_job_id"
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "parent_id"
+    t.integer "syn_id"
+    t.string "name", null: false
+    t.index ["name"], name: "index_categories_on_name"
+  end
+
   create_table "companies", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -131,6 +141,16 @@ ActiveRecord::Schema.define(version: 20171223231034) do
     t.index ["email"], name: "index_invites_on_email"
     t.index ["from_user_id"], name: "index_invites_on_from_user_id"
     t.index ["user_id"], name: "index_invites_on_user_id"
+  end
+
+  create_table "job_categories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "job_id"
+    t.integer "category_id"
+    t.index ["category_id", "job_id"], name: "index_job_categories_on_category_id_and_job_id"
+    t.index ["job_id", "category_id"], name: "index_job_categories_on_job_id_and_category_id"
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|

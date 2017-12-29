@@ -2,8 +2,11 @@ class Job < ApplicationRecord
   belongs_to :user
 
   has_many :candidates
-  has_many :heads, :through => :candidates
+  has_many :heads, through: :candidates
   has_many :messages
+
+  has_many :job_categories
+  has_many :categories, through: :job_categories
 
   JOB_FULL_TIME = 0
   JOB_PART_TIME = 1
@@ -12,7 +15,7 @@ class Job < ApplicationRecord
   validates :title, presence: true
   validates :location, presence: true
   validates :description, presence: true
-  validates :time_commit, presence: true, :inclusion => [JOB_FULL_TIME, JOB_PART_TIME, JOB_CONTRACTOR]
+  validates :time_commit, presence: true, inclusion: [JOB_FULL_TIME, JOB_PART_TIME, JOB_CONTRACTOR]
 
   def self.after_cached_candidate(candidate)
     j = Job.new(:id => candidate.job_id)

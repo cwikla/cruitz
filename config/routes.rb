@@ -1,6 +1,7 @@
 
 Rails.application.routes.draw do
 
+  resources :categories
   scope :api, defaults: { format: :json } do
     scope :v1 do
       get 'users/me' => 'users#me'
