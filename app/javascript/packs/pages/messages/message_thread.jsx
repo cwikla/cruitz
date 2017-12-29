@@ -4,6 +4,10 @@ import React, {
 
 import ReactDOM from 'react-dom';
 
+import {
+  Link,
+} from 'react-router-dom';
+
 import Pyr from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
@@ -32,13 +36,43 @@ const MessageThreadHeaderOne = (props) => (
   </div>
 );
 
-const MessageThreadHeader = (props) => (
+class MessageThreadHeader extends Component {
+  leftChevron() {
+    if (!this.props.prevId) {
+      return (
+        <Pyr.UI.IconButton name="chevron-left" className="disabled" />
+      );
+    }
+
+    let link = Pyr.URL(MESSAGES_URL).push(this.props.prevId);
+
+    return (
+      <Link to={link.toString()} ><Pyr.UI.IconButton name="chevron-left" /></Link>
+    );
+  }
+
+  rightChevron() {
+    if (!this.props.nextId) {
+      return (
+        <Pyr.UI.IconButton name="chevron-right" className="disabled" />
+      );
+    }
+
+    let link = Pyr.URL(MESSAGES_URL).push(this.props.nextId);
+
+    return (
+      <Link to={link.toString()} ><Pyr.UI.IconButton name="chevron-right" /></Link>
+    );
+  }
+
+  render() {
+    return (
         <div
           className="navbar flx-row controls align-items-center message-header"
         >
-          <div className="nav-item col mr-auto">{props.job.title}</div>
+          <div className="nav-item col mr-auto">{this.props.job.title}</div>
 
-          <div className="nav-item col"><Pyr.UI.IconButton name="chevron-left" /> <Pyr.UI.IconButton name="chevron-right" /></div>
+          <div className="nav-item col">{this.leftChevron()} {this.rightChevron()}</div>
 
           <div className="col navbar-nav" >
             <Pyr.UI.BackButton name="close"
@@ -46,7 +80,9 @@ const MessageThreadHeader = (props) => (
               ><Pyr.UI.IconButton name="arrow-left">Back</Pyr.UI.IconButton></Pyr.UI.BackButton>
           </div>
         </div>
-);
+    );
+  }
+}
 
 class ThreadList extends Component {
   render() {

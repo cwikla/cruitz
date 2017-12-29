@@ -158,6 +158,8 @@ class ShowSheet extends Sheet.Show {
           job={this.props.jobMap[message.job_id]}
           onBack={this.onBack}
           url={Pyr.URL(MESSAGES_URL)}
+          nextId={this.props.nextId}
+          prevId={this.props.prevId}
         />
     );
   }
@@ -202,8 +204,10 @@ class ShowSheet extends Sheet.Show {
 
 class MessagesPage extends Page {
   getInitState(props) {
-    return Object.assign(super.getInitState(props), { 
+    return ({
       fullDetail: true,
+      nextId: null,
+      prevId: null,
     });
   }
 
@@ -266,6 +270,11 @@ class MessagesPage extends Page {
       return sum;
     }, 0);
     this.props.onSetButtonCount("Messages", count);
+
+    for(let i=0;i<items.length;i++) {
+      console.log("ITEM: " + items[i].id);
+    }
+
     super.setItems(items);
   }
 
@@ -313,9 +322,43 @@ class MessagesPage extends Page {
     });
   }
 
+  getNext(item) {
+    if ((item == null) || (this.state.items.length == 1)) {
+      return null;
+    }
+
+    for(let i=0;i<this.state.items.length-1;i++) {
+      if (this.state.items[i].id == item.id) {
+        return this.state.items[i+1].id;
+      }
+    }
+    return null;
+  }
+
+  getPrevious(item) {
+    if ((item == null) || (this.state.items.length == 1)) {
+      return null;
+    }
+
+    for(let i=1;i<this.state.items.length;i++) {
+      if (this.state.items[i].id == item.id) {
+        return this.state.items[i-1].id;
+      }
+    }
+    return null;
+  }
+
   setSelected(selected) {
     selected.read_at = new Date();
     super.setSelected(selected);
+
+    let nextId = this.getNext(selected);
+    let prevId = this.getPrevious(selected);
+
+    this.setState({
+      nextId,
+      prevId,
+    });
   }
 
   indexSheet() {
@@ -340,6 +383,9 @@ class MessagesPage extends Page {
 
     //alert("actionSheet: " + this.state.selected.id);
 
+    console.log("ACTION SHEET");
+    console.log(this.state);
+
     return (
       <ActionSheet 
         {...this.props}
@@ -350,6 +396,8 @@ class MessagesPage extends Page {
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onLoadSelected={this.onLoadSelected}
+        nextId={this.state.nextId}
+        prevId={this.state.prevId}
       />
     );
     

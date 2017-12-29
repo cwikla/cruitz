@@ -105,8 +105,17 @@ class Page extends Pyr.UserReceiver {
     this.setItems(copy);
   }
 
+  sortItems(items) {
+    return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
+  }
+
+
   setItems(items) {
    // console.log("ITEMS NO LONGER NULL");
+    if (items) {
+      items = this.sortItems(items);
+    }
+
     this.setState({ 
       items
     });

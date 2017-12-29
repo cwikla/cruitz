@@ -373,7 +373,8 @@ class Index extends Base {
       return this.renderNone();
     }
 
-    let items = this.sortItems(this.props.items) || [];
+    //let items = this.sortItems(this.props.items) || [];
+    let items = this.props.items;
 
     return (
       <Pyr.UI.Scroll className="inner flx-col flx-1">
