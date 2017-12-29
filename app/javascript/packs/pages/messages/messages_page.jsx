@@ -150,7 +150,7 @@ class ShowSheet extends Sheet.Show {
       return (<Pyr.UI.Loading />);
     }
 
-    let message = item.message;
+    let message = item;
 
     return (
         <MessageThreadHeader
@@ -167,8 +167,8 @@ class ShowSheet extends Sheet.Show {
       return (<Pyr.UI.Loading />);
     }
 
-    let message = item.message;
-    let thread = item.thread;
+    let message = item;
+    let thread = message.thread;
 
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
@@ -280,7 +280,10 @@ class MessagesPage extends Page {
       loading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        me.onSelect(data);
+        console.log("LOAD SELECTED");
+        console.log(data.message);
+
+        me.onSelect(data.message);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jqXHR, textStatus, errorThrown);

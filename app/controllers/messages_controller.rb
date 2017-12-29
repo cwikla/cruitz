@@ -52,9 +52,9 @@ class MessagesController < ApplicationController
     mjson = MessageSerializer.new(@message)
     tjson = ActiveModel::Serializer::CollectionSerializer.new(@thread)
 
-    ReadThreadJob.mark(@thread)
+    ReadThreadJob.mark(@message)
 
-    render json: {message: mjson, thread: tjson}
+    render json: @message, thread: true
   end
 
   def lsearch

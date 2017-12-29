@@ -1,6 +1,5 @@
 class MessageSerializer < ActiveModel::Serializer
   attributes :id,
-    :title,
     :body,
     :parent_message_id,
     :root_message_id,
@@ -10,7 +9,6 @@ class MessageSerializer < ActiveModel::Serializer
     :user,
     :from_user,
     :created_at,
-    :updated_at,
     :read_at
 
   def id
@@ -77,4 +75,13 @@ class MessageSerializer < ActiveModel::Serializer
     end
     return result
   end
+
+  def attributes(*args)
+    hash = super
+    if instance_options[:thread]
+      hash[:thread] = ActiveModel::Serializer::CollectionSerializer.new(object.thread)
+    end
+    hash
+  end
+
 end

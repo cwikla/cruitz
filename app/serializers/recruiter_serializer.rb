@@ -2,8 +2,6 @@ class RecruiterSerializer < UserSerializer
   attributes :is_recruiter,
     :score
 
-  has_many :reviews
-
   def json_key
     return 'recruiter'
   end
@@ -14,7 +12,10 @@ class RecruiterSerializer < UserSerializer
 
   def attributes(*args)
     hash = super
-    hash[:reviews] = ReviewSerializer.new(object.reviews) if instance_options[:reviews]
+    if instance_options[:reviews]
+      reviews = ActiveModel::Serializer::CollectionSerializer.new(object.reviews)
+      hash[:reviews] = reviews
+    end
     hash
   end
 

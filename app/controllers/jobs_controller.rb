@@ -47,11 +47,7 @@ class JobsController < ApplicationController
 
     getCands = params[:candidates] && params[:candidates].downcase == 'candidates'
 
-    result = {}
-    result[:job] = JobSerializer.new(@job)
-    result[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(@job.candidates) if getCands
-
-    render json: result
+    render json: @job, candidates: getCands
   end
 
   def lsearch

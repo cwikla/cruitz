@@ -246,7 +246,7 @@ class MessageThread extends Pyr.UserReceiver {
       context: self,
       loading: self.onLoading
     }).done((data, textStatus, jqXHR) => {
-      self.setThread(data.thread);
+      self.setThread(data.message.thread);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jqXHR, textStatus, errorThrown);

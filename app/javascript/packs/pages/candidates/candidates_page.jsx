@@ -761,7 +761,7 @@ class CandidatesPage extends Page {
       loading: this.onLoading,
 
     }).done((data, textStatus, jaXHR) => {
-      this.jobLoad(data.job, data.candidates);
+      this.jobLoad(data.job, data.job.candidates);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
       Pyr.ajaxError(jaXHR, textStatus, errorThrown);

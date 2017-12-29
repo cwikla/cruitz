@@ -1,7 +1,7 @@
 class ReadThreadJob < Pyr::Async::BaseJob
 
-  def self.mark(thread)
-    self.push(:message_id => thread.last.id)
+  def self.mark(message)
+    self.push(:message_id => message.id)
   end
 
   def self.perform(msg)
@@ -10,6 +10,7 @@ class ReadThreadJob < Pyr::Async::BaseJob
     return if message_id.blank?
 
     message = Message.find_safe(message_id)
+
     puts "GOT MESSAGE #{message.inspect}"
     return if message.nil?
 

@@ -41,7 +41,9 @@ class JobSerializer < ActiveModel::Serializer
 
   def attributes(*args)
     hash = super
-    hash[:candidates] = CandidateSerializer.new(object.candidates.live) if instance_options[:cand]
+    if instance_options[:candidates]
+      hash[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(object.candidates) 
+    end
     hash
   end
 
