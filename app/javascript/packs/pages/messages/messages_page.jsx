@@ -271,10 +271,6 @@ class MessagesPage extends Page {
     }, 0);
     this.props.onSetButtonCount("Messages", count);
 
-    for(let i=0;i<items.length;i++) {
-      console.log("ITEM: " + items[i].id);
-    }
-
     super.setItems(items);
   }
 
@@ -349,6 +345,8 @@ class MessagesPage extends Page {
   }
 
   setSelected(selected) {
+    console.log("SET SELECTED!");
+
     selected.read_at = new Date();
     super.setSelected(selected);
 

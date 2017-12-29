@@ -604,6 +604,9 @@ class Dashboard extends Pyr.UserReceiver {
 
     let props = this.pageProps(page);
 
+    //console.log("MAIN");
+    //console.log(props);
+
     return (
         <main 
           id="main-page"

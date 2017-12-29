@@ -394,6 +394,12 @@ class Show extends Base {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.itemId != prevProps.itemId) {
+      this.props.onLoadSelected(this.props.itemId, this.onLoading);
+    }
+  }
+
   editMe(e) {
     if (e) {  
       e.preventDefault();

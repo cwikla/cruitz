@@ -48,6 +48,7 @@ class Page extends Pyr.UserReceiver {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.itemId != this.props.itemId) {
+      console.log("PAGE GOT NEW ID: " + nextProps.itemId);
       this.setState({
         selected: null
       });
