@@ -1,9 +1,9 @@
 class Job < ApplicationRecord
-  cached_belongs_to :user
+  belongs_to :user
 
-  cached_has_many :candidates
-  cached_has_many :heads, :through => :candidates
-  cached_has_many :messages
+  has_many :candidates
+  has_many :heads, :through => :candidates
+  has_many :messages
 
   JOB_FULL_TIME = 0
   JOB_PART_TIME = 1
@@ -16,18 +16,14 @@ class Job < ApplicationRecord
 
   def self.after_cached_candidate(candidate)
     j = Job.new(:id => candidate.job_id)
-    j.candidates_uncache
-    j.heads_uncache
   end
 
   def self.after_cached_head(head)
     j = Job.new(:id => head.candidate.job_id)
-    j.heads_uncache
   end
 
   def self.after_cached_message(message)
     j = Job.new(:id => message.job_id)
-    j.messages_uncache
   end
 
   def to_s

@@ -1,11 +1,11 @@
 class Message < ApplicationRecord
-  cached_belongs_to :user
-  cached_belongs_to :from_user, :class_name => 'User'
-  cached_belongs_to :job
-  cached_belongs_to :candidate
+  belongs_to :user
+  belongs_to :from_user, :class_name => 'User'
+  belongs_to :job
+  belongs_to :candidate
 
-  cached_belongs_to :root_message, :class_name => 'Message'
-  cached_belongs_to :parent_message, :class_name => 'Message'
+  belongs_to :root_message, :class_name => 'Message'
+  belongs_to :parent_message, :class_name => 'Message'
 
   cache_notify :user
 

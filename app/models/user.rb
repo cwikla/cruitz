@@ -3,29 +3,29 @@ class User < ApplicationRecord
 
   #make_authorized_by(:email)
 
-  cached_has_many :jobs
+  has_many :jobs
 
-  cached_has_many :heads
+  has_many :heads
 
-  cached_has_many :candidates, through: :jobs
-  cached_has_many :candidate_heads, through: :candidates, source: :head, class_name: "Head"
-  cached_has_many :recruiters, -> { group(:id) }, through: :candidate_heads, class_name: "User"
+  has_many :candidates, through: :jobs
+  has_many :candidate_heads, through: :candidates, source: :head, class_name: "Head"
+  has_many :recruiters, -> { group(:id) }, through: :candidate_heads, class_name: "User"
 
-  cached_has_many :messages
-  cached_has_many :roots, -> { where("root_message_id is null") }, class_name: "Message"
-  cached_has_many :sent_messages, class_name: "Message", foreign_key: :from_user_id
+  has_many :messages
+  has_many :roots, -> { where("root_message_id is null") }, class_name: "Message"
+  has_many :sent_messages, class_name: "Message", foreign_key: :from_user_id
 
-  cached_has_many :invites
-  cached_has_many :sent_invites, class_name: "Invite", foreign_key: :from_user_id
+  has_many :invites
+  has_many :sent_invites, class_name: "Invite", foreign_key: :from_user_id
 
-  cached_has_one :setting
+  has_one :setting
 
-  cached_has_one :company
+  has_one :company
 
-  cached_has_many :uploads
+  has_many :uploads
 
-  cached_has_many :reviews
-  cached_has_many :sent_reviews, class_name: "Review", foreign_key: :from_user_id
+  has_many :reviews
+  has_many :sent_reviews, class_name: "Review", foreign_key: :from_user_id
 
   before_create :on_before_create
   after_create :on_after_create
@@ -38,17 +38,11 @@ class User < ApplicationRecord
 
   def self.after_cached_job(job)
     u = User.new(:id => job.user_id)
-    u.jobs_uncache
-    u.candidates_uncache
     u.candidate_counts_cached(true)
   end
 
   def self.after_cached_head(head)
     u = User.new(:id => head.user_id)
-    u.heads_uncache
-    u.candidates_uncache
-    u.candidate_heads_uncache
-    u.recruiters_uncache
   end
 
   def self.after_cached_review(review)
@@ -61,11 +55,6 @@ class User < ApplicationRecord
   end
 
   def self.after_cached_candidate(candidate)
-    candidate.recruiter.candidates_uncache
-    candidate.recruiter.heads_uncache
-
-    candidate.hirer.candidates_uncache
-    candidate.hirer.candidate_heads_uncache
     candidate.hirer.candidate_counts_cached(true)
   end
 
@@ -74,23 +63,14 @@ class User < ApplicationRecord
     from = User.new(:id => message.from_user_id)
     user = User.new(:id => message.user_id)
 
-    user.messages_uncache
-
-    from.roots_uncache
-    user.roots_uncache
-    
-    from.sent_messages_uncache
-
     user.thread_last_cached(message, true)
     from.thread_last_cached(message, true)
   end
 
   def self.after_cached_invite(invite)
     u = User.new(:id => invite.user_id)
-    u.invites_uncache
 
     iu = User.new(:id => invite.from_user_id)
-    iu.sent_invites_uncache
   end
 
   def serializable_hash(options = nil) 

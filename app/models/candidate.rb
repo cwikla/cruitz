@@ -1,12 +1,12 @@
 class Candidate < ApplicationRecord
-  cached_belongs_to :job
-  cached_belongs_to :head
+  belongs_to :job
+  belongs_to :head
 
-  cached_has_one :recruiter, through: :head, class_name: 'User'
-  cached_has_one :hirer, through: :job, source: :user, class_name: 'User'
+  has_one :recruiter, through: :head, class_name: 'User'
+  has_one :hirer, through: :job, source: :user, class_name: 'User'
 
-  cached_has_many :states, class_name: "CandidateState"
-  cached_has_many :messages
+  has_many :states, class_name: "CandidateState"
+  has_many :messages
 
   cache_notify :user
 
@@ -28,14 +28,12 @@ class Candidate < ApplicationRecord
 
   def self.after_cached_candidate_state(state)
     c = Candidate.new(:id => state.candidate_id)
-    c.states_uncache
   end
 
   def self.after_cached_message(message)
     return if !message.candidate_id
 
     c = Candidate.new(:id => message.candidate_id)
-    c.messages_uncache
   end
 
   def to_s
