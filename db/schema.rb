@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171229233348) do
+ActiveRecord::Schema.define(version: 20180103001503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -218,6 +218,46 @@ ActiveRecord::Schema.define(version: 20171229233348) do
     t.index ["city", "state", "country"], name: "index_pyr_geo_caches_on_city_and_state_and_country"
     t.index ["latitude", "longitude"], name: "gcllidx", unique: true
     t.index ["postal_code", "country"], name: "index_pyr_geo_caches_on_postal_code_and_country"
+  end
+
+  create_table "pyr_geo_cities", id: :serial, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "iso_country", limit: 2, null: false
+    t.string "city_normalized", null: false
+    t.string "city", null: false
+    t.integer "region", null: false
+    t.integer "population", default: 0
+    t.decimal "latitude", precision: 9, scale: 6, null: false
+    t.decimal "longitude", precision: 9, scale: 6, null: false
+    t.index ["iso_country", "city", "population"], name: "index_pyr_geo_cities_on_iso_country_and_city_and_population"
+    t.index ["latitude", "longitude", "iso_country", "city"], name: "gc_llic_idx"
+  end
+
+  create_table "pyr_geo_names", id: :serial, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "iso_country", limit: 2, null: false
+    t.string "postal_code", limit: 20
+    t.string "name", null: false
+    t.string "admin_name_1", limit: 100
+    t.string "admin_code_1", limit: 20
+    t.string "admin_name_2", limit: 100
+    t.string "admin_code_2", limit: 20
+    t.string "admin_name_3", limit: 100
+    t.string "admin_code_3", limit: 20
+    t.decimal "latitude", precision: 9, scale: 6, null: false
+    t.decimal "longitude", precision: 9, scale: 6, null: false
+    t.decimal "cluster_latitude", precision: 9, scale: 6
+    t.decimal "cluster_longitude", precision: 9, scale: 6
+    t.integer "accuracy"
+    t.index ["cluster_latitude", "cluster_longitude", "iso_country", "name"], name: "pyr_geo_ccllin_idx"
+    t.index ["cluster_latitude", "cluster_longitude", "iso_country", "postal_code"], name: "pyr_geo_ccllip_idx"
+    t.index ["iso_country", "name"], name: "index_pyr_geo_names_on_iso_country_and_name"
+    t.index ["iso_country", "postal_code"], name: "index_pyr_geo_names_on_iso_country_and_postal_code"
+    t.index ["latitude", "longitude", "iso_country", "name"], name: "pyr_geo_llin_idx"
   end
 
   create_table "ratings", id: :serial, force: :cascade do |t|
