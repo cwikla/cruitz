@@ -16,6 +16,8 @@ import {
 
 import Pyr from '../pyr/pyr';
 
+import AutoComplete from '../pyr/auto_complete';
+
 import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
