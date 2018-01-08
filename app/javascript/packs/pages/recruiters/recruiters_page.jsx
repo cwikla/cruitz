@@ -371,7 +371,7 @@ class RecruitersPage extends Page {
     this.getJSON({
       url: this.props.url,
       context: this,
-      loading: onLoading,
+      onLoading: onLoading,
     }).done((data, textStatus, jqXHR) => {
         this.onSetItems(data.recruiters || []);
 

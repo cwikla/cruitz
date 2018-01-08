@@ -43,8 +43,8 @@ function getJSON(stuff) {
 
   url = url.toRemote();
 
-  console.log("GETJSON: " + url);
-  console.log(data);
+  //console.log("GETJSON: " + url);
+  //console.log(data);
 
   stuff = Object.assign({
     dataType: "json",
@@ -54,8 +54,12 @@ function getJSON(stuff) {
     data: data
   });
 
+  let onLoading = stuff.onLoading ? stuff.onLoading : null;
+  if (!onLoading) {
+    onLoading = stuff.loading; // backwards
+  }
 
-  let onLoading = stuff.loading ? stuff.loading : null;
+  console.log(onLoading);
 
   let oldBeforeSend = stuff.beforeSend;
   let beforeSend = (jqXHR, settings) => {
@@ -63,7 +67,8 @@ function getJSON(stuff) {
       oldBeforeSend(jqXHR, settings);
     }
     if (onLoading) {
-      onLoading();
+      //console.log("CALLING ON LOADING");
+      onLoading(true);
     }
   };
 
@@ -77,6 +82,7 @@ function getJSON(stuff) {
   )
   .always(() => {
     if (onLoading) {
+      //console.log("CALLING ON LOADING FALSE");
       onLoading(false);
     }
   });

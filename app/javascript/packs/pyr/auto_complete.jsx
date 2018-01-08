@@ -19,18 +19,34 @@ class AutoComplete extends Network.Component {
 
     this.state = {
       isLoading: false,
-      results: []
+      results: [],
     };
 
     this.onSearch = this.search.bind(this);
+    this.onLoading = this.loading.bind(this);
+  }
+
+  loading(isLoading) {
+    console.log("IS LOADING: " + isLoading);
+    this.setState({
+      isLoading
+    });
   }
 
   search(query) {
-    console.log(query);
-    return;
+    console.log("A: *******");
+    console.log(this.props.url);
+    let url = Util.PURL(this.props.url).set("q", query);
+    console.log(url);
+    console.log(url.parser.href);
+    console.log(url.toString());
+    console.log("B: *******");
 
     this.getJSON({
-    }).done((data, textStateus, jqXHR) => {
+      url : url,
+      onLoading : this.onLoading,
+    }).done((data, textStatus, jqXHR) => {
+      console.log(data);
     });
   }
 

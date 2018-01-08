@@ -293,7 +293,7 @@ class Dashboard extends Pyr.UserReceiver {
       type: Pyr.Method.GET,
       url: PageURL(JOBS_PAGE),
       context: this,
-      loading: this.onLoading,
+      onLoading: this.onLoading,
 
     }).done((data, textStatus, jqXHR) => {
         this.onJobIndex(data.jobs);
@@ -413,7 +413,9 @@ class Dashboard extends Pyr.UserReceiver {
           reset
         >
           <Pyr.Form.Group name="search">
-            <AutoComplete />
+            <AutoComplete 
+              url={MESSAGES_URL}
+            />
             <div onClick={this.onShowSlide}>
               <Pyr.UI.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
             </div>

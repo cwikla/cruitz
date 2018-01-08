@@ -283,7 +283,7 @@ class MessagesPage extends Page {
     this.getJSON({
       url: Pyr.URL(MESSAGES_URL).push(itemId),
       context: me,
-      loading: onLoading,
+      onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
         console.log("LOAD SELECTED");
@@ -309,7 +309,7 @@ class MessagesPage extends Page {
     this.getJSON({
       url: Pyr.URL(MESSAGES_URL),
       context: me,
-      loading: onLoading,
+      onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
         me.setItems(data.messages);

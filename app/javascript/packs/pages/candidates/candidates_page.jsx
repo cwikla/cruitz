@@ -730,7 +730,7 @@ class CandidatesPage extends Page {
     this.getJSON({
       url: Pyr.URL(CANDIDATES_URL).push(itemId),
       context: me,
-      loading: onLoading,
+      onLoading: onLoading,
 
     }).done((data, textStatus, jaXHR) => {
         me.onSelect(data.candidate);
@@ -758,7 +758,7 @@ class CandidatesPage extends Page {
     this.getJSON({
       url: url,
       context: this,
-      loading: this.onLoading,
+      onLoading: this.onLoading,
 
     }).done((data, textStatus, jaXHR) => {
       this.jobLoad(data.job, data.job.candidates);

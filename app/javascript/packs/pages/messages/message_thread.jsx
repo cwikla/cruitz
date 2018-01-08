@@ -281,7 +281,7 @@ class MessageThread extends Pyr.UserReceiver {
     return this.getJSON({
       url: url,
       context: self,
-      loading: self.onLoading
+      onLoading: self.onLoading
     }).done((data, textStatus, jqXHR) => {
       self.setThread(data.message.thread);
 
