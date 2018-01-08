@@ -59,8 +59,6 @@ function getJSON(stuff) {
     onLoading = stuff.loading; // backwards
   }
 
-  console.log(onLoading);
-
   let oldBeforeSend = stuff.beforeSend;
   let beforeSend = (jqXHR, settings) => {
     if (oldBeforeSend) {
