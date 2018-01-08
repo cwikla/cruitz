@@ -444,7 +444,7 @@ class ShowSheet extends Sheet.ShowFull {
       this.setCandidate(data.candidate);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
 
     });
   }
@@ -484,7 +484,7 @@ class ShowSheet extends Sheet.ShowFull {
       this.setJob(data.job);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
 
     });
   }
@@ -736,7 +736,7 @@ class CandidatesPage extends Page {
         me.onSelect(data.candidate);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
     });
   }
 
@@ -764,7 +764,7 @@ class CandidatesPage extends Page {
       this.jobLoad(data.job, data.job.candidates);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jaXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
 
     });
   }

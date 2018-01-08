@@ -95,7 +95,7 @@ class RecruiterItem extends Component {
 }
 
 
-class FullRecruiterItem extends Pyr.NetworkComponent {
+class FullRecruiterItem extends Pyr.Network.Component {
   constructor(props) {
     super(props);
   
@@ -123,7 +123,7 @@ class FullRecruiterItem extends Pyr.NetworkComponent {
       this.setReviews(data.recruiter.reviews);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
 
     });
   }
@@ -271,7 +271,7 @@ class NewSheet extends Sheet.New {
         invite: data.invite
       });
     }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
 
     });
   }
@@ -376,7 +376,7 @@ class RecruitersPage extends Page {
         this.onSetItems(data.recruiters || []);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

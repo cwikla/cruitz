@@ -149,7 +149,7 @@ class SettingsPage extends Page {
 
     }).fail((jqXHR, textStatus, errorThrown) => {
 
-      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

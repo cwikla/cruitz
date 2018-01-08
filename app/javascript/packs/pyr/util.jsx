@@ -14,19 +14,6 @@ const TWO_DAYS = (ONE_DAY * 2);
 
 const REMOTE_PATH = "/api/v1";
 
-const POST = 'POST';
-const PUT = 'PUT';
-const GET = 'GET';
-const DELETE = 'DELETE';
-
-const Method = {
-  POST,
-  PUT,
-  GET,
-  DELETE 
-};
-
-
 class URLObj {
   constructor(path) {
     path = path || "/";
@@ -195,12 +182,6 @@ function PURL(a) {
   return new URLObj(a);
 }
 
-function ajaxError(jqXHR, textStatus, errorThrown) {
-  console.log(jqXHR);
-  console.log(textStatus)
-  console.log("AJAX Error: " + errorThrown);
-}
-
 const LETTERS = "abcdefghijklmnopqrstuvwxyz";
 const IGNORE = "_-+@/{}[]()";
 const NUMBERS = "0123456789";
@@ -225,64 +206,6 @@ function scramble(a) {
     }
   }
   return s;
-}
-
-function getJSON(stuff) {
-  let url = stuff.url;
-  let data = stuff.data;
-  let method = stuff.method || stuff.type || GET;
-
-  if (typeof url == 'string') {
-    url = PURL(url);
-  }
-
-  data = data || url.data().toString();
-
-  if (stuff.remote) {
-    url.setRemote(stuff.remote);
-  }
-
-  url = url.toRemote();
-
-  console.log("GETJSON: " + url);
-  console.log(data);
-
-  stuff = Object.assign({
-    dataType: "json",
-    type: method,
-  }, stuff, {
-    url: url,
-    data: data
-  });
-
-
-  let onLoading = stuff.loading ? stuff.loading : null;
-
-  let oldBeforeSend = stuff.beforeSend;
-  let beforeSend = (jqXHR, settings) => {
-    if (oldBeforeSend) {
-      oldBeforeSend(jqXHR, settings);
-    }
-    if (onLoading) {
-      onLoading();
-    }
-  };
-
-  stuff.beforeSend = beforeSend;
-
-  //console.log("STUFF");
-  //console.log(stuff);
-
-  let ajx = $.ajax(
-    stuff
-  )
-  .always(() => {
-    if (onLoading) {
-      onLoading(false);
-    }
-  });
-  ajx.uuid = uuid.v4();
-  return ajx;
 }
 
 class ClassNamesObj  {
@@ -517,76 +440,6 @@ function times(x,f) {
   return result;
 }
 
-function convertUint8ArrayToBinaryString(u8Array) {
-	var i, len = u8Array.length, b_str = "";
-
-	for (i=0; i<len; i++) {
-		b_str += String.fromCharCode(u8Array[i]);
-	}
-
-	return b_str;
-}
-
-function getSignedURL(file) {
-  return Util.getJSON({
-    url : PURL("/upload_url"),
-    data : { upload: { name : file.name } },
-  });
-}
-
-function S3Put(file) {
-  console.log("S3");
-  console.log(file);
-
-  return getSignedURL(file).then((info, textStatus, jqXHR) => {
-    let fileName = file.name;
-    let ftype = file.type;
-    let flength = file.size;
-
-    console.log("************ INFO");
-    console.log(info);
-
-    let s3Info = info.upload;
-
-    return Util.getJSON({
-      type: Method.PUT,
-      url: s3Info['url'],
-      data: file,
-      dataType: null,
-      contentType: ftype,
-      mimeType: ftype,
-      processData: false,
-      cache: false,
-    }).then((result, textStatus, jqXHR) => {
-      console.log("S3PUT RETURNING");
-      console.log(s3Info);
-
-      return s3Info; // FROM getSignedURL
-
-    });
-  });
-}
-
-function isImageType(f) {
-  console.log("CHECKING ISIMAGETYPE");
-  console.log(f);
-
-  f = f.type || f;
-
-  console.log("A");
-  console.log(f);
-
-  let re = /^image\/(.*)/;
-  return f.match(re) != null;
-}
-
-function isVideoType(f) {
-  f = f.type || f;
-
-  let re = /^video\/(.*)/;
-  return f.match(re) != null;
-}
-
 const Util = {
   PURL,
   ClassNames,
@@ -603,14 +456,8 @@ const Util = {
   kidCount,
   hash,
   times,
-  ajaxError,
-  getJSON,
   scramble,
   getRandomInt,
-  Method,
-  S3Put,
-  isImageType,
-  isVideoType,
 };
 
 export default Util;

@@ -289,7 +289,7 @@ class Dashboard extends Pyr.UserReceiver {
   }
 
   getJobs() {
-    Pyr.getJSON({
+    this.getJSON({
       type: Pyr.Method.GET,
       url: PageURL(JOBS_PAGE),
       context: this,
@@ -299,7 +299,7 @@ class Dashboard extends Pyr.UserReceiver {
         this.onJobIndex(data.jobs);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
 
     });
   }
@@ -413,6 +413,7 @@ class Dashboard extends Pyr.UserReceiver {
           reset
         >
           <Pyr.Form.Group name="search">
+            <AutoComplete />
             <div onClick={this.onShowSlide}>
               <Pyr.UI.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
             </div>

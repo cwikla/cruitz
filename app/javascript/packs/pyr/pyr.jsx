@@ -18,56 +18,8 @@ import {
 
 import UI from './ui';
 import Grid from './grid';
-
-class NetworkComponent extends Component {
-  constructor(props) {
-    super(props);
-
-    this.ajaxii = {};
-  }
-
-  abortJSON(uuid) {
-    let old = this.ajaxii;
-
-    if ($.isEmptyObject(old)) {
-      return;
-    }
-
-    this.ajaxii = {};
-
-    if (uuid) {
-      xhr = old[uuid];
-      xhr.abort();
-    }
-
-    //console.log("abortJSON(" + uuid + ")");
-    //console.log(old);
-
-    for(let key in old) {
-      if (!uuid || old[key] == uuid) {
-        old[key].abort();
-      }
-    }
-  }
-
-  getJSON(stuff) {
-    let ax = Util.getJSON(stuff);
-    this.ajaxii[ax.uuid] = ax;
-
-    return ax.done(() => {
-      delete this.ajaxii[ax.uuid];
-    });
-  }
-
-  componentWillMount() {
-    this.ajaxii = {};
-  }
-
-  componentWillUnmount() {
-    this.abortJSON();
-  }
-
-}
+import Network from './network';
+import Attachment from './attachment';
 
 class RouterProps extends Component {
   render() {
@@ -134,7 +86,7 @@ const UserContextTypes = {
   user: PropTypes.object
 };
 
-class UserReceiver extends NetworkComponent {
+class UserReceiver extends Network.Component {
   static contextTypes = Object.assign({}, UserContextTypes, UI.NoticeContextTypes);
 
   user() {
@@ -142,7 +94,7 @@ class UserReceiver extends NetworkComponent {
   }
 }
 
-class UserProvider extends NetworkComponent {
+class UserProvider extends Network.Component {
   static childContextTypes = {
     user: PropTypes.object
   };
@@ -173,15 +125,15 @@ class UserProvider extends NetworkComponent {
     //alert("GET SELF CALLED");
 
     this.getJSON({
-      type: Util.Method.GET,
+      type: Network.Method.GET,
       url: url,
       context: this
-    }).done(function(data, textStatus, jqXHR) {
+    }).done((data, textStatus, jqXHR) => {
       self.setState({
         user: data.user
       });
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      ajaxError(jqXHR, textStatus, errorThrown);
+      Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -193,14 +145,13 @@ class UserProvider extends NetworkComponent {
 const Pyr = { 
   Util,
 
-  ajaxError : Util.ajaxError,
-  getJSON : Util.getJSON,
-
-  Method : Util.Method,
+  Method : Network.Method,
   ClassNames : Util.ClassNames,
   URL : Util.PURL,
 
-  NetworkComponent,
+  Network,
+
+  Attachment,
 
   UserContextTypes,
   UserProvider,

@@ -292,7 +292,7 @@ class MessagesPage extends Page {
         me.onSelect(data.message);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -315,7 +315,7 @@ class MessagesPage extends Page {
         me.setItems(data.messages);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.ajaxError(jqXHR, textStatus, errorThrown);
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

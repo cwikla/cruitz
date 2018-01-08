@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Util from './util';
+import Network from './network';
 import UI from './ui';
 
 class Form extends Component {
@@ -80,7 +81,7 @@ class Form extends Component {
     var self = this;
 
     Util.getJSON({
-      type: self.props.method || Util.Method.POST,
+      type: self.props.method || Network.Method.POST,
       url: self.props.url,
       data: data,
       context: self
@@ -767,7 +768,7 @@ class FileSelector extends Child {
         me.setInfo(file, info);
 
       }).fail((jqXHR, textStatus, errorThrown) => {
-        Util.ajaxError(jqXHR, textStatus, errorThrown);
+        Network.ajaxError(jqXHR, textStatus, errorThrown);
 
       });
     });
