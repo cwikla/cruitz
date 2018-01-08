@@ -9,7 +9,7 @@ import Util from './util';
 import Network from './network';
 import UI from './ui';
 
-class Form extends Component {
+class Form extends Network.Component {
   static childContextTypes = {
     model: PropTypes.string,
     errors: PropTypes.object,
@@ -80,7 +80,7 @@ class Form extends Component {
   innerSubmit(data) {
     var self = this;
 
-    Util.getJSON({
+    this.getJSON({
       type: self.props.method || Network.Method.POST,
       url: self.props.url,
       data: data,
