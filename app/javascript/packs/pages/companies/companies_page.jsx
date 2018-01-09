@@ -21,6 +21,7 @@ import Sheet from '../sheet';
 import {
   SEARCH_URL,
   COMPANY_URL,
+  LOCATIONS_URL,
 
   EDIT_ACTION,
 } from '../const';
@@ -61,11 +62,11 @@ class CompanyHeaderForm extends Component {
               <Pyr.Form.Label>Name</Pyr.Form.Label>
               <Pyr.Form.TextField placeholder= "Company Name"/>
             </Pyr.Form.Group>
-  
-            <Pyr.Form.Group name="location">
-              <Pyr.Form.Label>Location</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder="Location" />
-            </Pyr.Form.Group>
+ 
+           <Pyr.Form.Group name="location">
+             <Pyr.Form.Label>Location</Pyr.Form.Label>
+             <Pyr.Form.AutoComplete url={LOCATIONS_URL} />
+           </Pyr.Form.Group>
 
             <Pyr.Form.Group name="url">
               <Pyr.Form.Label>Website</Pyr.Form.Label>

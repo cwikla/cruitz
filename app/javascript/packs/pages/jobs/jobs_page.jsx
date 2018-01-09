@@ -26,6 +26,7 @@ import {
   JOBS_URL,
   SEARCH_URL,
   CATEGORIES_URL,
+  LOCATIONS_URL,
 
   NEW_ACTION,
   SHOW_ACTION
@@ -229,7 +230,7 @@ class JobForm extends Component {
       
           <Pyr.Form.Group name="location">
             <Pyr.Form.Label>Location</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={"/jobs/location"} multiple/>
+            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple/>
           </Pyr.Form.Group>
       
           <Pyr.Form.Group name="time_commit">

@@ -12,7 +12,6 @@ Rails.application.routes.draw do
 
         #resources :microposts, only: [:index, :create, :show, :update, :destroy]
 
-      get 'jobs/location' => 'jobs#lsearch'
       get 'jobs/:id(/:candidates)' => 'jobs#show'
 
       get 'settings' => 'settings#show'
@@ -30,6 +29,8 @@ Rails.application.routes.draw do
       resources :jobs
       resources :invites, only: [:new, :create]
       resources :categories
+
+      get 'locations' => 'locations#search'
 
       post 'messages/:id' => 'messages#create'
       resources :messages
