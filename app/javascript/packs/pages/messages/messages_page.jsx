@@ -204,17 +204,14 @@ class ShowSheet extends Sheet.Show {
 ///////////////
 
 class MessagesPage extends Page {
-  getInitState(props) {
-    return ({
+  constructor(props) {
+    super(props);
+
+    this.mergeState({
       fullDetail: true,
       nextId: null,
       prevId: null,
     });
-  }
-
-  constructor(props) {
-    super(props);
-    //this.onSetItems = this.setItems.bind(this);
   }
 
   name() {

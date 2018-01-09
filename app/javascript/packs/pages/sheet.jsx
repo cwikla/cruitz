@@ -56,14 +56,16 @@ class Item extends Pyr.UserReceiver {
 
 
 class Base extends Pyr.UserReceiver {
-  getInitState(...args) {
-    return  {};
+  mergeState(inState) {
+    this.state = Object.assign({}, this.state, inState);
   }
 
   constructor(...args) {
     super(...args);
 
-    this.state = Object.assign({ isLoading: false}, this.getInitState(...args));
+    this.state = {
+      isLoading: false,
+    };
 
     this.onClicks = {};
     this.onLoading = this.setLoading.bind(this);
@@ -253,14 +255,13 @@ class ModalForm extends Form {
 }
 
 class Wizard extends Base {
-  getInitState(...args) {
-    return  {
-      page: 0,
-    };
-  }
 
   constructor(...args) {
     super(...args);
+
+    this.mergeState({
+      page: 0
+    });
 
     this.stack = [0];
 

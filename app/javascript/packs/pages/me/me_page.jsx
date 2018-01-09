@@ -89,13 +89,12 @@ class MeForm extends Component {
 }
 
 class EditSheet extends Sheet.Edit {
-  getInitState(props) {
-    return {
-      open: false
-    };
-  }
+
   constructor(props) {
     super(props);
+    this.mergeState({
+      open: false
+    });
 
     this.onLogout = this.logout.bind(this);
   }

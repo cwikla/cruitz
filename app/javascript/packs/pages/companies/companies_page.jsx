@@ -388,12 +388,12 @@ class CompanyForm extends Component {
 
 
 class EditSheet extends Sheet.Edit {
-  getInitState(props, context) {
-    let st = super.getInitState(props, context);
-    console.log("COMPANY?");
-    console.log(context.user);
+  constructor(props, context) {
+    super(props, context);
 
-    return Object.assign({}, st, { company : context.user.company });
+    this.mergeState({ 
+      company : context.user.company 
+    });
   }
 
   success(data, textStatus, jqXHR) {

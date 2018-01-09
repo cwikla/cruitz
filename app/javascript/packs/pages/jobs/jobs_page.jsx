@@ -25,6 +25,7 @@ import {
 import {
   JOBS_URL,
   SEARCH_URL,
+  CATEGORIES_URL,
 
   NEW_ACTION,
   SHOW_ACTION
@@ -169,6 +170,21 @@ class JobForm extends Component {
     );
   }
 
+  renderCategories() {
+    let cats = this.props.categories;
+
+    if (!cats) {
+      return null;
+    }
+
+    return cats.map( (item, pos) => {
+      return (
+        <Pyr.Form.Option value={item.id} key={"cat_"+item.id}>{item.name}</Pyr.Form.Option>
+      );
+    })
+
+  }
+
   render() {
     let key = "job-form";
     let url = Pyr.URL(JOBS_URL);
@@ -203,10 +219,17 @@ class JobForm extends Component {
             <Pyr.Form.Label>Title</Pyr.Form.Label>
             <Pyr.Form.TextField placeholder= "Enter job title"/>
           </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="category">
+            <Pyr.Form.Label>Category</Pyr.Form.Label>
+            <Pyr.Form.Select>
+              { this.renderCategories() }
+            </Pyr.Form.Select>
+          </Pyr.Form.Group>
       
           <Pyr.Form.Group name="location">
             <Pyr.Form.Label>Location</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Enter location" />
+            <Pyr.Form.AutoComplete url={"/jobs/location"} multiple/>
           </Pyr.Form.Group>
       
           <Pyr.Form.Group name="time_commit">
@@ -398,11 +421,6 @@ class ShowSheet extends Sheet.ShowFull {
 }
 
 class NewSheet extends Sheet.New {
-  getInitState(props) {
-    return {
-    };
-  }
-
   success(data, textStatus, jqXHR) {
     this.props.onJobCreate(data.job);
     super.success(data, textStatus, jqXHR);
@@ -419,6 +437,7 @@ class NewSheet extends Sheet.New {
         onPreSubmit={this.onPreSubmit} 
         onPostSubmit={this.onPostSubmit} 
         onSuccess={this.onSuccess}
+        categories={this.props.categories}
       />
     );
   }
@@ -435,6 +454,13 @@ class NewSheet extends Sheet.New {
 }
 
 class JobsPage extends Page {
+  constructor(props) {
+    super(props);
+    this.mergeState({
+      categories: null
+    });
+  }
+
   name() {
     return "Jobs";
   }
@@ -445,6 +471,18 @@ class JobsPage extends Page {
 
   loadItems() {
     this.onSetItems(this.props.jobs);
+  }
+
+  componentWillMount() {
+    this.getJSON({
+      url: CATEGORIES_URL
+    }).done((data, textStatus, jqXHR) => {
+      this.setState({
+        categories: data.categories
+      });
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
   }
 
   indexSheet() {
@@ -482,6 +520,7 @@ class JobsPage extends Page {
         onSetAction={this.props.onSetAction}
         onSetUnaction={this.props.onSetUnaction}
         onLoadSelected={this.onLoadSelected}
+        categories={this.state.categories}
       />
     );
 

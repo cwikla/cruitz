@@ -9,6 +9,11 @@ import Util from './util';
 import Network from './network';
 import UI from './ui';
 
+import {
+  Typeahead,
+  AsyncTypeahead
+} from 'react-bootstrap-typeahead';
+
 class Form extends Network.Component {
   static childContextTypes = {
     model: PropTypes.string,
@@ -890,6 +895,79 @@ class FileSelector extends Child {
 
 }
 
+
+
+class AutoComplete extends Child {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      results: [],
+    };
+
+    this.onSearch = this.search.bind(this);
+    this.onLoading = this.loading.bind(this);
+  }
+
+  loading(isLoading) {
+    console.log("IS LOADING: " + isLoading);
+    this.setState({
+      isLoading
+    });
+  }
+
+  search(query) {
+    console.log("A: *******");
+    console.log(this.props.url);
+    let url = Util.PURL(this.props.url).set("q", query);
+    console.log(url);
+    console.log(url.parser.href);
+    console.log(url.toString());
+    console.log("B: *******");
+
+    Network.getJSON({
+      url : url,
+      onLoading : this.onLoading,
+    }).done((data, textStatus, jqXHR) => {
+      console.log("RESULTS");
+      console.log(data.results);
+      this.setState({
+        results: data.results
+      });
+    });
+  }
+
+  render() {
+    let clz = "form-control pyr-auto-complete";
+
+    let rest = Util.propsRemove(this.props, ["url"]);
+
+    return (
+      <AsyncTypeahead
+        emptyLabel=""
+        ignoreDiacritics
+        useCache={false}
+        caseSensitive={false}
+        onSearch={this.onSearch}
+        isLoading={this.state.isLoading}
+        {...Util.propsMergeClassName(rest, clz)}
+        options={this.state.results}
+        renderToken={(option, onRemove, index) => { 
+          return (
+            <UI.FancyButton
+                  key={"skb"+index}
+                  onClick={onRemove}
+            >{option}</UI.FancyButton>
+          );
+        }}
+      />
+    );
+  }
+}
+
+export default AutoComplete;
+
 const PyrForm = { 
   Form, 
   Group, 
@@ -903,7 +981,8 @@ const PyrForm = {
   SubmitButton, 
   Hidden,
   CheckBox,
-  FileSelector
+  FileSelector,
+  AutoComplete,
 };
 
 export { 

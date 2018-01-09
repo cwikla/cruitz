@@ -253,10 +253,12 @@ class InviteForm extends Component {
 
 class NewSheet extends Sheet.New {
 
-  getInitState(props) {
-    return  {
+  constructor(props) {
+    super(props);
+
+    this.mergeState({
       invite: null
-    };
+    });
   }
 
   getTemplate() {

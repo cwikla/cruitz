@@ -657,11 +657,13 @@ class CandidateTable extends Sheet.Index {
 }
 
 class CandidatesPage extends Page {
-  getInitState(props) {
-    return {
+  constructor(props) {
+    super(props);
+
+    this.mergeState({
       job: props.jobMap[props.itemId], // placeholder until we can fetch the full one
       fullDetail: false
-    };
+    });
   }
 
   name() {

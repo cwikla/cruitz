@@ -16,8 +16,6 @@ import {
 
 import Pyr from '../pyr/pyr';
 
-import AutoComplete from '../pyr/auto_complete';
-
 import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
@@ -413,9 +411,6 @@ class Dashboard extends Pyr.UserReceiver {
           reset
         >
           <Pyr.Form.Group name="search">
-            <AutoComplete 
-              url={MESSAGES_URL}
-            />
             <div onClick={this.onShowSlide}>
               <Pyr.UI.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
             </div>

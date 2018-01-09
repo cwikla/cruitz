@@ -51,9 +51,9 @@ class JobsController < ApplicationController
   end
 
   def lsearch
-    result = GeoName.search(params[:term]).map(&:name)
-    puts "***** RESULT #{result}"
-    render json: result
+    results = GeoName.search(params[:q]).map{ |x| [x.name, x.admin_code_1 || x.admin_name_1].join(", ")}.uniq
+    puts "***** RESULT #{results}"
+    render json: { results: results }
   end
 
   private

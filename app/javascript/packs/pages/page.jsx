@@ -13,8 +13,8 @@ import {
 } from './const';
 
 class Page extends Pyr.UserReceiver {
-  getInitState(...args) {
-    return {};
+  mergeState(inState) {
+    this.state = Object.assign({}, this.state, inState);
   }
 
   constructor(...args) {
@@ -23,13 +23,11 @@ class Page extends Pyr.UserReceiver {
     //console.log("PAGE PARAMS: ");
     //console.log(props);
 
-    let myState = {
+    this.state = {
       items: null,
       selected: null,
       fullDetail: false,
     };
-
-    this.state = Object.assign(myState, this.getInitState(...args));
 
     let jobs = this.props.jobs || [];
     this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});

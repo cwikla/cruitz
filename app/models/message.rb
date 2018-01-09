@@ -77,7 +77,7 @@ class Message < ApplicationRecord
 
     key="cand_thid"
     cache_fetch(key, force: clear) {
-      Message.where(candidate_id: cid).order(:id).pluck(:id)
+      Message.where(candidate_id: cid).select(:id).order(:id).map(&:id)
     }
   end
 

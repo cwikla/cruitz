@@ -10,6 +10,10 @@ class ApplicationRecord < ActiveRecord::Base
   #include Pyr::Base::UuidHelp
   #include Hashid
 
+  def self.ids
+    select(:id).map(&:id).uniq
+  end
+
   def self.hashid(hid)
     return hid
   end
