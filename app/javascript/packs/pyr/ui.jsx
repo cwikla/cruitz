@@ -12,6 +12,7 @@ import {
 import Util from './util';
 import Scroll from './scroll'
 import PieChart from './pie_chart';
+import Attachment from './attachment';
 
 import {
   Route,
@@ -209,7 +210,7 @@ class ImageFile extends Component {
   render() {
     let ftype = this.getType().toLowerCase();
 
-    if (!Util.isImageType(this.props.file || this.props.contentType)) {
+    if (!Attachment.isImageType(this.props.file || this.props.contentType)) {
       return (
         <Icon name={"file-" + ftype + "-o"}/>
       );

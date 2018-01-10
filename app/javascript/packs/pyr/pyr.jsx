@@ -61,13 +61,13 @@ class RouterProps extends Component {
           };
 
           if (!sendProps.page && dashboard) {
-            let dest = Util.PURL(dashboard);
+            let dest = Util.URL(dashboard);
             //console.log("************ REDIRECT TO");
             //console.log(dest);
             //console.log(dest.toString());
             //console.log("+++++++++++");
             return (
-              <Redirect to={Util.PURL(dashboard).toString()}/>
+              <Redirect to={Util.URL(dashboard).toString()}/>
             );
           }
   
@@ -147,7 +147,7 @@ const Pyr = {
 
   Method : Network.Method,
   ClassNames : Util.ClassNames,
-  URL : Util.PURL,
+  URL : Util.URL,
 
   Network,
 

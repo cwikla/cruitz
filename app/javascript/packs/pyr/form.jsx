@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import Util from './util';
 import Network from './network';
 import UI from './ui';
+import Attachment from './attachment';
 
 import {
   Typeahead,
@@ -616,7 +617,7 @@ class FileSelector extends Child {
     console.log(files);
 
     Array.from(files).forEach((f) => {
-      if (!Util.isImageType(f)) {
+      if (!Attachment.isImageType(f)) {
         console.log("BUMMER");
         return false;
       }
@@ -682,7 +683,7 @@ class FileSelector extends Child {
     }
 
     let result = Array.from(files).reduce((arr, f) => {
-      if (Util.isImageType(f)) {
+      if (Attachment.isImageType(f)) {
         console.log("PUSHING");
         arr.push(f);
         console.log(arr);
@@ -766,7 +767,7 @@ class FileSelector extends Child {
 
       me.setInfo(file, null);
 
-      Util.S3Put(file).done((info) => {
+      Attachment.S3Put(file).done((info) => {
         console.log("S3PUT RESULT");
         console.log(info);
 
@@ -920,7 +921,7 @@ class AutoComplete extends Child {
   search(query) {
     console.log("A: *******");
     console.log(this.props.url);
-    let url = Util.PURL(this.props.url).set("q", query);
+    let url = Util.URL(this.props.url).set("q", query);
     console.log(url);
     console.log(url.parser.href);
     console.log(url.toString());

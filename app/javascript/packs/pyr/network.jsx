@@ -32,7 +32,7 @@ function getJSON(stuff) {
   let method = stuff.method || stuff.type || Method.GET;
 
   if (typeof url == 'string') {
-    url = Util.PURL(url);
+    url = Util.URL(url);
   }
 
   data = data || url.data().toString();

@@ -441,7 +441,7 @@ function times(x,f) {
 }
 
 const Util = {
-  PURL,
+  URL : PURL,
   ClassNames,
   summarize,
   friendlyDate,

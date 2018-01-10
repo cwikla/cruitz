@@ -20,7 +20,7 @@ function convertUint8ArrayToBinaryString(u8Array) {
 
 function getSignedURL(file) {
   return Network.getJSON({
-    url : PURL("/upload_url"),
+    url : Util.URL("/upload_url"),
     data : { upload: { name : file.name } },
   });
 }
