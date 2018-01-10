@@ -297,11 +297,13 @@ class EditSheet extends Sheet.Edit {
   }
 
   render() {
+/*
     if (!this.user().company || !this.user().company.name) {
       return (
         <Redirect to="/company/new" />
       );
     }
+*/
 
     return super.render();
   }
