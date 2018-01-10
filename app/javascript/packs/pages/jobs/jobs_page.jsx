@@ -446,11 +446,13 @@ class NewSheet extends Sheet.New {
   }
 
   render() {
+/*
     if (!this.user().company || !this.user().company.name) {
       return (
         <Redirect to="/company/new" />
       );
     }
+*/
 
     return super.render();
   }
