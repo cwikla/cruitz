@@ -27,6 +27,7 @@ import {
   SEARCH_URL,
   CATEGORIES_URL,
   LOCATIONS_URL,
+  COMPANY_URL,
 
   NEW_ACTION,
   SHOW_ACTION
@@ -186,6 +187,24 @@ class JobForm extends Component {
 
   }
 
+  renderCompany() {
+    if (true || !this.props.company || !this.props.company.name) {
+      return (
+        <Pyr.Form.Group name="company" key="company">
+          <Pyr.Form.Label>Company</Pyr.Form.Label>
+            <Link to={Pyr.URL(COMPANY_URL).toString()}><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Company</Pyr.UI.PrimaryButton></Link>
+        </Pyr.Form.Group>
+      );
+    }
+
+    return (
+      <Pyr.Form.Group name="company" key="company">
+        <Pyr.Form.Label>Company</Pyr.Form.Label> <h4>{ this.props.company.name }</h4>
+      </Pyr.Form.Group>
+    );
+
+  }
+
   render() {
     let key = "job-form";
     let url = Pyr.URL(JOBS_URL);
@@ -215,7 +234,9 @@ class JobForm extends Component {
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
         >
-      
+
+          { this.renderCompany() }
+
           <Pyr.Form.Group name="title">
             <Pyr.Form.Label>Title</Pyr.Form.Label>
             <Pyr.Form.TextField placeholder= "Enter job title"/>
@@ -287,6 +308,7 @@ class EditSheet extends Sheet.Edit {
   renderForm() {
     return (
       <JobForm
+        company={this.user().company}
         selected={this.props.selected}
         onPreSubmit={this.onPreSubmit}
         onPostSubmit={this.onPostSubmit}
@@ -375,20 +397,11 @@ class IndexSheet extends Sheet.Index {
     );
   }   
 
-  renderButtons() {
-    return(
-      <div className="d-flex flx-row flx-1 flx-end">
-        <Pyr.UI.Button onClick={this.onAddJob}><Pyr.UI.Icon name="plus">Add Job</Pyr.UI.Icon></Pyr.UI.Button>
-      </div>
-    );
-  }
-
-
   renderHeader() {
     return (
       <div className="jobs-index-header">
           <div className="job-new p-1 d-flex flx-end">
-              <Link to="/jobs/new"><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Job</Pyr.UI.PrimaryButton></Link>
+              <Link to={Pyr.URL(JOBS_URL).push("new").toString()}><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Job</Pyr.UI.PrimaryButton></Link>
           </div>
       </div>
     );
@@ -437,6 +450,7 @@ class NewSheet extends Sheet.New {
   renderForm() { 
     return ( 
       <JobForm 
+        company={this.user().company}
         onPreSubmit={this.onPreSubmit} 
         onPostSubmit={this.onPostSubmit} 
         onSuccess={this.onSuccess}
