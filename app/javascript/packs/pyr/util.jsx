@@ -1,10 +1,8 @@
 
-import React, {
-  Component,
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
+import Component from './base';
 import uuid from 'uuid';
 
 const ONE_MINUTE = (60 * 1000);
@@ -357,6 +355,10 @@ function friendlyDate(date, longOnly=false) {
   );
 }
 
+function merge(a, b) {
+  return Object.assign({}, a, b);
+}
+
 function squish(str) {
   //console.log(str);
   return str.replace(" ", "-");
@@ -451,6 +453,7 @@ const Util = {
   friendlyDate,
   capFirstLetter,
   squish,
+  merge,
   childrenWithProps,
   propsRemove,
   propsMerge,

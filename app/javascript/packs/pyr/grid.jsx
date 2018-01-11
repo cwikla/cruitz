@@ -1,9 +1,8 @@
 
-import React, {
-  Component
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
+import Component from './base';
 import Pyr from '../pyr/pyr';
 
 const ContainerFluid = (props) => (

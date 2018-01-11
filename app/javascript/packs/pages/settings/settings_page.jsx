@@ -1,11 +1,11 @@
 import React, { 
-  Component
 } from 'react';
 
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 import Page from '../page';
 import Sheet from '../sheet';
 import {

@@ -1,14 +1,13 @@
 
-import React, {
-  Component
-} from 'react';
 
+import React from 'react';
 import PropTypes from 'prop-types';
 import { 
   Transition,
   CSSTransition,
 } from 'react-transition-group';
 
+import Component from './base';
 import Util from './util';
 import Scroll from './scroll'
 import PieChart from './pie_chart';
@@ -148,9 +147,9 @@ class ImageFile extends Component {
 
     let localUrl = this.props.file ? URL.createObjectURL(this.props.file) : null;
 
-    this.state = {
+    this.initState({
       localUrl,
-    };
+    });
 
     this.onLoad = this.loaded.bind(this);
   }
@@ -258,9 +257,9 @@ class Collapse extends Component {
 
     this.onToggle = this.toggle.bind(this);
 
-    this.state = {
+    this.initState({
       open: props.open || false
-    };
+    });
   }
 
   toggle(e) {
@@ -304,9 +303,9 @@ class MagicDate extends Component {
     super(props);
     this.onUpdateMe = this.updateMe.bind(this);
 
-    this.state = {
+    this.initState({
       currentTime: new Date()
-    };
+    });
 
     this.interval = null;
   }
@@ -362,9 +361,9 @@ const NoticeContextTypes = {
 class CSSAnimation extends Component {
   constructor(props) {
     super(props)
-    this.state = {
+    this.initState({
       go: false
-    };
+    });
     this.delayTimer = null;
   }
 
@@ -498,9 +497,9 @@ class NoticeProvider extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       notice: null
-    };
+    });
 
     this.onSetNotice = this.setNotice.bind(this);
     this.onHideNotice = this.hideNotice.bind(this);
@@ -527,9 +526,9 @@ class NoticeReceiver extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       show: false
-    };
+    });
 
     this.timer = null;
 
@@ -627,9 +626,9 @@ class Modal extends Component {
   constructor(...args) {
     super(...args);
 
-    this.state = {
+    this.initState({
       show : false
-    };
+    });
 
     this.onClose = this.close.bind(this);
     this.onKeyPress = this.keyPress.bind(this);

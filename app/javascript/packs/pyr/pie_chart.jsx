@@ -21,12 +21,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //
 
-import React, {
-  Component
-} from 'react';
 
 import PropTypes from 'prop-types';
 
+import Component from './base';
 import Util from './util';
 
 const RAD_CIRC = Math.PI * 2;
@@ -101,9 +99,9 @@ class PieChart extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       size: 0
-    };
+    });
   }
 
   componentDidMount() {

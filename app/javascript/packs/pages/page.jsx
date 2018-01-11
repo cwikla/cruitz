@@ -1,11 +1,11 @@
 
-import React, {
-  Component
-} from 'react';
-
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import Pyr from '../pyr/pyr';
+import Pyr, {
+  Component
+} from '../pyr/pyr';
+
 const ClassNames = Pyr.ClassNames;
 
 import {
@@ -13,21 +13,17 @@ import {
 } from './const';
 
 class Page extends Pyr.UserReceiver {
-  mergeState(inState) {
-    this.state = Object.assign({}, this.state, inState);
-  }
-
   constructor(...args) {
     super(...args);
 
     //console.log("PAGE PARAMS: ");
     //console.log(props);
 
-    this.state = {
+    this.initState({
       items: null,
       selected: null,
       fullDetail: false,
-    };
+    });
 
     let jobs = this.props.jobs || [];
     this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});

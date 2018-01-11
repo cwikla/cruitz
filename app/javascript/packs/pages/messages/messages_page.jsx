@@ -1,16 +1,15 @@
-import React, { 
-  Component
-} from 'react';
 
+import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import {
   Link
 } from 'react-router-dom';
 
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
 
@@ -207,7 +206,7 @@ class MessagesPage extends Page {
   constructor(props) {
     super(props);
 
-    this.mergeState({
+    this.initState({
       fullDetail: true,
       nextId: null,
       prevId: null,

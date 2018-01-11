@@ -1,5 +1,4 @@
 import React, { 
-  Component
 } from 'react';
 
 import {
@@ -9,9 +8,10 @@ import {
 
 
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 import Page from '../page';
 import Sheet from '../sheet';
 import {
@@ -21,19 +21,82 @@ import {
 } from '../const';
 
 class PasswordModal extends Pyr.UI.Modal {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      same: true
+    });
+
+    this.onCheckValid = this.checkValid.bind(this);
+  }
+
+  same() {
+    let curVal = this.passwordField.value();
+
+    if (curVal.length && (curVal == this.verifyField.value())) {
+      return true;
+    }
+
+    return false;
+  }
+
+  valid() {
+    let curVal = this.passwordField.value();
+    return (curVal.length > 6);
+  }
+  
+  checkValid() {
+    this.setState({
+      valid: this.valid()
+    });
+  }
+
+  checkSame() {
+    this.setState({
+      same: this.same()
+    });
+  }
 
   renderInner() {
     return (
-        <div >
-          Put a password form here.
-          <div>ANother one</div>
-          <div>ANother one</div>
-          <div>ANother one</div>
-          <div>ANother one</div>
-          <div>ANother one</div>
-          <div>ANother one</div>
-          <div>ANother one</div>
-        </div>
+      <div>
+        <Pyr.Form.Form
+          model="User"
+          object={this.props.me}
+          url={this.props.url}
+          method={Pyr.Method.PUT}
+          id="password-form"
+          ref={(node) => { this.form = node; }}
+          onPreSubmit={this.props.onPreSubmit}
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.props.onSuccess}
+          onError={this.props.onError}
+          className={Pyr.Util.ClassNames("form-parent section").push(!this.state.same ? "unmatches" : "")}
+        >
+          <div className="flx-row">
+            <Pyr.Grid.Col>
+              <Pyr.Form.Group name="password">
+                <Pyr.Form.PasswordField 
+                  placeholder= "Password"
+                  ref={node => this.passwordField = node}
+                  onChange={this.onCheckValid}
+                />
+              </Pyr.Form.Group>
+            </Pyr.Grid.Col>
+
+            <Pyr.Grid.Col>
+              <Pyr.Form.Group name="verify_password">
+                <Pyr.Form.PasswordField 
+                  placeholder= "Verify Password"
+                  ref={node => this.verifyField = node}
+                  onChange={this.onCheckSame}
+                />
+              </Pyr.Form.Group>
+            </Pyr.Grid.Col>
+          </div>
+        </Pyr.Form.Form>
+      </div>
     );
   }
 }
@@ -63,6 +126,8 @@ class MeForm extends Component {
       <div className="form-parent section">
         <PasswordModal
           ref={node => this.password = node}
+          url={url}
+          me={this.props.me}
         />
         <Pyr.Form.Form
           model="User"
@@ -88,18 +153,18 @@ class MeForm extends Component {
            <Pyr.Grid.Col>
              <div className="flx-row">
                <Pyr.Grid.Col>
-               <Pyr.Form.Group name="first_name">
-                 <Pyr.Form.Label>First Name</Pyr.Form.Label>
-                 <Pyr.Form.TextField placeholder= "First Name"/>
-               </Pyr.Form.Group>
+                 <Pyr.Form.Group name="first_name">
+                   <Pyr.Form.Label>First Name</Pyr.Form.Label>
+                   <Pyr.Form.TextField placeholder= "First Name"/>
+                 </Pyr.Form.Group>
                </Pyr.Grid.Col>
  
                <Pyr.Grid.Col>
-               <Pyr.Form.Group name="last_name">
-                 <Pyr.Form.Label>Last Name</Pyr.Form.Label>
-                 <Pyr.Form.TextField placeholder= "Last Name"/>
-               </Pyr.Form.Group>
-               </Pyr.Grid.Col>
+                 <Pyr.Form.Group name="last_name">
+                   <Pyr.Form.Label>Last Name</Pyr.Form.Label>
+                   <Pyr.Form.TextField placeholder= "Last Name"/>
+                 </Pyr.Form.Group>
+                 </Pyr.Grid.Col>
              </div>
  
              <Pyr.Grid.Col>
@@ -127,7 +192,7 @@ class EditSheet extends Sheet.Edit {
 
   constructor(props) {
     super(props);
-    this.mergeState({
+    this.initState({
       open: false
     });
 

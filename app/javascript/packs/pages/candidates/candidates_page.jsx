@@ -1,11 +1,10 @@
-import React, { 
-  Component
-} from 'react';
-
+import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component 
+} from '../../pyr/pyr';
+
 const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
@@ -420,10 +419,10 @@ class CandidateCVItem extends Component {
 class ShowSheet extends Sheet.ShowFull {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initState({
       job: null,
       showMessages: true
-    };
+    });
 
   }
 
@@ -660,7 +659,7 @@ class CandidatesPage extends Page {
   constructor(props) {
     super(props);
 
-    this.mergeState({
+    this.initState({
       job: props.jobMap[props.itemId], // placeholder until we can fetch the full one
       fullDetail: false
     });

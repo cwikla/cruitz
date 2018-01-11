@@ -1,18 +1,18 @@
 import React, { 
-  Component
 } from 'react';
 
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import {
-  BrowserRouter as Router,
   Link,
   Redirect
 } from 'react-router-dom';
 
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
@@ -122,9 +122,9 @@ class JobForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       skills: []
-    };
+    });
 
     this.onAddSkill = this.addSkill.bind(this);
     this.onRemoveSkill = this.removeSkill.bind(this);
@@ -475,7 +475,7 @@ class NewSheet extends Sheet.New {
 class JobsPage extends Page {
   constructor(props) {
     super(props);
-    this.mergeState({
+    this.initState({
       categories: null
     });
   }

@@ -1,18 +1,14 @@
-import React, { 
-  Component
-} from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import {
-  BrowserRouter as Router,
   Link,
-  Redirect
 } from 'react-router-dom';
 
-
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
@@ -126,9 +122,9 @@ class CompanyLinksForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       links: []
-    };
+    });
 
     this.onAddLink = this.addLink.bind(this);
     this.onRemoveLink = this.removeLink.bind(this);
@@ -238,9 +234,9 @@ class CompanyForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       links: []
-    };
+    });
 
     this.onAddLink = this.addLink.bind(this);
     this.onRemoveLink = this.removeLink.bind(this);
@@ -392,7 +388,7 @@ class EditSheet extends Sheet.Edit {
   constructor(props, context) {
     super(props, context);
 
-    this.mergeState({ 
+    this.initState({ 
       company : context.user.company 
     });
   }

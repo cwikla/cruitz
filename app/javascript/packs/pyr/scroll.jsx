@@ -1,10 +1,8 @@
 
-import React, {
-  Component
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
+import Component from './base';
 import Util from './util';
 
 class Scroll extends Component {

@@ -1,15 +1,15 @@
 
-import React, {
-  Component
-} from 'react';
 
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  BrowserRouter as Router,
   Route,
   Redirect
 } from 'react-router-dom';
 
+import Component from './base';
 import Util from './util';
 
 import { 
@@ -72,9 +72,9 @@ class RouterProps extends Component {
           }
   
           return (
-            <UI.RouterProvider route={sendProps} location={props.location}  history={props.history}>
-              <AComponent {...rest} {...sendProps} />
-            </UI.RouterProvider>
+              <UI.RouterProvider route={sendProps} location={props.location}  history={props.history}>
+                <AComponent {...rest} {...sendProps} />
+              </UI.RouterProvider>
           );
         }}
       />
@@ -107,9 +107,9 @@ class UserProvider extends Network.Component {
 
   constructor(props) {
     super(props);
-    this.state =  {
+    this.initState({
       user: null
-    };
+    });
 
   }
 
@@ -143,6 +143,7 @@ class UserProvider extends Network.Component {
 }
 
 const Pyr = { 
+  Component,
   Util,
 
   Method : Network.Method,
@@ -163,4 +164,6 @@ const Pyr = {
   Grid,
   Form, 
 };
+
+export { Component };
 export default Pyr;

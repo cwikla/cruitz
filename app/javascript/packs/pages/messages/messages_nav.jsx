@@ -1,9 +1,5 @@
 
-import React, {
-  Component
-} from 'react';
-
-import ReactDOM from 'react-dom';
+import React from 'react';
 
 import {
   Link,
@@ -13,7 +9,9 @@ import {
   MESSAGES_URL,
 } from '../const';
 
-import Pyr from '../../pyr/pyr';
+import Pyr, { 
+  Component
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
 class NavMenuButton extends Component {

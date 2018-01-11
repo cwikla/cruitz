@@ -1,7 +1,4 @@
-import React, {
-  Component
-} from 'react';
-
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -9,23 +6,21 @@ import {
   Route
 } from 'react-router-dom';
 
-import Pyr from '../pyr/pyr';
+import Pyr, {
+  Component
+} from '../pyr/pyr';
 
 class Item extends Pyr.UserReceiver {
 }
 
 
 class Base extends Pyr.UserReceiver {
-  mergeState(inState) {
-    this.state = Object.assign({}, this.state, inState);
-  }
-
   constructor(...args) {
     super(...args);
 
-    this.state = {
+    this.initState({
       isLoading: false,
-    };
+    });
 
     this.onClicks = {};
     this.onLoading = this.setLoading.bind(this);

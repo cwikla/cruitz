@@ -1,10 +1,9 @@
 
-import React, {
-  Component
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
+import Component from './base';
 import Util from './util';
 import Network from './network';
 import UI from './ui';
@@ -28,10 +27,11 @@ class Form extends Network.Component {
     console.log("FORM OBJECT");
     console.log(props);
 
-    this.state = {
+    this.initState({
       isLoading: false,
       errors: null,
-    };
+      valid: true,
+    });
 
     this.onSubmit = this.submitHandler.bind(this);
   }
@@ -73,6 +73,10 @@ class Form extends Network.Component {
 
     if (this.state.isLoading) {
       return;
+    }
+
+    if (!this.state.valid) {
+      return false;
     }
 
     let $item = $(this.form);
@@ -175,10 +179,10 @@ class Form extends Network.Component {
 
   render() {
     let rest = Util.propsRemove(this.props, ["reset", "onPreSubmit", "onPostSubmit", "model", "object", "url", "onSuccess", "onError"]);
-
+    
     return (
       <form ref={(node) => {this.form = node;}} 
-        {...rest}
+        {...Util.propsMergeClassName(rest, Util.ClassNames(!this.state.valid ? "invalid" : ""))}
         onSubmit={this.onSubmit}
       >
         {this.props.children}
@@ -201,9 +205,9 @@ class Group extends Component {
     super(props);
     //alert("PFG");
 
-    this.state = {
+    this.initState({
       errorString: null
-    };
+    });
       
   }
 
@@ -334,12 +338,16 @@ class Label extends Child {
 class TextField extends Child {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initState({
       value: ""
-    };
+    });
 
     this.onTextChange = this.textChange.bind(this);
     this.onKeyUp = this.keyUp.bind(this);
+  }
+
+  value() {
+    return this.state.value;
   }
 
   componentWillMount() {
@@ -384,7 +392,12 @@ class TextField extends Child {
       return;
     }
 
-    this.setText(e.target.value || "");
+    let val = e.target.value || "";
+
+    this.setText(val);
+    if (this.props.onChange) {
+      this.props.onChange(e);
+    }
   }
 
   render() {
@@ -464,9 +477,9 @@ class Hidden extends Child {
 class TextArea extends Child {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initState({
       value: ""
-    };
+    });
 
     this.onTextChange = this.textChange.bind(this);
   }
@@ -503,9 +516,9 @@ class TextArea extends Child {
 class CheckBox extends Child {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initState({
       checked: false
-    };
+    });
 
     this.onChange = this.change.bind(this);
   }
@@ -557,12 +570,12 @@ class CheckBox extends Child {
 class FileSelector extends Child {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initState({
       files: [],
       infos: {},
       dragging: false,
       valid: true,
-    };
+    });
 
     this.onDragEnter = this.dragging.bind(this, true);
     this.onDragLeave = this.dragging.bind(this, false);
@@ -902,10 +915,10 @@ class AutoComplete extends Child {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       isLoading: false,
       results: [],
-    };
+    });
 
     this.onSearch = this.search.bind(this);
     this.onLoading = this.loading.bind(this);

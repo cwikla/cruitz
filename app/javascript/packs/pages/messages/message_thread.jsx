@@ -1,14 +1,12 @@
-import React, { 
-  Component
-} from 'react';
-
-import ReactDOM from 'react-dom';
+import React from 'react';
 
 import {
   Link,
 } from 'react-router-dom';
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
 import ThreadItem, {
@@ -244,9 +242,9 @@ class MessageThread extends Pyr.UserReceiver {
 
   constructor(props) {
     super(props);
-    this.state = {
+    this.initState({
       thread: null
-    };
+    });
 
     this.onLoading = null;
     this.onSuccess = this.success.bind(this);

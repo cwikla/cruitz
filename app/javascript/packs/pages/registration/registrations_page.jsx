@@ -1,11 +1,11 @@
 import React, { 
-  Component
 } from 'react';
 
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
@@ -98,9 +98,9 @@ class RegistrationForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       skills: []
-    };
+    });
 
   }
 

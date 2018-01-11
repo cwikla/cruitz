@@ -13,11 +13,19 @@ class UsersController < ApplicationController
     render json: @recruiter, serializer: RecruiterSerializer, reviews: true
   end
 
+  def password
+    pwd = params.require(:user).require(:password)
+    current_user.password = pwd
+    return current_user.save
+
+  end
   private
 
   def user_params
     params.require(:user).permit(:first_name, :last_name)
   end
+
+  
 
 
 end

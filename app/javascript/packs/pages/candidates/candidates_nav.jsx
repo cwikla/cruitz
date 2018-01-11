@@ -1,20 +1,18 @@
 
-import React, {
-  Component
-} from 'react';
-
-import ReactDOM from 'react-dom';
+import React from 'react';
 
 import {
   Link,
 } from 'react-router-dom';
 
+import Pyr, {
+  Component 
+} from '../../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
+
 import {
   CANDIDATES_URL,
 } from '../const';
-
-import Pyr from '../../pyr/pyr';
-const ClassNames = Pyr.ClassNames;
 
 class NavMenuButton extends Component {
   render() {
@@ -40,9 +38,9 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       filter: "all"
-    };
+    });
   }
 
   render () {

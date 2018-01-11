@@ -1,8 +1,5 @@
 
-import React, {
-  Component
-} from 'react';
-
+import Component from './base';
 import uuid from 'uuid';
 import Util from './util';
 

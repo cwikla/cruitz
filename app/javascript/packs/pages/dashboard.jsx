@@ -1,20 +1,18 @@
-import React, {
-  Component,
-} from 'react';
-
+import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import { 
   render 
 } from 'react-dom';
 
 import {
-  BrowserRouter as Router,
   Link,
-  Redirect
+  Redirect,
+  BrowserRouter as Router,
 } from 'react-router-dom';
 
-import Pyr from '../pyr/pyr';
+import Pyr, {
+  Component 
+} from '../pyr/pyr';
 
 import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
@@ -173,7 +171,7 @@ class Dashboard extends Pyr.UserReceiver {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initState({
       action: INDEX_ACTION,
       jobs: [],
       jobMap: {},
@@ -181,7 +179,7 @@ class Dashboard extends Pyr.UserReceiver {
       buttonItemCount: {},
       notice: null,
       slide: false
-    };
+    });
 
     this.lastPage = null;
 

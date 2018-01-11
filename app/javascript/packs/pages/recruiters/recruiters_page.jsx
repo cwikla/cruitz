@@ -1,18 +1,16 @@
 import React, { 
-  Component
 } from 'react';
 
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import {
   Link,
   Redirect
 } from 'react-router-dom';
 
-
-
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
 
@@ -256,7 +254,7 @@ class NewSheet extends Sheet.New {
   constructor(props) {
     super(props);
 
-    this.mergeState({
+    this.initState({
       invite: null
     });
   }

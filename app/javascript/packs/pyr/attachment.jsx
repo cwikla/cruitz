@@ -1,10 +1,7 @@
 
-import React, {
-  Component
-} from 'react';
-
 import PropTypes from 'prop-types';
 
+import Component from './base';
 import Util from './util';
 import Network from './network';
 

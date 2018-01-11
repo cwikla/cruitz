@@ -1,11 +1,9 @@
 
-import React, { 
+import React from 'react';
+
+import Pyr, {
   Component
-} from 'react';
-
-import ReactDOM from 'react-dom';
-
-import Pyr from '../../pyr/pyr';
+} from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 import Sheet from '../sheet';
 import {
