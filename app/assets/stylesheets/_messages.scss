@@ -18,6 +18,11 @@
   .index .sheet {
 
     .message-item {
+      &.new {
+        .title {
+          font-weight: bold;
+        }
+      }
     }
   }
   

@@ -70,7 +70,7 @@ class RouterReceiver extends Component {
   }
 
   goBack() {
-    console.log(this.context.history.goBack());
+    this.context.history.goBack();
   }
 }
 
@@ -623,22 +623,98 @@ class NoticeReceiver extends Component {
   }
 }
 
+class Modal extends Component {
+  constructor(...args) {
+    super(...args);
+
+    this.state = {
+      show : false
+    };
+
+    this.onClose = this.close.bind(this);
+    this.onKeyPress = this.keyPress.bind(this);
+    this.onNoProp = this.noProp.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.onKeyPress);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.onKeyPress);
+  }
+
+  show(e) {
+    console.log("MODAL SHOW");
+    if (e) {
+      e.preventefault();
+    }
+    this.setState({
+      show: true
+    });
+  }
+
+  close(e) {
+    //this.context.history.goBack();
+    console.log("CLOSING");
+
+    if (e) {
+      e.preventDefault();
+    }
+    this.setState({
+      show: false
+    });
+
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
+  noProp(e) {
+    e.stopPropagation();
+  }
+
+  keyPress(e) {
+    console.log("KEYPRESS");
+    console.log(e.keyCode);
+    if (e.keyCode === ESCAPE_KEY) {
+      e.preventDefault();
+      this.close(e);
+    }
+  }
+
+  renderInner() {
+    console.log("Modal: renderInner");
+  }
+
+  render() {
+    console.log("MODAL: " + this.state.show);
+    if (!this.state.show) {
+      return null;
+    }
+
+    return (
+      <div
+        className={ClassNames("pyr-modal").push(this.props.className)}
+        ref={(node) => this.me = node }
+        onClick={this.onClose}
+      >
+          <div className="modal-inner"
+            onClick={this.noProp}
+          >
+            { this.renderInner() }
+          </div>
+      </div>
+    );
+  }
+}
 
 
 class FullScreen extends Component {
   constructor(props) {
     super(props);
 
-    this.onEscape = this.escPress.bind(this);
     this.onClose = this.close.bind(this);
-  }
-
-  componentDidMount() {
-    document.addEventListener("keydown", this.onEscape);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this.onEscape);
   }
 
   close(e) {
@@ -650,24 +726,16 @@ class FullScreen extends Component {
     }
   }
 
-  escPress(e) {
-    if (e.keyCode === ESCAPE_KEY) {
-      if (this.props.onEscape) {
-        this.props.onEscape();
-      }
-    }
-  }
-
   renderHeader() {
     return null;
   }
 
-  renderInner() {
+  renderNavBar() {
+    if (this.props.noNavBar) {
+      return null;
+    }
+
     return (
-      <div 
-        className={ClassNames("fullscreen flx-col flx-1").push(this.props.className)}
-        ref={(node) => this.me = node }
-      >
         <div 
           className="navbar flx-row controls align-items-center"
           onClick={this.onClose}
@@ -678,34 +746,23 @@ class FullScreen extends Component {
               ><IconButton name="arrow-left">Back</IconButton></BackButton>
           </div>
         </div>
-        {  this.renderHeader() }
-        <div className="content flx-col flx-1">
+    );
+  }
+
+  renderInner() {
+    return (
+      <div 
+        className={ClassNames("pyr-fullscreen flx-col flx-1").push(this.props.className)}
+        ref={(node) => this.me = node }
+      >
+        { this.renderNavBar() }
+        { this.renderHeader() }
+        <div className="content">
           {this.props.children}
         </div>
       </div>
     );
   }
-
-/*
-  renderOld() {
-    return (
-      <Transition
-        in={true}
-        timeout={this.props.duration || DURATION_TIME}
-        appear
-      >
-        {(state) => {
-          console.log("STATE: " + state);
-          return (
-            <div className={ClassNames("fullscreen fade-in").push("fade-in-" + state)}>
-              { this.renderInner() }
-            </div>
-          );
-        }}
-      </Transition>
-    );
-  }
-*/
 
   render() {
     return this.renderInner();
@@ -740,6 +797,7 @@ const UI = {
   IconButton,
   Fade,
   FullScreen,
+  Modal,
   Slide,
   Empty,
   ChildSelector,

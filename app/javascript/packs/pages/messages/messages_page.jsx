@@ -74,7 +74,7 @@ class MessageItem extends Sheet.Item {
       allClass.push("unread");
     }
 
-    if (message.is_root) {
+    if (!message.read_at) {
       allClass.push("new");
     }
 
@@ -94,7 +94,7 @@ class MessageItem extends Sheet.Item {
         <Grid.Column className="item-content">
           <Grid.Row className=""> 
             <Grid.Column className="col-8">
-              <Header className="title" message={message} job={job} isNew={message.is_root}/>
+              <Header className="title" message={message} job={job} isNew={!message.read_at}/>
             </Grid.Column>
             <Grid.Column className="col-4 created-at text-right">
               <Pyr.UI.MagicDate date={message.created_at} />
@@ -317,7 +317,7 @@ class MessagesPage extends Page {
   }
 
   getNext(item) {
-    if ((item == null) || (this.state.items.length == 1)) {
+    if ((item == null) || !this.state.items || (this.state.items.length == 1)) {
       return null;
     }
 
@@ -330,7 +330,7 @@ class MessagesPage extends Page {
   }
 
   getPrevious(item) {
-    if ((item == null) || (this.state.items.length == 1)) {
+    if ((item == null) || !this.state.items || (this.state.items.length == 1)) {
       return null;
     }
 

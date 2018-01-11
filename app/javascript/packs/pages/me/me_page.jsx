@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 
 import {
+  Link,
   Redirect
 } from 'react-router-dom';
 
@@ -19,7 +20,38 @@ import {
   DESTROY_SESSION_URL,
 } from '../const';
 
+class PasswordModal extends Pyr.UI.Modal {
+
+  renderInner() {
+    return (
+        <div >
+          Put a password form here.
+          <div>ANother one</div>
+          <div>ANother one</div>
+          <div>ANother one</div>
+          <div>ANother one</div>
+          <div>ANother one</div>
+          <div>ANother one</div>
+          <div>ANother one</div>
+        </div>
+    );
+  }
+}
+
+
 class MeForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onShowPassword = this.showPassword.bind(this);
+  }
+
+  showPassword(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    this.password.show();
+  }
   
   render() {
     let key = "me-form";
@@ -29,6 +61,9 @@ class MeForm extends Component {
 
     return (
       <div className="form-parent section">
+        <PasswordModal
+          ref={node => this.password = node}
+        />
         <Pyr.Form.Form
           model="User"
           object={this.props.me}
@@ -77,7 +112,7 @@ class MeForm extends Component {
              <Pyr.Grid.Col>
                <Pyr.Form.Group name="password">
                  <Pyr.Form.Label>Password</Pyr.Form.Label>
-                 <Pyr.Form.PasswordField />
+                 <Pyr.UI.PrimaryButton onClick={this.onShowPassword}>Change Password</Pyr.UI.PrimaryButton>
                </Pyr.Form.Group>
              </Pyr.Grid.Col>
             </Pyr.Grid.Col>
@@ -165,6 +200,13 @@ class MePage extends Page {
   }
 
   getAction() {
+    console.log("GET ACTION");
+    console.log(this.props.action);
+    if (this.props.action && (this.props.action.toLowerCase() == 'password')) {
+      console.log("RETURNING PASSWORD");
+      return this.props.action;
+    }
+
     return EDIT_ACTION;
   }
 
@@ -173,8 +215,11 @@ class MePage extends Page {
   }
 
   actionSheet(action) {
+    let sheet = Sheet.sheetComponent(action || EDIT_ACTION);
+    let ActionSheet = eval(sheet);
+
     return (
-      <EditSheet
+      <ActionSheet
         {...this.props}
         selected={this.getSelected()}
         onAction={this.onAction}

@@ -11,46 +11,6 @@ import {
 
 import Pyr from '../pyr/pyr';
 
-class Modal extends Pyr.UserReceiver {
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      show: false
-    };
-
-    this.onClose = this.close.bind(this);
-  }
-
-  show() {
-    this.state({
-      show: true
-    });
-  }
-
-  close(e) {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({
-      show: false
-    });
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
-  }
-
-  render() {
-    return (
-        <Pyr.UI.FullScreen
-          onEscape={this.onClose}
-          onClose={this.onClose}
-        >
-        { this.props.children }
-        </Pyr.UI.FullScreen>
-    );
-  }
-}
-
 class Item extends Pyr.UserReceiver {
 }
 
@@ -207,51 +167,6 @@ class Form extends Base {
     );
   }
 
-  renderOld() {
-
-    return (
-      <Pyr.UI.FullScreen>
-        { this.renderForm() }
-      </Pyr.UI.FullScreen>
-    );
-  }
-}
-
-
-class ModalForm extends Form {
-  constructor(...args) {
-    super(...args);
-
-    this.onSuccess = this.success.bind(this);
-  }
-
-  success(data, textStatus, jqXHR) {
-    this.onClose();
-  }
-
-  renderTitle() {
-    return (
-      <h3 className="mr-auto">{this.title()}</h3>
-    );
-  }
-
-
-  renderInner() {
-    return (
-      <Modal onClose={this.onClose}>
-        { super.renderInner() }
-      </Modal>
-    );
-  }
-
-  render() {
-    if (!this.props.selected) {
-      return (
-          <Pyr.UI.Loading />
-      );
-    }
-    return this.render();
-  }
 }
 
 class Wizard extends Base {
@@ -497,8 +412,6 @@ const Sheet = {
   New, 
   Edit,
   Form,
-  Modal,
-  ModalForm,
   Wizard,
 };
 

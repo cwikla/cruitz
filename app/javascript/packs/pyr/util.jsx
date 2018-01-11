@@ -221,6 +221,10 @@ class ClassNamesObj  {
     return this;
   }
 
+  add(...args) {
+    return this.push(...args);
+  }
+
   concat(...args) {
     return new ClassNamesObj(this.arr).push(...args);
   }
