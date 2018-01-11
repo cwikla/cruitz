@@ -695,7 +695,7 @@ class Modal extends Component {
 
     return (
       <div
-        className={ClassNames("pyr-modal").push(this.props.className)}
+        className={ClassNames("pyr-app-modal").push(this.props.className)}
         ref={(node) => this.me = node }
         onClick={this.onClose}
       >
