@@ -653,9 +653,7 @@ const Footer = (props) => (
 render (
   <Pyr.UserProvider url={Pyr.URL(USERS_URL).push("/me")}>
     <Pyr.UI.NoticeProvider>
-      <Router>
-        <Pyr.RouterProps component={Dashboard} dashboard={MESSAGES_URL}/>
-      </Router>
+      <Pyr.RouterProps component={Dashboard} dashboard={MESSAGES_URL}/>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 

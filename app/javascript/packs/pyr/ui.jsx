@@ -698,10 +698,14 @@ class Modal extends Component {
         ref={(node) => this.me = node }
         onClick={this.onClose}
       >
-          <div className="modal-inner"
-            onClick={this.noProp}
+          <div className="modal-border"
+              onClick={this.noProp}
           >
-            { this.renderInner() }
+            <IconButton name="close" className="close" onClick={this.onClose}/>
+            <div className="model-inner"
+            >
+              { this.renderInner() }
+            </div>
           </div>
       </div>
     );

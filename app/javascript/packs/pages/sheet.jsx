@@ -144,7 +144,7 @@ class Form extends Base {
 
   renderTitle() {
     return (
-      <h3 className="mr-auto">{this.title()}</h3>
+      <h3 className="mr-auto title">{this.title()}</h3>
     );
   }
 
@@ -152,7 +152,7 @@ class Form extends Base {
   render() {
     return (
       <Pyr.UI.FullScreen>
-        <div className="title flx-0" >
+        <div className="flx-0" >
           { this.renderTitle() }
         </div>
         <div className="form-content flx-1 mt-auto">

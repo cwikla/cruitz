@@ -403,12 +403,11 @@ label {
   b-border-bottom: 1px solid rgba($light_gray_color, 0.4);
 }
 
+h3.title {
+  color: $primary_color;
+}
+
 .pyr-fullscreen {
-  .title {
-    h3 {
-      color: $primary_color;
-    }
-  }
 
   .section {
     border: 1px solid $border_color;

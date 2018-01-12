@@ -25,42 +25,67 @@ class PasswordModal extends Pyr.UI.Modal {
     super(props);
 
     this.initState({
-      same: true
+      same: false,
+      validPassword: false,
+      visible: false
     });
 
-    this.onCheckValid = this.checkValid.bind(this);
+    this.onCheckValidPassword = this.checkValidPassword.bind(this);
+    this.onCheckSame = this.checkSame.bind(this);
+    this.onSetVisible = this.setVisible.bind(this);
   }
 
-  same() {
+  setVisible() {
+    this.setState({
+      visible: !this.state.visible
+    });
+  }
+
+  isSame(verify) {
     let curVal = this.passwordField.value();
 
-    if (curVal.length && (curVal == this.verifyField.value())) {
+    if (curVal.length && (curVal == verify)) {
       return true;
     }
 
     return false;
   }
 
-  valid() {
-    let curVal = this.passwordField.value();
-    return (curVal.length > 6);
+  isValidPassword(pwd) {
+    let result = (pwd && (pwd.length >= 6));
+    return result;
   }
   
-  checkValid() {
+  checkValidPassword(e) {
+    let value = e.target.value;
+    let validPassword = this.isValidPassword(value);
+
     this.setState({
-      valid: this.valid()
+      validPassword
     });
   }
 
-  checkSame() {
+  checkSame(e) {
+    let value = e.target.value;
     this.setState({
-      same: this.same()
+      same: this.isSame(value)
     });
+  }
+
+  valid() {
+    return this.state.validPassword && this.state.same;
   }
 
   renderInner() {
+    let AField = this.state.visible ? Pyr.Form.TextField : Pyr.Form.PasswordField;
+    let disabled = !this.valid();
+
     return (
-      <div>
+      <div id="password-modal">
+        <div className="flx-0" >
+          <h3 className="title">Change Password</h3>
+        </div>
+
         <Pyr.Form.Form
           model="User"
           object={this.props.me}
@@ -75,19 +100,19 @@ class PasswordModal extends Pyr.UI.Modal {
           className={Pyr.Util.ClassNames("form-parent section").push(!this.state.same ? "unmatches" : "")}
         >
           <div className="flx-row">
-            <Pyr.Grid.Col>
+            <Pyr.Grid.Col className="">
               <Pyr.Form.Group name="password">
-                <Pyr.Form.PasswordField 
+                <AField
                   placeholder= "Password"
                   ref={node => this.passwordField = node}
-                  onChange={this.onCheckValid}
+                  onChange={this.onCheckValidPassword}
                 />
               </Pyr.Form.Group>
             </Pyr.Grid.Col>
 
-            <Pyr.Grid.Col>
+            <Pyr.Grid.Col className="">
               <Pyr.Form.Group name="verify_password">
-                <Pyr.Form.PasswordField 
+                <AField
                   placeholder= "Verify Password"
                   ref={node => this.verifyField = node}
                   onChange={this.onCheckSame}
@@ -96,6 +121,9 @@ class PasswordModal extends Pyr.UI.Modal {
             </Pyr.Grid.Col>
           </div>
         </Pyr.Form.Form>
+        <div className="form-footer">
+          <Pyr.Form.SubmitButton target={this} disabled={disabled}>Save</Pyr.Form.SubmitButton>
+        </div>
       </div>
     );
   }

@@ -36,6 +36,16 @@ class Form extends Network.Component {
     this.onSubmit = this.submitHandler.bind(this);
   }
 
+  isValid() {
+    return this.state.valid;
+  }
+
+  setValid(valid) {
+    this.setState({
+      valid
+    });
+  }
+
   getChildContext() {
     return { 
       model: this.props.model,
@@ -182,7 +192,7 @@ class Form extends Network.Component {
     
     return (
       <form ref={(node) => {this.form = node;}} 
-        {...Util.propsMergeClassName(rest, Util.ClassNames(!this.state.valid ? "invalid" : ""))}
+        {...Util.propsMergeClassName(rest, Util.ClassNames(!this.state.valid ? "invalid" : "").push("hello"))}
         onSubmit={this.onSubmit}
       >
         {this.props.children}
@@ -300,25 +310,37 @@ class SubmitButton extends Component {
     super(props);
     this.onClick = this.onClickHandler.bind(this);
   }
+
+  target() {
+    return this.props.target;
+  }
  
   onClickHandler(e) {
     //alert("CLICK");
+    if (e) {
+      e.preventDefault();
+    }
+
+    if (this.props.disabled) {
+      return;
+    }
+
     if (this.props.target) {
-      if (e) {
-        e.preventDefault();
-      }
       //alert(this.props.target.form.constructor.name);
       this.props.target.form.submit();
     }
   }
 
   render() {
+    let rest = Util.propsRemove(this.props, ["target"]);
+
     return (
       <a href="#" 
         ref={(node) => this.button = node}
         className="btn btn-primary" 
-        onClick={this.onClick}>{this.props.children}
-      </a>
+        onClick={this.onClick}
+        {...Util.propsMergeClassName(rest, Util.ClassNames("btn btn-primary").push(this.props.disabled ? "disabled" : ""))}
+      >{this.props.children}</a>
     );
   }
 }
