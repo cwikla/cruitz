@@ -38,10 +38,8 @@ class ChildSelector extends Component {
 
   render() {
     let val = this.props.page;
-    console.log("RENDER CHILD: " + val);
 
     if ((val < 0) || (val >= Util.kidCount(this.props.children))) {
-      console.log("ChildSelector: Error: " + val);
       return Util.kidAt(this.props.children, 0) || null;
     }
 
@@ -429,27 +427,18 @@ class CSSAnimation extends Component {
        return acc.push(state.map((x) => cname + "-" + x));
       }, cz);
   
-    //console.log("RESULTS");
-    //console.log(results);
-  
     return results;
   }
   
   renderInner(state) {
-    console.log("STATE: " + state);
     let clazzes = this.toClassNames(this.props.classNames, state, this.props.appear, this.props.in);
-    console.log("CLAZZES: " + clazzes.toString());
 
     let stuff = Pyr.Util.childrenWithProps(this.props.children, {className: clazzes.toString(), key: "fade-inner"})[0];
-    //console.log("INNER STUFF:");
-    //console.log(stuff);
 
     return stuff;
   }
 
   render() {
-    console.log("CSS");
-    console.log(this.props);
     return (
       <Transition
         {...this.props}
@@ -603,9 +592,6 @@ class NoticeReceiver extends Component {
 
     let stuff = Util.propsMergeClassName(this.props, "notice");
 
-    //console.log("STUFF");
-    //console.log(stuff);
-
     return (
         <div
           className={ClassNames("pyr-notice").push(this.props.className)}
@@ -644,7 +630,6 @@ class Modal extends Component {
   }
 
   show(e) {
-    console.log("MODAL SHOW");
     if (e) {
       e.preventefault();
     }
@@ -655,7 +640,6 @@ class Modal extends Component {
 
   close(e) {
     //this.context.history.goBack();
-    console.log("CLOSING");
 
     if (e) {
       e.preventDefault();
@@ -674,7 +658,6 @@ class Modal extends Component {
   }
 
   keyPress(e) {
-    console.log("KEYPRESS");
     console.log(e.keyCode);
     if (e.keyCode === ESCAPE_KEY) {
       e.preventDefault();
@@ -683,11 +666,9 @@ class Modal extends Component {
   }
 
   renderInner() {
-    console.log("Modal: renderInner");
   }
 
   render() {
-    console.log("MODAL: " + this.state.show);
     if (!this.state.show) {
       return null;
     }
