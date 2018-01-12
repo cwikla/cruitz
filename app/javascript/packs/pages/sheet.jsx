@@ -10,6 +10,16 @@ import Pyr, {
   Component
 } from '../pyr/pyr';
 
+import Logo from './shared/logo';
+
+class FSWL extends Pyr.UI.FullScreen {
+  renderLeft() {
+    return (
+      <Logo />
+    );
+  }
+}
+
 class Item extends Pyr.UserReceiver {
 }
 
@@ -151,14 +161,14 @@ class Form extends Base {
 
   render() {
     return (
-      <Pyr.UI.FullScreen>
+      <FSWL>
         <div className="flx-0" >
           { this.renderTitle() }
         </div>
         <div className="form-content flx-1 mt-auto">
           { this.renderForm() }
         </div>
-      </Pyr.UI.FullScreen>
+      </FSWL>
     );
   }
 
@@ -339,9 +349,9 @@ class Show extends Base {
 class ShowFull extends Show {
   render() {
     return (
-      <Pyr.UI.FullScreen>
+      <FSWL>
         { super.render() }
-      </Pyr.UI.FullScreen>
+      </FSWL>
     );
   }
 }

@@ -714,6 +714,10 @@ class FullScreen extends Component {
     return null;
   }
 
+  renderLeft() {
+    return null;
+  }
+
   renderNavBar() {
     if (this.props.noNavBar) {
       return null;
@@ -724,6 +728,7 @@ class FullScreen extends Component {
           className="navbar flx-row controls align-items-center"
           onClick={this.onClose}
         >
+          { this.renderLeft() }
           <div className="col navbar-nav" >
             <BackButton name="close"
               className="pyr-back-button ml-auto nav-item"

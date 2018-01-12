@@ -14,8 +14,8 @@ const MessageQAHeader = (props) => (
 
 const Header = (props) => (
   <div className="qa-header">
-      <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
-      <div className="align-self-center title">You have received a question about {props.job.title}</div>
+    <div className="align-self-left back"><a href="#" onClick={props.onBack}>Back</a></div>
+    <div className="align-self-center title">You have received a question about {props.job.title}</div>
   </div>
 );
 

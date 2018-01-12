@@ -23,6 +23,11 @@ import SettingsPage from './settings/settings_page';
 import MePage from './me/me_page';
 import RegistrationsPage from './registration/registrations_page';
 import CompaniesPage from './companies/companies_page';
+import Logo from './shared/logo';
+
+const DashboardPage = (props) => (
+  <Redirect to="/" />
+);
 
 import {
   JOBS_PAGE,
@@ -34,6 +39,7 @@ import {
   ME_PAGE,
   COMPANIES_PAGE,
 
+  HOME_URL,
   JOBS_URL,
   CANDIDATES_URL,
   RECRUITERS_URL,
@@ -43,7 +49,6 @@ import {
   ME_URL,
 
   SEARCH_URL,
-
   USERS_URL,
 
   INDEX_ACTION,
@@ -54,6 +59,7 @@ import {
 const DEFAULT_PAGE = MESSAGES_PAGE;
 
 const PAGE_MAP = {
+  "home" : DashboardPage,
   [JOBS_PAGE.toLowerCase()]: JobsPage,
   [CANDIDATES_PAGE.toLowerCase()]: CandidatesPage,
   [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,
@@ -444,22 +450,13 @@ class Dashboard extends Pyr.UserReceiver {
     );
   }
 
-  render3() {
-    return (
-      <div>
-            <Link to={"/jobs/new"}><Pyr.UI.IconButton name="plus" className="nav-item" >Add Job</Pyr.UI.IconButton></Link>
-            &nbsp;&nbsp;
-            <Link to={"/recruiters"}><Pyr.UI.IconButton name="list" className="nav-item">Recruiters</Pyr.UI.IconButton></Link>
-      </div>
-    );
-  }
             //<Link to={ME_URL}><UserLabel user={this.user()} /></Link>
 
   renderNav() {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
           <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <Pyr.UI.SmallLabel className="nav-item">{this.getPageTitle()}</Pyr.UI.SmallLabel>
+            <Logo />
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
             { this.renderSearchNav() }

@@ -10,6 +10,7 @@ export const SEARCH_PAGE = 'Search';
 export const ME_PAGE = 'Me';
 export const COMPANIES_PAGE = 'Companies';
 
+export const HOME_URL = "/";
 export const JOBS_URL = "/jobs";
 export const CANDIDATES_URL = "/candidates";
 export const RECRUITERS_URL = "/recruiters";
