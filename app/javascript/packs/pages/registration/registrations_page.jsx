@@ -106,7 +106,7 @@ class RegistrationForm extends Component {
 
   methodToName(method) {
     switch (method) {
-      case Pyr.Method.PUT:
+      case Pyr.Method.PATCH:
         return "Update";
         break
 
@@ -209,7 +209,7 @@ class EditSheet extends Sheet.Edit {
         onPostSubmit={this.onPostSubmit} 
         registration={this.props.selected} 
         onSuccess={this.onSuccess}
-        method={Pyr.Method.PUT} 
+        method={Pyr.Method.PATCH} 
         isLoading={this.state.isLoading}/>
     );
   }

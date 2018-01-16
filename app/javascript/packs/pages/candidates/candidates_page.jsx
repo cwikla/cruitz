@@ -161,7 +161,7 @@ class CandidateForm extends Component {
 
   methodToName(method) {
     switch (method) {
-      case Pyr.Method.PUT:
+      case Pyr.Method.PATCH:
         return "Update";
         break
 
@@ -242,7 +242,7 @@ class EditSheet extends Sheet.Edit {
         onPostSubmit={this.onPostSubmit} 
         candidate={this.props.candidate} 
         onSuccess={this.onSuccess}
-        method={Pyr.Method.PUT} 
+        method={Pyr.Method.PATCH} 
         isLoading={this.state.isLoading}/>
     );
   }
@@ -435,7 +435,7 @@ class ShowSheet extends Sheet.ShowFull {
     this.getJSON({
       url: url,
       context: this,
-      type: Pyr.Method.PUT,
+      type: Pyr.Method.PATCH,
       data: { candidate : { state } },
       //contentType:"application/json; charset=utf-8",
 

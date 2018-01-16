@@ -19,7 +19,7 @@ class SettingsForm extends Component {
     let key = "settings-form";
     let url = Pyr.URL(SETTINGS_URL);
 
-    let method = Pyr.Method.PUT;
+    let method = Pyr.Method.PATCH;
 
     let settings = this.props.settings;
 

@@ -25,7 +25,7 @@ import {
 class CompanyHeaderForm extends Component {
 
   render() {
-    let method = Pyr.Method.PUT;
+    let method = Pyr.Method.PATCH;
 
     console.log("COMPANY");
     console.log(this.props.company);
@@ -79,7 +79,7 @@ class CompanyHeaderForm extends Component {
 
 class CompanyDetailsForm extends Component {
   render() {
-    let method = Pyr.Method.PUT;
+    let method = Pyr.Method.PATCH;
 
     return (
       <div className="form-details-parent section">
@@ -175,7 +175,7 @@ class CompanyLinksForm extends Component {
 
 
   render() {
-    let method = Pyr.Method.PUT;
+    let method = Pyr.Method.PATCH;
 
     console.log("COMPANY");
     console.log(this.props.company);
@@ -286,7 +286,7 @@ class CompanyForm extends Component {
 
 
   render() {
-    let method = Pyr.Method.PUT;
+    let method = Pyr.Method.PATCH;
 
     console.log("COMPANY");
     console.log(this.props.company);

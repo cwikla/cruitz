@@ -104,7 +104,8 @@ class Form extends Network.Component {
       type: self.props.method || Network.Method.POST,
       url: self.props.url,
       data: data,
-      context: self
+      context: self,
+      remote: self.props.remote,
 
     }).always(function() {
       this.postSubmit();

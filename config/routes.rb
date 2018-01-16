@@ -15,12 +15,12 @@ Rails.application.routes.draw do
       get 'jobs/:id(/:candidates)' => 'jobs#show'
 
       get 'settings' => 'settings#show'
-      put 'settings' => 'settings#update'
+      patch 'settings' => 'settings#update'
 
       post 'search(/:model)' => 'search#show'
       get 'search(/:model)' => 'search#show'
 
-      get 'upload_url' => 'uploads#get', as: :api_v1_upload_url
+      post 'upload_url' => 'uploads#post', as: :api_v1_upload_url
 
       resources :ratings
       resource :company
@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
       post 'messages/:id' => 'messages#create'
       resources :messages
+
+      patch 'password' => 'users#password'
     end
   end
 

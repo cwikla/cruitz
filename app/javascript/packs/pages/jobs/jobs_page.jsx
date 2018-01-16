@@ -35,7 +35,7 @@ import {
 
 function methodToName(method) {
   switch (method) {
-    case Pyr.Method.PUT:
+    case Pyr.Method.PATCH:
       return "Save";
       break
 
@@ -313,7 +313,7 @@ class EditSheet extends Sheet.Edit {
         onPreSubmit={this.onPreSubmit}
         onPostSubmit={this.onPostSubmit}
         onSuccess={this.onSuccess}
-        method={Pyr.Method.PUT}
+        method={Pyr.Method.PATCH}
       />
     );
   }

@@ -572,6 +572,23 @@ label {
   background-color: $light_gray_color;
 }
 
+.password-modal {
+  padding-top: 1.5rem;
+  .password-hint {
+    li {
+      padding-left: 1rem;
+    }
+  }
+  .good {
+    color: green;
+    font-weight: 500;
+    &:after {
+      font-family: FontAwesome;
+      content: " \f00c";
+    }
+  }
+}
+
 
 @import 'item';
 @import 'message_thread';

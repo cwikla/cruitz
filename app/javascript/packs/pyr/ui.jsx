@@ -23,7 +23,7 @@ const ClassNames = Util.ClassNames;
 
 const DURATION_TIME = 300;
 
-const SHOW_TIME = 3000;
+const SHOW_TIME = 1500;
 
 const ESCAPE_KEY = 27;
 
@@ -613,7 +613,7 @@ class Modal extends Component {
     super(...args);
 
     this.initState({
-      show : false
+      open : false
     });
 
     this.onClose = this.close.bind(this);
@@ -629,23 +629,19 @@ class Modal extends Component {
     document.removeEventListener("keydown", this.onKeyPress);
   }
 
-  show(e) {
-    if (e) {
-      e.preventefault();
-    }
+  open() {
     this.setState({
-      show: true
+      open: true
     });
+
+    if (this.props.onShow) {
+      this.props.onShow();
+    }
   }
 
-  close(e) {
-    //this.context.history.goBack();
-
-    if (e) {
-      e.preventDefault();
-    }
+  close() {
     this.setState({
-      show: false
+      open: false
     });
 
     if (this.props.onClose) {
@@ -669,7 +665,7 @@ class Modal extends Component {
   }
 
   render() {
-    if (!this.state.show) {
+    if (!this.state.open) {
       return null;
     }
 

@@ -4,13 +4,17 @@ import uuid from 'uuid';
 import Util from './util';
 
 const POST = 'POST';
-const PUT = 'PUT';
 const GET = 'GET';
 const DELETE = 'DELETE';
+const PATCH  = 'PATCH';
+const PUT = 'PUT';
+
+// const PUT removed to catch them all
 
 const Method = {
   POST,
   PUT,
+  PATCH,
   GET,
   DELETE
 };

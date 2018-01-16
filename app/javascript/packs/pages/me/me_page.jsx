@@ -18,7 +18,10 @@ import {
   USERS_URL,
   EDIT_ACTION,
   DESTROY_SESSION_URL,
+  PASSWORD_URL,
 } from '../const';
+
+const MIN_PWD_LENGTH = 8;
 
 class PasswordModal extends Pyr.UI.Modal {
   constructor(props) {
@@ -26,7 +29,9 @@ class PasswordModal extends Pyr.UI.Modal {
 
     this.initState({
       same: false,
-      validPassword: false,
+      validLength: false,
+      validLetters: false,
+      validNumbers: false,
       visible: false
     });
 
@@ -51,37 +56,52 @@ class PasswordModal extends Pyr.UI.Modal {
     return false;
   }
 
-  isValidPassword(pwd) {
-    let result = (pwd && (pwd.length >= 6));
-    return result;
-  }
-  
   checkValidPassword(e) {
-    let value = e.target.value;
-    let validPassword = this.isValidPassword(value);
+    let pwd = e.target.value;
+    if (pwd) {
+      pwd = $.trim(pwd);
+    }
+
+    let validLength = pwd && (pwd.length >= MIN_PWD_LENGTH);
+    let validLetters = pwd && (pwd.match(/[a-zA-Z]/) != null);
+    console.log(pwd.match(/[a-zA-Z]/));
+    console.log(validLetters);
+    let validNumbers = pwd && (pwd.match(/[0-9]/) != null);
 
     this.setState({
-      validPassword
+      validLength,
+      validLetters,
+      validNumbers,
     });
   }
 
   checkSame(e) {
-    let value = e.target.value;
+    let pwd = e.target.value;
     this.setState({
-      same: this.isSame(value)
+      same: this.isSame(pwd)
     });
   }
 
   valid() {
-    return this.state.validPassword && this.state.same;
+    return (
+      this.state.validLength && 
+      this.state.validLetters &&
+      this.state.validNumbers &&
+      this.state.same
+    );
   }
 
   renderInner() {
     let AField = this.state.visible ? Pyr.Form.TextField : Pyr.Form.PasswordField;
     let disabled = !this.valid();
 
+    let goodLength = this.state.validLength;
+    let oneLetter = this.state.validLetters;
+    let oneNumber = this.state.validNumbers;
+    let same = this.state.same;
+
     return (
-      <div id="password-modal">
+      <div className="password-modal">
         <div className="flx-0" >
           <h3 className="title">Change Password</h3>
         </div>
@@ -89,15 +109,15 @@ class PasswordModal extends Pyr.UI.Modal {
         <Pyr.Form.Form
           model="User"
           object={this.props.me}
-          url={this.props.url}
-          method={Pyr.Method.PUT}
+          url={PASSWORD_URL}
+          method={Pyr.Method.PATCH}
           id="password-form"
           ref={(node) => { this.form = node; }}
           onPreSubmit={this.props.onPreSubmit}
           onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
-          className={Pyr.Util.ClassNames("form-parent section").push(!this.state.same ? "unmatches" : "")}
+          className={Pyr.Util.ClassNames("form-parent section").push(!same ? "unmatches" : "")}
         >
           <div className="flx-row">
             <Pyr.Grid.Col className="">
@@ -111,14 +131,23 @@ class PasswordModal extends Pyr.UI.Modal {
             </Pyr.Grid.Col>
 
             <Pyr.Grid.Col className="">
-              <Pyr.Form.Group name="verify_password">
+              <Pyr.Form.Group name="password_confirmation">
                 <AField
                   placeholder= "Verify Password"
                   ref={node => this.verifyField = node}
                   onChange={this.onCheckSame}
+                  className={same ? "good" : ""}
                 />
               </Pyr.Form.Group>
             </Pyr.Grid.Col>
+          </div>
+          <div className="flx-col password-hint">
+            Your password must:
+            <ul>
+              <li className={goodLength ? "good" : ""}>be {MIN_PWD_LENGTH} characters or longer</li>
+              <li className={oneLetter ? "good" : ""}>contain 1 letter</li>
+              <li className={oneNumber ? "good" : ""}>contain 1 number</li>
+            </ul>
           </div>
         </Pyr.Form.Form>
         <div className="form-footer">
@@ -131,24 +160,33 @@ class PasswordModal extends Pyr.UI.Modal {
 
 
 class MeForm extends Component {
+  static contextTypes = Pyr.UI.NoticeContextTypes;
+
   constructor(props) {
     super(props);
 
     this.onShowPassword = this.showPassword.bind(this);
+    this.onHidePassword = this.hidePassword.bind(this);
   }
 
   showPassword(e) {
     if (e) {
       e.preventDefault();
     }
-    this.password.show();
+    this.password.open();
   }
+
+  hidePassword() {
+    this.context.setNotice("Password Updated");
+    this.password.close();
+  }
+
   
   render() {
     let key = "me-form";
     let url = Pyr.URL(USERS_URL);
 
-    let method = this.props.method || Pyr.Method.PUT;
+    let method = this.props.method || Pyr.Method.PATCH;
 
     return (
       <div className="form-parent section">
@@ -156,6 +194,7 @@ class MeForm extends Component {
           ref={node => this.password = node}
           url={url}
           me={this.props.me}
+          onSuccess={this.onHidePassword}
         />
         <Pyr.Form.Form
           model="User"

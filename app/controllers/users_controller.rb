@@ -16,9 +16,14 @@ class UsersController < ApplicationController
   def password
     pwd = params.require(:user).require(:password)
     current_user.password = pwd
-    return current_user.save
+    if current_user.save
+      bypass_sign_in(current_user)
+    end
 
+    render json: current_user
   end
+
+
   private
 
   def user_params
