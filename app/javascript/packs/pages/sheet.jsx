@@ -151,10 +151,22 @@ function sheetID(name, action) {
 
 
 class Form extends Base {
+  constructor(props) {
+    super(props);
+
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
+  }
+
+  renderButton() {
+    return null;
+  }
 
   renderTitle() {
     return (
-      <h3 className="mr-auto title">{this.title()}</h3>
+      <h3 className="mr-auto title flx-row"><span className="mt-auto mb-auto mr-auto">{this.title()}</span> {this.renderButton()}</h3>
     );
   }
 

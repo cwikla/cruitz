@@ -338,7 +338,6 @@ class SubmitButton extends Component {
     return (
       <a href="#" 
         ref={(node) => this.button = node}
-        className="btn btn-primary" 
         onClick={this.onClick}
         {...Util.propsMergeClassName(rest, Util.ClassNames("btn btn-primary").push(this.props.disabled ? "disabled" : ""))}
       >{this.props.children}</a>
@@ -976,7 +975,7 @@ class AutoComplete extends Child {
   }
 
   render() {
-    let clz = "form-control pyr-auto-complete";
+    let clz = "pyr-auto-complete";
 
     let rest = Util.propsRemove(this.props, ["url"]);
 

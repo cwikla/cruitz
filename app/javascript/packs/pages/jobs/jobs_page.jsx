@@ -188,7 +188,7 @@ class JobForm extends Component {
   }
 
   renderCompany() {
-    if (true || !this.props.company || !this.props.company.name) {
+    if (!this.props.company || !this.props.company.name) {
       return (
         <Pyr.Form.Group name="company" key="company">
           <Pyr.Form.Label>Company</Pyr.Form.Label>
@@ -199,7 +199,10 @@ class JobForm extends Component {
 
     return (
       <Pyr.Form.Group name="company" key="company">
-        <Pyr.Form.Label>Company</Pyr.Form.Label> <h4>{ this.props.company.name }</h4>
+        <Pyr.Form.Label>Company</Pyr.Form.Label> 
+        <div>
+          <Pyr.UI.Label>{ this.props.company.name } <Link to={Pyr.URL(COMPANY_URL).toString()}> <Pyr.UI.Icon name="pencil" /></Link></Pyr.UI.Label>
+        </div>
       </Pyr.Form.Group>
     );
 

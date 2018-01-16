@@ -85,40 +85,83 @@ class RouterProps extends Component {
 }
 
 const UserContextTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  setCompany: PropTypes.func,
 };
 
 class UserReceiver extends Network.Component {
-  static contextTypes = Object.assign({}, UserContextTypes, UI.NoticeContextTypes);
+  static contextTypes = Object.assign({}, UserContextTypes, UI.NoticeContextTypes, UI.RouterContextTypes);
 
   user() {
     return this.context.user;
   }
+
+  setCompany(company) {
+    this.context.setCompany(company);
+  }
+
+  setUser(user) {
+    this.context.setUser(user);
+  }
+
+  goBack() {
+    return this.context.history.goBack();
+  }
+
+  setNotice(notice) {
+    this.context.setNotice(notice);
+  }
+
 }
 
 class UserProvider extends Network.Component {
   static childContextTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    setUser: PropTypes.func,
+    setCompany: PropTypes.func,
   };
 
   getChildContext() {
     return {
       user: this.state.user,
+      setUser: this.onSetUser,
+      setCompany: this.onSetCompany,
     }
   }
 
   constructor(props) {
     super(props);
+
     this.initState({
       user: null
     });
 
+    this.onSetCompany = this.setCompany.bind(this);
+    this.onSetUser = this.setUser.bind(this);
   }
 
   componentDidMount() {
     // This is being called twice - saw some notes about it being because it's DEV
 
     this.getSelf(this.props.url);
+  }
+
+  setUser(user) {
+    console.log("SET USER");
+    console.log(user);
+
+    this.setState({
+      user
+    });
+  }
+
+  setCompany(company) {
+    console.log("SET COMPANY");
+    console.log(company);
+
+    let user = Object.assign({}, this.state.user);
+    user.company = Object.assign({}, company);
+    this.setUser(user);
   }
 
   getSelf(url) {
@@ -130,10 +173,10 @@ class UserProvider extends Network.Component {
       type: Network.Method.GET,
       url: url,
       context: this
+
     }).done((data, textStatus, jqXHR) => {
-      self.setState({
-        user: data.user
-      });
+      self.setUser(data.user);
+
     }).fail(function(jqXHR, textStatus, errorThrown) {
       Network.ajaxError(jqXHR, textStatus, errorThrown);
     });

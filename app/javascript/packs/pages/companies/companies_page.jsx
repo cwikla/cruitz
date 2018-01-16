@@ -32,20 +32,6 @@ class CompanyHeaderForm extends Component {
 
     return (
       <div className="form-header-parent section">
-        <Pyr.Form.Form
-          model="Company"
-          object={this.props.company}
-          url={COMPANY_URL}
-          method={method}
-          id="company-header-form"
-          key="company-header-form"
-          ref={(node) => { this.form = node; }}
-          onPreSubmit={this.props.onPreSubmit}
-          onPostSubmit={this.props.onPostSubmit}
-          onSuccess={this.props.onSuccess}
-          onError={this.props.onError}
-        >
-
         <Pyr.Grid.Row>
           <Pyr.Grid.Col className="col-2">
             <Pyr.Form.Group name="logo">
@@ -70,8 +56,6 @@ class CompanyHeaderForm extends Component {
             </Pyr.Form.Group>
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
-
-        </Pyr.Form.Form>
       </div>
     );
   }
@@ -83,19 +67,6 @@ class CompanyDetailsForm extends Component {
 
     return (
       <div className="form-details-parent section">
-        <Pyr.Form.Form
-          model="Company"
-          object={this.props.company}
-          url={COMPANY_URL}
-          method={method}
-          id="company-details-form"
-          key="company-details-form"
-          ref={(node) => { this.form = node; }}
-          onPreSubmit={this.props.onPreSubmit}
-          onPostSubmit={this.props.onPostSubmit}
-          onSuccess={this.props.onSuccess}
-          onError={this.props.onError}
-        >
           <div>
             <Pyr.Form.Group name="size">
               <Pyr.Form.Label>Number of Employees</Pyr.Form.Label>
@@ -112,7 +83,6 @@ class CompanyDetailsForm extends Component {
             <Pyr.Form.Label>Notes for Recruiters</Pyr.Form.Label>
             <Pyr.Form.TextArea placeholder="Note" rows="10" />
           </Pyr.Form.Group>
-        </Pyr.Form.Form>
       </div>
     );
   }
@@ -182,20 +152,6 @@ class CompanyLinksForm extends Component {
 
     return (
       <div className="form-links-parent section">
-        <Pyr.Form.Form
-          model="Company"
-          object={this.props.company}
-          url={COMPANY_URL}
-          method={method}
-          id="company-links-form"
-          key="company-links-form"
-          ref={(node) => { this.form = node; }}
-          onPreSubmit={this.props.onPreSubmit}
-          onPostSubmit={this.props.onPostSubmit}
-          onSuccess={this.props.onSuccess}
-          onError={this.props.onError}
-        >
-
           <div>
             <Pyr.Form.Group name="twitter" className="url">
               <Pyr.Form.Label>Twitter</Pyr.Form.Label>
@@ -223,192 +179,49 @@ class CompanyLinksForm extends Component {
         
             { this.renderLinkList() }
           </div>
-
-        </Pyr.Form.Form>
       </div>
     );
   }
 }
-
-class CompanyForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.initState({
-      links: []
-    });
-
-    this.onAddLink = this.addLink.bind(this);
-    this.onRemoveLink = this.removeLink.bind(this);
-  }
-
-  addLink(e) { 
-    let value = e.target.value; 
-    if (value && value.length > 1) {
-      let links = this.state.links.slice();
-      
-      links.push(value);
-      this.setState({
-        links 
-      });
-      this.linkField.setText("");
-    }
-  }
-
-  removeLink(pos, e) {
-    if (pos < 0 || pos >= this.state.links.length) {
-      return;
-    }
-
-    let links = this.state.links;
-    links = links.slice(0,pos).concat(links.slice(pos+1, links.length));
-    this.setState({
-      links
-    });
-  }
-
-
-  renderLinkList() {
-    return (
-          <div id="link-list">
-            { Pyr.Util.times(this.state.links.length, (i) => {
-                return (
-                  <Pyr.UI.FancyButton
-                    key={"llb"+i}
-                    onClick={this.removeLink.bind(this, i)}
-                  >{this.state.links[i]}</Pyr.UI.FancyButton>
-                );
-              })
-            }
-          </div>
-    );
-  }
-
-
-  render() {
-    let method = Pyr.Method.PATCH;
-
-    console.log("COMPANY");
-    console.log(this.props.company);
-
-    return (
-      <div className="form-parent">
-        <Pyr.Form.Form
-          model="Company"
-          object={this.props.company}
-          url={COMPANY_URL}
-          method={method}
-          id="company-form" 
-          key="company-form"
-          ref={(node) => { this.form = node; }} 
-          onPreSubmit={this.props.onPreSubmit} 
-          onPostSubmit={this.props.onPostSubmit}
-          onSuccess={this.props.onSuccess}
-          onError={this.props.onError}
-        >
-      
-          <Pyr.Form.Group name="logo">
-            <Pyr.Form.Label>Logo</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Logo"/>
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="name">
-            <Pyr.Form.Label>Name</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Company Name"/>
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="location">
-            <Pyr.Form.Label>Location</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Location" />
-          </Pyr.Form.Group>
-      
-          <Pyr.Form.Group name="url" className="url">
-            <Pyr.Form.Label>Website</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Website" />
-          </Pyr.Form.Group>
-
-          <Pyr.UI.Collapse label="Social">
-            <Pyr.Form.Group name="twitter" className="url">
-              <Pyr.Form.Label>Twitter Handle</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder="Twitter Handle" />
-            </Pyr.Form.Group>
-  
-            <Pyr.Form.Group name="linked_in" className="url">
-              <Pyr.Form.Label>Linked In Company Page</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder="Linked In" />
-            </Pyr.Form.Group>
-  
-            <Pyr.Form.Group name="facebook" className="url">
-              <Pyr.Form.Label>Facebook Company Page</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder="Facebook" />
-            </Pyr.Form.Group>
-  
-            <Pyr.Form.Group name="link" className="hidden">
-              { Pyr.Util.times(this.state.links.length, (i) => {
-                  return (
-                    <Pyr.Form.Hidden key={"link"+i} value={this.state.links[i]} />
-                  );
-                })
-              }
-            </Pyr.Form.Group>
-        
-            { this.renderLinkList() }
-          </Pyr.UI.Collapse>
-
-
-          <Pyr.UI.Collapse label="Optional Details">
-            <Pyr.Form.Group name="size">
-              <Pyr.Form.Label>Number of Employees</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder="Size" />
-            </Pyr.Form.Group>
-  
-            <Pyr.Form.Group name="description">
-              <Pyr.Form.Label>Description</Pyr.Form.Label>
-              <Pyr.Form.TextArea placeholder="Company description" rows="10" />
-            </Pyr.Form.Group>
-          </Pyr.UI.Collapse>
-  
-          <Pyr.Form.Group name="notes">
-            <Pyr.Form.Label>Notes for Recruiters</Pyr.Form.Label>
-            <Pyr.Form.TextArea placeholder="Note" rows="10" />
-          </Pyr.Form.Group>
-
-          </Pyr.Form.Form>
-            <div className="form-footer">
-          <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>Save</Pyr.Form.SubmitButton>
-        </div>
-      </div>
-      
-    );
-  }
-}
-
 
 class EditSheet extends Sheet.Edit {
+
   constructor(props, context) {
     super(props, context);
 
     this.initState({ 
-      company : context.user.company 
+      company : context.user.company
     });
+
+    this.onSuccess = this.success.bind(this);
   }
 
   success(data, textStatus, jqXHR) {
     let company = data.company;
 
-    console.log("COMPANY");
-    console.log(company);
-
-    let user = this.user();
-    user.company = company;
-
-    console.log("COMPANY 2");
-    console.log(this.user().company);
+    this.setCompany(company);
 
     super.success(data, textStatus, jqXHR);
     this.setState({
       company: company
     });
+
+    this.setNotice("Company updated");
+    this.goBack();
+  }
+
+  renderButton() {
+    let isDisabled = this.props.isLoading;
+
+    return (
+      <Pyr.Form.SubmitButton className="ml-auto" target={this} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
+    );
+  }
+
+  renderTitle() {
+    return (
+      <h3 className="mr-auto title flx-row"><span className="mt-auto mb-auto mr-auto">{this.title()}</span> {this.renderButton()}</h3>
+    );
   }
 
   title() {
@@ -426,12 +239,25 @@ class EditSheet extends Sheet.Edit {
   }
 
   renderForm() { 
-    let company = this.state.company;
+    let company = this.state.company || {};
 
-    company = company || {};
+    let method = Pyr.Method.PATCH;
 
     return ( 
       <div className="company">
+        <Pyr.Form.Form
+          model="Company"
+          object={company}
+          url={COMPANY_URL}
+          method={method}
+          id="company-header-form"
+          key="company-header-form"
+          ref={(node) => { this.form = node; }}
+          onPreSubmit={this.props.onPreSubmit}
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.onSuccess}
+          onError={this.props.onError}
+        >
         <Pyr.Grid.Row>
           <Pyr.Grid.Col>
           <CompanyHeaderForm 
@@ -454,6 +280,7 @@ class EditSheet extends Sheet.Edit {
           />
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
+        </Pyr.Form.Form>
       </div>
     );
   }
