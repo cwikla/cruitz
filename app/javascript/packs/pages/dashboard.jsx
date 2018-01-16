@@ -10,10 +10,9 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 
-import Pyr, {
-  Component 
-} from '../pyr/pyr';
+import Pyr from '../pyr/pyr';
 
+import Component from './component';
 import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
@@ -95,7 +94,7 @@ const UserLabel = (props) => (
   ><Pyr.UI.Icon name="user" className="fa-fw" /><Pyr.UI.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
 
-class PagePicker extends Pyr.UserReceiver {
+class PagePicker extends Component {
   constructor(props) {
     super(props);
   }
@@ -173,7 +172,7 @@ class NavUserMenu extends Component {
   }
 }
 
-class Dashboard extends Pyr.UserReceiver {
+class Dashboard extends Component {
   constructor(props) {
     super(props);
 

@@ -9,9 +9,9 @@ import {
 
 
 import Pyr, {
-  Component
 } from '../../pyr/pyr';
 
+import Component from '../component';
 
 const Logo = (props) => (
   <Link to="/home"><Pyr.UI.SmallLabel className="logo nav-item">cruitz</Pyr.UI.SmallLabel></Link>

@@ -2,8 +2,9 @@ import React, {
 } from 'react';
 
 import Pyr, {
-  Component
 } from '../../pyr/pyr';
+
+import Component from '../component';
 
 const logos = ["/Dropbox-Logo-High-Res_1.jpg",
               "google-logo-1200x630.jpg",

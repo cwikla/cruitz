@@ -5,9 +5,10 @@ import {
 } from 'react-router-dom';
 
 import Pyr, {
-  Component
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
+
+import Component from '../component';
 
 import ThreadItem, {
   THREAD_ID
@@ -238,7 +239,7 @@ class Footer extends Component {
 }
 
 
-class MessageThread extends Pyr.UserReceiver {
+class MessageThread extends Component {
 
   constructor(props) {
     super(props);

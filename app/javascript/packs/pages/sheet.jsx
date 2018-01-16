@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom';
 
 import Pyr, {
-  Component
 } from '../pyr/pyr';
 
+import Component from './component';
 import Logo from './shared/logo';
 
 class FSWL extends Pyr.UI.FullScreen {
@@ -20,11 +20,11 @@ class FSWL extends Pyr.UI.FullScreen {
   }
 }
 
-class Item extends Pyr.UserReceiver {
+class Item extends Component {
 }
 
 
-class Base extends Pyr.UserReceiver {
+class Base extends Component {
   constructor(...args) {
     super(...args);
 

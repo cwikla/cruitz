@@ -7,10 +7,11 @@ import {
 } from 'react-router-dom';
 
 import Pyr, {
-  Component
 } from '../pyr/pyr';
 
 const ClassNames = Pyr.ClassNames;
+
+import Component from './component';
 
 class Button extends Component {
   constructor(props) {

@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Pyr, {
-  Component 
 } from '../../pyr/pyr';
 
 const ClassNames = Pyr.ClassNames;
+
+import Component from '../component';
 
 import Page from '../page';
 import Sheet from '../sheet';

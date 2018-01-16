@@ -89,31 +89,6 @@ const UserContextTypes = {
   setCompany: PropTypes.func,
 };
 
-class UserReceiver extends Network.Component {
-  static contextTypes = Object.assign({}, UserContextTypes, UI.NoticeContextTypes, UI.RouterContextTypes);
-
-  user() {
-    return this.context.user;
-  }
-
-  setCompany(company) {
-    this.context.setCompany(company);
-  }
-
-  setUser(user) {
-    this.context.setUser(user);
-  }
-
-  goBack() {
-    return this.context.history.goBack();
-  }
-
-  setNotice(notice) {
-    this.context.setNotice(notice);
-  }
-
-}
-
 class UserProvider extends Network.Component {
   static childContextTypes = {
     user: PropTypes.object,
@@ -201,7 +176,6 @@ const Pyr = {
 
   UserContextTypes,
   UserProvider,
-  UserReceiver,
 
   RouterProps,
 

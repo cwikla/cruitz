@@ -1,9 +1,10 @@
 import React from 'react';
 
 import Pyr, {
-  Component
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
+
+import Component from '../component';
 
 import ThreadItem from './thread_item';
 import MessageThread from './message_thread';

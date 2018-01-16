@@ -4,8 +4,9 @@ import React, {
 import PropTypes from 'prop-types';
 
 import Pyr, {
-  Component
 } from '../../pyr/pyr';
+
+import Component from '../component';
 import Page from '../page';
 import Sheet from '../sheet';
 import {

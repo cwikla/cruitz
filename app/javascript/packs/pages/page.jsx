@@ -3,16 +3,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Pyr, {
-  Component
 } from '../pyr/pyr';
-
 const ClassNames = Pyr.ClassNames;
+
+import Component from './component';
 
 import {
   SHOW_ACTION
 } from './const';
 
-class Page extends Pyr.UserReceiver {
+class Page extends Component {
   constructor(...args) {
     super(...args);
 
