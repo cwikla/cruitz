@@ -2,8 +2,6 @@
 class RegistrationsController < Pyr::Base::RegistrationsController
   respond_to :json
 
-  before_action :hello
-
   def unused_after_sign_up_path_for(resource)
     auth_check_your_email_path
   end
@@ -18,11 +16,5 @@ class RegistrationsController < Pyr::Base::RegistrationsController
 
   private
 
-  def hello
-    puts "*" * 80
-    puts "*" * 80
-    puts "*" * 80
-    puts "*" * 80
-  end
 
 end

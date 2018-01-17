@@ -17,6 +17,7 @@ function convertUint8ArrayToBinaryString(u8Array) {
 
 function getSignedURL(file) {
   return Network.getJSON({
+    remote: "/",
     url : Util.URL("/upload_url"),
     method: Network.Method.POST,
     data : { upload: { name : file.name } },

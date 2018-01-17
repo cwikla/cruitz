@@ -120,15 +120,16 @@
 .pyr-notice {
   z-index: 5000;
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  background-color: rgba($secondary_color, 0.8);
+  background-color: rgba($secondary_color, 0.9);
+  border: 1px solid $secondary_color;
   color: white;
-  line-height: 2rem;
-  font-size: 1.5rem;
+
+  line-height: 1.5rem;
+  font-size: 1rem;
   padding: 1rem;
-  text-align: center;
+  text-align: left;
 }
 
 .fancy {

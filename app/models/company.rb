@@ -6,6 +6,8 @@ class Company < ApplicationRecord
 
   validates :name, presence: true, allow_nil: true
 
+  belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
+
   def self.after_cached_user(user)
     c = Company.new(:id => user.company_id)
   end

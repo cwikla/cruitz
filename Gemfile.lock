@@ -1,7 +1,7 @@
 PATH
   remote: ../pyr/pyr_base
   specs:
-    pyr_base (11.1.1)
+    pyr_base (11.1.2)
       aws-sdk
       aws-sdk-rails
       bootstrap (= 4.0.0.alpha6)
