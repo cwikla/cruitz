@@ -201,11 +201,19 @@
   .hide-below-xs {
     display: none;
   }
+  .pyr-file-selector {
+    width: 5rem;
+    height: 5rem;
+  }
 }
 
 @include media-breakpoint-down(sm) {
   .hide-below-sm {
     display: none;
+  }
+  .pyr-file-selector {
+    width: 7rem;
+    height: 7rem;
   }
 }
 @include media-breakpoint-down(md) {

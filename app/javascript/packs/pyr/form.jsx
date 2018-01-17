@@ -856,7 +856,7 @@ class FileSelector extends Child {
 
   renderDefault() {
     return (
-      <div className="flx-col">
+      <div className="flx-col drop-site drop-site-size">
         <UI.IconButton name="upload" />
         Click or Drag to Select File
       </div>
