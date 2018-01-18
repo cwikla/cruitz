@@ -923,7 +923,7 @@ class FileSelector extends Child {
       console.log(info);
 
       return (
-        <input key={this.fhash(file)} name={this.name()} type="hidden" value={info["full_name"]} data-pyr-file/>
+        <input key={this.fhash(file)} name={this.name()} type="hidden" value={info["file_name"]} data-pyr-file/>
       );
     });
 

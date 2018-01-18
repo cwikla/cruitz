@@ -5,7 +5,7 @@ import Component from './base';
 import Util from './util';
 import Network from './network';
 
-const UPLOAD_URL = "/upload_url";
+const UPLOAD_URL = "/uploads/make";
 
 function convertUint8ArrayToBinaryString(u8Array) {
 	var i, len = u8Array.length, b_str = "";

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117011015) do
+ActiveRecord::Schema.define(version: 20180118231502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,6 +203,19 @@ ActiveRecord::Schema.define(version: 20180117011015) do
     t.index ["user_id", "created_at"], name: "index_pyr_base_magic_keys_on_user_id_and_created_at"
   end
 
+  create_table "pyr_base_uploads", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "bucket_name", null: false
+    t.string "file_name", null: false
+    t.string "content_type", null: false
+    t.string "sub_type"
+    t.integer "user_id"
+    t.string "uuid", limit: 36
+    t.datetime "deleted_at"
+    t.index ["user_id"], name: "index_pyr_base_uploads_on_user_id"
+  end
+
   create_table "pyr_geo_caches", id: :serial, force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -256,21 +269,6 @@ ActiveRecord::Schema.define(version: 20180117011015) do
     t.index ["iso_country", "name"], name: "index_pyr_geo_names_on_iso_country_and_name"
     t.index ["iso_country", "postal_code"], name: "index_pyr_geo_names_on_iso_country_and_postal_code"
     t.index ["latitude", "longitude", "iso_country", "name"], name: "pyr_geo_llin_idx"
-  end
-
-  create_table "pyr_uploads", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
-    t.string "bucket_name", null: false
-    t.string "key", null: false
-    t.string "file_name", null: false
-    t.string "path", null: false
-    t.string "full_name", null: false
-    t.string "content_type", null: false
-    t.string "url", null: false
-    t.string "sub_type"
-    t.index ["user_id", "key", "url"], name: "index_pyr_uploads_on_user_id_and_key_and_url"
   end
 
   create_table "ratings", id: :serial, force: :cascade do |t|

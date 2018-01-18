@@ -20,7 +20,6 @@ Rails.application.routes.draw do
       post 'search(/:model)' => 'search#show'
       get 'search(/:model)' => 'search#show'
 
-      post 'upload_url' => 'uploads#make', as: :api_v1_upload_url
 
       resources :ratings
       resource :company
@@ -29,7 +28,9 @@ Rails.application.routes.draw do
       resources :jobs
       resources :invites, only: [:new, :create]
       resources :categories
+
       resources :uploads
+      post 'uploads/make' => 'uploads#make', as: :api_v1_upload_url
 
       get 'locations' => 'locations#search'
 

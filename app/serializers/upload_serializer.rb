@@ -1,13 +1,16 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes  :content_type,
+  attributes  :id,
+              :content_type,
               :file_name,
               :url
 
-  #belongs_to :user
-  #has_many :companies
+  def id
+    return object.uuid
+  end
 
   def url
-    return object.url
+    instance_options[:signed] ? object.signed_url : object.public_url
   end
+  
 end
 
