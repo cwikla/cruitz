@@ -1,10 +1,13 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes  :key,
-              :content_type,
-              :full_name,
+  attributes  :content_type,
               :file_name,
               :url
 
-  belongs_to :user
+  #belongs_to :user
+  #has_many :companies
+
+  def url
+    return object.url
+  end
 end
 

@@ -5,6 +5,8 @@ import Component from './base';
 import Util from './util';
 import Network from './network';
 
+const UPLOAD_URL = "/upload_url";
+
 function convertUint8ArrayToBinaryString(u8Array) {
 	var i, len = u8Array.length, b_str = "";
 
@@ -17,8 +19,7 @@ function convertUint8ArrayToBinaryString(u8Array) {
 
 function getSignedURL(file) {
   return Network.getJSON({
-    remote: "/",
-    url : Util.URL("/upload_url"),
+    url : Util.URL(UPLOAD_URL),
     method: Network.Method.POST,
     data : { upload: { name : file.name } },
   });
@@ -61,7 +62,7 @@ function isImageType(f) {
   console.log("CHECKING ISIMAGETYPE");
   console.log(f);
 
-  f = f.type || f;
+  f = f.type || f.content_type || f;
 
   console.log("A");
   console.log(f);

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :jobs
       resources :invites, only: [:new, :create]
       resources :categories
+      resources :uploads
 
       get 'locations' => 'locations#search'
 

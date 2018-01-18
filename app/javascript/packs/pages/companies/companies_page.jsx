@@ -28,15 +28,25 @@ class CompanyHeaderForm extends Component {
   render() {
     let method = Pyr.Method.PATCH;
 
-    console.log("COMPANY");
+    console.log("COMPANY HEADER");
     console.log(this.props.company);
+
+    let logo = this.props.company.logo;
+    console.log(logo);
+
+    let file = {
+      url: logo.url,
+      name: logo.file_name,
+      contentType: logo.content_type,
+      createdAt: logo.created_at,
+    };
 
     return (
       <div className="form-header-parent section">
         <Pyr.Grid.Row>
           <Pyr.Grid.Col className="col-2">
             <Pyr.Form.Group name="logo">
-              <Pyr.Form.FileSelector imageOnly/>
+              <Pyr.Form.FileSelector imageOnly files={[file]} />
             </Pyr.Form.Group>
           </Pyr.Grid.Col>
 
@@ -148,7 +158,8 @@ class CompanyLinksForm extends Component {
   render() {
     let method = Pyr.Method.PATCH;
 
-    console.log("COMPANY");
+    console.log("COMPANY RENDER");
+    console.log(this.props);
     console.log(this.props.company);
 
     return (

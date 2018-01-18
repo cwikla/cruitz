@@ -1,5 +1,9 @@
 class CompaniesController < ApplicationController
 
+  def show
+    render json: current_user.company
+  end
+
   def update
     cp = company_params
 

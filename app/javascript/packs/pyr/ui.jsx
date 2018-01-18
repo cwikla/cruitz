@@ -170,6 +170,10 @@ class ImageFile extends Component {
     }
   }
 
+  getURL() {
+    return (this.state.localUrl ? this.state.localUrl : this.props.url);
+  }
+
   componentWillUnmount() {
     this.release();
   }
@@ -178,9 +182,7 @@ class ImageFile extends Component {
     this.release();
   }
 
-  getType() {
-//    ark();
-
+  getContentType() {
     let ftype = this.props.contentType;
 
     console.log(ftype);
@@ -205,7 +207,7 @@ class ImageFile extends Component {
 
  
   render() {
-    let ftype = this.getType().toLowerCase();
+    let ftype = this.getContentType().toLowerCase();
 
     if (!Attachment.isImageType(this.props.file || this.props.contentType)) {
       return (
@@ -218,7 +220,7 @@ class ImageFile extends Component {
     return (
       <img
         {...Util.propsMergeClassName(rest, "pyr-image-file")}
-        src={this.state.localUrl ? this.state.localUrl : this.url}
+        src={this.getURL()}
         onLoad={this.onLoad}
       />
     );

@@ -589,12 +589,12 @@ class CheckBox extends Child {
   }
 }
 
-class FileSelector extends Child {
+class DropTarget extends Component {
+
   constructor(props) {
     super(props);
+
     this.initState({
-      files: [],
-      infos: {},
       dragging: false,
       valid: true,
     });
@@ -604,7 +604,6 @@ class FileSelector extends Child {
     this.onDragOver = this.dragOver.bind(this);
     this.onDragStart = this.dragStart.bind(this);
     this.onDragEnd = this.dragEnd.bind(this);
-
     this.onDrop = this.drop.bind(this);
 
     this.onChange = this.change.bind(this);
@@ -613,15 +612,9 @@ class FileSelector extends Child {
 
   componentWillMount() {
     this.setState({
-      files: [],
-      infos: {},
       dragging: false,
       valid: true,
     });
-  }
-
-  fhash(file) {
-    return (file.name + file.lastModified.toString());
   }
 
   //https://stackoverflow.com/questions/21339924/drop-event-not-firing-in-chrome
@@ -637,19 +630,14 @@ class FileSelector extends Child {
     return e.dataTransfer.files || e.target.files;
   }
 
-  isValidFiles(e) {
-    if (!this.props.imageOnly) {
-      return true;
-    }
-
-    let files = this.eventFiles(e);
-
+  isImageFiles(files) {
     if (!files) {
       return false;
     }
 
-    console.log("IS VALID FILES");
-    console.log(files);
+    if (!this.props.imageOnly) {
+      return true;
+    }
 
     Array.from(files).forEach((f) => {
       if (!Attachment.isImageType(f)) {
@@ -661,18 +649,42 @@ class FileSelector extends Child {
     return true;
   }
 
+  isValid(files) {
+    if (!files || (files.length == 0)) {
+      return false;
+    }
+
+    if (!this.props.multiple && (files.length > 1)) {
+      return false;
+    }
+
+    let valid = true;
+
+    if (this.props.imageOnly) {
+      valid = this.isImageFiles(files);
+    }
+
+    if (valid && this.props.validateFiles) {
+      valid = this.props.validateFiles(files);
+    }
+
+    return valid;
+  }
+
   dragging(dragging, e) {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
 
-    let valid = this.isValidFiles(e);
+    let files = this.eventFiles(e);
+    let valid = this.isValid(files);
 
     this.setState({
       dragging,
       valid,
     });
+
     console.log("DRAGGING: " + dragging);
     console.log(e.dataTransfer.types);
     console.log(e);
@@ -690,6 +702,22 @@ class FileSelector extends Child {
     });
   }
 
+  sendBackFiles(files) {
+    // just to be clear
+    this.setState({
+      dragging: false,
+      valid: true
+    });
+
+    if (!this.isValid(files)) {
+      return; // nothing to see here
+    }
+
+    if (this.props.onAddFiles) {
+      this.props.onAddFiles(files);
+    }
+  }
+
   drop(e) {
     console.log("DROPPED");
     if (e) {
@@ -698,8 +726,7 @@ class FileSelector extends Child {
     }
 
     let files = this.eventFiles(e);
-
-    this.addFiles(files);
+    this.sendBackFiles(files);
   }
 
   change(e) {
@@ -708,8 +735,73 @@ class FileSelector extends Child {
     }
 
     let files = e.target.files;
+    this.sendBackFiles(files);
+  }
 
-    this.addFiles(files);
+  click(e) {
+    return this.fileInput.click();
+  }
+
+  renderFileInput() {
+    let afile = this.state.files ? this.state.files[0]: "";
+    let extra = {
+      multiple :this.props.multiple
+    };
+
+    return (
+        <input className="pyr-drop-file" ref={node => this.fileInput = node} type="file" {...this.props.input} onChange={this.onChange} {...extra}/>
+    );
+  }
+
+  render() {
+    let clz = Util.ClassNames("pyr-drop-target yellow", (this.state.dragging ? "dragging" : null));
+
+    if (!this.state.valid) {
+      clz.push("invalid");
+    }
+
+    let rest = Util.propsRemove(this.props, ["imageOnly", "onAddFiles"]);
+
+    return(
+      <div 
+        {...Util.propsMergeClassName(rest, clz)}
+        onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}
+        onDragEnter={this.onDragEnter}
+        onDragLeave={this.onDragLeave}
+        onDragOver={this.onDragOver}
+        onDrop={this.onDrop}
+        onClick={this.onClick}
+      >
+        { this.renderFileInput() }
+        { this.props.children }
+      </div>
+    );
+  }
+}
+
+
+class FileSelector extends Child {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      files: [],
+      infos: {},
+    });
+
+    this.onAddFiles = this.addFiles.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({
+      files: [],
+      infos: {},
+    });
+  }
+
+  fhash(file) {
+    return (file.name + file.lastModified.toString());
   }
 
   pruneByType(files) {
@@ -750,17 +842,11 @@ class FileSelector extends Child {
   }
 
   addFiles(newFiles) {
-
-    this.setState({
-      dragging: false,
-      valid: true
-    });
-
-    if (!newFiles || newFiles.length == 0) {
+    if (!newFiles || (newFiles.length == 0)) {
       return;
     }
 
-    if (!this.props.multiple && newFiles.length > 1) {
+    if (!this.props.multiple && (newFiles.length > 1)) {
       alert("Only 1 file can be selected here!");
       return;
     }
@@ -789,7 +875,6 @@ class FileSelector extends Child {
 
     this.setState({
       files : oldFiles,
-      dragging: false,
     });
 
     console.log("NEWFILES");
@@ -818,10 +903,6 @@ class FileSelector extends Child {
     console.log(this.state.files);
   }
 
-  click(e) {
-    return this.fileInput.click();
-  }
-
   renderHiddens() {
     if (!this.state.files) {
       return null;
@@ -847,7 +928,7 @@ class FileSelector extends Child {
     });
 
     return (
-      <div id={this.name()+"-files-to-upload"}>
+      <div className="pyr-files-to-upload">
         { hiddens }
       </div>
     );
@@ -863,68 +944,76 @@ class FileSelector extends Child {
     );
   }
 
-  renderImage() {
-    if (!this.state.files || (this.state.files.length == 0)) {
+  getImageURL() {
+    let url = this.props.url;
+
+    console.log("GET IMAGE URL");
+    console.log(this.props);
+    console.log(url);
+    console.log(this.state.files);
+    console.log(this.state.files.length);
+
+    if (this.state.files && (this.state.files.length > 0)) {
+      let file = this.state.files[0];
+      let info = this.getInfo(file);
+      url = info ? info['url'] : null;
+    }
+
+    return url;
+  }
+
+  renderAnImage(file) {
+    let info = this.getInfo(file);
+
+    if (!info) {
       return this.renderDefault();
     }
 
-    let file = this.state.files[0];
-    let info = this.getInfo(file);
-    let url = info ? info['url'] : null;
+    let url = info['url'];
+    let contentType = info['type']
 
-    console.log("RENDERING IMAGE: " + info);
+    console.log("URL");
+    console.log(url);
+
+    if (!url) { 
+      return this.renderDefault();
+    }
+
+    //console.log("RENDERING IMAGE: " + info);
 
     return (
-      <UI.ImageFile file={file} src={url} {...this.props.image} />
+      <UI.ImageFile file={file} url={url} contentType={contentType} {...this.props.image} />
     );
   }
 
-  renderFileInput() {
-    if (this.props.noInput) {
-      return null;
-    }
-
-    let afile = this.state.files ? this.state.files[0]: "";
-    let extra = {
-    };
-
-    if (this.props.multiple) {
-      extra.multiple = true;
-    };
-
-    return (
-        <input ref={node => this.fileInput = node} type="file" {...this.props.input} onChange={this.onChange} {...extra}/>
-    );
+  renderImages() {
+    return this.state.files.map((file, pos) => {
+      return (
+        <div key={this.fhash(file)}>
+          { this.renderAnImage(file) }
+        </div>
+      );
+    });
   }
 
   render() {
-    let clz = Util.ClassNames("form-control pyr-file-selector", (this.state.dragging ? "dragging" : null));
+    let clz = Util.ClassNames("form-control pyr-file-selector");
 
-    if (this.state.files) {
-      clz.push("value");
-    }
-
-    if (!this.state.valid) {
-      clz.push("red");
-    }
-
-    let rest = Util.propsRemove(this.props, ["imageOnly"]);
+    let rest = Util.propsRemove(this.props, ["imageOnly", "multiple"]);
 
     return(
       <div id={this.htmlID()}
         {...Util.propsMergeClassName(rest, clz)}
-        onDragStart={this.onDragStart}
-        onDragEnd={this.onDragEnd}
-        onDragEnter={this.onDragEnter}
-        onDragLeave={this.onDragLeave}
-        onDragOver={this.onDragOver}
-        onDrop={this.onDrop}
-        onClick={this.onClick}
       >
         { this.renderHiddens() }
-        { this.renderImage() }
-        { this.renderFileInput() }
-        { this.props.children }
+        <DropTarget 
+          imageOnly={this.props.imageOnly}
+          multiple={this.props.multiple}
+          onAddFiles={this.onAddFiles}
+        >
+          { this.renderImages() }
+          { this.props.children }
+        </DropTarget>
       </div>
     );
   }
