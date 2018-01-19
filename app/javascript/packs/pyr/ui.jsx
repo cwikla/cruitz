@@ -187,7 +187,7 @@ class ImageFile extends Component {
   getContentType() {
     let ftype = this.contentType;
 
-    console.log(ftype);
+    //console.log(ftype);
 
     if (!ftype) {
       return "file";
@@ -658,7 +658,7 @@ class Modal extends Component {
   }
 
   keyPress(e) {
-    console.log(e.keyCode);
+    //console.log(e.keyCode);
     if (e.keyCode === ESCAPE_KEY) {
       e.preventDefault();
       this.close(e);

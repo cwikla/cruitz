@@ -24,8 +24,8 @@ class Form extends Network.Component {
   constructor(props) {
     super(props);
 
-    console.log("FORM OBJECT");
-    console.log(props);
+    //console.log("FORM OBJECT");
+    //console.log(props);
 
     this.initState({
       isLoading: false,
@@ -641,7 +641,7 @@ class DropTarget extends Component {
 
     Array.from(files).forEach((f) => {
       if (!Attachment.isImageType(f)) {
-        console.log("BUMMER");
+        //console.log("BUMMER");
         return false;
       }
     });
@@ -685,17 +685,17 @@ class DropTarget extends Component {
       valid,
     });
 
-    console.log("DRAGGING: " + dragging);
-    console.log(e.dataTransfer.types);
-    console.log(e);
+    //console.log("DRAGGING: " + dragging);
+    //console.log(e.dataTransfer.types);
+    //console.log(e);
   }
 
   dragStart(e) {
-    console.log("DRAG START");
+    //console.log("DRAG START");
   }
 
   dragEnd(e) {
-    console.log("DRAG END");
+    //console.log("DRAG END");
     this.setState({
       dragging : false,
       valid: true,
@@ -719,7 +719,7 @@ class DropTarget extends Component {
   }
 
   drop(e) {
-    console.log("DROPPED");
+    //console.log("DROPPED");
     if (e) {
       e.stopPropagation();
       e.preventDefault();
@@ -829,8 +829,8 @@ class FileSelector extends Child {
     let mini = {};
     mini[fh] = upload;
 
-    console.log("Setting FILE UPLOAD");
-    console.log(upload);
+    //console.log("Setting FILE UPLOAD");
+    //console.log(upload);
 
     this.setState({
       fileUploads : Object.assign({}, this.state.fileUploads, mini)
@@ -842,8 +842,8 @@ class FileSelector extends Child {
   }
 
   addFiles(newFiles) {
-    console.log("ADD FILES");
-    console.log(newFiles);
+    //console.log("ADD FILES");
+    //console.log(newFiles);
 
     newFiles = Array.from(newFiles);
 
@@ -877,14 +877,14 @@ class FileSelector extends Child {
     let me = this;
 
     newFiles.forEach((file) => {
-      console.log("FILE");
-      console.log(file);
+      //console.log("FILE");
+      //console.log(file);
 
       me.setFileUpload(file, null);
 
       Attachment.S3Put(file).done((upload) => {
-        console.log("S3PUT RESULT");
-        console.log(upload);
+        //console.log("S3PUT RESULT");
+        //console.log(upload);
 
         me.setFileUpload(file, upload);
 
@@ -902,17 +902,17 @@ class FileSelector extends Child {
       return null;
     }
 
-    console.log("FILE UPLOADS");
-    console.log(all);
-    console.log("*FILE UPLOADS");
+    //console.log("FILE UPLOADS");
+    //console.log(all);
+    //console.log("*FILE UPLOADS");
 
     let hiddens = all.map((upload, pos) => {
       if (!upload) {
         return null; // NOT READY YET!
       }
 
-      console.log("THE UPLOAD");
-      console.log(upload);
+      //console.log("THE UPLOAD");
+      //console.log(upload);
 
       return (
         <input key={upload.id} name={this.name()} type="hidden" value={upload.id} data-pyr-file/>
@@ -938,12 +938,12 @@ class FileSelector extends Child {
 
   renderUploads() {
     let all = this.allUploads();
-    console.log("RENDER UPLOADS");
-    console.log(all);
+    //console.log("RENDER UPLOADS");
+    //console.log(all);
 
     return all.map((upload, pos) => {
-      console.log("RENDERING UPLOAD");
-      console.log(upload);
+      //console.log("RENDERING UPLOAD");
+      //console.log(upload);
       return (
         <div key={upload.id + "-img"} className="upload">
           <UI.ImageFile url={upload.url} contentType={upload.content_type} />
@@ -953,16 +953,16 @@ class FileSelector extends Child {
   }
 
   renderFiles() {
-    console.log("RENDER FILES");
-    console.log(this.state.files);
+    //console.log("RENDER FILES");
+    //console.log(this.state.files);
 
     return this.state.files.map((file, pos) => {
-      console.log("RENDER FILE");
-      console.log(file);
+      //console.log("RENDER FILE");
+      //console.log(file);
 
       let upload = this.getFileUpload(file);
       if (upload) {
-          console.log("ALREADY IN UPLOADS");
+          //console.log("ALREADY IN UPLOADS");
         return null; // already in uploads
       }
       return (
@@ -981,11 +981,11 @@ class FileSelector extends Child {
       return this.renderDefault();
     }
 
-    console.log("RENDER IMAGES");
-    console.log("UP: " + uploads.length);
-    console.log(uploads);
-    console.log("FILE: " + files.length);
-    console.log(files);
+    //console.log("RENDER IMAGES");
+    //console.log("UP: " + uploads.length);
+    //console.log(uploads);
+    //console.log("FILE: " + files.length);
+    //console.log(files);
 
     return (
       <div className="pyr-images">
@@ -1034,27 +1034,27 @@ class AutoComplete extends Child {
   }
 
   loading(isLoading) {
-    console.log("IS LOADING: " + isLoading);
+    //console.log("IS LOADING: " + isLoading);
     this.setState({
       isLoading
     });
   }
 
   search(query) {
-    console.log("A: *******");
-    console.log(this.props.url);
+    //console.log("A: *******");
+    //console.log(this.props.url);
     let url = Util.URL(this.props.url).set("q", query);
-    console.log(url);
-    console.log(url.parser.href);
-    console.log(url.toString());
-    console.log("B: *******");
+    //console.log(url);
+    //console.log(url.parser.href);
+    //console.log(url.toString());
+    //console.log("B: *******");
 
     Network.getJSON({
       url : url,
       onLoading : this.onLoading,
     }).done((data, textStatus, jqXHR) => {
-      console.log("RESULTS");
-      console.log(data.results);
+      //console.log("RESULTS");
+      //console.log(data.results);
       this.setState({
         results: data.results
       });
