@@ -787,7 +787,8 @@ class FileSelector extends Child {
 
     this.initState({
       files: [],
-      uploads: {},
+      fileUploads: {},
+      incomingUploads: [],
     });
 
     this.onAddFiles = this.addFiles.bind(this);
@@ -796,22 +797,21 @@ class FileSelector extends Child {
   componentWillMount() {
     this.setState({
       files: [],
-      uploads: {},
+      fileUploads: {},
+      incomingUploads: (this.props.uploads || []),
     });
   }
 
   allUploads() {
     let all = []; // FIXME
-    let uploads = this.props.uploads || [];
+    let uploads = this.props.incomingUploads || [];
 
-    for(let i=0;i<uploads.length;i++) {
-      all.push(uploads[i]);
-    }
+    all = all.concat(this.state.incomingUploads);
 
     let files = this.state.files || [];
 
-    for(let i=0;i<files.length;i++) {
-      let u = this.state.uploads[files[i]];
+    for(let i=0;i<files.length;i++) { // maintain order
+      let u = this.getFileUpload(files[i]);
       if (u) {
         all.push(u);
       }
@@ -823,25 +823,30 @@ class FileSelector extends Child {
     return (file.name + file.lastModified.toString());
   }
 
-  setUpload(file, upload) {
+  setFileUpload(file, upload) {
     let fh = this.fhash(file);
 
     let mini = {};
     mini[fh] = upload;
 
-    console.log("Setting UPLOAD");
+    console.log("Setting FILE UPLOAD");
     console.log(upload);
 
     this.setState({
-      uploads : Object.assign({}, this.state.uploads, mini)
+      fileUploads : Object.assign({}, this.state.fileUploads, mini)
     });
   }
 
-  getUpload(file) {
-    return this.state.uploads[this.fhash(file)];
+  getFileUpload(file) {
+    return this.state.fileUploads[this.fhash(file)];
   }
 
   addFiles(newFiles) {
+    console.log("ADD FILES");
+    console.log(newFiles);
+
+    newFiles = Array.from(newFiles);
+
     if (!newFiles || (newFiles.length == 0)) {
       return;
     }
@@ -852,28 +857,36 @@ class FileSelector extends Child {
     }
 
     let oldFiles = this.state.files || [];
+    let oldUploads = this.state.fileUploads || {};
+    let oldIncomingUploads = this.state.incomingUploads || [];
 
     if (!this.props.multiple) {
       oldFiles = [];
+      oldUploads = {};
+      oldIncomingUploads = [];
     }
 
     oldFiles = oldFiles.concat(newFiles);
 
     this.setState({
       files : oldFiles,
+      uploads : oldUploads,
+      incomingUploads: oldIncomingUploads,
     });
 
     let me = this;
 
-    Array.from(newFiles).forEach((file) => {
+    newFiles.forEach((file) => {
       console.log("FILE");
       console.log(file);
+
+      me.setFileUpload(file, null);
 
       Attachment.S3Put(file).done((upload) => {
         console.log("S3PUT RESULT");
         console.log(upload);
 
-        me.setUpload(file, upload);
+        me.setFileUpload(file, upload);
 
       }).fail((jqXHR, textStatus, errorThrown) => {
         Network.ajaxError(jqXHR, textStatus, errorThrown);
@@ -924,44 +937,60 @@ class FileSelector extends Child {
   }
 
   renderUploads() {
-    return this.props.uploads.map((upload, pos) => {
+    let all = this.allUploads();
+    console.log("RENDER UPLOADS");
+    console.log(all);
+
+    return all.map((upload, pos) => {
+      console.log("RENDERING UPLOAD");
+      console.log(upload);
       return (
-        <div key={upload.id + "img"}>
-          <UI.ImageFile url={upload.url} contentType={upload.content_type} {...this.props.image} />
+        <div key={upload.id + "-img"} className="upload">
+          <UI.ImageFile url={upload.url} contentType={upload.content_type} />
         </div>
       );
     });
   }
 
   renderFiles() {
+    console.log("RENDER FILES");
+    console.log(this.state.files);
+
     return this.state.files.map((file, pos) => {
+      console.log("RENDER FILE");
+      console.log(file);
+
+      let upload = this.getFileUpload(file);
+      if (upload) {
+          console.log("ALREADY IN UPLOADS");
+        return null; // already in uploads
+      }
       return (
-        <div key={this.fhash(file)+"img"}>
-          <UI.ImageFile file={file} url={url} contentType={contentType} {...this.props.image} />
+        <div key={this.fhash(file)+"-file"} className="file">
+          <UI.ImageFile file={file} className="red"/>
         </div>
       );
     });
   }
 
   renderImages() {
-    let uploads = this.props.uploads || [];
+    let uploads = this.allUploads();
     let files = this.state.files || [];
 
     if (!uploads.length && !files.length) {
       return this.renderDefault();
     }
 
-/*
-    let images = [];
-    images = images.concat(this.renderUploads()).concat(this.renderFiles());
-
-    console.log("IMAGES");
-    console.log(images);
-*/
+    console.log("RENDER IMAGES");
+    console.log("UP: " + uploads.length);
+    console.log(uploads);
+    console.log("FILE: " + files.length);
+    console.log(files);
 
     return (
       <div className="pyr-images">
         { this.renderUploads() }
+        { this.renderFiles() }
       </div>
     );
   }

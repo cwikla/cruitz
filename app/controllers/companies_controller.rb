@@ -7,12 +7,15 @@ class CompaniesController < ApplicationController
   def update
     cp = company_params
 
-    upload = current_user.uploads.where(full_name: cp[:logo]).first
-
-    puts "CMPY UPDATE"
-    puts cp.inspect
-    cp[:logo] = upload
-    puts cp.inspect
+    if cp[:logo]
+      upload = Upload.find(cp[:logo])
+      if upload.user_id == current_user.id  # make sure it's owned 
+        puts "CMPY UPDATE"
+        puts upload.inspect
+        cp[:logo] = upload
+        puts cp.inspect
+      end
+    end
 
     @company = current_user.company || current_user.build_company
     if @company.update(cp)

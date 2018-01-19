@@ -41,7 +41,7 @@ function S3Put(file) {
 
     return Network.getJSON({
       type: Network.Method.PUT,
-      url: s3Info['url'],
+      url: s3Info['signed_url'],
       data: file,
       dataType: null,
       contentType: ftype,

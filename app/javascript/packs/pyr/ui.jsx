@@ -149,6 +149,8 @@ class ImageFile extends Component {
       localUrl,
     });
 
+    this.contentType = this.props.file ? this.props.file.type : this.props.contentType;
+
     this.onLoad = this.loaded.bind(this);
   }
 
@@ -183,7 +185,7 @@ class ImageFile extends Component {
   }
 
   getContentType() {
-    let ftype = this.props.contentType;
+    let ftype = this.contentType;
 
     console.log(ftype);
 

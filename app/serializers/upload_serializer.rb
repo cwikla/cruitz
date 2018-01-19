@@ -9,8 +9,18 @@ class UploadSerializer < ActiveModel::Serializer
   end
 
   def url
-    instance_options[:signed] ? object.signed_url : object.public_url
+    object.public_url
   end
+
+  def attributes(*args)
+    hash = super
+    if instance_options[:signed]
+      hash[:signed_url] = object.signed_url
+    end
+
+    hash
+  end
+
   
 end
 
