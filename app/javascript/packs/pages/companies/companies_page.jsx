@@ -32,21 +32,13 @@ class CompanyHeaderForm extends Component {
     console.log(this.props.company);
 
     let logo = this.props.company.logo;
-    console.log(logo);
-
-    let file = {
-      url: logo.url,
-      name: logo.file_name,
-      contentType: logo.content_type,
-      createdAt: logo.created_at,
-    };
 
     return (
       <div className="form-header-parent section">
         <Pyr.Grid.Row>
           <Pyr.Grid.Col className="col-2">
             <Pyr.Form.Group name="logo">
-              <Pyr.Form.FileSelector imageOnly files={[file]} />
+              <Pyr.Form.FileSelector imageOnly uploads={[logo]} />
             </Pyr.Form.Group>
           </Pyr.Grid.Col>
 
@@ -201,10 +193,6 @@ class EditSheet extends Sheet.Edit {
   constructor(props, context) {
     super(props, context);
 
-    this.initState({ 
-      company : context.user.company
-    });
-
     this.onSuccess = this.success.bind(this);
   }
 
@@ -214,9 +202,9 @@ class EditSheet extends Sheet.Edit {
     this.setCompany(company);
 
     super.success(data, textStatus, jqXHR);
-    this.setState({
-      company: company
-    });
+    //this.setState({
+      //company: company
+    //});
 
     this.setNotice("Company updated");
     this.goBack();
@@ -251,7 +239,7 @@ class EditSheet extends Sheet.Edit {
   }
 
   renderForm() { 
-    let company = this.state.company || {};
+    let company = this.props.selected || {};
 
     let method = Pyr.Method.PATCH;
 
@@ -300,7 +288,6 @@ class EditSheet extends Sheet.Edit {
 }
 
 class CompaniesPage extends Page {
-
   name() {
     return "Company";
   }
@@ -313,15 +300,29 @@ class CompaniesPage extends Page {
     return EDIT_ACTION;
   }
 
-  loadSelected(unused, onLoading) {
-    this.onSelect(this.user());
+  loadSelected() {
+    this.getJSON({
+      url: COMPANY_URL
+  
+    }).done((data, textStatus, jqXHR) => {
+      console.log("GOT COMPANY");
+      console.log(data.company);
+
+      this.setCompany(data.company);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
   }
 
   actionSheet(action) {
+    console.log("ACTION SHEET");
+    console.log(this.context.user.company);
+
     return (
       <EditSheet
         {...this.props}
-        selected={this.getSelected()}
+        selected={this.context.user.company}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
         onLoadSelected={this.onLoadSelected}

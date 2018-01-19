@@ -7,7 +7,7 @@ class UserSerializer < ActiveModel::Serializer
     :created_at,
     :updated_at
 
-    has_one :company
+    #has_one :company
 
   def id
     object.hashid

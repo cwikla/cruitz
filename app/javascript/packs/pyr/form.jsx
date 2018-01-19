@@ -787,7 +787,7 @@ class FileSelector extends Child {
 
     this.initState({
       files: [],
-      infos: {},
+      uploads: {},
     });
 
     this.onAddFiles = this.addFiles.bind(this);
@@ -796,49 +796,49 @@ class FileSelector extends Child {
   componentWillMount() {
     this.setState({
       files: [],
-      infos: {},
+      uploads: {},
     });
+  }
+
+  allUploads() {
+    let all = []; // FIXME
+    let uploads = this.props.uploads || [];
+
+    for(let i=0;i<uploads.length;i++) {
+      all.push(uploads[i]);
+    }
+
+    let files = this.state.files || [];
+
+    for(let i=0;i<files.length;i++) {
+      let u = this.state.uploads[files[i]];
+      if (u) {
+        all.push(u);
+      }
+    }
+    return all;
   }
 
   fhash(file) {
     return (file.name + file.lastModified.toString());
   }
 
-  pruneByType(files) {
-    if (!this.props.imageOnly) {
-      return files;
-    }
-
-    let result = Array.from(files).reduce((arr, f) => {
-      if (Attachment.isImageType(f)) {
-        console.log("PUSHING");
-        arr.push(f);
-        console.log(arr);
-      }
-      return arr;
-    }, []);
-
-    console.log("RESULT prune");
-    console.log(result);
-
-    return result;
-  }
-
-  setInfo(file, info) {
+  setUpload(file, upload) {
     let fh = this.fhash(file);
 
     let mini = {};
-    mini[fh] = info;
+    mini[fh] = upload;
 
-    console.log("Setting URL: " + info);
+    console.log("Setting UPLOAD");
+    console.log(upload);
 
     this.setState({
-      infos : Object.assign({}, this.state.infos, mini)
+      uploads : Object.assign({}, this.state.uploads, mini)
     });
   }
 
-  getInfo(file) {
-    return this.state.infos[this.fhash(file)];
+  getUpload(file) {
+    return this.state.uploads[this.fhash(file)];
   }
 
   addFiles(newFiles) {
@@ -851,79 +851,58 @@ class FileSelector extends Child {
       return;
     }
 
-    newFiles = this.pruneByType(newFiles);
-
-    if (!newFiles || newFiles.length == 0) {
-      return;
-    }
-
     let oldFiles = this.state.files || [];
 
     if (!this.props.multiple) {
       oldFiles = [];
     }
 
-    console.log("A");
-    console.log(oldFiles);
-    console.log(newFiles);
-
     oldFiles = oldFiles.concat(newFiles);
-
-    console.log("B");
-    console.log(oldFiles);
-    console.log(newFiles);
 
     this.setState({
       files : oldFiles,
     });
 
-    console.log("NEWFILES");
-    console.log(oldFiles);
-
     let me = this;
+
     Array.from(newFiles).forEach((file) => {
       console.log("FILE");
       console.log(file);
 
-      me.setInfo(file, null);
-
-      Attachment.S3Put(file).done((info) => {
+      Attachment.S3Put(file).done((upload) => {
         console.log("S3PUT RESULT");
-        console.log(info);
+        console.log(upload);
 
-        me.setInfo(file, info);
+        me.setUpload(file, upload);
 
       }).fail((jqXHR, textStatus, errorThrown) => {
         Network.ajaxError(jqXHR, textStatus, errorThrown);
 
       });
     });
-
-    console.log("FILES NOW AT");
-    console.log(this.state.files);
   }
 
   renderHiddens() {
-    if (!this.state.files) {
+    let all = this.allUploads();
+
+    if (!all || !all.length) {
       return null;
     }
 
-    console.log("FILE INFOS");
-    console.log(this.state.files);
-    console.log("*FILE INFOS");
+    console.log("FILE UPLOADS");
+    console.log(all);
+    console.log("*FILE UPLOADS");
 
-    let hiddens = this.state.files.map((file, pos) => {
-      let info = this.getInfo(file);
-
-      if (!info) {
+    let hiddens = all.map((upload, pos) => {
+      if (!upload) {
         return null; // NOT READY YET!
       }
 
-      console.log("THE INFO");
-      console.log(info);
+      console.log("THE UPLOAD");
+      console.log(upload);
 
       return (
-        <input key={this.fhash(file)} name={this.name()} type="hidden" value={info["file_name"]} data-pyr-file/>
+        <input key={upload.id} name={this.name()} type="hidden" value={upload.id} data-pyr-file/>
       );
     });
 
@@ -944,62 +923,53 @@ class FileSelector extends Child {
     );
   }
 
-  getImageURL() {
-    let url = this.props.url;
-
-    console.log("GET IMAGE URL");
-    console.log(this.props);
-    console.log(url);
-    console.log(this.state.files);
-    console.log(this.state.files.length);
-
-    if (this.state.files && (this.state.files.length > 0)) {
-      let file = this.state.files[0];
-      let info = this.getInfo(file);
-      url = info ? info['url'] : null;
-    }
-
-    return url;
-  }
-
-  renderAnImage(file) {
-    let info = this.getInfo(file);
-
-    if (!info) {
-      return this.renderDefault();
-    }
-
-    let url = info['url'];
-    let contentType = info['type']
-
-    console.log("URL");
-    console.log(url);
-
-    if (!url) { 
-      return this.renderDefault();
-    }
-
-    //console.log("RENDERING IMAGE: " + info);
-
-    return (
-      <UI.ImageFile file={file} url={url} contentType={contentType} {...this.props.image} />
-    );
-  }
-
-  renderImages() {
-    return this.state.files.map((file, pos) => {
+  renderUploads() {
+    return this.props.uploads.map((upload, pos) => {
       return (
-        <div key={this.fhash(file)}>
-          { this.renderAnImage(file) }
+        <div key={upload.id + "img"}>
+          <UI.ImageFile url={upload.url} contentType={upload.content_type} {...this.props.image} />
         </div>
       );
     });
   }
 
+  renderFiles() {
+    return this.state.files.map((file, pos) => {
+      return (
+        <div key={this.fhash(file)+"img"}>
+          <UI.ImageFile file={file} url={url} contentType={contentType} {...this.props.image} />
+        </div>
+      );
+    });
+  }
+
+  renderImages() {
+    let uploads = this.props.uploads || [];
+    let files = this.state.files || [];
+
+    if (!uploads.length && !files.length) {
+      return this.renderDefault();
+    }
+
+/*
+    let images = [];
+    images = images.concat(this.renderUploads()).concat(this.renderFiles());
+
+    console.log("IMAGES");
+    console.log(images);
+*/
+
+    return (
+      <div className="pyr-images">
+        { this.renderUploads() }
+      </div>
+    );
+  }
+
   render() {
     let clz = Util.ClassNames("form-control pyr-file-selector");
 
-    let rest = Util.propsRemove(this.props, ["imageOnly", "multiple"]);
+    let rest = Util.propsRemove(this.props, ["imageOnly", "multiple", "files"]);
 
     return(
       <div id={this.htmlID()}
@@ -1012,7 +982,6 @@ class FileSelector extends Child {
           onAddFiles={this.onAddFiles}
         >
           { this.renderImages() }
-          { this.props.children }
         </DropTarget>
       </div>
     );
