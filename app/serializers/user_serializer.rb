@@ -5,9 +5,11 @@ class UserSerializer < ActiveModel::Serializer
     :last_name,
     :full_name,
     :created_at,
-    :updated_at
+    :updated_at,
+    :logo
 
     #has_one :company
+  belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
 
   def id
     object.hashid

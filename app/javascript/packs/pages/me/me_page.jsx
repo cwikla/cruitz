@@ -16,10 +16,10 @@ import Component from '../component';
 import Page from '../page';
 import Sheet from '../sheet';
 import {
-  USERS_URL,
   EDIT_ACTION,
   DESTROY_SESSION_URL,
   PASSWORD_URL,
+  ME_URL,
 } from '../const';
 
 const MIN_PWD_LENGTH = 8;
@@ -161,7 +161,7 @@ class PasswordModal extends Pyr.UI.Modal {
 
 
 class MeForm extends Component {
-  static contextTypes = Pyr.UI.NoticeContextTypes;
+  //static contextTypes = Pyr.UI.NoticeContextTypes;
 
   constructor(props) {
     super(props);
@@ -185,9 +185,11 @@ class MeForm extends Component {
   
   render() {
     let key = "me-form";
-    let url = Pyr.URL(USERS_URL);
+    let url = Pyr.URL(ME_URL);
 
     let method = this.props.method || Pyr.Method.PATCH;
+
+     let logo = this.props.me.logo;
 
     return (
       <div className="form-parent section">
@@ -214,7 +216,7 @@ class MeForm extends Component {
          <Pyr.Grid.Row>
            <Pyr.Grid.Col className="col-2">
              <Pyr.Form.Group name="logo">
-               <Pyr.Form.FileSelector imageOnly/>
+               <Pyr.Form.FileSelector imageOnly uploads={[logo]}/>
              </Pyr.Form.Group>
            </Pyr.Grid.Col>
  
@@ -265,6 +267,7 @@ class EditSheet extends Sheet.Edit {
     });
 
     this.onLogout = this.logout.bind(this);
+    this.onGetMeForm = this.getMeForm.bind(this);
   }
 
   componentWillMount() {
@@ -276,6 +279,18 @@ class EditSheet extends Sheet.Edit {
   toRoot() {
     window.location = "/"; // HMMMm
   }
+
+  success(data, textStatus, jqXHR) {
+    let user = data.user;
+
+    this.setUser(user);
+
+    super.success(data, textStatus, jqXHR);
+
+    this.setNotice("Profile updated");
+    this.goBack();
+  }
+
 
   logout(e) {
     if (e) {
@@ -306,14 +321,34 @@ class EditSheet extends Sheet.Edit {
     return super.render();
   }
 
+  getMeForm() {
+    console.log("GETMEFORM");
+    console.log(this.me_form.form);
+    return this.me_form;
+  }
+
   renderForm() {
     return (
       <div className="me-index-header">
-        <MeForm me={this.user()}/>
+        <MeForm me={this.user()} ref={(node) => this.me_form = node}/>
         <div className="me-info p-1 d-flex flx-end">
           <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out"/>Logout</Pyr.UI.PrimaryButton>
         </div>
       </div>
+    );
+  }
+
+  renderButton() {
+    let isDisabled = this.props.isLoading;
+
+    return (
+      <Pyr.Form.SubmitButton className="ml-auto" target={this.onGetMeForm} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
+    );
+  }
+
+  renderTitle() {
+    return (
+      <h3 className="mr-auto title flx-row"><span className="mt-auto mb-auto mr-auto">{this.title()}</span> {this.renderButton()}</h3>
     );
   }
 

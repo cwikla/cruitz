@@ -125,6 +125,8 @@ class UserProvider extends Network.Component {
     console.log("SET USER");
     console.log(user);
 
+    let user = Object.assign({}, user);
+
     this.setState({
       user
     });

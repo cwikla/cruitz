@@ -1,16 +1,10 @@
-class UsersController < ApplicationController
-  def me
+class MeController < ApplicationController
+  def index
     render json: current_user
   end
 
-  def recruiters
-    @recruiters = params[:all] || true ? User.is_recruiter.all : current_user.recruiters # FIXME
-    render json: @recruiters, each_serializer: RecruiterSerializer
-  end
-
-  def recruiter
-    @recruiter = User.is_recruiter.find(params[:id])
-    render json: @recruiter, serializer: RecruiterSerializer, reviews: true
+  def show
+    render json: current_user
   end
 
   def password
@@ -24,27 +18,31 @@ class UsersController < ApplicationController
   end
 
   def update
-    up = user_params
+    up = me_params
     up.delete :password # no doing here!
 
     if up[:logo] # should refactor this out
-      upload = Upload.find(cp[:logo])
+      upload = Upload.find(up[:logo])
       if upload.user_id == current_user.id  # make sure it's owned 
-        puts "CMPY UPDATE"
+        puts "ME UPDATE"
         puts upload.inspect
         up[:logo] = upload
         puts up.inspect
       end
     end
 
+    puts "PARMS"
+    puts up.inspect
+
     @user = current_user
 
-    if @user.update(up)
+    if @user.update_without_password(up)
       puts "#{@user.inspect}"
       result = render json: @user
       puts result
       return result
     else
+      puts @user.errors.inspect
       return render_create_error json: @user
     end
   end
@@ -52,7 +50,7 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
+  def me_params
     params.require(:user).permit(:first_name, :last_name, :email, :logo)
   end
 

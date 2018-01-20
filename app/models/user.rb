@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   #make_authorized_by(:email)
 
+  belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
+
   has_many :jobs
 
   has_many :heads
@@ -36,7 +38,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true
   validates :email, uniqueness: true # FIXME, this isn't good
 
-  validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }
+  validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }, unless: "password.nil?"
 
   def self.after_cached_job(job)
     u = User.new(:id => job.user_id)

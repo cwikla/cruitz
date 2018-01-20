@@ -7,7 +7,7 @@ class CompaniesController < ApplicationController
   def update
     cp = company_params
 
-    if cp[:logo]
+    if cp[:logo] # should refactor this out
       upload = Upload.find(cp[:logo])
       if upload.user_id == current_user.id  # make sure it's owned 
         puts "CMPY UPDATE"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118231502) do
+ActiveRecord::Schema.define(version: 20180119223459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -361,6 +361,7 @@ ActiveRecord::Schema.define(version: 20180118231502) do
     t.string "last_name"
     t.string "jti", null: false
     t.boolean "first_time", default: true, null: false
+    t.integer "pyr_upload_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["digits_user_id", "deleted_at"], name: "index_users_on_digits_user_id_and_deleted_at", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -369,6 +370,7 @@ ActiveRecord::Schema.define(version: 20180118231502) do
     t.index ["is_recruiter"], name: "index_users_on_is_recruiter"
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["last_name", "first_name"], name: "index_users_on_last_name_and_first_name"
+    t.index ["pyr_upload_id"], name: "index_users_on_pyr_upload_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["twitter_id"], name: "index_users_on_twitter_id"
     t.index ["unconfirmed_email"], name: "index_users_on_unconfirmed_email"

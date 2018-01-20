@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   scope :api, defaults: { format: :json } do
     scope :v1 do
-      get 'users/me' => 'users#me'
       get 'recruiters' => 'users#recruiters'
       get 'recruiters/:id' => 'users#recruiter'
       get 'candidates/:id/thread' => 'candidates#thread'
@@ -28,6 +27,8 @@ Rails.application.routes.draw do
       resources :jobs
       resources :invites, only: [:new, :create]
       resources :categories
+      resource :me, { controller: "me" }
+      patch 'password' => 'me#password'
 
       resources :uploads
       post 'uploads/make' => 'uploads#make', as: :api_v1_upload_url
@@ -37,7 +38,6 @@ Rails.application.routes.draw do
       post 'messages/:id' => 'messages#create'
       resources :messages
 
-      patch 'password' => 'users#password'
     end
   end
 

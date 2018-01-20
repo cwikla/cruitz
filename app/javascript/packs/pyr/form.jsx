@@ -313,7 +313,11 @@ class SubmitButton extends Component {
   }
 
   target() {
-    return this.props.target;
+    let val = this.props.target;
+    if ($.isFunction(val)) {
+      val = val();
+    }
+    return val;
   }
  
   onClickHandler(e) {
@@ -326,9 +330,15 @@ class SubmitButton extends Component {
       return;
     }
 
-    if (this.props.target) {
+    console.log("CLICK");
+
+    let t = this.target();
+
+    console.log(t);
+
+    if (t) {
       //alert(this.props.target.form.constructor.name);
-      this.props.target.form.submit();
+      t.form.submit();
     }
   }
 
