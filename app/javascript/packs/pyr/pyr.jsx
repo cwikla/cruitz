@@ -86,6 +86,7 @@ class RouterProps extends Component {
 
 const UserContextTypes = {
   user: PropTypes.object,
+  setUser: PropTypes.func,
   setCompany: PropTypes.func,
 };
 
@@ -125,7 +126,7 @@ class UserProvider extends Network.Component {
     console.log("SET USER");
     console.log(user);
 
-    let user = Object.assign({}, user);
+    user = Object.assign({}, user);
 
     this.setState({
       user

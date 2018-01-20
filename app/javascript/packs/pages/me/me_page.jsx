@@ -266,6 +266,7 @@ class EditSheet extends Sheet.Edit {
       open: false
     });
 
+    this.onSuccess = this.success.bind(this);
     this.onLogout = this.logout.bind(this);
     this.onGetMeForm = this.getMeForm.bind(this);
   }
@@ -330,7 +331,11 @@ class EditSheet extends Sheet.Edit {
   renderForm() {
     return (
       <div className="me-index-header">
-        <MeForm me={this.user()} ref={(node) => this.me_form = node}/>
+        <MeForm 
+          me={this.user()} 
+          ref={(node) => this.me_form = node}
+          onSuccess={this.onSuccess}
+        />
         <div className="me-info p-1 d-flex flx-end">
           <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out"/>Logout</Pyr.UI.PrimaryButton>
         </div>
