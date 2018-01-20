@@ -804,6 +804,16 @@ class FileSelector extends Child {
     this.onAddFiles = this.addFiles.bind(this);
   }
 
+  inUploads() {
+    let uploads = this.props.uploads;
+    if (uploads) {
+      if (!Array.isArray(uploads)) {
+        uploads =  [ uploads ];
+      }
+    }
+    return uploads || [];
+  }
+
   componentWillMount() {
     this.setState({
       files: [],
@@ -814,7 +824,7 @@ class FileSelector extends Child {
 
   allUploads() {
     let all = []; // FIXME
-    let uploads = this.props.incomingUploads || [];
+    let uploads = this.inUploads();
 
     all = all.concat(this.state.incomingUploads);
 
@@ -826,6 +836,14 @@ class FileSelector extends Child {
         all.push(u);
       }
     }
+
+    all = all.reduce((ar, val) => {
+      if (val != null)   {
+        ar.push(val);
+      }
+      return ar;
+    }, []);
+
     return all;
   }
 

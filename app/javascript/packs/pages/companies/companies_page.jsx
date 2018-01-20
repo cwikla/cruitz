@@ -38,7 +38,7 @@ class CompanyHeaderForm extends Component {
         <Pyr.Grid.Row>
           <Pyr.Grid.Col className="col-2">
             <Pyr.Form.Group name="logo">
-              <Pyr.Form.FileSelector imageOnly uploads={[logo]} />
+              <Pyr.Form.FileSelector imageOnly uploads={logo} />
             </Pyr.Form.Group>
           </Pyr.Grid.Col>
 
