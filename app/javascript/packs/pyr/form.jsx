@@ -18,6 +18,7 @@ import {
 } from 'react-bootstrap-typeahead';
 
 const TypeaheadMenu = Menu;
+const TypeaheadMenuItem = MenuItem; //menuItemContainer(MenuItem);
 
 class Form extends Network.Component {
   static childContextTypes = {
@@ -284,6 +285,10 @@ class Child extends Component {
     return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
   }
 
+  safeName() {
+    return (this.context.model.toLowerCase() + "-" + this.context.name.toLowerCase());
+  }
+
   hasError() {
     return !!errorString;
   }
@@ -501,7 +506,6 @@ class Hidden extends Child {
   render() {
     let myProps = { 
       name: this.name(), 
-      id: this.htmlID() ,
       "aria-describedby": this.htmlID()
     };
 
@@ -1052,7 +1056,6 @@ class FileSelector extends Child {
 }
 
 
-
 class AutoComplete extends Child {
   constructor(props) {
     super(props);
@@ -1106,15 +1109,17 @@ class AutoComplete extends Child {
       <TypeaheadMenu {...menuProps}>
         {allOptions.map((option, props) => {
           return (
-            <MenuItem key={option.id} option={option}>
+            <TypeaheadMenuItem key={option.id} option={option}>
               { option.full_name }
-            </MenuItem>
+            </TypeaheadMenuItem>
           );
         })}
       </TypeaheadMenu>
     );
   }
 
+        //filterBy={this.onFilterBy}
+        //renderMenu={this.onRenderMenu}
   render() {
     let clz = "pyr-auto-complete";
 
@@ -1130,21 +1135,28 @@ class AutoComplete extends Child {
         isLoading={this.state.isLoading}
         {...Util.propsMergeClassName(rest, clz)}
         options={this.state.results}
- 
-        filterBy={this.onFilterBy}
-        renderMenu={this.onRenderMenu}
+        labelKey="full_name"
 
-        renderToken={(option, onRemove, index) => { 
+        renderToken={(option, onRemove) => {
+          console.log("OPTION");
+          console.log(option);
           return (
-            <UI.FancyButton
-                  key={"skb-"+option.id}
-                  onClick={onRemove}
-            >{option.full_name}</UI.FancyButton>
+            <span className="" key={"skb-" + this.safeName() + option.id}>
+              <Hidden 
+                name={this.name()} 
+                value={option.id} 
+              />
+              <UI.FancyButton
+                className={option.id}
+                onClick={onRemove}
+              >{option.full_name}</UI.FancyButton>
+            </span>
           );
         }}
 
       />
     );
+
   }
 }
 

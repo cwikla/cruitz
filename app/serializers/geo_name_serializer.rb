@@ -6,8 +6,14 @@ class GeoNameSerializer < ActiveModel::Serializer
     :postal_code,
     :full_name
 
-  def full_name
-    [object.name, object.admin_code_1].join(", ")
+  def is_postal?(pc)
+    GeoName.looks_postal?(pc)
   end
+
+  def full_name
+    object.full_name(postal_code: is_postal?(instance_options[:query]))
+  end
+
+
 
 end
