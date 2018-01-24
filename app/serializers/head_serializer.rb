@@ -5,8 +5,4 @@ class HeadSerializer < ActiveModel::Serializer
     :phone_number,
     :email
 
-  def id
-    object.hashid
-  end
-  
 end

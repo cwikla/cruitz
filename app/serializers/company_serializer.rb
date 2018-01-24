@@ -14,9 +14,9 @@ class CompanySerializer < ActiveModel::Serializer
     object.hashid
   end
 
-  def logo_unused
-    serializer = ActiveModel::Serializer.serializer_for(object.logo).new(object.logo)
-    ActiveModel::Serializer::Adapter::Json.new(serializer).as_json
+  def logo
+    serializer = UploadSerializer.new(object.logo)
+    ActiveModelSerializers::Adapter::Json.new(serializer).as_json[:upload] # Hmmmmm
 
     #object.logo ? object.logo.public_url : nil
   end

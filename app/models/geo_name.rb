@@ -10,7 +10,7 @@ class GeoName < ApplicationRecord
   def self.search_ids(s) 
     return nil if (s.length < MIN_LENGTH)
     cache_fetch(s) {
-      geo_name_search(s).ids
+      is_primary.geo_name_search(s).ids
     }
   end
 

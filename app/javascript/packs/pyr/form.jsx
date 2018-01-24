@@ -11,8 +11,13 @@ import Attachment from './attachment';
 
 import {
   Typeahead,
-  AsyncTypeahead
+  AsyncTypeahead,
+  Menu,
+  MenuItem,
+  menuItemContainer,
 } from 'react-bootstrap-typeahead';
+
+const TypeaheadMenu = Menu;
 
 class Form extends Network.Component {
   static childContextTypes = {
@@ -1059,6 +1064,8 @@ class AutoComplete extends Child {
 
     this.onSearch = this.search.bind(this);
     this.onLoading = this.loading.bind(this);
+    this.onRenderMenu = this.renderMenu.bind(this);
+    this.onFilterBy = this.filterBy.bind(this);
   }
 
   loading(isLoading) {
@@ -1089,6 +1096,25 @@ class AutoComplete extends Child {
     });
   }
 
+  filterBy(options, text) {
+    return true;
+  }
+  
+
+  renderMenu(allOptions, menuProps) {
+    return (
+      <TypeaheadMenu {...menuProps}>
+        {allOptions.map((option, props) => {
+          return (
+            <MenuItem key={option.id} option={option}>
+              { option.full_name }
+            </MenuItem>
+          );
+        })}
+      </TypeaheadMenu>
+    );
+  }
+
   render() {
     let clz = "pyr-auto-complete";
 
@@ -1104,14 +1130,19 @@ class AutoComplete extends Child {
         isLoading={this.state.isLoading}
         {...Util.propsMergeClassName(rest, clz)}
         options={this.state.results}
+ 
+        filterBy={this.onFilterBy}
+        renderMenu={this.onRenderMenu}
+
         renderToken={(option, onRemove, index) => { 
           return (
             <UI.FancyButton
-                  key={"skb"+index}
+                  key={"skb-"+option.id}
                   onClick={onRemove}
-            >{option}</UI.FancyButton>
+            >{option.full_name}</UI.FancyButton>
           );
         }}
+
       />
     );
   }

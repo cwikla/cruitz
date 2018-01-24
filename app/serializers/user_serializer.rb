@@ -8,7 +8,7 @@ class UserSerializer < ActiveModel::Serializer
     :updated_at,
     :logo
 
-    #has_one :company
+  has_one :company
   belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
 
   def id
