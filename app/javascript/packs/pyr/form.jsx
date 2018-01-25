@@ -99,6 +99,9 @@ class Form extends Network.Component {
 
     let data = $item.serialize();
 
+    console.log("DATA");
+    console.log(data);
+
     this.preSubmit();
     this.innerSubmit(data);
   }
@@ -283,6 +286,10 @@ class Child extends Component {
 
   name() {
     return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
+  }
+
+  multiName() {
+    return this.name() + "[]";
   }
 
   safeName() {
@@ -943,6 +950,8 @@ class FileSelector extends Child {
     //console.log(all);
     //console.log("*FILE UPLOADS");
 
+    let name = this.multiName();
+
     let hiddens = all.map((upload, pos) => {
       if (!upload) {
         return null; // NOT READY YET!
@@ -952,7 +961,7 @@ class FileSelector extends Child {
       //console.log(upload);
 
       return (
-        <input key={upload.id} name={this.name()} type="hidden" value={upload.id} data-pyr-file/>
+        <input key={upload.id} name={name} type="hidden" value={upload.id} data-pyr-file/>
       );
     });
 
@@ -1067,7 +1076,6 @@ class AutoComplete extends Child {
 
     this.onSearch = this.search.bind(this);
     this.onLoading = this.loading.bind(this);
-    this.onRenderMenu = this.renderMenu.bind(this);
     this.onFilterBy = this.filterBy.bind(this);
   }
 
@@ -1102,28 +1110,13 @@ class AutoComplete extends Child {
   filterBy(options, text) {
     return true;
   }
-  
-
-  renderMenu(allOptions, menuProps) {
-    return (
-      <TypeaheadMenu {...menuProps}>
-        {allOptions.map((option, props) => {
-          return (
-            <TypeaheadMenuItem key={option.id} option={option}>
-              { option.full_name }
-            </TypeaheadMenuItem>
-          );
-        })}
-      </TypeaheadMenu>
-    );
-  }
-
         //filterBy={this.onFilterBy}
-        //renderMenu={this.onRenderMenu}
   render() {
     let clz = "pyr-auto-complete";
 
     let rest = Util.propsRemove(this.props, ["url"]);
+
+    let name = this.props.multiple ? this.multiName() : this.name();
 
     return (
       <AsyncTypeahead
@@ -1143,7 +1136,7 @@ class AutoComplete extends Child {
           return (
             <span className="" key={"skb-" + this.safeName() + option.id}>
               <Hidden 
-                name={this.name()} 
+                name={name}
                 value={option.id} 
               />
               <UI.FancyButton

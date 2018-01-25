@@ -22,8 +22,9 @@ class JobsController < ApplicationController
     puts "PARAMS"
     puts "#{jparms.inspect}"
 
+
     @job = current_user.jobs.build(jparms)
-    if @job.save
+    if true || @job.save
       return render json: @job
     else
       puts "ERROR: #{@job.errors.inspect}"
@@ -50,7 +51,7 @@ class JobsController < ApplicationController
     render json: @job, candidates: getCands
   end
 
-  def lsearch
+  def lsearch_unused
     results = GeoName.search(params[:q]).map{ |x| [x.name, x.admin_code_1 || x.admin_name_1].join(", ")}.uniq
     puts "***** RESULT #{results}"
     render json: { results: results }
@@ -59,6 +60,6 @@ class JobsController < ApplicationController
   private
 
   def job_params
-    params.require(:job).permit(:title, :description, :location, :time_commit, :skill)
+    params.require(:job).permit(:title, :description, :time_commit, :skill, :category, location: [])
   end
 end
