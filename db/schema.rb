@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180125003207) do
+ActiveRecord::Schema.define(version: 20180125184429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,15 @@ ActiveRecord::Schema.define(version: 20180125003207) do
     t.integer "job_id", null: false
     t.integer "location_id", null: false
     t.index ["job_id", "location_id"], name: "index_job_locations_on_job_id_and_location_id"
+  end
+
+  create_table "job_skills", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "job_id", null: false
+    t.integer "skill_id", null: false
+    t.index ["job_id", "skill_id"], name: "index_job_skills_on_job_id_and_skill_id", unique: true
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|
@@ -335,6 +344,14 @@ ActiveRecord::Schema.define(version: 20180125003207) do
     t.integer "agency_limit", null: false
     t.index ["user_id"], name: "index_settings_on_user_id", unique: true
     t.index ["uuid"], name: "index_settings_on_uuid", unique: true
+  end
+
+  create_table "skills", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "name", null: false
+    t.index ["name"], name: "index_skills_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|

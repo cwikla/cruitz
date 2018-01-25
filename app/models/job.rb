@@ -5,6 +5,9 @@ class Job < ApplicationRecord
   has_many :heads, through: :candidates
   has_many :messages
 
+  has_many :job_skills
+  has_many :skills, through: :job_skills
+
   has_many :job_categories
   has_many :categories, through: :job_categories
 

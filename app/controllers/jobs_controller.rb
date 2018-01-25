@@ -17,11 +17,18 @@ class JobsController < ApplicationController
     #end
 
     jparms = job_params.dup
-    jparms.delete(:skill) # FIXME
+    skill_names = jparms.delete(:skill) # FIXME
+
+    puts "SKILL_NAMES"
+    puts skill_names
+
+    skills = Skill.get_skill(skill_names)
+
+    puts "SKILLS"
+    puts skills.inspect
 
     puts "PARAMS"
     puts "#{jparms.inspect}"
-
 
     @job = current_user.jobs.build(jparms)
     if true || @job.save
@@ -60,6 +67,6 @@ class JobsController < ApplicationController
   private
 
   def job_params
-    params.require(:job).permit(:title, :description, :time_commit, :skill, :category, location: [])
+    params.require(:job).permit(:title, :description, :time_commit, :category, location: [], skill: [])
   end
 end

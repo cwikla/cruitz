@@ -38,7 +38,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true
   validates :email, uniqueness: true # FIXME, this isn't good
 
-  validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }, unless: "password.nil?"
+  validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }, unless: :password_is_nil?
 
   def self.after_cached_job(job)
     u = User.new(:id => job.user_id)
@@ -75,6 +75,10 @@ class User < ApplicationRecord
     u = User.new(:id => invite.user_id)
 
     iu = User.new(:id => invite.from_user_id)
+  end
+
+  def password_is_nil?
+    password.nil?
   end
 
   def serializable_hash(options = nil) 

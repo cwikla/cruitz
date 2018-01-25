@@ -36,7 +36,9 @@ Rails.application.routes.draw do
       get 'locations' => 'locations#search'
 
       post 'messages/:id' => 'messages#create'
+
       resources :messages
+      resources :skills
 
     end
   end
