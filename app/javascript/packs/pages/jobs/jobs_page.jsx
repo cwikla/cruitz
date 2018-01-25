@@ -275,7 +275,7 @@ class JobForm extends Component {
           <Pyr.Form.Group name="skill" className="hidden">
             { Pyr.Util.times(this.state.skills.length, (i) => {
                 return (
-                  <Pyr.Form.Hidden key={"skill"+i} value={this.state.skills[i]} />
+                  <Pyr.Form.Hidden multiple key={"skill"+i} value={this.state.skills[i]} />
                 );
               })
             }

@@ -285,11 +285,11 @@ class Child extends Component {
   }
 
   name() {
-    return (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
-  }
-
-  multiName() {
-    return this.name() + "[]";
+    let me = (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
+    if (this.props.multiple) {
+      me = me + "[]";
+    }
+    return me;
   }
 
   safeName() {
@@ -950,7 +950,7 @@ class FileSelector extends Child {
     //console.log(all);
     //console.log("*FILE UPLOADS");
 
-    let name = this.multiName();
+    let name = this.name();
 
     let hiddens = all.map((upload, pos) => {
       if (!upload) {
@@ -1116,7 +1116,7 @@ class AutoComplete extends Child {
 
     let rest = Util.propsRemove(this.props, ["url"]);
 
-    let name = this.props.multiple ? this.multiName() : this.name();
+    let name = this.name();
 
     return (
       <AsyncTypeahead
