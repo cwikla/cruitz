@@ -269,16 +269,13 @@ class JobForm extends Component {
 
           <Pyr.Form.Group name="skill" className="skill">
             <Pyr.Form.Label>Desired Skills</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder="Add Skill" onSubmit={this.onAddSkill} ref={(node) => {this.skillField = node}}/>
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="skill" className="hidden">
             { Pyr.Util.times(this.state.skills.length, (i) => {
                 return (
                   <Pyr.Form.Hidden multiple key={"skill"+i} value={this.state.skills[i]} />
                 );
               })
             }
+            <Pyr.Form.TextField anonymous placeholder="Add Skill" onSubmit={this.onAddSkill} ref={(node) => {this.skillField = node}}/>
           </Pyr.Form.Group>
 
           { this.renderSkillList() }
@@ -445,6 +442,7 @@ class NewSheet extends Sheet.New {
     this.props.onJobCreate(data.job);
     super.success(data, textStatus, jqXHR);
     this.context.setNotice("Job Created");
+    this.goBack();
   }
 
   title() {

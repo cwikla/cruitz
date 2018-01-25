@@ -280,11 +280,25 @@ class Child extends Component {
     object: PropTypes.object,
   }
 
+  cleanProps(props, arr) {
+    let all = ["anonymous", "unmanaged"];
+    all = all.concat(arr);
+
+    console.log("CLEAN");
+    console.log(all);
+
+    return Util.propsRemove(props, all);
+  }
+
   htmlID() {
     return (this.context.model.toLowerCase() + "-" + this.context.name.toLowerCase());
   }
 
   name() {
+    if (this.props.anonymous) {
+      return null;
+    }
+
     let me = (this.context.model.toLowerCase() + "[" + this.context.name.toLowerCase() + "]");
     if (this.props.multiple) {
       me = me + "[]";
@@ -460,7 +474,7 @@ class TextField extends Child {
       myProps.value = this.state.value;
     }
 
-    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
+    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
 
     return(
       <input type="text" {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>
@@ -480,7 +494,7 @@ class PasswordField extends TextField {
       myProps.value = this.state.value;
     }
 
-    let rest = Util.propsRemove(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
+    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
 
     return(
       <input {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>
@@ -603,7 +617,7 @@ class CheckBox extends Child {
       checked: this.state.checked,
     };
 
-    let rest = Util.propsRemove(this.props, ["children", "onChange"]);
+    let rest = this.cleanProps(this.props, ["children", "onChange"]);
 
     return(
       <div className="form-checkbox flx-row">
@@ -1044,7 +1058,7 @@ class FileSelector extends Child {
   render() {
     let clz = Util.ClassNames("form-control pyr-file-selector");
 
-    let rest = Util.propsRemove(this.props, ["imageOnly", "multiple", "files"]);
+    let rest = this.cleanProps(this.props, ["imageOnly", "multiple", "files"]);
 
     return(
       <div id={this.htmlID()}
@@ -1114,7 +1128,7 @@ class AutoComplete extends Child {
   render() {
     let clz = "pyr-auto-complete";
 
-    let rest = Util.propsRemove(this.props, ["url"]);
+    let rest = this.cleanProps(this.props, ["url"]);
 
     let name = this.name();
 

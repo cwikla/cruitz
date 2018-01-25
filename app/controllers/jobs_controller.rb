@@ -16,24 +16,37 @@ class JobsController < ApplicationController
       #puts "HEADER: #{k} => #{v}"
     #end
 
-    jparms = job_params.dup
-    skill_names = jparms.delete(:skill) # FIXME
+    jparms = job_params
 
-    puts "SKILL_NAMES"
-    puts skill_names
-
-    skills = Skill.get_skill(skill_names)
-
-    puts "SKILLS"
-    puts skills.inspect
-
-    puts "PARAMS"
-    puts "#{jparms.inspect}"
+    skill_names = jparms.delete(:skill)
+    cats = jparms.delete(:category)
 
     @job = current_user.jobs.build(jparms)
-    if true || @job.save
+    begin
+      Job.transaction(:requires_new => true) do
+        @job.save!
+    
+        skills = []
+        skills = Skill.get_skill(*skill_names) if !skill_names.blank?
+    
+        skills.each do |sk|
+          @job.skills << sk
+        end
+    
+        cats = []
+        cats = Category.get_category(*cats) if !cats.blank?
+    
+        cats.each do |ct|
+          @jobs.categories << ct
+        end
+  
+        res = @job.save!
+      end
+
       return render json: @job
-    else
+
+    rescue => e
+      puts "E: #{e.inspect}"
       puts "ERROR: #{@job.errors.inspect}"
       return render_create_error json: @job
     end
