@@ -4,7 +4,8 @@ class GeoNameSerializer < ActiveModel::Serializer
     :admin_code_1,
     :iso_country,
     :postal_code,
-    :full_name
+    :full_name,
+    :is_primary
 
   def is_postal?(pc)
     GeoName.looks_postal?(pc)

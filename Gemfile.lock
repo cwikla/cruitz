@@ -27,7 +27,7 @@ PATH
 PATH
   remote: ../pyr/pyr_geo
   specs:
-    pyr_geo (4.2.0)
+    pyr_geo (5.0.0)
       geocoder (>= 1.3.1)
       rails (>= 5.1.1)
 
