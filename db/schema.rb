@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180125001225) do
+ActiveRecord::Schema.define(version: 20180125003207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,15 @@ ActiveRecord::Schema.define(version: 20180125001225) do
     t.integer "category_id"
     t.index ["category_id", "job_id"], name: "index_job_categories_on_category_id_and_job_id"
     t.index ["job_id", "category_id"], name: "index_job_categories_on_job_id_and_category_id"
+  end
+
+  create_table "job_locations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "job_id", null: false
+    t.integer "location_id", null: false
+    t.index ["job_id", "location_id"], name: "index_job_locations_on_job_id_and_location_id"
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|

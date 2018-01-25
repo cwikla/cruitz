@@ -8,6 +8,9 @@ class Job < ApplicationRecord
   has_many :job_categories
   has_many :categories, through: :job_categories
 
+  has_many :job_locations
+  has_many :locations, through: :job_locations
+
   JOB_FULL_TIME = 0
   JOB_PART_TIME = 1
   JOB_CONTRACTOR = 2

@@ -5,6 +5,8 @@ class GeoName < ApplicationRecord
     alias_method :geo_city_search, :city_search
   end
 
+  has_many :job_locations
+
   MIN_LENGTH = 2
 
   def self.city_search(s, **options)
