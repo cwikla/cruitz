@@ -284,8 +284,8 @@ class Child extends Component {
     let all = ["anonymous", "unmanaged"];
     all = all.concat(arr);
 
-    console.log("CLEAN");
-    console.log(all);
+    //console.log("CLEAN");
+    //console.log(all);
 
     return Util.propsRemove(props, all);
   }

@@ -174,7 +174,7 @@ class Page extends Component {
 ///// END ////
 
   setSelected(selected) {
-    console.log("SELECTED " + JSON.stringify(selected));
+    //console.log("SELECTED " + JSON.stringify(selected));
 
     this.setState({
       selected

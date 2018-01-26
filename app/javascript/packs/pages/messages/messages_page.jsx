@@ -283,8 +283,8 @@ class MessagesPage extends Page {
       onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        console.log("LOAD SELECTED");
-        console.log(data.message);
+        //console.log("LOAD SELECTED");
+        //console.log(data.message);
 
         me.onSelect(data.message);
 
@@ -343,7 +343,7 @@ class MessagesPage extends Page {
   }
 
   setSelected(selected) {
-    console.log("SET SELECTED!");
+    //console.log("SET SELECTED!");
 
     selected.read_at = new Date();
     super.setSelected(selected);
@@ -379,8 +379,8 @@ class MessagesPage extends Page {
 
     //alert("actionSheet: " + this.state.selected.id);
 
-    console.log("ACTION SHEET");
-    console.log(this.state);
+    //console.log("ACTION SHEET");
+    //console.log(this.state);
 
     return (
       <ActionSheet 
