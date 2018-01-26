@@ -254,7 +254,7 @@ class JobForm extends Component {
           </Pyr.Form.Group>
       
           <Pyr.Form.Group name="location">
-            <Pyr.Form.Label>Location</Pyr.Form.Label>
+            <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
             <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple/>
           </Pyr.Form.Group>
       
@@ -480,18 +480,24 @@ class JobsPage extends Page {
     this.initState({
       categories: null
     });
+
   }
 
   name() {
     return "Jobs";
   }
 
-  getItems() {
-    return this.props.jobs;
-  }
+  //getItems() {
+   // return this.props.jobs;
+  //}
 
   loadItems() {
     this.onSetItems(this.props.jobs);
+  }
+
+  loadSelected(sid) {
+    this.onSelect(this.props.jobMap[sid]);
+    //this.props.jobMap[sid];
   }
 
   componentWillMount() {

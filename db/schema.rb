@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180125184429) do
+ActiveRecord::Schema.define(version: 20180126181457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(version: 20180125184429) do
     t.datetime "deleted_at"
     t.integer "job_id", null: false
     t.integer "skill_id", null: false
-    t.index ["job_id", "skill_id"], name: "index_job_skills_on_job_id_and_skill_id", unique: true
+    t.index ["job_id", "skill_id"], name: "index_job_skills_on_job_id_and_skill_id"
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|
@@ -179,10 +179,8 @@ ActiveRecord::Schema.define(version: 20180125184429) do
     t.datetime "closed_at"
     t.integer "closed_reason"
     t.datetime "filled_at"
-    t.string "location", null: false
     t.integer "time_commit", default: 0, null: false
     t.string "uuid", limit: 36
-    t.index ["location"], name: "index_jobs_on_location"
     t.index ["user_id"], name: "index_jobs_on_user_id"
     t.index ["uuid"], name: "index_jobs_on_uuid", unique: true
   end

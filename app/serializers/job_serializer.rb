@@ -3,7 +3,6 @@ class JobSerializer < ActiveModel::Serializer
               :title, 
 							:description, 
 							:time_commit, 
-							:location,
               :candidate_counts,
               :user_id,
               :created_at

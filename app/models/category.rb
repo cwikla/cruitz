@@ -17,7 +17,7 @@ class Category < ApplicationRecord
     self.find(categories_ids(clear))
   end
 
-  def self.get_category(*names)
+  def self.get_category_by_name(names)
     Category.find_with_index(:name, names)
   end
 

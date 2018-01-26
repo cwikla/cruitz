@@ -292,7 +292,7 @@ class Dashboard extends Component {
   getJobs() {
     this.getJSON({
       type: Pyr.Method.GET,
-      url: PageURL(JOBS_PAGE),
+      url: JOBS_URL,
       context: this,
       onLoading: this.onLoading,
 

@@ -19,7 +19,6 @@ class Job < ApplicationRecord
   JOB_CONTRACTOR = 2
 
   validates :title, presence: true
-  validates :location, presence: true
   validates :description, presence: true
   validates :time_commit, presence: true, inclusion: [JOB_FULL_TIME, JOB_PART_TIME, JOB_CONTRACTOR]
 

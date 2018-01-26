@@ -19,25 +19,38 @@ class JobsController < ApplicationController
     jparms = job_params
 
     skill_names = jparms.delete(:skill)
-    cats = jparms.delete(:category)
+    cat_id = jparms.delete(:category)
+    loc_ids = jparms.delete(:location)
 
     @job = current_user.jobs.build(jparms)
-    begin
+    #begin
       Job.transaction(:requires_new => true) do
         @job.save!
+
+        # NEED TO DEDUPE
     
         skills = []
         skills = Skill.get_skill(*skill_names) if !skill_names.blank?
-    
+
         skills.each do |sk|
           @job.skills << sk
         end
-    
-        cats = []
-        cats = Category.get_category(*cats) if !cats.blank?
-    
-        cats.each do |ct|
-          @jobs.categories << ct
+   
+        cat = nil 
+        cat = Category.find(cat_id) if cat_id
+
+        puts "CAT"
+        puts cat.inspect
+
+        @job.categories << cat if cat
+
+        puts "LOC IDS #{loc_ids.inspect}"
+
+        locs = []
+        locations = GeoName.find(*loc_ids) if loc_ids
+
+        locations.each do |lc|
+          @job.locations << lc
         end
   
         res = @job.save!
@@ -45,11 +58,11 @@ class JobsController < ApplicationController
 
       return render json: @job
 
-    rescue => e
+    #rescue => e
       puts "E: #{e.inspect}"
       puts "ERROR: #{@job.errors.inspect}"
       return render_create_error json: @job
-    end
+    #end
   end
 
   def update

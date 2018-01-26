@@ -15,6 +15,8 @@ class CompanySerializer < ActiveModel::Serializer
   end
 
   def logo
+    return nil if object.logo.nil?
+
     serializer = UploadSerializer.new(object.logo)
     ActiveModelSerializers::Adapter::Json.new(serializer).as_json[:upload] # Hmmmmm
 

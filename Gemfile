@@ -84,8 +84,8 @@ source "http://pyr:akbash42@gems.cwikla.com" do
   #gem 'pyr_geo', :path => "../pyr/pyr_geo"
   gem 'jpyr', "~> 4.0.0"
   #gem 'jpyr', :path => "../pyr/jpyr"
-  #gem 'pyr_base', '~> 12.0.0'
-  gem 'pyr_base', :path => "../pyr/pyr_base"
+  gem 'pyr_base', '~> 13.0.0'
+  #gem 'pyr_base', :path => "../pyr/pyr_base"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
