@@ -137,6 +137,14 @@ class User < ApplicationRecord
      where(is_recruiter: true)
   end
 
+  def self.find_recruiter(id, clear=false)
+    key = "rex"
+    cache_fetch(key, delete:clear) {
+      ux = User.find(id)
+      ux = ux.is_recruiter ? ux : nil
+    }
+  end
+
   def ui_identifier
     return first_name if first_name
     return username if username

@@ -2,6 +2,7 @@ class RecruiterSerializer < UserSerializer
   attributes :is_recruiter,
     :score
 
+
   def json_key
     return 'recruiter'
   end

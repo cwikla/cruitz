@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   end
 
   def recruiter
-    @recruiter = User.is_recruiter.find(params[:id])
+    @recruiter = User.find_recruiter(params[:id])
     render json: @recruiter, serializer: RecruiterSerializer, reviews: true
   end
 
