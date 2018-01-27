@@ -1132,6 +1132,9 @@ class AutoComplete extends Child {
 
     let name = this.name();
 
+    console.log(this.name());
+    console.log(this.modelValue());
+
     return (
       <AsyncTypeahead
         emptyLabel=""
@@ -1143,6 +1146,7 @@ class AutoComplete extends Child {
         {...Util.propsMergeClassName(rest, clz)}
         options={this.state.results}
         labelKey="full_name"
+        defaultSelected={this.modelValue() || []}
 
         renderToken={(option, onRemove) => {
           console.log("OPTION");

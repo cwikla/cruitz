@@ -360,6 +360,11 @@ class Dashboard extends Component {
     let newJobs = (this.state.jobs || []).slice();
     newJobs.push(job);
 
+    //console.log("JOB CREATE");
+    //console.log(job);
+    //console.log(newJobs);
+    //console.log("********");
+
     this.onJobIndex(newJobs);
   }
 

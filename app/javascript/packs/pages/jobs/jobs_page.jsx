@@ -103,7 +103,7 @@ class JobItem extends Component {
     return (
       <div className={allClass} id={id}>
         <Pyr.Grid.Column className="job col-6">
-          <div>{job.title}</div>
+          <div>{job.id}:{job.title}</div>
           <div>Created: <Pyr.UI.MagicDate date={job.created_at}/></div>
         </Pyr.Grid.Column>
         <Pyr.Grid.Column className="item-content">
@@ -253,7 +253,7 @@ class JobForm extends Component {
             </Pyr.Form.Select>
           </Pyr.Form.Group>
       
-          <Pyr.Form.Group name="location">
+          <Pyr.Form.Group name="locations">
             <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
             <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple/>
           </Pyr.Form.Group>
@@ -267,7 +267,7 @@ class JobForm extends Component {
             </Pyr.Form.Select>
           </Pyr.Form.Group>
 
-          <Pyr.Form.Group name="skill" className="skill">
+          <Pyr.Form.Group name="skills" className="skill">
             <Pyr.Form.Label>Desired Skills</Pyr.Form.Label>
             { Pyr.Util.times(this.state.skills.length, (i) => {
                 return (
@@ -315,6 +315,7 @@ class EditSheet extends Sheet.Edit {
         onPostSubmit={this.onPostSubmit}
         onSuccess={this.onSuccess}
         method={Pyr.Method.PATCH}
+        categories={this.props.categories}
       />
     );
   }
@@ -500,10 +501,18 @@ class JobsPage extends Page {
     //this.props.jobMap[sid];
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.jobs != this.props.jobs) {
+      this.onSetItems(nextProps.jobs);
+    }
+  }
+
   componentWillMount() {
     this.getJSON({
       url: CATEGORIES_URL
+
     }).done((data, textStatus, jqXHR) => {
+
       this.setState({
         categories: data.categories
       });
@@ -512,11 +521,12 @@ class JobsPage extends Page {
     });
   }
 
+        //jobs={this.props.jobs}
   indexSheet() {
     return (
       <IndexSheet
         {...this.props}
-        items={this.props.jobs}
+        items={this.state.items}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
         onSelect={this.onSelect}
@@ -542,6 +552,7 @@ class JobsPage extends Page {
       <ActionSheet
         {...this.props}
         selected={this.getSelected()}
+        items={this.props.items}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
         onSetAction={this.props.onSetAction}

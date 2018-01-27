@@ -32,7 +32,7 @@ class GeoName < ApplicationRecord
     ucountry = (iso_country || "US").strip.upcase
 
     fn = [uname, ucity].join(", ")
-    if options[:postal_code]
+    if !self.is_primary
       fn = fn + ", #{upostal_code}"
     end
 

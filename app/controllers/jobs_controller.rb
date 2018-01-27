@@ -18,9 +18,9 @@ class JobsController < ApplicationController
 
     jparms = job_params
 
-    skill_names = jparms.delete(:skill)
+    skill_names = jparms.delete(:skills)
     cat_id = jparms.delete(:category)
-    loc_ids = jparms.delete(:location)
+    loc_ids = jparms.delete(:locations)
 
     @job = current_user.jobs.build(jparms)
     #begin
@@ -36,21 +36,23 @@ class JobsController < ApplicationController
           @job.skills << sk
         end
    
-        cat = nil 
-        cat = Category.find(cat_id) if cat_id
-
         puts "CAT"
-        puts cat.inspect
+        puts "CAT IDS #{cat_id.inspect}"
 
+        cat = nil 
+        cat = Category.find(cat_id)
         @job.categories << cat if cat
 
         puts "LOC IDS #{loc_ids.inspect}"
 
-        locs = []
-        locations = GeoName.find(*loc_ids) if loc_ids
+        locations = []
+        locations = GeoName.find(loc_ids) if loc_ids
+
+        puts "LOCATIONS"
+        puts locations.inspect
 
         locations.each do |lc|
-          @job.locations << lc
+          @job.locations << lc if lc
         end
   
         res = @job.save!
@@ -93,6 +95,6 @@ class JobsController < ApplicationController
   private
 
   def job_params
-    params.require(:job).permit(:title, :description, :time_commit, :category, location: [], skill: [])
+    params.require(:job).permit(:title, :description, :time_commit, :category, locations: [], skills: [])
   end
 end

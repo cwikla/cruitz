@@ -5,12 +5,22 @@ class JobSerializer < ActiveModel::Serializer
 							:time_commit, 
               :candidate_counts,
               :user_id,
-              :created_at
+              :created_at,
+              :category
 
-  has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
+  #has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
+  has_many :locations
+  has_many :skills
 
   def id
     object.hashid
+  end
+
+  def category
+    cat = object.categories.first
+    return nil if cat.nil?
+
+    return CategorySerializer.new(cat)
   end
 
   def user_id
