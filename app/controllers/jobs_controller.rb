@@ -27,34 +27,8 @@ class JobsController < ApplicationController
       Job.transaction(:requires_new => true) do
         @job.save!
 
-        # NEED TO DEDUPE
-    
-        skills = []
-        skills = Skill.get_skill(*skill_names) if !skill_names.blank?
+        do_parts(@job)
 
-        puts "SKILLS"
-        puts skills
-
-        @job.skills = skills
-
-        puts "CAT"
-        puts "CAT IDS #{cat_id.inspect}"
-
-        cat = nil 
-        cat = Category.find(cat_id)
-        @job.categories = [ cat ] if cat
-
-        puts "LOC_IDS"
-        puts loc_ids
-
-        locations = []
-        locations = GeoName.find(loc_ids) if loc_ids
-
-        puts "LOCATIONS"
-        puts locations.inspect
-
-        @job.locations = locations
-  
         res = @job.save!
       end
 
@@ -70,9 +44,28 @@ class JobsController < ApplicationController
   def update
     jid = hid()
     @job = current_user.jobs.includes(:user).find(jid)
-    if @job.update(job_params)
+
+    jparms = job_params
+
+    skill_names = jparms.delete(:skills)
+    cat_id = jparms.delete(:category)
+    loc_ids = jparms.delete(:locations)
+
+    begin
+      Job.transaction(:requires_new => true) do
+        @job.update!(jparms)
+
+        do_parts(@job)
+
+        @job.save!
+      end
+
       return render json: @job
-    else
+
+    rescue => e
+
+      puts "E: #{e.inspect}"
+      puts "ERROR: #{@job.errors.inspect}"
       return render_create_error json: @job
     end
   end
@@ -93,6 +86,42 @@ class JobsController < ApplicationController
   end
 
   private
+
+  def do_parts(job)
+    jparms = job_params
+
+    skill_names = jparms.delete(:skills)
+    cat_id = jparms.delete(:category)
+    loc_ids = jparms.delete(:locations)
+
+    # NEED TO DEDUPE
+
+    skills = []
+    skills = Skill.get_skill(*skill_names) if !skill_names.blank?
+
+    puts "SKILLS"
+    puts skills
+
+    job.skills = skills
+
+    puts "CAT"
+    puts "CAT IDS #{cat_id.inspect}"
+
+    cat = nil
+    cat = Category.find(cat_id)
+    job.categories = [ cat ] if cat
+
+    puts "LOC_IDS"
+    puts loc_ids
+
+    locations = []
+    locations = GeoName.find(loc_ids) if loc_ids
+
+    puts "LOCATIONS"
+    puts locations.inspect
+
+    job.locations = locations
+  end
 
   def job_params
     params.require(:job).permit(:title, :description, :time_commit, :category, locations: [], skills: [])

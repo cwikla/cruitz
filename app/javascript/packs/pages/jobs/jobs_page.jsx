@@ -241,9 +241,10 @@ class JobForm extends Component {
 
 class EditSheet extends Sheet.Edit {
   success(data, textStatus, jqXHR) {
-    this.props.onJobCreate(data.job);
+    this.props.onJobUpdate(data.job);
     super.success(data, textStatus, jqXHR);
     this.context.setNotice("Job Saved");
+    this.goBack();
   }
 
   title() {
