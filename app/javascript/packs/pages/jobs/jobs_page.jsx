@@ -29,6 +29,7 @@ import {
   CATEGORIES_URL,
   LOCATIONS_URL,
   COMPANY_URL,
+  SKILLS_URL,
 
   NEW_ACTION,
   SHOW_ACTION
@@ -122,55 +123,6 @@ class JobItem extends Component {
 class JobForm extends Component {
   constructor(props) {
     super(props);
-
-    this.initState({
-      skills: []
-    });
-
-    this.onAddSkill = this.addSkill.bind(this);
-    this.onRemoveSkill = this.removeSkill.bind(this);
-  }
-
-  addSkill(e) {
-    let value = e.target.value;
-    if (value && value.length > 1) {
-      let skills = this.state.skills.slice();
-
-      skills.push(value);
-      this.setState({
-        skills
-      });
-      this.skillField.setText("");
-    }
-  }
-
-  removeSkill(pos, e) {
-    if (pos < 0 || pos >= this.state.skills.length) {
-      return;
-    }
-
-    let skills = this.state.skills;
-    skills = skills.slice(0,pos).concat(skills.slice(pos+1, skills.length));
-    this.setState({
-      skills
-    });
-  }
-
-
-  renderSkillList() {
-    return (
-          <div id="skill-list">
-            { Pyr.Util.times(this.state.skills.length, (i) => {
-                return (
-                  <Pyr.UI.FancyButton 
-                    key={"skb"+i}
-                    onClick={this.removeSkill.bind(this, i)}
-                  >{this.state.skills[i]}</Pyr.UI.FancyButton>
-                );
-              })
-            }
-          </div>
-    );
   }
 
   renderCategories() {
@@ -255,7 +207,12 @@ class JobForm extends Component {
       
           <Pyr.Form.Group name="locations">
             <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple/>
+            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="skills">
+            <Pyr.Form.Label>Skills</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple allowNew />
           </Pyr.Form.Group>
       
           <Pyr.Form.Group name="time_commit">
@@ -266,19 +223,6 @@ class JobForm extends Component {
               <Pyr.Form.Option value="2">Contractor</Pyr.Form.Option>
             </Pyr.Form.Select>
           </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="skills" className="skill">
-            <Pyr.Form.Label>Desired Skills</Pyr.Form.Label>
-            { Pyr.Util.times(this.state.skills.length, (i) => {
-                return (
-                  <Pyr.Form.Hidden multiple key={"skill"+i} value={this.state.skills[i]} />
-                );
-              })
-            }
-            <Pyr.Form.TextField anonymous placeholder="Add Skill" onSubmit={this.onAddSkill} ref={(node) => {this.skillField = node}}/>
-          </Pyr.Form.Group>
-
-          { this.renderSkillList() }
 
           <Pyr.Form.Group name="description">
             <Pyr.Form.Label>Description</Pyr.Form.Label>

@@ -6,7 +6,11 @@ class Skill < ApplicationRecord
 
   def self.get_skill(*names)
     names.map { |x|
-      Skill.find_or_create_unique(:name => x)
+      Skill.find_or_create_unique(:name => x.downcase)
     }
+  end
+
+  def self.search(name) 
+    Skill.where("lower(name) like ?", name.downcase + "%")
   end
 end

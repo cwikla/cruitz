@@ -22,6 +22,7 @@ export const COMPANY_URL = "/company";
 export const ME_URL = "/me";
 export const CATEGORIES_URL = "/categories";
 export const LOCATIONS_URL = "/locations";
+export const SKILLS_URL = "/skills";
 
 export const USERS_URL = "/users";
 export const INVITES_URL = "/invites";

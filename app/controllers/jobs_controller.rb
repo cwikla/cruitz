@@ -23,7 +23,7 @@ class JobsController < ApplicationController
     loc_ids = jparms.delete(:locations)
 
     @job = current_user.jobs.build(jparms)
-    #begin
+    begin
       Job.transaction(:requires_new => true) do
         @job.save!
 
@@ -32,18 +32,20 @@ class JobsController < ApplicationController
         skills = []
         skills = Skill.get_skill(*skill_names) if !skill_names.blank?
 
-        skills.each do |sk|
-          @job.skills << sk
-        end
-   
+        puts "SKILLS"
+        puts skills
+
+        @job.skills = skills
+
         puts "CAT"
         puts "CAT IDS #{cat_id.inspect}"
 
         cat = nil 
         cat = Category.find(cat_id)
-        @job.categories << cat if cat
+        @job.categories = [ cat ] if cat
 
-        puts "LOC IDS #{loc_ids.inspect}"
+        puts "LOC_IDS"
+        puts loc_ids
 
         locations = []
         locations = GeoName.find(loc_ids) if loc_ids
@@ -51,20 +53,18 @@ class JobsController < ApplicationController
         puts "LOCATIONS"
         puts locations.inspect
 
-        locations.each do |lc|
-          @job.locations << lc if lc
-        end
+        @job.locations = locations
   
         res = @job.save!
       end
 
       return render json: @job
 
-    #rescue => e
+    rescue => e
       puts "E: #{e.inspect}"
       puts "ERROR: #{@job.errors.inspect}"
       return render_create_error json: @job
-    #end
+    end
   end
 
   def update

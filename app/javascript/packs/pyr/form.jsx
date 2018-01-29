@@ -1091,6 +1091,7 @@ class AutoComplete extends Child {
     this.onSearch = this.search.bind(this);
     this.onLoading = this.loading.bind(this);
     this.onFilterBy = this.filterBy.bind(this);
+    this.onRenderToken = this.renderToken.bind(this);
   }
 
   loading(isLoading) {
@@ -1124,16 +1125,40 @@ class AutoComplete extends Child {
   filterBy(options, text) {
     return true;
   }
+
+  labelKey() {
+    return this.props.labelKey || "name";
+  }
+
+  renderToken(option, onRemove) {
+    console.log("OPTION");
+    console.log(option);
+
+    let lk = this.labelKey();
+
+    let value = this.props.valueByID ? option.id : option.name;
+    let name = this.name();
+
+    return (
+      <span className="" key={"skb-" + this.safeName() + option.id}>
+        <Hidden 
+          name={name}
+          value={value}
+        />
+        <UI.FancyButton
+          onClick={onRemove}
+        >{option[lk]}</UI.FancyButton>
+      </span>
+    );
+  }
+
         //filterBy={this.onFilterBy}
   render() {
     let clz = "pyr-auto-complete";
 
     let rest = this.cleanProps(this.props, ["url"]);
 
-    let name = this.name();
-
-    console.log(this.name());
-    console.log(this.modelValue());
+    let lk = this.labelKey();
 
     return (
       <AsyncTypeahead
@@ -1143,28 +1168,13 @@ class AutoComplete extends Child {
         caseSensitive={false}
         onSearch={this.onSearch}
         isLoading={this.state.isLoading}
-        {...Util.propsMergeClassName(rest, clz)}
         options={this.state.results}
-        labelKey="full_name"
+        labelKey={lk}
+
         defaultSelected={this.modelValue() || []}
+        renderToken={this.onRenderToken}
 
-        renderToken={(option, onRemove) => {
-          console.log("OPTION");
-          console.log(option);
-          return (
-            <span className="" key={"skb-" + this.safeName() + option.id}>
-              <Hidden 
-                name={name}
-                value={option.id} 
-              />
-              <UI.FancyButton
-                className={option.id}
-                onClick={onRemove}
-              >{option.full_name}</UI.FancyButton>
-            </span>
-          );
-        }}
-
+        {...Util.propsMergeClassName(rest, clz)}
       />
     );
 
