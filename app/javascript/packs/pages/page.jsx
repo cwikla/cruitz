@@ -101,13 +101,13 @@ class Page extends Component {
   }
 
   sortItems(items) {
-    console.log("SORTING ITEMS");
+    //console.log("SORTING ITEMS");
     return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
   }
 
 
   setItems(items) {
-    console.log("SET ITEMS");
+    //console.log("SET ITEMS");
    // console.log("ITEMS NO LONGER NULL");
     if (items) {
       items = this.sortItems(items);
