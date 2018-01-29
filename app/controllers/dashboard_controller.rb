@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   #before_action :check_registration
 
   def index
-    #redirect_to recruiters_url and return if current_user.recruiter
+    redirect_to recruiters_url and return if current_user.is_recruiter
     #redirect_to employers_url
   end
 
