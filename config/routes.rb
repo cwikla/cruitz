@@ -1,4 +1,20 @@
 
+module Constraint
+  class Recruiter
+ 
+    def matches?(request)
+      warden(request).authenticated? &&
+      warden(request).user.is_recruiter?
+    end
+ 
+    private
+ 
+    def warden(request)
+      request.env['warden']
+    end
+  end
+end
+
 Rails.application.routes.draw do
 
   scope :api, defaults: { format: :json } do
@@ -48,7 +64,8 @@ Rails.application.routes.draw do
 
 
   authenticated :user do
-    root 'dashboard#index'
+    root 'marketplace#index', constraints: Constraint::Recruiter.new, as: :marketplace_url
+    root 'dashboard#index', as: :dashboard_url
     #match "*path", to: redirect('/'), via: :all
   end
 

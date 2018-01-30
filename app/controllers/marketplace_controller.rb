@@ -1,5 +1,5 @@
-class DashboardController < ApplicationController
-  before_action :check_not_recruiter
+class MarketplaceController < ApplicationController
+  before_action :check_recruiter
   #before_action :check_registration
 
   def index
@@ -13,9 +13,9 @@ class DashboardController < ApplicationController
 
   private 
 
-  def check_not_recruiter
-    if current_user.is_recruiter?
-      redirect_to marketplace_url
+  def check_recruiter
+    if !current_user.is_recruiter?
+      redirect_to dashboard_url
       return
     end
   end
