@@ -3,8 +3,19 @@ module Constraint
   class Recruiter
  
     def matches?(request)
-      warden(request).authenticated? &&
-      warden(request).user.is_recruiter?
+      warden(request).authenticated? && warden(request).user.is_recruiter?
+    end
+ 
+    private
+ 
+    def warden(request)
+      request.env['warden']
+    end
+  end
+
+  class Admin
+    def matches?(request)
+      warden(request).authenticated? && warden(request).user.is_admin?
     end
  
     private

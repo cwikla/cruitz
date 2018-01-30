@@ -473,16 +473,6 @@ class Dashboard extends Component {
     );
   }
 
-  renderBottomNav() {
-    return (
-       <Pyr.Grid.Row className="navbar bottom flx-row align-items-center">
-          <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-8 navbar-nav">
-            { this.renderSearchNav() }
-          </Pyr.Grid.Col>
-        </Pyr.Grid.Row>
-    );
-  }
-
   renderCandidateCount(count) {
     if (count == 0) {
       return null;
