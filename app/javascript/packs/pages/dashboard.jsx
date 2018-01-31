@@ -189,6 +189,11 @@ class Dashboard extends Container {
     this.onShowSlide = this.showSlide.bind(this);
   }
 
+  pageToComponent(page) {
+    return PAGE_MAP[page];
+  }
+
+/*
   getSubPage() {
     return this.props.subPage;
   }
@@ -245,6 +250,8 @@ class Dashboard extends Container {
 
     return act;
   }
+
+*/
 
   setButtonCount(page, count=0) {
     //console.log("BUTTON COUNT: " + page + ":" + count);

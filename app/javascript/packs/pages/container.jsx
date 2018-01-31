@@ -15,12 +15,26 @@ import Pyr, {
 } from '../pyr/pyr';
 
 import {
+  ME_PAGE,
+  COMPANIES_PAGE,
+
   COMPANIES_URL,
   ME_URL,
+
+  NEW_ACTION,
+  SHOW_ACTION,
+  INDEX_ACTION,
 } from './const';
 
-
 import Logo from './shared/logo';
+import MePage from './me/me_page';
+import CompaniesPage from './companies/companies_page';
+
+const PAGE_MAP = {
+  [ME_PAGE.toLowerCase()]: MePage,
+  [COMPANIES_PAGE.toLowerCase()]: CompaniesPage,
+};
+
 
 class NavUserMenu extends Component {
   render () {
@@ -70,6 +84,67 @@ class Container extends Component {
     this.initState({
       loading: false
     });
+  }
+
+  pageToComponent(page) {
+    return PAGE_MAP[page];
+  }
+
+  getSubPage() {
+    return this.props.subPage;
+  }
+
+  getPageTitle() {
+    return Pyr.Util.capFirstLetter(this.getPage());
+  }
+
+  getPage() {
+    let subPage = this.getSubPage();
+    if (subPage) {
+      return subPage;
+    }
+    return this.props.page || DEFAULT_PAGE;
+  }
+
+  getItemId() {
+    let iid = this.props.itemId;
+    if (!iid) {
+      return iid;
+    }
+    return (iid.toLowerCase() != NEW_ACTION.toLowerCase() ? iid : null);
+  }
+
+  getSubItemId() {
+    return this.props.subItemId;
+  }
+
+  getPageComponent() {
+    let page = this.getPage().toLowerCase();
+    let result = this.pageToComponent(page);
+    return result;
+  }
+
+  getAction() {
+    let act = this.props.action; //this.state.action;
+    let page = this.props.page;
+    let subPage = this.props.subPage;
+    let itemId = this.props.itemId;
+    let subId = this.props.subItemId;
+
+    if (act) {
+      if (act && (act.toLowerCase() == NEW_ACTION.toLowerCase())) {
+        act = NEW_ACTION;
+      }
+    }
+
+    if (!act && (subId || (itemId && !subPage))) {
+      act = SHOW_ACTION;
+    }
+
+    //console.log("PROPS ACTION IS: " + this.props.action);
+    //console.log("ACTION IS: " + act);
+
+    return act;
   }
 
   renderSearchNav(url="/") {
