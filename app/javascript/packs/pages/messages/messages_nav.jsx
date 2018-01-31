@@ -10,10 +10,9 @@ import {
 } from '../const';
 
 import Pyr, { 
+  Component
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
-
-import Component from '../component';
 
 class NavMenuButton extends Component {
   render() {

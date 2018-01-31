@@ -2,9 +2,8 @@ import React, {
 } from 'react';
 
 import Pyr, {
+  Component
 } from '../../pyr/pyr';
-
-import Component from '../component';
 
 const logos = ["/Dropbox-Logo-High-Res_1.jpg",
               "google-logo-1200x630.jpg",
@@ -55,6 +54,14 @@ class Stars extends Component {
   }
 }
 
+const UserLabel = (props) => (
+  <div
+    className="nav-item"
+    id="user"
+    onClick={props.onClick}
+  ><Pyr.UI.Icon name="user" className="fa-fw" /><Pyr.UI.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
+);
+
 const UserAvatar = (props) => (
   <div className={Pyr.ClassNames("flx-col user-avatar justify-content-center").push(props.small ? "small" : "").push(props.className)}>
     <div className="align-self-center"><img src={getAvatar(props.userId)}/></div>
@@ -70,6 +77,7 @@ const UserScore = (props) => (
 
 
 export {
+  UserLabel,
   UserAvatar,
   UserScore,
   Stars,

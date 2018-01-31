@@ -24,7 +24,7 @@
 
 import PropTypes from 'prop-types';
 
-import Component from './base';
+import BaseComponent from './base';
 import Util from './util';
 
 const RAD_CIRC = Math.PI * 2;
@@ -92,7 +92,7 @@ function renderPaths(slices, size, center, radius) {
  * Generates an SVG pie chart.
  * @see {http://wiki.scribus.net/canvas/Making_a_Pie_Chart}
  */
-class PieChart extends Component {
+class PieChart extends BaseComponent {
   /**
    * @return {Object}
    */

@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Component from './base';
+import BaseComponent from './base';
 import uuid from 'uuid';
 
 const ONE_MINUTE = (60 * 1000);

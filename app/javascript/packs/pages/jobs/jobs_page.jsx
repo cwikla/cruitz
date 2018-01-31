@@ -11,10 +11,9 @@ import {
 
 
 import Pyr, {
+  Component
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
-
-import Component from '../component';
 
 import Page from '../page';
 import Sheet from '../sheet';

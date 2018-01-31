@@ -10,9 +10,11 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 
-import Pyr from '../pyr/pyr';
+import Pyr, {
+  Component 
+} from '../pyr/pyr';
 
-import Component from './component';
+import Container from './container';
 import Sidebar from './side_bar';
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
@@ -156,23 +158,7 @@ class NavViewMenu extends Component {
 }
 
 
-class NavUserMenu extends Component {
-  render () {
-    return (
-      <div className="nav-item flx-row page-nav-bar align-items-center">
-        <li className="dropdown">
-          <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.UI.Icon name="user"/></a>
-            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <Link to={PageURL(ME_PAGE).toString()} className="dropdown-item">My Profile</Link>
-              <Link to={PageURL(COMPANIES_PAGE).toString()} className="dropdown-item">My Company</Link>
-            </div>
-        </li>
-      </div>
-    );
-  }
-}
-
-class Dashboard extends Component {
+class Dashboard extends Container {
   constructor(props) {
     super(props);
 
@@ -180,9 +166,7 @@ class Dashboard extends Component {
       action: INDEX_ACTION,
       jobs: [],
       jobMap: {},
-      loading: true,
       buttonItemCount: {},
-      notice: null,
       slide: false
     });
 
@@ -403,31 +387,6 @@ class Dashboard extends Component {
     });
   }
 
-  renderSearch() {
-    let page = this.getPage();
-    let model = page;
-    let url = Pyr.URL(SEARCH_URL).push(page);
-
-    return (
-      <div id="search">
-        <Pyr.Form.Form
-          model="search"
-          object={{search: null}}
-          url={url}
-          className="search-form"
-          onSuccess={(data) => { this.context.setNotice("Unimplemented"); } }
-          reset
-        >
-          <Pyr.Form.Group name="search">
-            <div onClick={this.onShowSlide}>
-              <Pyr.UI.Icon name="search" /><Pyr.Form.TextField placeholder="Search..." unmanaged/>
-            </div>
-          </Pyr.Form.Group>
-        </Pyr.Form.Form>
-      </div>
-    );
-  }
-
   renderSlide() {
     if (!this.state.slide) {
       return null;
@@ -440,38 +399,12 @@ class Dashboard extends Component {
     );
   }
 
-  renderSearchNav() {
-    let page = this.getPageComponent();
+  renderSearchNav(url) {
+    let page = this.getPage();
 
-    let NavBar = page.NavBar || Pyr.UI.Empty;
-
-    if (!NavBar) {
-      return (<div className="nav-item ml-auto">&nbsp;</div>);
-    }
-
-    return (
-      <div className="nav-item ml-auto flx-row"><NavViewMenu /><NavBar />{ this.renderSearch() }</div>
-    );
+    return super.renderSearchNav(PageURL(page));
   }
 
-            //<Link to={ME_URL}><UserLabel user={this.user()} /></Link>
-
-  renderNav() {
-    return (
-       <Pyr.Grid.Row className="navbar flx-row align-items-center">
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <Logo />
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
-            { this.renderSearchNav() }
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row align-items-center">
-            <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
-            <NavUserMenu user={this.user()}/>
-          </Pyr.Grid.Col>
-        </Pyr.Grid.Row>
-    );
-  }
 
   renderCandidateCount(count) {
     if (count == 0) {
@@ -608,34 +541,10 @@ class Dashboard extends Component {
     );
   }
 
-  render() {
-    //alert(this.state.page == CANDIDATES_PAGE);
-    // React went bonkers changing the top level dude
-
-    if (this.state.loading || !this.state.jobs) {
-      return (
-        <Pyr.Grid.FullContainer key="react-top">
-          <Pyr.UI.Loading />
-        </Pyr.Grid.FullContainer>
-      );
-    }
-
-    return(
-      <Pyr.Grid.FullContainer key="react-top" className="d-flex flx-col">
-        { this.renderNav() }
-        <div className="flx-row flx-1">
-          { this.renderSideBar() }
-          { this.renderMain() }
-        </div>
-      <Pyr.UI.NoticeReceiver />
-      </Pyr.Grid.FullContainer>
-    );
+  isReady() {
+    return (!this.state.loading && this.state.jobs);
   }
 }
-
-const Footer = (props) => (
-  <div>Footer {props.name}!</div>
-);
 
 ///
 /// 

@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Component from './base';
+import BaseComponent from './base';
 import Util from './util';
 import Network from './network';
 import UI from './ui';
@@ -211,7 +211,7 @@ class Form extends Network.Component {
   }
 }
 
-class Group extends Component {
+class Group extends BaseComponent {
   static childContextTypes = {
     name: PropTypes.string,
     errorString: PropTypes.string
@@ -272,7 +272,7 @@ class Group extends Component {
   }
 }
 
-class Child extends Component {
+class Child extends BaseComponent {
   static contextTypes = {
     name: PropTypes.string,
     model: PropTypes.string,
@@ -337,7 +337,7 @@ class Child extends Component {
 
 
 
-class SubmitButton extends Component {
+class SubmitButton extends BaseComponent {
   constructor(props) {
     super(props);
     this.onClick = this.onClickHandler.bind(this);
@@ -629,7 +629,7 @@ class CheckBox extends Child {
   }
 }
 
-class DropTarget extends Component {
+class DropTarget extends BaseComponent {
 
   constructor(props) {
     super(props);

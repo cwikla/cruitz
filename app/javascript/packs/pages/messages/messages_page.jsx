@@ -8,11 +8,10 @@ import {
 
 
 import Pyr, {
+  Component
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 const Grid = Pyr.Grid;
-
-import Component from '../component';
 
 import {
   MESSAGES_URL,

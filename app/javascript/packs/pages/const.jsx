@@ -19,6 +19,8 @@ export const MESSAGES_URL = "/messages";
 export const SEARCH_URL = "/search";
 export const POSTINGS_URL = "/postings";
 export const COMPANY_URL = "/company";
+export const COMPANIES_URL = COMPANY_URL;
+
 export const ME_URL = "/me";
 export const CATEGORIES_URL = "/categories";
 export const LOCATIONS_URL = "/locations";

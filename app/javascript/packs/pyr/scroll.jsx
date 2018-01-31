@@ -2,10 +2,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Component from './base';
+import BaseComponent from './base';
 import Util from './util';
 
-class Scroll extends Component {
+class Scroll extends BaseComponent {
   constructor(props) {
     super(props);
 

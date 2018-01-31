@@ -7,11 +7,10 @@ import {
 } from 'react-router-dom';
 
 import Pyr, {
+  Component
 } from '../pyr/pyr';
 
 const ClassNames = Pyr.ClassNames;
-
-import Component from './component';
 
 class Button extends Component {
   constructor(props) {
@@ -100,11 +99,11 @@ class Main extends Component {
   }
 }
 
-const Sidebar = {
+const SideBar = {
   Main,
   Menu,
   Header, 
   Button
 };
 
-export default Sidebar;
+export default SideBar;

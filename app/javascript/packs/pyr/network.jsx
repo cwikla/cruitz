@@ -1,5 +1,5 @@
 
-import Component from './base';
+import BaseComponent from './base';
 import uuid from 'uuid';
 import Util from './util';
 
@@ -89,7 +89,7 @@ function getJSON(stuff) {
   return ajx;
 }
 
-class NetworkComponent extends Component {
+class NetworkComponent extends BaseComponent {
   constructor(props) {
     super(props);
 

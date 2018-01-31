@@ -7,7 +7,7 @@ import {
   CSSTransition,
 } from 'react-transition-group';
 
-import Component from './base';
+import BaseComponent from './base';
 import Util from './util';
 import Scroll from './scroll'
 import PieChart from './pie_chart';
@@ -28,13 +28,13 @@ const SHOW_TIME = 1500;
 const ESCAPE_KEY = 27;
 
 
-class Empty extends Component {
+class Empty extends BaseComponent {
   render() {
     return null;
   }
 }
 
-class ChildSelector extends Component {
+class ChildSelector extends BaseComponent {
 
   render() {
     let val = this.props.page;
@@ -57,7 +57,7 @@ const RouterContextTypes = {
   history: PropTypes.object,
 };
 
-class RouterReceiver extends Component {
+class RouterReceiver extends BaseComponent {
   static contextTypes = RouterContextTypes;
 
   constructor(props) {
@@ -71,7 +71,7 @@ class RouterReceiver extends Component {
   }
 }
 
-class RouterProvider extends Component {
+class RouterProvider extends BaseComponent {
   static childContextTypes = {
     location: PropTypes.object,
     history: PropTypes.object,
@@ -111,7 +111,7 @@ const IconButton = (props) => (
   ><Icon name={props.name}/> {props.children}</label>
 );
 
-class FlatButton extends Component {
+class FlatButton extends BaseComponent {
   render() {
     let classes = ClassNames("btn btn-flat");
     if (this.props.selected) {
@@ -139,7 +139,7 @@ class BackButton extends RouterReceiver {
   }
 }
 
-class ImageFile extends Component {
+class ImageFile extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -253,7 +253,7 @@ const ButtonLabel = (props) => (
   <label {...Util.propsMergeClassName(props, "btn-primary")}>{props.children}</label>
 );
 
-class Collapse extends Component {
+class Collapse extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -300,7 +300,7 @@ class Collapse extends Component {
   }
 }
 
-class MagicDate extends Component {
+class MagicDate extends BaseComponent {
   constructor(props) {
     super(props);
     this.onUpdateMe = this.updateMe.bind(this);
@@ -360,7 +360,7 @@ const NoticeContextTypes = {
   notice: PropTypes.node
 };
 
-class CSSAnimation extends Component {
+class CSSAnimation extends BaseComponent {
   constructor(props) {
     super(props)
     this.initState({
@@ -474,7 +474,7 @@ const Slide = (props) => (
     </CSSAnimation>
 );
 
-class NoticeProvider extends Component {
+class NoticeProvider extends BaseComponent {
   static childContextTypes = {
     setNotice: PropTypes.func,
     notice: PropTypes.node
@@ -513,7 +513,7 @@ class NoticeProvider extends Component {
   }
 }
 
-class NoticeReceiver extends Component {
+class NoticeReceiver extends BaseComponent {
   static contextTypes = NoticeContextTypes;
 
   constructor(props) {
@@ -612,7 +612,7 @@ class NoticeReceiver extends Component {
   }
 }
 
-class Modal extends Component {
+class Modal extends BaseComponent {
   constructor(...args) {
     super(...args);
 
@@ -694,7 +694,7 @@ class Modal extends Component {
 }
 
 
-class FullScreen extends Component {
+class FullScreen extends BaseComponent {
   constructor(props) {
     super(props);
 

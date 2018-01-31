@@ -9,7 +9,7 @@ import {
   Redirect
 } from 'react-router-dom';
 
-import Component from './base';
+import BaseComponent from './base';
 import Util from './util';
 
 import { 
@@ -21,7 +21,7 @@ import Grid from './grid';
 import Network from './network';
 import Attachment from './attachment';
 
-class RouterProps extends Component {
+class RouterProps extends BaseComponent {
   render() {
     let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
     let AComponent = this.props.component;
@@ -165,8 +165,38 @@ class UserProvider extends Network.Component {
   }
 }
 
+class PyrComponent extends Network.Component {
+  static contextTypes = Object.assign({}, UserContextTypes, UI.NoticeContextTypes, UI.RouterContextTypes);
+
+ initState(inState) {
+    this.state = Object.assign({}, this.state, inState);
+  }
+
+  user() {
+    return this.context.user;
+  }
+
+  setCompany(company) {
+    this.context.setCompany(company);
+  }
+
+  setUser(user) {
+    this.context.setUser(user);
+  }
+
+  goBack() {
+    return this.context.history.goBack();
+  }
+
+  setNotice(notice) {
+    this.context.setNotice(notice);
+  }
+}
+
+const Component = PyrComponent;
+
 const Pyr = { 
-  Component,
+  BaseComponent,
   Util,
 
   Method : Network.Method,
@@ -185,7 +215,11 @@ const Pyr = {
   UI,
   Grid,
   Form, 
+  Component,
 };
 
-export { Component };
+export { 
+  Component
+};
+
 export default Pyr;

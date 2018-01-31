@@ -10,19 +10,22 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 
-import Pyr from '../pyr/pyr';
+import Pyr, {
+  Component 
+} from '../pyr/pyr';
 
-import Component from './component';
 
 import {
   ME_URL,
 } from './const';
 
-class MarketPlace extends Component {
-  render() {
-    return (
-      <h3>This is the marketplace</h3>
-    );
+import Container from './container';
+
+class MarketPlace extends Container {
+  componentDidMount() {
+    this.setState({
+      loading: false
+    });
   }
 }
 
