@@ -66,8 +66,6 @@ const PAGE_MAP = {
   [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,
   [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
   [MESSAGES_PAGE.toLowerCase()]: MessagesPage,
-  [ME_PAGE.toLowerCase()]: MePage,
-  [COMPANIES_PAGE.toLowerCase()]: CompaniesPage,
 };
 
 
@@ -87,14 +85,6 @@ function isPage(page1, page2, isDefault=false) {
 function same(a,b) {
   return a.id == b.id;
 }
-
-const UserLabel = (props) => (
-  <div 
-    className="nav-item"
-    id="user" 
-    onClick={props.onClick}
-  ><Pyr.UI.Icon name="user" className="fa-fw" /><Pyr.UI.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
-);
 
 class PagePicker extends Component {
   constructor(props) {
@@ -163,7 +153,6 @@ class Dashboard extends Container {
     super(props);
 
     this.initState({
-      action: INDEX_ACTION,
       jobs: [],
       jobMap: {},
       buttonItemCount: {},
@@ -180,78 +169,18 @@ class Dashboard extends Container {
     this.onJobDelete = this.jobDelete.bind(this);
     this.onJobNew = this.jobNew.bind(this);
 
-    this.onSetAction = this.setAction.bind(this);
-    this.onSetUnaction = this.setAction.bind(this, null);
-
     this.onSetButtonCount = this.setButtonCount.bind(this);
 
-    this.onLoading = this.setLoading.bind(this);
     this.onShowSlide = this.showSlide.bind(this);
   }
 
+  getDefaultPage() {
+    return DEFAULT_PAGE;
+  }
+
   pageToComponent(page) {
-    return PAGE_MAP[page];
+    return super.pageToComponent(page) || PAGE_MAP[page];
   }
-
-/*
-  getSubPage() {
-    return this.props.subPage;
-  }
-
-  getPageTitle() {
-    return Pyr.Util.capFirstLetter(this.getPage());
-  }
-
-  getPage() {
-    let subPage = this.getSubPage();
-    if (subPage) {
-      return subPage;
-    }
-    return this.props.page || DEFAULT_PAGE;
-  }
-
-  getItemId() {
-    let iid = this.props.itemId;
-    if (!iid) {
-      return iid;
-    }
-    return (iid.toLowerCase() != NEW_ACTION.toLowerCase() ? iid : null);
-  }
-
-  getSubItemId() {
-    return this.props.subItemId;
-  }
-
-  getPageComponent() {
-    let page = this.getPage().toLowerCase();
-    let result = PAGE_MAP[page];
-    return result;
-  }
-
-  getAction() {
-    let act = this.props.action; //this.state.action;
-    let page = this.props.page;
-    let subPage = this.props.subPage;
-    let itemId = this.props.itemId;
-    let subId = this.props.subItemId;
-
-    if (act) {
-      if (act && (act.toLowerCase() == NEW_ACTION.toLowerCase())) {
-        act = NEW_ACTION;
-      }
-    }
-
-    if (!act && (subId || (itemId && !subPage))) {
-      act = SHOW_ACTION;
-    }
-
-    //console.log("PROPS ACTION IS: " + this.props.action);
-    //console.log("ACTION IS: " + act);
-
-    return act;
-  }
-
-*/
 
   setButtonCount(page, count=0) {
     //console.log("BUTTON COUNT: " + page + ":" + count);
@@ -261,23 +190,6 @@ class Dashboard extends Container {
     this.setState({
       buttonItemCount
     });
-  }
-
-  setAction(action, e) {
-    //console.log("Action set to " + action);
-    if (e) {
-      e.preventDefault();
-    }
-
-    this.setState({
-      action,
-      slide: false
-    });
-  }
-
-  setLoading(loading=true) {
-    //alert("SETLOADIN: " + loading);
-    this.setState({loading});
   }
 
   getJobs() {
@@ -296,7 +208,7 @@ class Dashboard extends Container {
     });
   }
 
-  componentDidMount() {
+  componentDidMount() { 
     this.getJobs();
   }
 
@@ -304,7 +216,7 @@ class Dashboard extends Container {
     return j1.id == j2.id;
   }
 
-  componentWillReceiveProps(nextProps) {
+  unused_componentWillReceiveProps(nextProps) {
     if ((this.props.page != nextProps.page) ||
         (this.props.subPage != nextProps.subPage) ||
         (this.props.itemId != nextProps.itemId) ||
@@ -315,7 +227,6 @@ class Dashboard extends Container {
       //console.log(nextProps);
       //console.log(page);
 
-      this.setAction(null);
       
     }
   }
@@ -323,7 +234,6 @@ class Dashboard extends Container {
   jobNew() {
     this.setState({
       page: JOBS_PAGE,
-      action: NEW_ACTION,
     });
   }
 
@@ -383,7 +293,6 @@ class Dashboard extends Container {
     this.setState({
       page: CANDIDATES_PAGE,
       job: job,
-      action: null
     });
   }
 
@@ -499,57 +408,24 @@ class Dashboard extends Container {
     );
   }
 
-  pageProps(page, jobId) {
-    let props = {
-      action: this.getAction(),
+  pageProps(page) {
+    let props = super.pageProps(page);
+    let dashboardProps = {
       jobs: this.state.jobs,
       jobMap: this.state.jobMap,
-
-      onSetAction: this.onSetAction,
-      onSetUnaction: this.onSetUnaction,
-      onSetButtonCount: this.onSetButtonCount,
 
       onJobCreate: this.onJobCreate,
       onJobUpdate: this.onJobUpdate,
       onJobDelete: this.onJobDelete,
 
-      page: page.toLowerCase(),
-      itemId: this.getItemId(),
-      subPage: this.getSubPage(),
-      subItemId: this.getSubItemId(),
-
-      location: this.props.location,
-
-      showing: true,
-      url: PageURL(page),
+      onSetButtonCount: this.onSetButtonCount,
     };
 
-    return props;
-  }
-
-  renderMain() {
-    let page = this.getPage();
-    let PageComponent = this.getPageComponent();
-
-    let props = this.pageProps(page);
-
-    //console.log("MAIN");
-    //console.log(props);
-
-    return (
-        <main 
-          id="main-page"
-          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page"
-        >
-          <div className="d-flex flx-1">
-            <PageComponent {...props} />
-          </div>
-        </main>
-    );
+    return Object.assign({}, props, dashboardProps);
   }
 
   isReady() {
-    return (!this.state.loading && this.state.jobs);
+    return super.isReady() && this.state.jobs;
   }
 }
 

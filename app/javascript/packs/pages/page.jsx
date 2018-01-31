@@ -180,7 +180,6 @@ class Page extends Component {
     this.setState({
       selected
     });
-    //this.props.onSetAction(SHOW_ACTION);
   }
 
   getItemId() {

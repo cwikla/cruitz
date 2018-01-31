@@ -314,15 +314,16 @@ class IndexSheet extends Sheet.Index {
   constructor(props) {
     super(props);
 
-    this.onAddJob = this.addJob.bind(this);
+    this.onAddRecruiter = this.addRecruiter.bind(this);
   }
 
-  addJob(e) {
+  addRecruiter(e) {
     if (e) {
       e.preventDefault();
     }
 
-    this.props.onSetAction(NEW_ACTION);
+    alert("FIXME");
+
   }
 
   key(a) {
@@ -386,8 +387,6 @@ class RecruitersPage extends Page {
         {...this.props}
         items={this.state.items}
         recruiter={this.state.selected}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}

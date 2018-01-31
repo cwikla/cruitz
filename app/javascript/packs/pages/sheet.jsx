@@ -333,13 +333,6 @@ class Show extends Base {
     }
   }
 
-  editMe(e) {
-    if (e) {  
-      e.preventDefault();
-    }
-    this.props.onSetAction('Edit');
-  }
-
   renderInner() {
     if (!this.props.selected) {
       return (

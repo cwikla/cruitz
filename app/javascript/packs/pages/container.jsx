@@ -30,6 +30,10 @@ import Logo from './shared/logo';
 import MePage from './me/me_page';
 import CompaniesPage from './companies/companies_page';
 
+function PageURL(page) {
+  return Pyr.URL("/" + page.toLowerCase());
+}
+
 const PAGE_MAP = {
   [ME_PAGE.toLowerCase()]: MePage,
   [COMPANIES_PAGE.toLowerCase()]: CompaniesPage,
@@ -84,6 +88,13 @@ class Container extends Component {
     this.initState({
       loading: false
     });
+
+    this.onLoading = this.setLoading.bind(this);
+  }
+
+  setLoading(loading=true) {
+    //alert("SETLOADIN: " + loading);
+    this.setState({loading});
   }
 
   pageToComponent(page) {
@@ -98,12 +109,16 @@ class Container extends Component {
     return Pyr.Util.capFirstLetter(this.getPage());
   }
 
+  getDefaultPage() {
+    return null;
+  }
+
   getPage() {
     let subPage = this.getSubPage();
     if (subPage) {
       return subPage;
     }
-    return this.props.page || DEFAULT_PAGE;
+    return this.props.page || this.getDefaultPage();
   }
 
   getItemId() {
@@ -122,6 +137,10 @@ class Container extends Component {
     let page = this.getPage().toLowerCase();
     let result = this.pageToComponent(page);
     return result;
+  }
+
+  getLocation() {
+    return this.props.location;
   }
 
   getAction() {
@@ -174,8 +193,42 @@ class Container extends Component {
     return null;
   }
 
+  pageProps(page) {
+    let props = {
+      location: this.getLocation(),
+      action: this.getAction(),
+      page: page.toLowerCase(),
+      
+      itemId: this.getItemId(),
+      subPage: this.getSubPage(),
+      subItemId: this.getSubItemId(),
+      
+      showing: true,
+      url: PageURL(page),
+    };
+
+    return props;
+  }
+
   renderMain() {
-    return null;
+    let page = this.getPage();
+    let PageComponent = this.getPageComponent();
+
+    let props = this.pageProps(page);
+
+    //console.log("MAIN");
+    //console.log(props);
+
+    return (
+        <main
+          id="main-page"
+          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page"
+        >
+          <div className="d-flex flx-1">
+            <PageComponent {...props} />
+          </div>
+        </main>
+    );
   }
 
   renderContent() {
@@ -188,7 +241,7 @@ class Container extends Component {
   }
 
   isReady() {
-    return !this.state.loading;
+    return !this.state.loading && this.context.user;
   }
 
   render() {

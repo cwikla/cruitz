@@ -675,8 +675,6 @@ class CandidatesPage extends Page {
         {...this.props}
         items={this.state.items}
         selected={this.getSelected()}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}
@@ -691,8 +689,6 @@ class CandidatesPage extends Page {
       <IndexSheet
         {...this.props}
         items={this.state.items}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}

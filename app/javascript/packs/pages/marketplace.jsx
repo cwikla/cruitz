@@ -21,14 +21,36 @@ import {
 
 import Container from './container';
 
+class HolderPage extends Container {
+  render() {
+    return (
+      <h1>Marketplace goes here</h1>
+    );
+  }
+}
+
+const HOLDER_PAGE = 'Holder';
+const DEFAULT_PAGE = HOLDER_PAGE;
+
+const PAGE_MAP = {
+  [HOLDER_PAGE.toLowerCase()]: HolderPage,
+};
+
 class MarketPlace extends Container {
   componentDidMount() {
     this.setState({
       loading: false
     });
   }
-}
 
+  getDefaultPage() {
+    return DEFAULT_PAGE;
+  }
+
+  pageToComponent(page) {
+    return super.pageToComponent() || PAGE_MAP[page];
+  }
+}
 
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>

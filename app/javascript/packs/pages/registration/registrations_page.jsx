@@ -362,8 +362,6 @@ class RegistrationsPage extends Page {
         registrations={this.props.registrations}
         registrationMap={this.props.registrationMap}
         onSelect={this.onSelect}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onLoadItems={this.onLoadItems}
         card={false}
       />
@@ -380,8 +378,6 @@ class RegistrationsPage extends Page {
         selected={this.getSelected()}
         registrations={this.props.registrations}
         registrationMap={this.props.registrationMap}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onLoadSelected={this.onLoadSelected}
       />
     );

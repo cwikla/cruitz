@@ -289,7 +289,7 @@ class IndexSheet extends Sheet.Index {
       e.preventDefault();
     }
 
-    this.props.onSetAction(NEW_ACTION);
+    //this.props.onSetAction(NEW_ACTION);
   }
 
   key(job) {
@@ -474,8 +474,6 @@ class JobsPage extends Page {
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
         onSelect={this.onSelect}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onLoadItems={this.onLoadItems}
         card={false}
       />
@@ -499,8 +497,6 @@ class JobsPage extends Page {
         items={this.props.items}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onLoadSelected={this.onLoadSelected}
         categories={this.state.categories}
       />

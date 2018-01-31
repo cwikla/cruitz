@@ -297,8 +297,8 @@ class MessagesPage extends Page {
   }
 
   loadItems(onLoading) {
-    //console.log("GET ITEMS..." + this.constructor.name);
-    //console.log(MESSAGES_URL);
+    console.log("GET ITEMS..." + this.constructor.name);
+    console.log(MESSAGES_URL);
 
     let me = this;
 
@@ -363,8 +363,6 @@ class MessagesPage extends Page {
         items={this.state.items}
         jobMap={this.jobMap}
         selected={this.getSelected()}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}
@@ -388,8 +386,6 @@ class MessagesPage extends Page {
         selected={this.getSelected()}
         onSetItems={this.onSetItems}
         onAddItem={this.onAddItem}
-        onSetAction={this.props.onSetAction}
-        onSetUnaction={this.props.onSetUnaction}
         onLoadSelected={this.onLoadSelected}
         nextId={this.state.nextId}
         prevId={this.state.prevId}
