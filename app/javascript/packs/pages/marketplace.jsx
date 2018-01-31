@@ -16,10 +16,15 @@ import Pyr, {
 
 
 import {
+  GALLERY_PAGE,
+
   ME_URL,
 } from './const';
 
 import Container from './container';
+
+import GalleryPage from './gallery/gallery_page';
+import MessagesPage from './messages/messages_page';
 
 class HolderPage extends Container {
   render() {
@@ -30,10 +35,12 @@ class HolderPage extends Container {
 }
 
 const HOLDER_PAGE = 'Holder';
-const DEFAULT_PAGE = HOLDER_PAGE;
+const DEFAULT_PAGE = GALLERY_PAGE;
 
 const PAGE_MAP = {
+  "home" : GalleryPage,
   [HOLDER_PAGE.toLowerCase()]: HolderPage,
+  [GALLERY_PAGE.toLowerCase()]: GalleryPage,
 };
 
 class MarketPlace extends Container {
@@ -44,11 +51,11 @@ class MarketPlace extends Container {
   }
 
   getDefaultPage() {
-    return DEFAULT_PAGE;
+    return GALLERY_PAGE;
   }
 
   pageToComponent(page) {
-    return super.pageToComponent() || PAGE_MAP[page];
+    return super.pageToComponent(page) || PAGE_MAP[page];
   }
 }
 

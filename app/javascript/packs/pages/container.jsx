@@ -98,7 +98,7 @@ class Container extends Component {
   }
 
   pageToComponent(page) {
-    return PAGE_MAP[page];
+    return PAGE_MAP[page]
   }
 
   getSubPage() {
@@ -210,19 +210,26 @@ class Container extends Component {
     return props;
   }
 
-  renderMain() {
+  renderMain(mainProps) {
     let page = this.getPage();
+    console.log("PAGE");
+    console.log(page);
     let PageComponent = this.getPageComponent();
+
+    console.log(PageComponent);
 
     let props = this.pageProps(page);
 
-    //console.log("MAIN");
-    //console.log(props);
+    console.log("MAIN");
+    console.log(props);
+
+    mainProps = mainProps || {}
+    let classes = "col flx-col flx-1 main-page";
 
     return (
         <main
           id="main-page"
-          className="col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page"
+          {...Pyr.Util.propsMergeClassName(mainProps, classes)}
         >
           <div className="d-flex flx-1">
             <PageComponent {...props} />

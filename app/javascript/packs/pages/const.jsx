@@ -9,6 +9,7 @@ export const MESSAGES_PAGE = 'Messages';
 export const SEARCH_PAGE = 'Search';
 export const ME_PAGE = 'Me';
 export const COMPANIES_PAGE = 'Company';
+export const GALLERY_PAGE = 'Gallery';
 
 export const HOME_URL = "/";
 export const JOBS_URL = "/jobs";

@@ -408,6 +408,13 @@ class Dashboard extends Container {
     );
   }
 
+  renderMain() {
+    let props = {
+      className: "col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2"
+    };
+    return super.renderMain(props);
+  }
+
   pageProps(page) {
     let props = super.pageProps(page);
     let dashboardProps = {

@@ -66,6 +66,8 @@ Rails.application.routes.draw do
       resources :messages
 
       get 'skills' => 'skills#search'
+
+      get 'gallery' => 'jobs#open'
     end
   end
 
