@@ -122,6 +122,8 @@ class JobItem extends Component {
 class JobForm extends Component {
   constructor(props) {
     super(props);
+
+    this.onGetTarget = this.getTarget.bind(this);
   }
 
   renderCategories() {
@@ -158,6 +160,12 @@ class JobForm extends Component {
       </Pyr.Form.Group>
     );
 
+  }
+
+  getTarget() {
+    console.log("GETTING TARGET");
+    console.log(this.form);
+    return this.form;
   }
 
   render() {
@@ -231,7 +239,7 @@ class JobForm extends Component {
       
         </Pyr.Form.Form>
       <div className="form-footer">
-        <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>{methodToName(method)}</Pyr.Form.SubmitButton>
+        <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>{methodToName(method)}</Pyr.Form.SubmitButton>
       </div>
       </div>
     );
@@ -244,6 +252,10 @@ class EditSheet extends Sheet.Edit {
     super.success(data, textStatus, jqXHR);
     this.context.setNotice("Job Saved");
     this.goBack();
+  }
+
+  renderButton() {
+    return null; // nothing here
   }
 
   title() {
@@ -392,6 +404,10 @@ class NewSheet extends Sheet.New {
 
   title() {
     return "Add a New Job";
+  }
+
+  renderButton() {
+    return null; //
   }
 
   renderForm() { 

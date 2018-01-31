@@ -113,9 +113,9 @@ class NetworkComponent extends BaseComponent {
 
     this.ajaxii = {};
 
-    console.log("abortJSON(" + uuid + ")");
-    console.log(this.constructor.name);
-    console.log(old);
+    //console.log("abortJSON(" + uuid + ")");
+    //console.log(this.constructor.name);
+    //console.log(old);
 
     for(let key in old) {
       if (!uuid || old[key] == uuid) {

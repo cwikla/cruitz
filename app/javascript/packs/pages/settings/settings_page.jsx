@@ -37,6 +37,7 @@ class SettingsForm extends Component {
           id="setting-form"
           key={key}
           ref={(node) => { this.form = node; }}
+
           onPreSubmit={this.props.onPreSubmit}
           onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.props.onSuccess}
@@ -115,12 +116,25 @@ class EditSheet extends Sheet.Edit {
     return "Settings";
   }
 
+  success(data, textStatus, jqXHR) {
+    super.success(data, textStatus, jqXHR);
+
+    this.setNotice("Settings saved");
+    this.goBack();
+  }
+
+
+  getTarget() {
+    return this.settings_form.form;
+  }
+
 
   renderForm() {
     return (
       <SettingsForm 
         settings={this.props.selected}
-        ref={(node) => this.target = node}
+        ref={(node) => this.settings_form = node}
+        onSuccess={this.onSuccess}
       />
     );
   }

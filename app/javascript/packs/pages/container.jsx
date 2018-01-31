@@ -212,16 +212,16 @@ class Container extends Component {
 
   renderMain(mainProps) {
     let page = this.getPage();
-    console.log("PAGE");
-    console.log(page);
+    //console.log("PAGE");
+    //console.log(page);
     let PageComponent = this.getPageComponent();
 
-    console.log(PageComponent);
+    //console.log(PageComponent);
 
     let props = this.pageProps(page);
 
-    console.log("MAIN");
-    console.log(props);
+    //console.log("MAIN");
+    //console.log(props);
 
     mainProps = mainProps || {}
     let classes = "col flx-col flx-1 main-page";

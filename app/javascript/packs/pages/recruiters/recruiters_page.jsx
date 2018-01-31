@@ -259,6 +259,8 @@ class NewSheet extends Sheet.New {
     });
   }
 
+  renderButton() {}
+
   getTemplate() {
     let url = Pyr.URL(INVITES_URL).push("new");
 

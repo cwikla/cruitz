@@ -189,12 +189,6 @@ class CompanyLinksForm extends Component {
 
 class EditSheet extends Sheet.Edit {
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.onSuccess = this.success.bind(this);
-  }
-
   success(data, textStatus, jqXHR) {
     let company = data.company;
 
@@ -207,14 +201,6 @@ class EditSheet extends Sheet.Edit {
 
     this.setNotice("Company updated");
     this.goBack();
-  }
-
-  renderButton() {
-    let isDisabled = this.props.isLoading;
-
-    return (
-      <Pyr.Form.SubmitButton className="ml-auto" target={this} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
-    );
   }
 
   renderTitle() {

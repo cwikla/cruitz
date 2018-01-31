@@ -266,9 +266,7 @@ class EditSheet extends Sheet.Edit {
       open: false
     });
 
-    this.onSuccess = this.success.bind(this);
     this.onLogout = this.logout.bind(this);
-    this.onGetMeForm = this.getMeForm.bind(this);
   }
 
   componentWillMount() {
@@ -322,10 +320,9 @@ class EditSheet extends Sheet.Edit {
     return super.render();
   }
 
-  getMeForm() {
-    console.log("GETMEFORM");
-    console.log(this.me_form.form);
-    return this.me_form;
+  getTarget() {
+    console.log("GET TARGET");
+    return this.me_form.form;
   }
 
   renderForm() {
@@ -340,14 +337,6 @@ class EditSheet extends Sheet.Edit {
           <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out"/>Logout</Pyr.UI.PrimaryButton>
         </div>
       </div>
-    );
-  }
-
-  renderButton() {
-    let isDisabled = this.props.isLoading;
-
-    return (
-      <Pyr.Form.SubmitButton className="ml-auto" target={this.onGetMeForm} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
     );
   }
 

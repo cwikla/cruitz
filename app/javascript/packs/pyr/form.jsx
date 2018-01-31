@@ -99,8 +99,8 @@ class Form extends Network.Component {
 
     let data = $item.serialize();
 
-    console.log("DATA");
-    console.log(data);
+    //console.log("DATA");
+    //console.log(data);
 
     this.preSubmit();
     this.innerSubmit(data);
@@ -126,9 +126,15 @@ class Form extends Network.Component {
         //console.log("TRIGGER");
       }
     }).done((retData, textStatus, jqXHR) => {
+      //console.log("SUCCESS?");
       self.ajaxSuccess(retData, textStatus, jqXHR);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
+      //console.log("FAIL?");
+      //console.log(jqXHR);
+      //console.log(textStatus);
+      //console.log(errorThrown);
+
       self.ajaxError(jqXHR, textStatus, errorThrown);
 
 
@@ -136,6 +142,8 @@ class Form extends Network.Component {
   }
 
   ajaxSuccess(data, textStatus, jqXHR) {
+    //console.log("AJAX SUCCESS");
+    //console.log(this.props);
     if (this.props.onSuccess) {
       this.props.onSuccess(data, textStatus, jqXHR);
     }
@@ -362,14 +370,17 @@ class SubmitButton extends BaseComponent {
     }
 
     console.log("CLICK");
+    console.log(this.props);
 
     let t = this.target();
 
-    console.log(t);
 
     if (t) {
       //alert(this.props.target.form.constructor.name);
-      t.form.submit();
+      t.submit();
+    }
+    else {
+      console.log("SubmitButton missing target");
     }
   }
 

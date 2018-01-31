@@ -10,7 +10,7 @@ class SettingsController < ApplicationController
   def update
     puts params.inspect
     if current_user.setting.update(setting_params)
-      return head :ok
+      return render json: true
     else
       return render_create_error json: current_user.setting
     end

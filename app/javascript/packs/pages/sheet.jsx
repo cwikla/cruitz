@@ -155,13 +155,30 @@ class Form extends Base {
     super(props);
 
     this.onSuccess = this.success.bind(this);
+    this.onGetTarget = this.getTarget.bind(this);
+
+    this.form = null;
+  }
+
+  getTarget() {
+    console.log("FORM GET TARGET");
+    return this.form;
   }
 
   success(data, textStatus, jqXHR) {
+    //console.log("Form::success missing");
+  }
+
+  renderSaveButton() {
+    let isDisabled = this.props.isLoading;
+
+    return (
+      <Pyr.Form.SubmitButton className="ml-auto" target={this.onGetTarget} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
+    );
   }
 
   renderButton() {
-    return null;
+    return this.renderSaveButton();
   }
 
   renderTitle() {

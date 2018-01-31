@@ -329,16 +329,6 @@ class IndexSheet extends Sheet.Index {
     );
   }   
 
-  renderHeader() {
-    return (
-      <div className="gallery-index-header">
-          <div className="gallery-new p-1 d-flex flx-end">
-              <Link to={Pyr.URL(GALLERY_URL).push("new").toString()}><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Gallery</Pyr.UI.PrimaryButton></Link>
-          </div>
-      </div>
-    );
-  }
-
   renderNone() {
     return (
       <div className="empty flx-col flx-align-center flx-justify-center">
