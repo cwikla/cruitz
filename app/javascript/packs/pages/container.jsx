@@ -128,8 +128,11 @@ class Container extends Component {
       );
     }
 
+    let clz = Pyr.ClassNames("d-flex flx-col");
+    clz.push(this.constructor.name);
+
     return(
-      <Pyr.Grid.FullContainer key="react-top" className="d-flex flx-col">
+      <Pyr.Grid.FullContainer key="react-top"  className={clz} >
         { this.renderNav() }
         { this.renderContent() }
 
