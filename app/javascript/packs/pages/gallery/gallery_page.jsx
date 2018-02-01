@@ -48,29 +48,38 @@ function methodToName(method) {
 
 class GalleryCard extends Component {
   render() {
-    let gallery = this.props.gallery;
+    let item = this.props.item;
 
-    let id = "gallery-" + gallery.id;
-    let allClass = ClassNames("item gallery-item");
+    let company = item.company || {};
+    let logo = company.logo;
+
+    console.log("GALLERYCOMP");
+    console.log(item);
+    console.log(company);
+
+    let id = "item-" + item.id;
+    let allClass = ClassNames("item job-item");
 
     if (this.props.selected) {
        allClass.push("selected");
     }
-    let description = gallery.description || "No Description";
+
+    let title = item.title || company.name || "No Title";
+    let description = item.description || "No Description";
 
     return (
       <div className={ClassNames("card").push(allClass)}>
         <div className="view overlay hm-white-slight">
-          <img src={getLogo(id)} className="img-fluid" alt="" />
+          <img src={logo.url} className="img-fluid" alt="" />
           <a>
               <div className="mask"></div>
           </a>
         </div>
         <div className="card-body">
-            <a className="activator"><i className="fa fa-share-alt"></i></a>
-            <h4 className="card-title">Card title</h4>
+            <h4 className="card-title">{title}</h4>
+            <h4 className="card-date"><Pyr.UI.MagicDate date={item.created_at}/></h4>
             <hr/>
-            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p className="card-text">{description}</p>
             <a href="#" className="black-text d-flex flex-row-reverse">
                 <h5 className="waves-effect p-2">Read more <i className="fa fa-chevron-right"></i></h5>
             </a>
@@ -89,28 +98,28 @@ class GalleryItem extends Component {
       );
     }
 
-    let gallery = this.props.gallery;
+    let item = this.props.item;
     
-    let id = "gallery-" + gallery.id;
-    let allClass = ClassNames("item gallery-item flx-row");
+    let id = "job-" + item.id;
+    let allClass = ClassNames("item job-item flx-row");
     
     if (this.props.selected) {
        allClass.push("selected");
     }  
     
-    let description = gallery.description || "No Description";
+    let description = item.description || "No Description";
     
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="gallery col-6">
-          <div>{gallery.id}:{gallery.title}</div>
-          <div>Created: <Pyr.UI.MagicDate date={gallery.created_at}/></div>
+        <Pyr.Grid.Column className="job col-6">
+          <div>{item.id}:{item.title}</div>
+          <div>Created: <Pyr.UI.MagicDate date={item.created_at}/></div>
         </Pyr.Grid.Column>
         <Pyr.Grid.Column className="item-content">
-          <div>Total: {gallery.candidate_counts.total}</div>
-          <div>Accepted: {gallery.candidate_counts.accepted}</div>
-          <div>New: {gallery.candidate_counts.waiting}</div>
-          <div>Rejected: {gallery.candidate_counts.rejected}</div>
+          <div>Total: {item.candidate_counts.total}</div>
+          <div>Accepted: {item.candidate_counts.accepted}</div>
+          <div>New: {item.candidate_counts.waiting}</div>
+          <div>Rejected: {item.candidate_counts.rejected}</div>
         </Pyr.Grid.Column>
       </div>
     );
@@ -282,10 +291,10 @@ class IndexSheet extends Sheet.Index {
     return GalleryPage.key(gallery);
   }
 
-  renderItem(gallery, isSelected) {
+  renderItem(item, isSelected) {
     return (
       <GalleryItem 
-        gallery={gallery} 
+        item={item}
         isSelected={isSelected}
         card={this.props.card}
       />
@@ -401,6 +410,9 @@ class GalleryPage extends Page {
   }
 
   loadItems(onLoading) {
+    console.log("URL:");
+    console.log(this.props.url);
+
     this.getJSON({
       url: this.props.url,
       context: this,
@@ -420,8 +432,6 @@ class GalleryPage extends Page {
       <IndexSheet
         {...this.props}
         items={this.state.items}
-        gallery={this.props.gallery}
-        galleryMap={this.props.galleryMap}
         onSelect={this.onSelect}
         onLoadItems={this.onLoadItems}
         card

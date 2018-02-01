@@ -53,6 +53,10 @@ class JobSerializer < ActiveModel::Serializer
     if instance_options[:candidates]
       hash[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(object.candidates) 
     end
+
+    if instance_options[:company]
+      hash[:company] = CompanySerializer.new(object.user.company)
+    end
     hash
   end
 
