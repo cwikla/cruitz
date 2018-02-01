@@ -57,6 +57,23 @@ class MarketPlace extends Container {
   pageToComponent(page) {
     return super.pageToComponent(page) || PAGE_MAP[page];
   }
+
+  renderSideBar() {
+    return (
+      <div
+        className="col col-1 col-sm-1 col-md-2 flx-col h-100"
+      >
+        <Pyr.Form.Form
+          model="gallery"
+        >
+          <Pyr.Form.Group name="sally">
+            <Pyr.Form.Range />
+          </Pyr.Form.Group>
+        </Pyr.Form.Form>
+      </div>
+    );
+  }
+
 }
 
 render (

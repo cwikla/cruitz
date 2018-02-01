@@ -224,7 +224,7 @@ class Container extends Component {
     //console.log(props);
 
     mainProps = mainProps || {}
-    let classes = "col flx-col flx-1 main-page";
+    let classes = "col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page";
 
     return (
         <main

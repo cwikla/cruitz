@@ -17,8 +17,7 @@ import {
   menuItemContainer,
 } from 'react-bootstrap-typeahead';
 
-const TypeaheadMenu = Menu;
-const TypeaheadMenuItem = MenuItem; //menuItemContainer(MenuItem);
+import InputRange from 'react-input-range';
 
 class Form extends Network.Component {
   static childContextTypes = {
@@ -1089,6 +1088,60 @@ class FileSelector extends Child {
 
 }
 
+class Range extends Child {
+  constructor(props) {
+    super(props);
+    this.initState({
+      value: this.minValue()
+    });
+
+    this.onChange = this.change.bind(this);
+  }
+
+  change(value) {
+    this.setState({
+      value
+    });
+  }
+
+  componentWillMount() {
+    let value = this.props.value || this.modelValue() || "";
+    this.setState({
+      value
+    });
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.value) {
+      //console.log("Setting value to: " + nextProps.value);
+      this.setState({
+        value: nextProps.value
+      });
+    }
+  }
+
+  minValue() {
+    return (this.props.minValue || 0);
+  }
+
+  maxValue() {
+    return (this.props.maxValue || (this.minValue() + 1));
+  }
+
+  render() {
+    return (
+      <div className="pyr-range">
+        <input type="hidden" name={this.name()} value={this.state.value} />
+        <InputRange
+          {...this.props}
+          value={this.state.value || this.minValue()}
+          onChange={this.onChange}
+        />
+      </div>
+    );
+  }
+}
+
 
 class AutoComplete extends Child {
   constructor(props) {
@@ -1209,6 +1262,7 @@ const PyrForm = {
   CheckBox,
   FileSelector,
   AutoComplete,
+  Range,
 };
 
 export { 
