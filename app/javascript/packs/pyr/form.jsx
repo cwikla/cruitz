@@ -1088,9 +1088,10 @@ class FileSelector extends Child {
 
 }
 
+const RANGE_DEFAULT_MIN = 0;
+const RANGE_DEFAULT_MAX = 10;
+
 class Range extends Child {
-  static default_min = 0;
-  static default_max = 10;
 
   constructor(props) {
     super(props);
@@ -1113,12 +1114,16 @@ class Range extends Child {
     });
   }
 
+  value() {
+    return (this.state.value || this.minValue());
+  }
+
   change(value) {
     this.setValue(value);
   }
 
   componentWillMount() {
-    let value = this.props.value || this.modelValue() || "";
+    let value = this.props.value || this.modelValue() || this.minValue();
     this.setValue(value);
   }
 
@@ -1132,11 +1137,11 @@ class Range extends Child {
   }
 
   minValue() {
-    return (this.props.minValue || this.default_min);
+    return (this.props.minValue || Range.default_min);
   }
 
   maxValue() {
-    return (this.props.maxValue || this.default_max);
+    return (this.props.maxValue || Range.default_max);
   }
 
   render() {
@@ -1144,21 +1149,24 @@ class Range extends Child {
 
     let minValue = this.minValue();
     let maxValue = this.maxValue();
+    let value = this.value();
 
     return (
       <div className="pyr-range">
-        <input type="hidden" name={this.name()} value={this.state.value} />
+        <input type="hidden" name={this.name()} value={value} />
         <InputRange
           {...this.props}
           minValue={minValue}
           maxValue={maxValue}
-          value={this.state.value}
+          value={value}
           onChange={this.onChange}
         />
       </div>
     );
   }
 }
+Range.default_min = 0;
+Range.default_max = 10;
 
 
 class AutoComplete extends Child {
