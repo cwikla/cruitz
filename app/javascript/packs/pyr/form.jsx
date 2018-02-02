@@ -1089,6 +1089,9 @@ class FileSelector extends Child {
 }
 
 class Range extends Child {
+  static default_min = 0;
+  static default_max = 10;
+
   constructor(props) {
     super(props);
     this.initState({
@@ -1098,17 +1101,25 @@ class Range extends Child {
     this.onChange = this.change.bind(this);
   }
 
-  change(value) {
+  setValue(value) {
+    if (value > this.maxValue()) {
+      value = this.maxValue();
+    }
+    if (value < this.minValue()) {
+      value = this.minValue();
+    }
     this.setState({
       value
     });
   }
 
+  change(value) {
+    this.setValue(value);
+  }
+
   componentWillMount() {
     let value = this.props.value || this.modelValue() || "";
-    this.setState({
-      value
-    });
+    this.setValue(value);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -1121,20 +1132,27 @@ class Range extends Child {
   }
 
   minValue() {
-    return (this.props.minValue || 0);
+    return (this.props.minValue || this.default_min);
   }
 
   maxValue() {
-    return (this.props.maxValue || (this.minValue() + 1));
+    return (this.props.maxValue || this.default_max);
   }
 
   render() {
+    //console.log("RENDERING: " + this.state.value);
+
+    let minValue = this.minValue();
+    let maxValue = this.maxValue();
+
     return (
       <div className="pyr-range">
         <input type="hidden" name={this.name()} value={this.state.value} />
         <InputRange
           {...this.props}
-          value={this.state.value || this.minValue()}
+          minValue={minValue}
+          maxValue={maxValue}
+          value={this.state.value}
           onChange={this.onChange}
         />
       </div>

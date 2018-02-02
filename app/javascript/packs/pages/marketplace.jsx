@@ -65,9 +65,10 @@ class MarketPlace extends Container {
       >
         <Pyr.Form.Form
           model="gallery"
+          object={{sally: 7}}
         >
           <Pyr.Form.Group name="sally">
-            <Pyr.Form.Range />
+            <Pyr.Form.Range formatLabel={value => `$${value}`} />
           </Pyr.Form.Group>
         </Pyr.Form.Form>
       </div>
