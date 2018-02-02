@@ -80,9 +80,7 @@ class GalleryCard extends Component {
             <h4 className="card-date"><Pyr.UI.MagicDate date={item.created_at}/></h4>
             <hr/>
             <p className="card-text">{description}</p>
-            <a href="#" className="black-text d-flex flex-row-reverse">
-                <h5 className="waves-effect p-2">Read more <i className="fa fa-chevron-right"></i></h5>
-            </a>
+            <Pyr.UI.PrimaryButton>More...</Pyr.UI.PrimaryButton>
         </div>
       </div>
     );

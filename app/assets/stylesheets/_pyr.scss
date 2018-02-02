@@ -212,6 +212,19 @@
   }
 }
 
+.pyr-range {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+
+  .input-range__label--max {
+    .input-range__label-container {
+      left: auto;
+    }
+  }
+}
+
 
 
 @include media-breakpoint-down(xs) {
