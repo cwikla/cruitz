@@ -1,7 +1,84 @@
+@include media-breakpoint-down(xs) {
+  .avatar-size-small {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .avatar-size {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .avatar-size-big {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .avatar-size-small {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .avatar-size {
+    width: 3rem;
+    height: 3rem;
+  }
+  .avatar-size-big {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .avatar-size-small {
+    width: 4rem;
+    height: 4rem;
+  }
+  .avatar-size {
+    width: 5rem;
+    height: 5rem;
+  }
+  .avatar-size-big {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .avatar-size-small {
+    width: 5rem;
+    height: 5rem;
+  }
+  .avatar-size {
+    width: 7rem;
+    height: 7rem;
+  }
+  .avatar-size {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+@include media-breakpoint-down(xl) {
+  .avatar-size-small {
+    width: 7rem;
+    height: 7rem;
+  }
+  .avatar-size {
+    width: 10rem;
+    height: 10rem;
+  }
+  .avatar-size-big {
+    width: 15rem;
+    height: 15rem;
+  }
+}
+
 .index .sheet {
   .item {
     border-bottom: 1px solid rgba(gray, 0.4);
-    background-color: $light_gray_color;
+    background-color: white;
     font-weight: 400;
 
     &:hover {

@@ -347,7 +347,7 @@ class MagicDate extends BaseComponent {
   }
 
   render() {
-    let value = Util.friendlyDate(this.props.date, this.props.longOnly);
+    let value = Util.friendlyDate(this.props.date, this.props);
 
     return (
       <span>{ value }</span>

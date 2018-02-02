@@ -67,7 +67,7 @@ Rails.application.routes.draw do
 
       get 'skills' => 'skills#search'
 
-      get 'gallery' => 'jobs#open'
+      get 'positions' => 'jobs#open'
     end
   end
 

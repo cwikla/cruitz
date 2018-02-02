@@ -16,14 +16,14 @@ import Pyr, {
 
 
 import {
-  GALLERY_PAGE,
+  POSITIONS_PAGE,
 
   ME_URL,
 } from './const';
 
 import Container from './container';
 
-import GalleryPage from './gallery/gallery_page';
+import PositionsPage from './positions/positions_page';
 import MessagesPage from './messages/messages_page';
 
 class HolderPage extends Container {
@@ -35,12 +35,12 @@ class HolderPage extends Container {
 }
 
 const HOLDER_PAGE = 'Holder';
-const DEFAULT_PAGE = GALLERY_PAGE;
+const DEFAULT_PAGE = POSITIONS_PAGE;
 
 const PAGE_MAP = {
-  "home" : GalleryPage,
+  "home" : PositionsPage,
   [HOLDER_PAGE.toLowerCase()]: HolderPage,
-  [GALLERY_PAGE.toLowerCase()]: GalleryPage,
+  [POSITIONS_PAGE.toLowerCase()]: PositionsPage,
 };
 
 class MarketPlace extends Container {
@@ -51,7 +51,7 @@ class MarketPlace extends Container {
   }
 
   getDefaultPage() {
-    return GALLERY_PAGE;
+    return POSITIONS_PAGE;
   }
 
   pageToComponent(page) {
@@ -61,9 +61,9 @@ class MarketPlace extends Container {
   renderSideBar() {
     return (
       <div
-        className="col col-1 col-sm-1 col-md-2 flx-col h-100"
+        className="col col-2 col-sm-2 col-md-3 flx-col h-100 sidebar"
       >
-        <GalleryPage.SearchForm />
+        <PositionsPage.SearchForm />
       </div>
     );
   }

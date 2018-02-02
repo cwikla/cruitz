@@ -88,3 +88,51 @@
   color: white !important;
 }
 
+.marketplace {
+  .container-content {
+    padding: 1rem;
+  }
+}
+
+.positions {
+  .sheet {
+    background-color: white;
+
+    .item {
+      background-color: white;
+      border: solid $light_gray_color 1px;
+      border-radius: 2px;
+      padding: 1rem;
+      .detail {
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        &.title {
+          font-weight: 500;
+          font-size: 1.5rem;
+        }
+
+        &.description {
+          padding-top: 1rem;
+          padding-left: 0rem;
+          max-height: 10.5rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          &:hover {
+            float: true;
+            max-height: 20rem;
+            z-index: 4002;
+          }
+        }
+      }
+    }
+
+    .inner {
+      li {
+        margin: 1rem;
+      }
+    }
+  }
+}
+

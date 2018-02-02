@@ -302,7 +302,8 @@ function isYesterday(date) {
   return isToday(date, 1);
 }
 
-function friendlyDate(date, longOnly=false) {
+function friendlyDate(date, options) {
+  let longOnly = options.long;
 
   date = new Date(date); // in case it's a string
   let now = new Date();
@@ -318,7 +319,7 @@ function friendlyDate(date, longOnly=false) {
     var result = null;
     if (diff < ONE_HOUR) {
 
-      if (diff < ONE_MINUTE) {
+      if (diff < (2*ONE_MINUTE)) {
         result = "Moments ago";
 
       } else {
@@ -349,6 +350,12 @@ function friendlyDate(date, longOnly=false) {
     }
   }
 
+  if (options.short) {
+    longOptions = { weekday: 'short', month: 'long', day: 'numeric'};
+    if (now.getYear() != date.getYear()) {
+      longOptions.year = 'numeric';
+    }
+  }
 
   return (
     <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", longOptions)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>

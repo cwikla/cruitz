@@ -30,7 +30,7 @@ $secondary_dark_color_50:  rgba(red($secondary_dark_color), green($secondary_dar
 
 $white_color: rgba(#FFFFFF, 1.0);
 $black_color: rgba(#FFFFFF, 1.0);
-$light_gray_color: rgba(#F9F9F9, 1.0);
+$light_gray_color: rgba(235, 235, 235, 0.9);
 $med_gray_color: rgba(#DDDDDD, 1.0);
 $gray_color: rgba(#7A7A7A, 1.0);
 
@@ -58,7 +58,7 @@ $sidebar_hover_background_color: $light_gray_color;
 $sidebar_font_size: 0.85rem;
 
 $border_color: $med_gray_color;
-$background_color: $light_gray_color;
+$background_color: white;
 
 
 $main_title_background_color: $primary_dark_color;

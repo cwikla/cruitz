@@ -4,7 +4,9 @@ class JobsController < ApplicationController
   end
 
   def open
-    render json: Job.all.order("-id").limit(40), company: true
+    all = Job.all.order("-id")
+    all = all.to_a[-10, all.length]
+    render json: all, company: true
   end
 
   def candidate_counts

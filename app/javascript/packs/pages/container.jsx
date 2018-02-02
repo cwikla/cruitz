@@ -240,7 +240,7 @@ class Container extends Component {
 
   renderContent() {
     return (
-      <div className="flx-row flx-1">
+      <div className="flx-row flx-1 container-content">
         { this.renderSideBar() }
         { this.renderMain() }
       </div>

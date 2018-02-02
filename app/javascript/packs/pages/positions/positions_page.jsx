@@ -23,7 +23,7 @@ import {
 } from '../shared/user';
 
 import {
-  GALLERY_URL,
+  POSITIONS_URL,
   SEARCH_URL,
   CATEGORIES_URL,
   LOCATIONS_URL,
@@ -46,19 +46,19 @@ function methodToName(method) {
   }
 }
 
-class GalleryCard extends Component {
+class PositionCard extends Component {
   render() {
     let item = this.props.item;
 
     let company = item.company || {};
     let logo = company.logo;
 
-    console.log("GALLERYCOMP");
+    console.log("POSITION-COMP");
     console.log(item);
     console.log(company);
 
     let id = "item-" + item.id;
-    let allClass = ClassNames("item job-item");
+    let allClass = ClassNames("item position");
 
     if (this.props.selected) {
        allClass.push("selected");
@@ -87,38 +87,54 @@ class GalleryCard extends Component {
   }
 }
 
-class GalleryItem extends Component {
+class PositionItem extends Component {
 
   render() {
     if (this.props.card) {
       return (
-        <GalleryCard {...this.props}/>
+        <PositionCard {...this.props}/>
       );
     }
 
     let item = this.props.item;
-    
-    let id = "job-" + item.id;
-    let allClass = ClassNames("item job-item flx-row");
-    
+    if (!item) {
+      return null;
+    }
+
+    let company = item.company || {};
+    let logo = company.logo;
+
+    console.log("POSITION-COMP");
+    console.log(item);
+    console.log(company);
+
+    let id = "item-" + item.id;
+    let allClass = ClassNames("item flx-col");
+
     if (this.props.selected) {
        allClass.push("selected");
-    }  
-    
+    }
+
+    let title = item.title || company.name || "No Title";
     let description = item.description || "No Description";
+    let category = item.category ? item.category.name : "Other";
+    let locations = "San Francisco";
+    let url = logo ? logo.url : "";
     
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="job col-6">
-          <div>{item.id}:{item.title}</div>
-          <div>Created: <Pyr.UI.MagicDate date={item.created_at}/></div>
-        </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="item-content">
-          <div>Total: {item.candidate_counts.total}</div>
-          <div>Accepted: {item.candidate_counts.accepted}</div>
-          <div>New: {item.candidate_counts.waiting}</div>
-          <div>Rejected: {item.candidate_counts.rejected}</div>
-        </Pyr.Grid.Column>
+        <div className="flx-row">
+          <img src={url} className="avatar-size-small img-fluid rounded-circle flx-0" />
+          <div className="flx-col flx-1">
+            <div className="detail ml-auto"><Pyr.UI.MagicDate short date={item.created_at}/></div>
+            <div className="detail title">{title}</div>
+            <div className="detail category">{category}</div>
+            <div className="detail location">{locations}</div>
+          </div>
+        </div>
+        <div className="detail description">
+          {description}
+        </div>
       </div>
     );
   }
@@ -126,7 +142,7 @@ class GalleryItem extends Component {
 
 }
 
-class GalleryForm extends Component {
+class PositionForm extends Component {
   constructor(props) {
     super(props);
   }
@@ -168,8 +184,8 @@ class GalleryForm extends Component {
   }
 
   render() {
-    let key = "gallery-form";
-    let url = Pyr.URL(GALLERY_URL);
+    let key = "position-form";
+    let url = Pyr.URL(POSITIONS_URL);
 
     if (this.props.selected){
       url = url.push(this.props.selected.id);
@@ -178,17 +194,17 @@ class GalleryForm extends Component {
 
     let method = this.props.method || Pyr.Method.POST;
 
-    //alert("Render FOrm Gallery " + this.props.selected.id);
+    //alert("Render FOrm Position " + this.props.selected.id);
 
 
     return (
       <div className="form-parent section">
         <Pyr.Form.Form
-          model="Gallery"
+          model="Position"
           object={this.props.selected}
           url={url}
           method={method}
-          id="gallery-form" 
+          id="position-form" 
           key={key}
           ref={(node) => { this.form = node; }} 
           onPreSubmit={this.props.onPreSubmit} 
@@ -201,7 +217,7 @@ class GalleryForm extends Component {
 
           <Pyr.Form.Group name="title">
             <Pyr.Form.Label>Title</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Enter gallery title"/>
+            <Pyr.Form.TextField placeholder= "Enter position title"/>
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="category">
@@ -247,19 +263,19 @@ class GalleryForm extends Component {
 
 class EditSheet extends Sheet.Edit {
   success(data, textStatus, jqXHR) {
-    this.props.onGalleryUpdate(data.gallery);
+    this.props.onPositionUpdate(data.position);
     super.success(data, textStatus, jqXHR);
-    this.context.setNotice("Gallery Saved");
+    this.context.setNotice("Position Saved");
     this.goBack();
   }
 
   title() {
-    return "Edit Gallery";
+    return "Edit Position";
   }
 
   renderForm() {
     return (
-      <GalleryForm
+      <PositionForm
         company={this.user().company}
         selected={this.props.selected}
         onPreSubmit={this.onPreSubmit}
@@ -285,13 +301,13 @@ class EditSheet extends Sheet.Edit {
 }
 
 class IndexSheet extends Sheet.Index {
-  key(gallery) {
-    return GalleryPage.key(gallery);
+  key(position) {
+    return PositionsPage.key(position);
   }
 
   renderItem(item, isSelected) {
     return (
-      <GalleryItem 
+      <PositionItem 
         item={item}
         isSelected={isSelected}
         card={this.props.card}
@@ -301,9 +317,9 @@ class IndexSheet extends Sheet.Index {
 
   renderChildrenCard(items, selected) {
     return (
-      <div className="d-flex flx-wrap" key="gallery-stuff">
+      <div className="d-flex flx-wrap" key="position-stuff">
         { items.map( (item, pos) => {
-            let key="gallery-item-"+item.id;
+            let key="position-item-"+item.id;
             let isSelected = this.same(item, selected);
             return (<div key={key} className="spacer">{this.renderItem(item, isSelected)}</div>);
           })
@@ -320,7 +336,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderSearch() {
-    let url = Pyr.URL(SEARCH_URL).push("gallery");
+    let url = Pyr.URL(SEARCH_URL).push("position");
 
     return (
         <Pyr.Form.Form
@@ -341,8 +357,8 @@ class IndexSheet extends Sheet.Index {
       <div className="empty flx-col flx-align-center flx-justify-center">
         <div className="">Welcome to <b>cruitz</b>!</div>
         <p/>
-        <div>You currently have no open gallery. To begin receiving candidates from our recruiting network</div>
-        <div>add a new gallery.</div>
+        <div>You currently have no open position. To begin receiving candidates from our recruiting network</div>
+        <div>add a new position.</div>
       </div>
     );
   }
@@ -351,14 +367,14 @@ class IndexSheet extends Sheet.Index {
 }
 
 class ShowSheet extends Sheet.ShowFull {
-  key(gallery) {
-    return GalleryPage.key(gallery);
+  key(position) {
+    return PositionsPage.key(position);
   }
 
-  renderItem(gallery, isSelected) {
+  renderItem(position, isSelected) {
     return (
-        <GalleryItem 
-          gallery={gallery} 
+        <PositionItem 
+          position={position} 
           selected={isSelected}
         />
     );
@@ -367,19 +383,19 @@ class ShowSheet extends Sheet.ShowFull {
 
 class NewSheet extends Sheet.New {
   success(data, textStatus, jqXHR) {
-    this.props.onGalleryCreate(data.gallery);
+    this.props.onPositionCreate(data.position);
     super.success(data, textStatus, jqXHR);
-    this.context.setNotice("Gallery Created");
+    this.context.setNotice("Position Created");
     this.goBack();
   }
 
   title() {
-    return "Add a New Gallery";
+    return "Add a New Position";
   }
 
   renderForm() { 
     return ( 
-      <GalleryForm 
+      <PositionForm 
         company={this.user().company}
         onPreSubmit={this.onPreSubmit} 
         onPostSubmit={this.onPostSubmit} 
@@ -402,9 +418,9 @@ class NewSheet extends Sheet.New {
   }
 }
 
-class GalleryPage extends Page {
+class PositionsPage extends Page {
   name() {
-    return "Gallery";
+    return "Position";
   }
 
   loadItems(onLoading) {
@@ -432,7 +448,7 @@ class GalleryPage extends Page {
         items={this.state.items}
         onSelect={this.onSelect}
         onLoadItems={this.onLoadItems}
-        card
+        card={false}
       />
     );
   }
@@ -457,14 +473,14 @@ class GalleryPage extends Page {
 function key(item) {
   return item.id;
 }
-GalleryPage.key = key;
+PositionsPage.key = key;
 
 class SearchForm extends Component {
   render() {
     return (
-      <div className="gallery-search">
+      <div className="position-search">
         <Pyr.Form.Form
-          url={"/gallery/search"}
+          url={"/position/search"}
           method={Pyr.Method.POST}
           ref={(node) =>{ this.form = node; }}
           onPreSubmit={this.props.onPreSubmit}
@@ -472,7 +488,7 @@ class SearchForm extends Component {
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
           object={{}}
-          model="Gallery"
+          model="Position"
         >
 
           <Pyr.Form.Group name="locations">
@@ -482,7 +498,7 @@ class SearchForm extends Component {
 
           <Pyr.Form.Group name="skills">
             <Pyr.Form.Label>Skills</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple allowNew />
+            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple />
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="sally">
@@ -499,8 +515,8 @@ class SearchForm extends Component {
   }
 }
 
-GalleryPage.SearchForm = SearchForm;
+PositionsPage.SearchForm = SearchForm;
 
  
 
-export default GalleryPage;
+export default PositionsPage;
