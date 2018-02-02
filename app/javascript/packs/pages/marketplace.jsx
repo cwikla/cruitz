@@ -63,19 +63,7 @@ class MarketPlace extends Container {
       <div
         className="col col-1 col-sm-1 col-md-2 flx-col h-100"
       >
-        <Pyr.Form.Form
-          model="gallery"
-          object={{}}
-        >
-          <Pyr.Form.Group name="sally">
-            <Pyr.Form.Range 
-              minValue={0}
-              maxValue={10000}
-              step={1000}
-              formatLabel={value => `$${value}`} 
-            />
-          </Pyr.Form.Group>
-        </Pyr.Form.Form>
+        <GalleryPage.SearchForm />
       </div>
     );
   }

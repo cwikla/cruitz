@@ -464,19 +464,35 @@ class SearchForm extends Component {
     return (
       <div className="gallery-search">
         <Pyr.Form.Form
-          url={GALLERY_SEARCH_URL}
+          url={"/gallery/search"}
           method={Pyr.Method.POST}
           ref={(node) =>{ this.form = node; }}
           onPreSubmit={this.props.onPreSubmit}
           onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
+          object={{}}
+          model="Gallery"
         >
-          <Pyr.Form.Group name="title">
-            <Pyr.Form.Label>Title</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Enter gallery title"/>
+
+          <Pyr.Form.Group name="locations">
+            <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID/>
           </Pyr.Form.Group>
 
+          <Pyr.Form.Group name="skills">
+            <Pyr.Form.Label>Skills</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple allowNew />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="sally">
+            <Pyr.Form.Range
+              minValue={0}
+              maxValue={10000}
+              step={1000}
+              formatLabel={value => `$${value}`}
+            />
+          </Pyr.Form.Group>
         </Pyr.Form.Form>
       </div>
     );
