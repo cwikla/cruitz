@@ -7,11 +7,9 @@
 .sidebar {
   background-color: $white_color !important;
   padding: 0;
-  border-right: 1px solid $sep_color;
-  unused-max-width: 15rem;
-}
+  border: 1px solid $sep_color;
+  margin-right: 1rem;
 
-.sidebar {
   .inner {
     padding-left: 0.5rem;
     padding-right: 0.5rem;

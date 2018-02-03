@@ -206,6 +206,25 @@
   }
 }
 
+.pyr-btn-flat {
+  -webkit-box-shadow: unset;
+  box-shadow: unset;
+
+  background-color: rgba(#FFF, 0.2);
+
+  &.selected {
+    background-color: rgba(#FFF, 0.5);
+  }
+
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  &:hover {
+  }
+}
+
+
+
 .pyr-back-button {
   &:hover {
     color: lighten($secondary_color, 5%) !important;

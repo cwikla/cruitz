@@ -167,6 +167,12 @@ label {
   color: $secondary_color;
 }
 
+.pyr-btn-flat {
+  &:hover {
+    color: $secondary_color !important;
+  }
+}
+
 
 .text-primary {
   color: $primary_color !important;
@@ -293,6 +299,9 @@ label {
 .main-page {
   margin: 0;
   padding: 0;
+  .inner {
+    border: solid $light_gray_color 1px;
+  }
 }
 
 .page .row {
@@ -358,21 +367,6 @@ label {
     }
   }
 }
-
-.btn-flat {
-  -webkit-box-shadow: unset;
-  box-shadow: unset;
-
-  background-color: rgba(#FFF, 0.2);
-
-  &.selected {
-    background-color: rgba(#FFF, 0.5);
-  }
-
-  padding-left: 5rem;
-  padding-right: 5rem;
-}
-
 
 .social {
   padding-left: 1rem;

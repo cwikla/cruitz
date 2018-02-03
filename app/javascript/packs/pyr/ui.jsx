@@ -95,33 +95,33 @@ const Icon = (props) => (
 
 const PrimaryButton = (props) => (
     <label href="#"
-      {...Util.propsMergeClassName(props, "btn btn-primary")}
+      {...Util.propsMergeClassName(props, "btn btn-primary pyr-btn-primary")}
     >{props.children}</label>
 );
 
 const Button = (props) => (
     <label
-      {...Util.propsMergeClassName(props, "btn")}
+      {...Util.propsMergeClassName(props, "btn pyr-btn")}
     >{props.children}</label>
 );
 
 const IconButton = (props) => (
   <label
-    {...Util.propsMergeClassName(props, "icon-btn")}
+    {...Util.propsMergeClassName(props, "icon-btn pyr-icon-btn")}
   ><Icon name={props.name}/> {props.children}</label>
 );
 
 class FlatButton extends BaseComponent {
   render() {
-    let classes = ClassNames("btn btn-flat");
+    let classes = ClassNames("btn-flat pyr-btn-flat");
     if (this.props.selected) {
       classes.push("selected");
     }
 
     return (
-      <a href="#"
+      <label href="#"
         {...Util.propsMergeClassName(this.props, classes)}
-      >{this.props.children}</a>
+      >{this.props.children}</label>
     );
   }
 }
@@ -131,7 +131,7 @@ class BackButton extends RouterReceiver {
     return (
       <div className="ml-auto">
       <label
-        {...Util.propsMergeClassName(this.props, "btn-flat")}
+        {...Util.propsMergeClassName(this.props, "pyr-btn-flat")}
         onClick={this.onGoBack}
       >{this.props.children}</label>
       </div>
