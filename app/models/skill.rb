@@ -10,7 +10,4 @@ class Skill < ApplicationRecord
     }
   end
 
-  def self.search(name) 
-    Skill.where("lower(name) like ?", name.downcase + "%")
-  end
 end

@@ -1194,7 +1194,7 @@ class AutoComplete extends Child {
   search(query) {
     //console.log("A: *******");
     //console.log(this.props.url);
-    let url = Util.URL(this.props.url).set("q", query);
+    let url = Util.URL(this.props.url).push("auto").set("q", query);
     //console.log(url);
     //console.log(url.parser.href);
     //console.log(url.toString());
@@ -1224,19 +1224,25 @@ class AutoComplete extends Child {
     //console.log("OPTION");
     //console.log(option);
 
+    console.log("PROPS");
+    console.log(this.props);
+
     let lk = this.labelKey();
 
     let value = this.props.valueByID ? option.id : option.name;
     let name = this.name();
 
+    let clazz = Util.ClassNames(this.props.bpSize);
+
     return (
-      <span className="" key={"skb-" + this.safeName() + option.id}>
+      <span className="token" key={"skb-" + this.safeName() + option.id}>
         <Hidden 
           name={name}
           value={value}
         />
         <UI.FancyButton
           onClick={onRemove}
+          className={clazz}
         >{option[lk]}</UI.FancyButton>
       </span>
     );

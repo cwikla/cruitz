@@ -47,6 +47,10 @@ Rails.application.routes.draw do
       get 'search(/:model)' => 'search#show'
 
 
+      get 'skills/auto' => 'skills#search'
+      get 'locations/auto' => 'locations#search'
+      get 'categories/auto' => 'categories#search'
+
       resources :ratings
       resource :company
       resources :candidates
@@ -60,12 +64,10 @@ Rails.application.routes.draw do
       resources :uploads
       post 'uploads/make' => 'uploads#make', as: :api_v1_upload_url
 
-      get 'locations' => 'locations#search'
 
       post 'messages/:id' => 'messages#create'
       resources :messages
 
-      get 'skills' => 'skills#search'
 
       get 'positions' => 'jobs#open'
     end

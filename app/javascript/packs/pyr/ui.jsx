@@ -131,7 +131,7 @@ class BackButton extends RouterReceiver {
     return (
       <div className="ml-auto">
       <label
-        {...Util.propsMergeClassName(this.props, "pyr-btn-flat")}
+        {...Util.propsMergeClassName(this.props, "pyr-back-button")}
         onClick={this.onGoBack}
       >{this.props.children}</label>
       </div>
@@ -731,7 +731,7 @@ class FullScreen extends BaseComponent {
           { this.renderLeft() }
           <div className="col navbar-nav" >
             <BackButton name="close"
-              className="pyr-back-button ml-auto nav-item"
+              className="ml-auto nav-item"
               ><IconButton name="arrow-left">Back</IconButton></BackButton>
           </div>
         </div>

@@ -229,7 +229,7 @@ class PositionForm extends Component {
       
           <Pyr.Form.Group name="locations">
             <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID/>
+            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID />
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="skills">
@@ -490,15 +490,19 @@ class SearchForm extends Component {
           object={{}}
           model="Position"
         >
+          <Pyr.Form.Group name="categories">
+            <Pyr.Form.Label>Category(ies)</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={CATEGORIES_URL} multiple valueByID bpSize="small"/>
+          </Pyr.Form.Group>
 
           <Pyr.Form.Group name="locations">
             <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID/>
+            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID bpSize="small"/>
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="skills">
             <Pyr.Form.Label>Skills</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple />
+            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple bpSize="small"/>
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="sally">

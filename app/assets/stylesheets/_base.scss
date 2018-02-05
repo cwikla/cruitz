@@ -425,12 +425,6 @@ label {
   color: $primary_color;
 }
 
-.icon-btn {
-  &:hover {
-    color: lighten($secondary_color, 5%) !important;
-  }
-}
-
 .cap {
   text-transform: capitalize;
 }

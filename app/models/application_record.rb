@@ -31,4 +31,8 @@ class ApplicationRecord < ActiveRecord::Base
     super
   end
 
+  def self.simple_search(name)
+    where("lower(name) like ?", "%" + name.downcase + "%")
+  end
+
 end
