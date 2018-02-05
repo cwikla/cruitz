@@ -276,9 +276,6 @@ class Index extends Base {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-  }
-
   sortItems(items) {
     return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
   }

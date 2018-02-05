@@ -58,7 +58,7 @@ class MarketPlace extends Container {
     return super.pageToComponent(page) || PAGE_MAP[page];
   }
 
-  renderSideBar() {
+  unusedrenderSideBar() {
     return (
       <div
         className="col col-2 col-sm-2 col-md-3 flx-col h-100 sidebar"

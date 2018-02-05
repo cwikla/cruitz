@@ -34,6 +34,20 @@ import {
   SHOW_ACTION
 } from '../const';
 
+const RANGES = {
+  0 : 'Recent',
+  1 : '1 week',
+  2 : '2 weeks',
+  3 : '3 weeks',
+  4 : '1 month',
+  5 : '2 month',
+  6 : '3 month',
+  7 : '4 month',
+  8 : '5 month',
+  9 : '6 month',
+  10 : 'All Time'
+};
+
 function methodToName(method) {
   switch (method) {
     case Pyr.Method.PATCH:
@@ -352,13 +366,18 @@ class IndexSheet extends Sheet.Index {
     );
   }   
 
-  renderNone() {
+  renderInner() {
+    let leftClasses = "col col-3";
+    let rightClasses = "col flx-col";
+
     return (
-      <div className="empty flx-col flx-align-center flx-justify-center">
-        <div className="">Welcome to <b>cruitz</b>!</div>
-        <p/>
-        <div>You currently have no open position. To begin receiving candidates from our recruiting network</div>
-        <div>add a new position.</div>
+      <div className="row">
+        <div className={leftClasses}>
+          <PositionsPage.SearchForm />
+        </div>
+        <div className={rightClasses}>
+          { super.renderInner() }
+        </div>
       </div>
     );
   }
@@ -423,6 +442,15 @@ class PositionsPage extends Page {
     return "Position";
   }
 
+  unusedrenderHeader() {
+    return (
+      <div className="flx-row header">
+        <Pyr.UI.Label className="mr-auto">Filter</Pyr.UI.Label>
+        <Pyr.UI.Label className="ml-auto">Results</Pyr.UI.Label>
+      </div>
+    );
+  }
+
   loadItems(onLoading) {
     console.log("URL:");
     console.log(this.props.url);
@@ -476,11 +504,26 @@ function key(item) {
 PositionsPage.key = key;
 
 class SearchForm extends Component {
+  constructor(props) {
+    super(props);
+    this.onGetTarget = this.getTarget.bind(this);
+    this.onRenderAge = this.renderAge.bind(this);
+  }
+
+  getTarget() {
+    return this.form;
+  }
+
+  renderAge(value) {
+    value = Math.floor(value);
+    return RANGES[value];
+  }
+
   render() {
     return (
       <div className="position-search">
         <Pyr.Form.Form
-          url={"/position/search"}
+          url={POSITIONS_URL}
           method={Pyr.Method.POST}
           ref={(node) =>{ this.form = node; }}
           onPreSubmit={this.props.onPreSubmit}
@@ -490,13 +533,18 @@ class SearchForm extends Component {
           object={{}}
           model="Position"
         >
+          <Pyr.Form.Group name="key_words">
+            <Pyr.Form.Label>Keywords</Pyr.Form.Label>
+            <Pyr.Form.TextField />
+          </Pyr.Form.Group>
+
           <Pyr.Form.Group name="categories">
-            <Pyr.Form.Label>Category(ies)</Pyr.Form.Label>
+            <Pyr.Form.Label>Categories</Pyr.Form.Label>
             <Pyr.Form.AutoComplete url={CATEGORIES_URL} multiple valueByID bpSize="small"/>
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="locations">
-            <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
+            <Pyr.Form.Label>Locations</Pyr.Form.Label>
             <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID bpSize="small"/>
           </Pyr.Form.Group>
 
@@ -505,15 +553,19 @@ class SearchForm extends Component {
             <Pyr.Form.AutoComplete url={SKILLS_URL} multiple bpSize="small"/>
           </Pyr.Form.Group>
 
-          <Pyr.Form.Group name="sally">
+          <Pyr.Form.Group name="age">
+            <Pyr.Form.Label>Posting Age</Pyr.Form.Label>
             <Pyr.Form.Range
               minValue={0}
-              maxValue={10000}
-              step={1000}
-              formatLabel={value => `$${value}`}
+              maxValue={10}
+              step={1}
+              formatLabel={this.renderAge}
             />
           </Pyr.Form.Group>
         </Pyr.Form.Form>
+        <div className="form-footer">
+          <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>Search</Pyr.Form.SubmitButton>
+        </div>
       </div>
     );
   }

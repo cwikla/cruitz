@@ -210,7 +210,7 @@ class Container extends Component {
     return props;
   }
 
-  renderMain(mainProps) {
+  renderMain(sideBar) {
     let page = this.getPage();
     //console.log("PAGE");
     //console.log(page);
@@ -223,8 +223,12 @@ class Container extends Component {
     //console.log("MAIN");
     //console.log(props);
 
-    mainProps = mainProps || {}
+    let mainProps = {};
+
     let classes = "col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2 flx-col flx-1 main-page";
+    if (!sideBar) {
+      classes = "col flx-col flx-1 main-page";
+    }
 
     return (
         <main
@@ -239,10 +243,12 @@ class Container extends Component {
   }
 
   renderContent() {
+    let sideBar = this.renderSideBar();
+
     return (
       <div className="flx-row flx-1 container-content">
-        { this.renderSideBar() }
-        { this.renderMain() }
+        { sideBar }
+        { this.renderMain(!!sideBar) }
       </div>
     );
   }
