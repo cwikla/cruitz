@@ -74,7 +74,7 @@ class PositionItem extends Component {
     let locations = null;
     if (item.locations) {
       locations = item.locations.map(v => {
-        return v.name;
+        return v.full_name;
       }).join(", ");
     }
     locations = locations || "Unknown";
@@ -102,7 +102,7 @@ class PositionItem extends Component {
 
         <div className="row content">
           <div className="col col-2">
-            <img src={url} className="avatar-size-small img-fluid rounded-circle mx-auto" />
+            <img src={url} className="avatar-size-small img-fluid  mx-auto" />
           </div>
           <div className="col">
             <div className="detail company-name">Company: <b>{name}</b></div>
