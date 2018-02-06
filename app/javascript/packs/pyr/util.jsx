@@ -9,6 +9,9 @@ const ONE_MINUTE = (60 * 1000);
 const ONE_HOUR = (ONE_MINUTE * 60);
 const ONE_DAY = (ONE_HOUR * 24);
 const TWO_DAYS = (ONE_DAY * 2);
+const ONE_WEEK = (ONE_DAY * 7);
+const ONE_MONTH = (ONE_DAY * 30);
+const ONE_YEAR = (ONE_DAY * 365);
 
 const REMOTE_PATH = "/api/v1";
 
@@ -302,6 +305,38 @@ function isYesterday(date) {
   return isToday(date, 1);
 }
 
+function fuzzyDate(date) {
+  date = new Date(date); // in case it's a string
+  let now = new Date();
+
+  let diff = (now - date); // to seconds
+
+  if (diff < (5*ONE_MINUTE)) {
+    return "Moments ago";
+  }
+  if (diff < ONE_HOUR) {
+    diff = Math.floor(diff / ONE_MINUTE);
+    return `${diff} minutes ago`;
+  }
+  if (diff < TWO_DAYS) {
+    diff = Math.floor(diff / ONE_HOUR);
+    return `${diff} hours ago`;
+  }
+  if (diff < (2*ONE_WEEK)) {
+    diff = Math.floor(diff / ONE_DAY);
+    return `${diff} days ago`;
+  }
+  if (diff < (2*ONE_MONTH)) {
+    diff = Math.floor(diff / ONE_WEEK);
+    return `${diff} weeks ago`;
+  }
+  if (diff < ONE_YEAR) {
+    diff = Math.fllor(diff / ONE_MONTH);
+    return `${diff} months ago`; // ish ;)
+  }
+  return 'Over a year ago';
+}
+
 function friendlyDate(date, options) {
   let longOnly = options.long;
 
@@ -319,7 +354,7 @@ function friendlyDate(date, options) {
     var result = null;
     if (diff < ONE_HOUR) {
 
-      if (diff < (2*ONE_MINUTE)) {
+      if (diff < (5*ONE_MINUTE)) {
         result = "Moments ago";
 
       } else {
@@ -457,6 +492,7 @@ const Util = {
   URL : PURL,
   ClassNames,
   summarize,
+  fuzzyDate,
   friendlyDate,
   capFirstLetter,
   squish,

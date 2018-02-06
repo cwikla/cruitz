@@ -298,14 +298,14 @@ class Index extends Base {
     );
   }
 
-  renderChildren(items, selected) {
+  renderChildren(items, selected, props={}) {
     let self = this;
     //console.log("render children");
     //console.log(this.props);
 
               /*onClick={this.onClicks[this.key(item)] }  */
     return (
-      <ul>
+      <ul {...Pyr.Util.propsMergeClassName(props, "")}>
         {items.map((item, pos) => {
           let isSelected = this.same(item, selected);
           //console.log("RENDERING " + item);
@@ -315,7 +315,7 @@ class Index extends Base {
      );
    }
 
-  renderInner() {
+  renderInner(props={}) {
     if (!this.items()) {
       return this.renderLoading();
     }
@@ -327,7 +327,7 @@ class Index extends Base {
     let items = this.items();
 
     return (
-      <Pyr.UI.Scroll className="inner flx-col flx-1">
+      <Pyr.UI.Scroll {...Pyr.Util.propsMergeClassName(props, "inner flx-col flx-1")}>
         { this.renderChildren(items, this.props.selected) }
       </Pyr.UI.Scroll>
     );

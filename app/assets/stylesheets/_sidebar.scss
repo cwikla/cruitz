@@ -72,7 +72,7 @@
     color: $selected_color !important;
   }
   background-color: $selected_background_color;
-  font-weight: 500;
+  font-weight: $font_weight_bold;
 }
 
 .sidebar label {

@@ -3,48 +3,90 @@
     background-color: white;
 
     .item {
+      width: 20rem;
+      height: 20rem;
+
       background-color: white;
-      border: solid $secondary_color 1px;
-      border-radius: 2px;
+      border: solid $light_gray_color 1px;
+      border-radius: 5px;
+
+      line-height: 1rem;
+      font-size: 1rem;
+      text-align: left;
+      color: rgba(0,0,0,0.9);
 
       &:hover {
-        border: solid $secondary_dark_color 1px;
-      }
+        box-shadow: 2px 2px 5px 0px $gray_color;
 
-      .header  {
-        background-color: rgba($secondary_color, 0.5);
-        color: black;
-        padding: 0.5rem;
-      }
-
-      .content {
-        padding: 0.5rem;
-        border: solid $secondary_color 1px;
-        .col {
-        }
-      }
-
-      .detail {
-
-        &.title {
-          font-weight: 500;
-          font-size: 1.25rem;
-          line-height: 1.5rem;
-          padding: 0.5rem;
-        }
-
-        &.description {
-          max-height: 5.5rem;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          padding: 0.5rem;
-          background-color: rgba($secondary_color, 0.1);
-        }
-
-        &.skills {
+        .more {
           color: $secondary_color;
         }
       }
+
+      & > div {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+      }
+
+      .category {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: solid $light_gray_color 1px;
+
+        font-weight: $font_weight_bold;
+
+        .dropdown-toggle::after {
+          display:none;
+        }
+
+        i.fa {
+          font-size: 1.25rem;
+          padding-left: 0.5rem;
+
+          &:hover {
+            color: $secondary_color;
+          }
+        }
+      }
+
+      .position {
+        max-height: 3rem;
+        text-align: left;
+        font-weight: $font_weight_bold;
+        padding-bottom: 0.5rem;
+      }
+
+      .location {
+        max-height: 3rem;
+        text-align: left;
+        font-weight: $font_weight_normal;
+        padding-bottom: 0.5rem;
+      }
+
+      .company {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+
+        max-height: 7rem;
+
+        div {
+          padding-left: 0.5rem;
+          max-height: 4rem;
+        }
+
+        img {
+          width: 5rem;
+          height: 5rem;
+          border-radius: 5px;
+        }
+      }
+
+      .more {
+        padding-top: 0.5rem;
+        padding-bottom: 1rem;
+        color: white;
+      }
+
     }
 
     .inner {

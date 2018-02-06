@@ -20,7 +20,7 @@
     .message-item {
       &.new {
         .title {
-          font-weight: bold;
+          font-weight: $font_weight_bold;
         }
       }
     }

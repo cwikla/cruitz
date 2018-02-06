@@ -79,10 +79,9 @@
   .item {
     border-bottom: 1px solid rgba(gray, 0.4);
     background-color: white;
-    font-weight: 400;
 
     &:hover {
-      background-color: rgba($light_gray_color, 0.5);
+      b-background-color: rgba($light_gray_color, 0.5);
     }
 
     &>.col {
@@ -101,7 +100,7 @@
 
     .summary {
       text-overflow: ellipses;
-      font-weight: 300;
+      font-weight: $font_weight_light;
     }
 
     color: $gray_color;
@@ -109,7 +108,7 @@
     &.unread {
       background-color: rgba($primary_color, 0.05);
       color: black;
-      font-weight: 500;
+      font-weight: $font_weight_bold;
       &:hover {
         background-color: rgba($primary_color, 0.075);
       }

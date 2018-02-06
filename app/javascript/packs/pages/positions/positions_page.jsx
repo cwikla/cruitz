@@ -50,6 +50,89 @@ const RANGES = {
 };
 
 class PositionItem extends Component {
+  render() {
+    let item = this.props.item;
+    if (!item) {
+      return null;
+    }
+
+    let company = item.company || {};
+    let logo = company.logo;
+
+    console.log("POSITION-COMP");
+    console.log(item);
+    console.log(company);
+
+    let id = "item-" + item.id;
+    let allClass = ClassNames("item flx-col");
+
+    if (this.props.selected) {
+       allClass.push("selected");
+    }
+
+    let locations = null;
+    if (item.locations) {
+      locations = item.locations.map(v => {
+        return v.full_name;
+      }).join(", ");
+    }
+    locations = locations || "Unknown";
+
+    let skills = null;
+    if (item.skills) {
+      skills = item.skills.map(v => {
+        return v.name;
+      }).join(", ");
+    }
+    skills = skills || "None";
+
+    let title = item.title || company.name || "No Title";
+    let description = item.description || "No Description";
+    let category = item.category ? item.category.name : "Other";
+    let url = logo ? logo.url : "";
+    let companyName = company ? company.name : "Anonymous";
+    let createdAt = item.created_at;
+
+    return (
+      <div className={allClass}>
+        <div className="category flx-row">
+          <span className="flx-1">{ category }</span>
+
+          <div className="dropdown">
+            <Pyr.UI.Icon name="bars" className="dropdown-toggle" id="dropdownFilterMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+            <div className="dropdown-menu" aria-labelledby="dropdownFilterMenuButton">
+              <label className="dropdown-header">Filter with same</label>
+              <div className="dropdown-divider"></div>
+              <a className="dropdown-item" href="#">Company</a>
+              <a className="dropdown-item" href="#">Position</a>
+              <a className="dropdown-item" href="#">Category</a>
+              <a className="dropdown-item" href="#">Location</a>
+            </div>
+          </div>
+        </div>
+        <div className="company flx-row">
+          <Pyr.UI.Image src={url} className="mr-auto" />
+          <div className="flx-1 mr-auto mt-auto mb-auto">{ companyName }</div>
+        </div>
+        <div className="position">
+          { title }
+        </div>
+        <div className="location">
+          { locations }
+        </div>
+        <div className="age">
+          <Pyr.UI.MagicFuzzyDate short date={item.created_at}/>
+        </div>
+        <div className="more flx-row mt-auto">
+          <span className="ml-auto">More...</span>
+        </div>
+      </div>
+    );
+
+  }
+}
+
+class PositionItem2 extends Component {
 
   render() {
     let item = this.props.item;
@@ -193,24 +276,18 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-  renderChildrenCard(items, selected) {
+  renderChild(item, isSelected) {
+    let url = this.childURL(item, isSelected);
+
     return (
-      <div className="d-flex flx-wrap" key="position-stuff">
-        { items.map( (item, pos) => {
-            let key="position-item-"+item.id;
-            let isSelected = this.same(item, selected);
-            return (<div key={key} className="spacer">{this.renderItem(item, isSelected)}</div>);
-          })
-        }
-      </div>
+      <li
+        key={this.key(item)}
+      >{this.renderItem(item, isSelected)}</li>
     );
   }
 
   renderChildren(items, isSelected) {
-    if (this.props.card) {
-      return this.renderChildrenCard(items, isSelected);
-    }
-    return super.renderChildren(items, isSelected);
+    return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
   }
 
   renderSearch() {

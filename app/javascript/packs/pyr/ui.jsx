@@ -233,6 +233,10 @@ const ImageButton = (props) => (
   <div className="pyr-image-btn"><img {...props}/></div>
 );
 
+const Image = (props) => (
+  <img {...props} src={props.src ? props.src : "default.png"} />
+);
+
 const Label = (props) => (
   <label {...Util.propsMergeClassName(props, "pyr-label")}>{props.children}</label>
 );
@@ -350,8 +354,18 @@ class MagicDate extends BaseComponent {
     let value = Util.friendlyDate(this.props.date, this.props);
 
     return (
-      <span>{ value }</span>
+      <span className="pyr-magic-date">{ value }</span>
     );
+  }
+}
+
+class MagicFuzzyDate extends MagicDate {
+  render() {
+    let value = Util.fuzzyDate(this.props.date);
+    
+     return (
+        <span className="pyr-magic-fuzzy-date">{ value }</span>
+      );
   }
 }
 
@@ -777,6 +791,7 @@ const UI = {
   FancyButton,
   SmallLabel,
   ButtonLabel,
+  MagicFuzzyDate,
   MagicDate,
   Loading,
   Button,
@@ -791,6 +806,7 @@ const UI = {
   Empty,
   ChildSelector,
   PassThru,
+  Image,
   ImageButton,
   Collapse,
   ImageFile,
