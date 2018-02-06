@@ -7,6 +7,10 @@
       border: solid $secondary_color 1px;
       border-radius: 2px;
 
+      &:hover {
+        border: solid $secondary_dark_color 1px;
+      }
+
       .header  {
         background-color: $secondary_color;
         color: white;

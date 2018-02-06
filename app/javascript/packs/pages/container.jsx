@@ -167,6 +167,8 @@ class Container extends Component {
   }
 
   renderSearchNav(url="/") {
+    return null; // HMMM
+
     return (
       <div className="nav-item ml-auto flx-row"><NavSearch url={url}/></div>
     );
