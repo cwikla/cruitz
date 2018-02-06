@@ -21,18 +21,19 @@
       }
 
       .detail {
-        padding: 0.5rem;
 
         &.title {
           font-weight: 500;
           font-size: 1.25rem;
           line-height: 1.5rem;
+          padding: 0.5rem;
         }
 
         &.description {
           max-height: 5.5rem;
           overflow: hidden;
           text-overflow: ellipsis;
+          padding: 0.5rem;
 
         }
       }
@@ -42,7 +43,7 @@
       border-width: 0;
 
       li {
-        margin: 0.5rem;
+        margin: 1rem;
       }
     }
   }
