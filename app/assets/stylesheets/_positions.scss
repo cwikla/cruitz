@@ -12,14 +12,14 @@
       }
 
       .header  {
-        background-color: $secondary_color;
-        color: white;
+        background-color: rgba($secondary_color, 0.5);
+        color: black;
         padding: 0.5rem;
       }
 
       .content {
         padding: 0.5rem;
-        background-color: rgba($secondary_color, 0.1);
+        border: solid $secondary_color 1px;
         .col {
         }
       }
@@ -38,7 +38,11 @@
           overflow: hidden;
           text-overflow: ellipsis;
           padding: 0.5rem;
+          background-color: rgba($secondary_color, 0.1);
+        }
 
+        &.skills {
+          color: $secondary_color;
         }
       }
     }

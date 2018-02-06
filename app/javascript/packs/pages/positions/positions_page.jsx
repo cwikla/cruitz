@@ -105,10 +105,10 @@ class PositionItem extends Component {
             <img src={url} className="avatar-size-small img-fluid  mx-auto" />
           </div>
           <div className="col">
-            <div className="detail company-name">Company: <b>{name}</b></div>
-            <div className="detail location">Location: <b>{locations}</b></div>
-            <div className="detail category">Category: <b>{category}</b></div>
-            <div className="detail skills">Skills: <b>{skills}</b></div>
+            <div className="detail company-name">{name}</div>
+            <div className="detail location">{locations}</div>
+            <div className="detail category">{category}</div>
+            <div className="detail skills">{skills}</div>
           </div>
         </div>
 
