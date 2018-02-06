@@ -28,7 +28,19 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def search
+    query = company_search_params
+
+    results = Company.simple_search(query)
+
+    render json: results, root: :results, query: query
+  end
+
   private
+
+  def company_search_params
+    params.require(:q)
+  end
 
   def company_params
     params[:company].delete :size

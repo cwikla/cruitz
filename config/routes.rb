@@ -50,6 +50,7 @@ Rails.application.routes.draw do
       get 'skills/auto' => 'skills#search'
       get 'locations/auto' => 'locations#search'
       get 'categories/auto' => 'categories#search'
+      get 'company/auto' => 'companies#search'
 
       resources :ratings
       resource :company

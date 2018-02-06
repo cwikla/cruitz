@@ -29,6 +29,7 @@ import {
   LOCATIONS_URL,
   COMPANY_URL,
   SKILLS_URL,
+  COMPANIES_URL,
 
   NEW_ACTION,
   SHOW_ACTION
@@ -48,68 +49,9 @@ const RANGES = {
   10 : 'All Time'
 };
 
-function methodToName(method) {
-  switch (method) {
-    case Pyr.Method.PATCH:
-      return "Save";
-      break
-
-    default:
-      return "Add";
-      break;
-  }
-}
-
-class PositionCard extends Component {
-  render() {
-    let item = this.props.item;
-
-    let company = item.company || {};
-    let logo = company.logo;
-
-    console.log("POSITION-COMP");
-    console.log(item);
-    console.log(company);
-
-    let id = "item-" + item.id;
-    let allClass = ClassNames("item position");
-
-    if (this.props.selected) {
-       allClass.push("selected");
-    }
-
-    let title = item.title || company.name || "No Title";
-    let description = item.description || "No Description";
-
-    return (
-      <div className={ClassNames("card").push(allClass)}>
-        <div className="view overlay hm-white-slight">
-          <img src={logo.url} className="img-fluid" alt="" />
-          <a>
-              <div className="mask"></div>
-          </a>
-        </div>
-        <div className="card-body">
-            <h4 className="card-title">{title}</h4>
-            <h4 className="card-date"><Pyr.UI.MagicDate date={item.created_at}/></h4>
-            <hr/>
-            <p className="card-text">{description}</p>
-            <Pyr.UI.PrimaryButton>More...</Pyr.UI.PrimaryButton>
-        </div>
-      </div>
-    );
-  }
-}
-
 class PositionItem extends Component {
 
   render() {
-    if (this.props.card) {
-      return (
-        <PositionCard {...this.props}/>
-      );
-    }
-
     let item = this.props.item;
     if (!item) {
       return null;
@@ -346,6 +288,11 @@ class SearchForm extends Component {
           object={{}}
           model="Position"
         >
+          <Pyr.Form.Group name="companies">
+            <Pyr.Form.Label>Companies</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={COMPANIES_URL} multiple valueByID bpSize="small"/>
+          </Pyr.Form.Group>
+
           <Pyr.Form.Group name="key_words">
             <Pyr.Form.Label>Keywords</Pyr.Form.Label>
             <Pyr.Form.TextField />
