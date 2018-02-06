@@ -2,7 +2,7 @@ class Company < ApplicationRecord
   #acts_as_s3_asset :logo
 
   belongs_to :user
-  has_many :jobs, through: :users
+  has_many :jobs, through: :user
 
   validates :name, presence: true, allow_nil: true
 

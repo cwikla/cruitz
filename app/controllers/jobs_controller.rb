@@ -4,8 +4,8 @@ class JobsController < ApplicationController
   end
 
   def open
-    all = Job.all.order("-id")
-    all = all.to_a[-10, all.length]
+    all = Job.order("-id").all
+    all = all.to_a[0, 10]
     render json: all, company: true
   end
 
