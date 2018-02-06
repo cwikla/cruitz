@@ -125,11 +125,11 @@ class User < ApplicationRecord
   end
 
   def thread_last_cached(msg, clear=false)
-    return msg if msg.root_parent_id.nil?
+    return msg if msg.root_message_id.nil?
 
-    key = "tlast_#{msg.root_parent_id}"
+    key = "tlast_#{msg.root_message_id}"
     cache_fetch(key, delete: clear) {
-      messages.where("root_parent_id = ? or id = ?", msg.root_parent_id, msg.root_parent_id).order("-id").first
+      messages.where("root_message_id = ? or id = ?", msg.root_message_id, msg.root_message_id).order("-id").first
     }
   end
 

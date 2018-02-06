@@ -90,9 +90,9 @@ class PositionItem extends Component {
             <img src={url} className="avatar-size-small img-fluid rounded-circle mx-auto" />
           </div>
           <div className="col">
-            <div className="detail company-name">Company: {name}</div>
-            <div className="detail location">Location: {locations}</div>
-            <div className="detail category">Category: {category}</div>
+            <div className="detail company-name">Company: <b>{name}</b></div>
+            <div className="detail location">Location: <b>{locations}</b></div>
+            <div className="detail category">Category: <b>{category}</b></div>
           </div>
         </div>
 
@@ -288,14 +288,14 @@ class SearchForm extends Component {
           object={{}}
           model="Position"
         >
-          <Pyr.Form.Group name="companies">
-            <Pyr.Form.Label>Companies</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={COMPANIES_URL} multiple valueByID bpSize="small"/>
-          </Pyr.Form.Group>
-
           <Pyr.Form.Group name="key_words">
             <Pyr.Form.Label>Keywords</Pyr.Form.Label>
             <Pyr.Form.TextField />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="companies">
+            <Pyr.Form.Label>Companies</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={COMPANIES_URL} multiple valueByID bpSize="small"/>
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="categories">
