@@ -4,21 +4,32 @@
 
     .item {
       background-color: white;
-      border: solid $light_gray_color 1px;
+      border: solid $secondary_light_color 1px;
       border-radius: 2px;
-      padding: 1rem;
+
+      .header  {
+        background-color: $secondary_color;
+        color: white;
+        padding: 0.5rem;
+      }
+
+      .content {
+        padding: 0.5rem;
+        background-color: rgba($secondary_color, 0.1);
+        .col {
+        }
+      }
+
       .detail {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: 0.5rem;
 
         &.title {
           font-weight: 500;
-          font-size: 1.5rem;
+          font-size: 1.25rem;
+          line-height: 1.5rem;
         }
 
         &.description {
-          padding-top: 1rem;
-          padding-left: 0rem;
           max-height: 5.5rem;
           overflow: hidden;
           text-overflow: ellipsis;
