@@ -71,13 +71,28 @@ class PositionItem extends Component {
        allClass.push("selected");
     }
 
+    let locations = null;
+    if (item.locations) {
+      locations = item.locations.map(v => {
+        return v.name;
+      }).join(", ");
+    }
+    locations = locations || "Unknown";
+
+    let skills = null;
+    if (item.skills) {
+      skills = item.skills.map(v => {
+        return v.name;
+      }).join(", ");
+    }
+    skills = skills || "None";
+
     let title = item.title || company.name || "No Title";
     let description = item.description || "No Description";
     let category = item.category ? item.category.name : "Other";
-    let locations = "San Francisco";
     let url = logo ? logo.url : "";
     let name = company ? company.name : "Anonymous";
-    
+
     return (
       <div className={allClass} id={id}>
         <div className="flx-row header flx-align-center">
@@ -93,6 +108,7 @@ class PositionItem extends Component {
             <div className="detail company-name">Company: <b>{name}</b></div>
             <div className="detail location">Location: <b>{locations}</b></div>
             <div className="detail category">Category: <b>{category}</b></div>
+            <div className="detail skills">Skills: <b>{skills}</b></div>
           </div>
         </div>
 

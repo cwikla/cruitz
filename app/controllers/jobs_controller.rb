@@ -4,8 +4,7 @@ class JobsController < ApplicationController
   end
 
   def open
-    all = Job.order("-id").all
-    all = all.to_a[0, 20]
+    all = Job.order("-id").limit(20)
     render json: all, company: true
   end
 
