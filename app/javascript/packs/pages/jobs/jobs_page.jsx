@@ -510,7 +510,7 @@ class JobsPage extends Page {
       <ActionSheet
         {...this.props}
         selected={this.getSelected()}
-        items={this.props.items}
+        items={this.state.items}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
         onLoadSelected={this.onLoadSelected}

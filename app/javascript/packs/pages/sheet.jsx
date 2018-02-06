@@ -269,8 +269,12 @@ class Wizard extends Base {
 }
 
 class Index extends Base {
+  items() {
+    return this.props.items;
+  }
+
   componentDidMount() {
-    if (!this.props.items) {
+    if (!this.items()) {
       //console.log("LOADING ITEMS");
       this.props.onLoadItems(this.onLoading);
     }
@@ -312,16 +316,15 @@ class Index extends Base {
    }
 
   renderInner() {
-    if (!this.props.items) {
+    if (!this.items()) {
       return this.renderLoading();
     }
 
-    if (this.props.items.length == 0) {
+    if (this.items().length == 0) {
       return this.renderNone();
     }
 
-    //let items = this.sortItems(this.props.items) || [];
-    let items = this.props.items;
+    let items = this.items();
 
     return (
       <Pyr.UI.Scroll className="inner flx-col flx-1">

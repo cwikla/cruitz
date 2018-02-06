@@ -118,8 +118,64 @@ class PositionItem extends Component {
       </div>
     );
   }
+}
 
+class CategorySheet extends Sheet.Index {
+  key(position) {
+    return PositionsPage.key(position);
+  }
 
+  constructor(props) {
+    super(props);
+    this.initState({
+      categories : null
+    });
+
+    this.onLoadItems = this.loadItems.bind(this);
+    this.onSetCategories = this.setCategories.bind(this);
+  }
+
+  items() {
+    return this.state.categories;
+  }
+
+  setCategories(categories) {
+    console.log("CATEGORIES");
+    console.log(categories);
+
+    this.setState({
+      categories
+    });
+  }
+
+  loadItems(onLoading) {
+    console.log("URL:");
+    console.log(this.props.url);
+
+    this.getJSON({
+      url: CATEGORIES_URL,
+      context: this,
+      onLoading: onLoading,
+
+    }).done((data, textStatus, jqXHR) => {
+        this.onSetCategories(data.categories || []);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    if (!this.state.categories) {
+      this.onLoadItems(this.onLoading);
+    }
+  }
+
+  renderItem(item) {
+    return (
+      <label key={"cat-" + item.id}>{item.name}</label>
+    );
+  }
 }
 
 class IndexSheet extends Sheet.Index {
@@ -190,8 +246,13 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-
+  renderHmmm() {
+    return (
+      <CategorySheet {...this.props}/>
+    );
+  }
 }
+
 
 class ShowSheet extends Sheet.ShowFull {
   key(position) {
