@@ -14,9 +14,11 @@ import PieChart from './pie_chart';
 import Attachment from './attachment';
 
 import {
+  BrowserRouter as Router,
   Route,
   Redirect
 } from 'react-router-dom';
+
 
 
 const ClassNames = Util.ClassNames;
@@ -86,6 +88,70 @@ class RouterProvider extends BaseComponent {
 
   render() {
     return this.props.children;
+  }
+}
+
+
+class RouterProps extends BaseComponent {
+  render() {
+    let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
+    let AComponent = this.props.component;
+    let dashboard = this.props.dashboard;
+
+    let url = "/:page?/:pid?/:sub?/:subid?";
+
+    return (
+      <Router>
+        <Route
+          path={url}
+          render={(props) => {
+            let location = props.location;
+            let history = props.history;
+  
+            //console.log("ROUTE: " + location.pathname);
+            //console.log(props);
+            //console.log(location);
+  
+            let action = null;
+            let params = props.match.params;
+  
+            let pid = params.pid;
+  
+            if (pid && isNaN(parseInt(pid))) {
+              action = pid;
+              pid = null;
+            }
+  
+            let sendProps = { 
+              location: location,
+              history: history,
+              page: params.page,
+              action: action,
+              itemId: pid,
+              subPage: params.sub,
+              subItemId: params.subid,
+            };
+  
+            if (!sendProps.page && dashboard) {
+              let dest = Util.URL(dashboard);
+              //console.log("************ REDIRECT TO");
+              //console.log(dest);
+              //console.log(dest.toString());
+              //console.log("+++++++++++");
+              return (
+                <Redirect to={Util.URL(dashboard).toString()}/>
+              );
+            }
+    
+            return (
+                <UI.RouterProvider route={sendProps} location={props.location}  history={props.history}>
+                  <AComponent {...rest} {...sendProps} />
+                </UI.RouterProvider>
+            );
+          }}
+        />
+      </Router>
+    );
   }
 }
 
@@ -780,6 +846,7 @@ const UI = {
   RouterContextTypes,
   RouterProvider,
   RouterReceiver,
+  RouterProps,
 
   NoticeContextTypes,
   NoticeProvider,

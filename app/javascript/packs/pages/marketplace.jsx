@@ -17,6 +17,7 @@ import Pyr, {
 
 import {
   POSITIONS_PAGE,
+  POSITIONS_URL,
 
   ME_URL,
 } from './const';
@@ -26,20 +27,14 @@ import Container from './container';
 import PositionsPage from './positions/positions_page';
 import MessagesPage from './messages/messages_page';
 
-class HolderPage extends Container {
-  render() {
-    return (
-      <h1>Marketplace goes here</h1>
-    );
-  }
-}
-
-const HOLDER_PAGE = 'Holder';
 const DEFAULT_PAGE = POSITIONS_PAGE;
 
+const HolderPage = (props) => (
+  <Redirect to="/" />
+);
+
 const PAGE_MAP = {
-  "home" : PositionsPage,
-  [HOLDER_PAGE.toLowerCase()]: HolderPage,
+  "home" : HolderPage,
   [POSITIONS_PAGE.toLowerCase()]: PositionsPage,
 };
 
@@ -51,7 +46,7 @@ class MarketPlace extends Container {
   }
 
   getDefaultPage() {
-    return POSITIONS_PAGE;
+    return DEFAULT_PAGE;
   }
 
   pageToComponent(page) {
@@ -73,7 +68,7 @@ class MarketPlace extends Container {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.RouterProps component={MarketPlace} />
+      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_URL}/>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 

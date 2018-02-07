@@ -17,11 +17,14 @@
 
   .index .sheet {
 
-    .message-item {
+    .item {
       &.new {
         .title {
           font-weight: $font_weight_bold;
         }
+      }
+
+      &:hover {
       }
     }
   }
