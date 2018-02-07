@@ -331,7 +331,7 @@ function fuzzyDate(date) {
     return `${diff} weeks ago`;
   }
   if (diff < ONE_YEAR) {
-    diff = Math.fllor(diff / ONE_MONTH);
+    diff = Math.floor(diff / ONE_MONTH);
     return `${diff} months ago`; // ish ;)
   }
   return 'Over a year ago';
