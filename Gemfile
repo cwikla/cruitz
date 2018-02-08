@@ -82,7 +82,7 @@ source "http://pyr:akbash42@gems.cwikla.com" do
 #  gem 'pyr_push', :path => "../pyr/pyr_push"
   gem 'pyr_async', "~> 4.0.0"
   #gem 'pyr_async', :path => "../pyr/pyr_async"
-  gem 'pyr_geo', "~> 5.0.0"
+  gem 'pyr_geo', "~> 5.0.1"
   #gem 'pyr_geo', :path => "../pyr/pyr_geo"
   gem 'jpyr', "~> 4.0.0"
   #gem 'jpyr', :path => "../pyr/jpyr"

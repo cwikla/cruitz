@@ -10,12 +10,8 @@ class JobsController < ApplicationController
 
   def search
     spar = search_params
+    all = Job.full_search(spar)
 
-    q = Job
-    kw = spar[:key_words].strip
-    q = q.search(kw) if !kw.blank?
-
-    all = q.order("-id").limit(40)
     render json: all, company: true
   end
 

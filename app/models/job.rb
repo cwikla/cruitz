@@ -40,7 +40,20 @@ class Job < ApplicationRecord
     "#{id}:#{self.title}"
   end
 
-  def self.open
+  def self.is_open
     self.where.not(closed_at: nil)
+  end
+
+  def self.full_search(params)
+    q = self
+    kw = params[:key_words].strip
+    q = q.search(kw) if !kw.blank?
+
+    locations = [*params[:locations]]
+    if locations
+      q = q.joins(:locations).merge(GeoName.where(id: locations).or(GeoName.where(primary_id: locations)))
+    end
+
+    return q.order("-jobs.id")
   end
 end

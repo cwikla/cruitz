@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180126181457) do
+ActiveRecord::Schema.define(version: 20180208225238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -281,12 +281,14 @@ ActiveRecord::Schema.define(version: 20180126181457) do
     t.decimal "cluster_longitude", precision: 9, scale: 6
     t.integer "accuracy"
     t.boolean "is_primary", default: false, null: false
+    t.integer "primary_id"
     t.index "lower((name)::text), lower((admin_code_1)::text), lower((iso_country)::text)", name: "pyr_geo_low_idx"
     t.index ["cluster_latitude", "cluster_longitude", "iso_country", "name"], name: "pyr_geo_ccllin_idx"
     t.index ["cluster_latitude", "cluster_longitude", "iso_country", "postal_code"], name: "pyr_geo_ccllip_idx"
     t.index ["iso_country", "name"], name: "index_pyr_geo_names_on_iso_country_and_name"
     t.index ["iso_country", "postal_code"], name: "index_pyr_geo_names_on_iso_country_and_postal_code"
     t.index ["latitude", "longitude", "iso_country", "name"], name: "pyr_geo_llin_idx"
+    t.index ["primary_id"], name: "index_pyr_geo_names_on_primary_id"
   end
 
   create_table "ratings", id: :serial, force: :cascade do |t|
