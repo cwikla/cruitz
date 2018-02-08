@@ -49,6 +49,64 @@ const RANGES = {
   10 : 'All Time'
 };
 
+class CategorySheet extends Sheet.Index {
+  key(position) {
+    return PositionsPage.key(position);
+  }
+
+  constructor(props) {
+    super(props);
+    this.initState({
+      categories : null
+    });
+
+    this.onLoadItems = this.loadItems.bind(this);
+    this.onSetCategories = this.setCategories.bind(this);
+  }
+
+  items() {
+    return this.state.categories;
+  }
+
+  setCategories(categories) {
+    console.log("CATEGORIES");
+    console.log(categories);
+
+    this.setState({
+      categories
+    });
+  }
+
+  loadItems(onLoading) {
+    console.log("URL:");
+    console.log(this.props.url);
+
+    this.getJSON({
+      url: CATEGORIES_URL,
+      context: this,
+      onLoading: onLoading,
+
+    }).done((data, textStatus, jqXHR) => {
+        this.onSetCategories(data.categories || []);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    if (!this.state.categories) {
+      this.onLoadItems(this.onLoading);
+    }
+  }
+
+  renderItem(item) {
+    return (
+      <label key={"cat-" + item.id}>{item.name}</label>
+    );
+  }
+}
+
 class PositionItem extends Component {
   render() {
     let item = this.props.item;
@@ -132,135 +190,6 @@ class PositionItem extends Component {
   }
 }
 
-class PositionItem2 extends Component {
-
-  render() {
-    let item = this.props.item;
-    if (!item) {
-      return null;
-    }
-
-    let company = item.company || {};
-    let logo = company.logo;
-
-    console.log("POSITION-COMP");
-    console.log(item);
-    console.log(company);
-
-    let id = "item-" + item.id;
-    let allClass = ClassNames("item flx-col row");
-
-    if (this.props.selected) {
-       allClass.push("selected");
-    }
-
-    let locations = null;
-    if (item.locations) {
-      locations = item.locations.map(v => {
-        return v.full_name;
-      }).join(", ");
-    }
-    locations = locations || "Unknown";
-
-    let skills = null;
-    if (item.skills) {
-      skills = item.skills.map(v => {
-        return v.name;
-      }).join(", ");
-    }
-    skills = skills || "None";
-
-    let title = item.title || company.name || "No Title";
-    let description = item.description || "No Description";
-    let category = item.category ? item.category.name : "Other";
-    let url = logo ? logo.url : "";
-    let name = company ? company.name : "Anonymous";
-
-    return (
-      <div className={allClass} id={id}>
-        <div className="flx-row header flx-align-center">
-          <div className="detail title">{title}</div>
-          <div className="detail ml-auto"><Pyr.UI.MagicDate short date={item.created_at}/></div>
-        </div>
-
-        <div className="row content">
-          <div className="col col-2">
-            <img src={url} className="avatar-size-small img-fluid  mx-auto" />
-          </div>
-          <div className="col">
-            <div className="detail company-name">{name}</div>
-            <div className="detail location">{locations}</div>
-            <div className="detail category">{category}</div>
-            <div className="detail skills">{skills}</div>
-          </div>
-        </div>
-
-        <div className="detail description">
-          {description}
-        </div>
-      </div>
-    );
-  }
-}
-
-class CategorySheet extends Sheet.Index {
-  key(position) {
-    return PositionsPage.key(position);
-  }
-
-  constructor(props) {
-    super(props);
-    this.initState({
-      categories : null
-    });
-
-    this.onLoadItems = this.loadItems.bind(this);
-    this.onSetCategories = this.setCategories.bind(this);
-  }
-
-  items() {
-    return this.state.categories;
-  }
-
-  setCategories(categories) {
-    console.log("CATEGORIES");
-    console.log(categories);
-
-    this.setState({
-      categories
-    });
-  }
-
-  loadItems(onLoading) {
-    console.log("URL:");
-    console.log(this.props.url);
-
-    this.getJSON({
-      url: CATEGORIES_URL,
-      context: this,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        this.onSetCategories(data.categories || []);
-
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-    });
-  }
-
-  componentDidMount() {
-    if (!this.state.categories) {
-      this.onLoadItems(this.onLoading);
-    }
-  }
-
-  renderItem(item) {
-    return (
-      <label key={"cat-" + item.id}>{item.name}</label>
-    );
-  }
-}
-
 class IndexSheet extends Sheet.Index {
   key(position) {
     return PositionsPage.key(position);
@@ -290,7 +219,7 @@ class IndexSheet extends Sheet.Index {
     return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
   }
 
-  renderSearch() {
+  unused_renderSearch() {
     let url = Pyr.URL(SEARCH_URL).push("position");
 
     return (
@@ -314,7 +243,12 @@ class IndexSheet extends Sheet.Index {
     return (
       <div className="row">
         <div className={leftClasses}>
-          <PositionsPage.SearchForm />
+          <PositionsPage.SearchForm 
+            onSetItems={this.props.onSetItems}
+            onPreSubmit={this.props.onPreSubmit}
+            onPostSubmit={this.props.onPostSubmit}
+            onError={this.props.onError}
+          />
         </div>
         <div className={rightClasses}>
           { super.renderInner() }
@@ -361,15 +295,18 @@ class PositionsPage extends Page {
   }
 
   loadItems(onLoading) {
-    console.log("URL:");
-    console.log(this.props.url);
+//    console.log("URL:");
+//    console.log(this.props.url);
 
-    this.getJSON({
+    let urlStuff = Object.assign({
       url: this.props.url,
       context: this,
-      onLoading: onLoading,
+      onLoading: this.onLoading,
+    });
 
-    }).done((data, textStatus, jqXHR) => {
+    this.getJSON(
+      urlStuff
+    ).done((data, textStatus, jqXHR) => {
         this.onSetItems(data.jobs || []);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
@@ -384,7 +321,9 @@ class PositionsPage extends Page {
         {...this.props}
         items={this.state.items}
         onSelect={this.onSelect}
+        onLoading={this.onLoading}
         onLoadItems={this.onLoadItems}
+        onSetItems={this.onSetItems}
         card={false}
       />
     );
@@ -394,12 +333,14 @@ class PositionsPage extends Page {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
+        //onAction={this.onAction}
+        //onUnaction={this.onUnaction}
     return (
       <ActionSheet
         {...this.props}
         selected={this.getSelected()}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
+        onLoading={this.onLoading}
+        onSetItems={this.onSetItems}
       />
     );
 
@@ -417,6 +358,7 @@ class SearchForm extends Component {
     super(props);
     this.onGetTarget = this.getTarget.bind(this);
     this.onRenderAge = this.renderAge.bind(this);
+    this.onSuccess = this.success.bind(this);
   }
 
   getTarget() {
@@ -428,6 +370,10 @@ class SearchForm extends Component {
     return RANGES[value];
   }
 
+  success(data, textStatus, jqXHR) {
+    this.props.onSetItems(data.jobs || []);
+  }
+
   render() {
     return (
       <div className="position-search">
@@ -437,10 +383,10 @@ class SearchForm extends Component {
           ref={(node) =>{ this.form = node; }}
           onPreSubmit={this.props.onPreSubmit}
           onPostSubmit={this.props.onPostSubmit}
-          onSuccess={this.props.onSuccess}
+          onSuccess={this.onSuccess}
           onError={this.props.onError}
           object={{}}
-          model="Position"
+          model="search"
         >
           <Pyr.Form.Group name="key_words">
             <Pyr.Form.Label>Keywords</Pyr.Form.Label>

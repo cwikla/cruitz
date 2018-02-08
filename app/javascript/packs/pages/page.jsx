@@ -117,7 +117,7 @@ class Page extends Component {
     });
   }
 
-  loadItems() {
+  loadItems(onLoading) {
     alert("Page:loadItems needs to be implemented");
   }
 

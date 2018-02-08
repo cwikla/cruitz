@@ -34,8 +34,15 @@ label {
   padding-right: 0;
 }
 
+.container-content {
+  background-color: $light_gray_color;
+}
+
 .sheet {
-  background-color: white;
+  .scroll {
+    background-color: white;
+    border: solid $border_color 1px;
+  }
 }
 
 .index {
@@ -302,7 +309,7 @@ label {
   margin: 0;
   padding: 0;
   .inner {
-    border: solid $light_gray_color 1px;
+    border: solid $border_color 1px;
   }
 }
 

@@ -8,6 +8,17 @@ class JobsController < ApplicationController
     render json: all, company: true
   end
 
+  def search
+    spar = search_params
+
+    q = Job
+    kw = spar[:key_words].strip
+    q = q.search(kw) if !kw.blank?
+
+    all = q.order("-id").limit(40)
+    render json: all, company: true
+  end
+
   def candidate_counts
     render json: current_user.candidate_counts
   end
@@ -130,5 +141,9 @@ class JobsController < ApplicationController
 
   def job_params
     params.require(:job).permit(:title, :description, :time_commit, :category, locations: [], skills: [])
+  end
+
+  def search_params
+    params.require(:search).permit(:key_words, :age, categories: [], locations: [], skills: [])
   end
 end

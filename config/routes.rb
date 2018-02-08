@@ -71,6 +71,7 @@ Rails.application.routes.draw do
 
 
       get 'positions' => 'jobs#open'
+      post 'positions' => 'jobs#search'
     end
   end
 

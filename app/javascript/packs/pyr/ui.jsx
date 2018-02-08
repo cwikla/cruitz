@@ -108,9 +108,9 @@ class RouterProps extends BaseComponent {
             let location = props.location;
             let history = props.history;
   
-            //console.log("ROUTE: " + location.pathname);
-            //console.log(props);
-            //console.log(location);
+            console.log("ROUTE: " + location.pathname);
+            console.log(props);
+            console.log(location);
   
             let action = null;
             let params = props.match.params;

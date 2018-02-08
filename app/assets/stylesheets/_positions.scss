@@ -1,13 +1,17 @@
 .positions {
   .sheet {
-    background-color: white;
+    .position-search {
+      padding:1rem;
+      background-color: white;
+      border: solid $border_color 1px;
+    }
 
     .item {
       width: 20rem;
       height: 20rem;
 
       background-color: white;
-      border: solid $light_gray_color 1px;
+      border: solid $border_color 1px;
       border-radius: 5px;
 
       line-height: 1rem;
@@ -31,7 +35,7 @@
       .category {
         padding-top: 1rem;
         padding-bottom: 1rem;
-        border-bottom: solid $light_gray_color 1px;
+        border-bottom: solid $border_color 1px;
 
         font-weight: $font_weight_bold;
 
@@ -48,7 +52,7 @@
           }
         }
       }
-
+      
       .position {
         max-height: 3rem;
         text-align: left;
@@ -90,7 +94,6 @@
     }
 
     .inner {
-      border-width: 0;
 
       li {
         margin: 1rem;

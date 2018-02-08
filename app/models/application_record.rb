@@ -1,6 +1,7 @@
 class ApplicationRecord < ActiveRecord::Base
   include Pyr::Base::SimpleCache
   include Pyr::Base::S3::ActsAsS3Asset
+  include PgSearch
 
   self.abstract_class = true
 
@@ -9,6 +10,8 @@ class ApplicationRecord < ActiveRecord::Base
 
   #include Pyr::Base::UuidHelp
   #include Hashid
+
+  pg_search_scope :search_name, against: :name #, using: :trigram
 
   def self.ids
     select(:id).map(&:id).uniq
