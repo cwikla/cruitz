@@ -156,7 +156,14 @@ class PositionItem extends Component {
           </div>
           <div className="company">{ companyName }</div>
           <div className="locations">{ locations }</div>
-          <div className="salary-range mt-auto">$120,000 - $160,000</div>
+
+          <div className="flx-row mt-auto">
+            <div className="salary-range">$120,000 - $160,000</div>
+          </div>
+
+          <div className="flx-row mt-auto">
+            <div className="ml-auto"><Pyr.UI.PrimaryButton className="ml-auto" name="add">Submit Candidate</Pyr.UI.PrimaryButton></div>
+          </div>
         </div>
       </div>
     );
@@ -183,7 +190,7 @@ class PositionItem extends Component {
     let position = this.props.position;
 
     let id = "position-" + position.id;
-    let allClass = ClassNames("position flx-col");
+    let allClass = ClassNames("position flx-col flx-1");
 
     if (this.props.selected) {
        allClass.push("selected");
