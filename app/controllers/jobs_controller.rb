@@ -10,7 +10,11 @@ class JobsController < ApplicationController
 
   def search
     spar = search_params
+    puts "PARAMS"
+    puts spar
+
     all = Job.full_search(spar)
+    #all = []
 
     render json: all, company: true
   end
@@ -140,6 +144,6 @@ class JobsController < ApplicationController
   end
 
   def search_params
-    params.require(:search).permit(:key_words, :age, categories: [], locations: [], skills: [])
+    params.require(:search).permit(:key_words, :age, categories: [], locations: [], skills: [], companies: [])
   end
 end

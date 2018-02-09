@@ -117,9 +117,6 @@ class PositionItem extends Component {
     let company = item.company || {};
     let logo = company.logo;
 
-    console.log("POSITION-COMP");
-    console.log(item);
-    console.log(company);
 
     let id = "item-" + item.id;
     let allClass = ClassNames("item flx-col");
@@ -321,6 +318,7 @@ class PositionsPage extends Page {
         {...this.props}
         items={this.state.items}
         onSelect={this.onSelect}
+        onPreSubmit={this.onNoItems}
         onLoading={this.onLoading}
         onLoadItems={this.onLoadItems}
         onSetItems={this.onSetItems}

@@ -31,6 +31,7 @@ class Page extends Component {
     this.onUnselect = this.setSelected.bind(this, null);
 
     this.onSetItems = this.setItems.bind(this);
+    this.onNoItems = this.setItems.bind(this, null);
 
     this.onLoadItems = this.loadItems.bind(this);
     this.onAddItem = this.addItem.bind(this);
@@ -106,8 +107,8 @@ class Page extends Component {
 
 
   setItems(items) {
-    //console.log("SET ITEMS");
-   // console.log("ITEMS NO LONGER NULL");
+    console.log("SET ITEMS");
+    console.log(items);
     if (items) {
       items = this.sortItems(items);
     }
