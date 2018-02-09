@@ -27,7 +27,7 @@ class Job < ApplicationRecord
   ONE_MONTH = ONE_WEEK * 4
 
   POSTING_RANGES = {
-    0 => ONE_DAY,
+    0 => ONE_DAY * 2,
     1 => ONE_WEEK,
     2 => ONE_WEEK * 2,
     3 => ONE_WEEK * 3,
@@ -77,8 +77,8 @@ class Job < ApplicationRecord
 
   def self.full_search(params)
     q = self
-    kw = params[:key_words].strip
-    q = q.search(kw) if !kw.blank?
+    kw = params[:key_words]
+    q = q.search(kw.strip) if !kw.blank?
 
     age = params[:age]
     if !age.blank?

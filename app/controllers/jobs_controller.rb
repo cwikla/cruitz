@@ -4,16 +4,19 @@ class JobsController < ApplicationController
   end
 
   def open
-    all = Job.order("-id").limit(40)
+    all = Job.order("-id").limit(10)
     render json: all, company: true
   end
 
   def search
+    puts "PARAMS"
+    puts params
+
     spar = search_params
     puts "PARAMS"
     puts spar
 
-    all = Job.full_search(spar)
+    all = Job.full_search(spar).limit(10)
     #all = []
 
     render json: all, company: true

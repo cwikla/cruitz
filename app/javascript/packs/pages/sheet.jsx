@@ -102,7 +102,7 @@ class Base extends Component {
 
   renderNone() {
     return (
-      <h2 className="empty flx-1 flx-align-center">Empty</h2>
+      <h2 className="empty flx-col flx-1 flx-align-center">No Results</h2>
     );
   }
 

@@ -108,6 +108,29 @@ class CategorySheet extends Sheet.Index {
 }
 
 class PositionItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onItemSearch = this.itemSearch.bind(this);
+  }
+
+  itemSearch(name) {
+    this.props[name];
+    let data = { 
+      search: {
+        companies: [ this.props.item.company.id ]
+      }
+    };
+
+    let all = {
+      data,
+      url: POSITIONS_URL,
+      method: Pyr.Method.POST
+    };
+
+    this.props.onLoadItems(this.props.onLoading, all);
+  }
+
   render() {
     let item = this.props.item;
     if (!item) {
@@ -116,7 +139,6 @@ class PositionItem extends Component {
 
     let company = item.company || {};
     let logo = company.logo;
-
 
     let id = "item-" + item.id;
     let allClass = ClassNames("item flx-col");
@@ -158,10 +180,10 @@ class PositionItem extends Component {
             <div className="dropdown-menu" aria-labelledby="dropdownFilterMenuButton">
               <label className="dropdown-header">Filter with same</label>
               <div className="dropdown-divider"></div>
-              <a className="dropdown-item" href="#">Company</a>
-              <a className="dropdown-item" href="#">Position</a>
-              <a className="dropdown-item" href="#">Category</a>
-              <a className="dropdown-item" href="#">Location</a>
+              <label className="dropdown-item" onClick={this.onItemSearch}>Company</label>
+              <label className="dropdown-item" >Position</label>
+              <label className="dropdown-item" >Category</label>
+              <label className="dropdown-item" >Location</label>
             </div>
           </div>
         </div>
@@ -198,6 +220,8 @@ class IndexSheet extends Sheet.Index {
         item={item}
         isSelected={isSelected}
         card={this.props.card}
+        onLoading={this.props.onLoading}
+        onLoadItems={this.props.onLoadItems}
       />
     );
   }
@@ -282,24 +306,18 @@ class PositionsPage extends Page {
     return "Position";
   }
 
-  unusedrenderHeader() {
-    return (
-      <div className="flx-row header">
-        <Pyr.UI.Label className="mr-auto">Filter</Pyr.UI.Label>
-        <Pyr.UI.Label className="ml-auto">Results</Pyr.UI.Label>
-      </div>
-    );
-  }
+  loadItems(onLoading, props={}) {
+    console.log("props");
+    console.log(props);
 
-  loadItems(onLoading) {
-//    console.log("URL:");
-//    console.log(this.props.url);
-
-    let urlStuff = Object.assign({
+    let urlStuff = Object.assign({}, {
       url: this.props.url,
       context: this,
       onLoading: this.onLoading,
-    });
+    }, props);
+
+    console.log("STUFF");
+    console.log(urlStuff);
 
     this.getJSON(
       urlStuff
@@ -341,7 +359,6 @@ class PositionsPage extends Page {
         onSetItems={this.onSetItems}
       />
     );
-
   }
 
 }
