@@ -268,6 +268,19 @@ function ClassNames(...args) {
   return new ClassNamesObj(...args);
 }
 
+function fancyParagraph(txt="") {
+  let pieces = txt.split("\n\n");
+
+  let count = 0;
+
+  return pieces.map(txt => {
+          count = count + 1;
+          return (
+            <p key={"desc-" + count}>{txt}</p>
+          );
+        });
+}
+
 function summarize(arg, maxLength=300, ellipses=true) {
   if (arg.length <= maxLength) {
     return arg;
@@ -344,7 +357,7 @@ function friendlyDate(date, options) {
   let now = new Date();
   
   let diff = (now - date); // to seconds
-  let longOptions = { weekday: 'short', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+  let longOptions = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
   if (now.getYear() != date.getYear()) {
     longOptions.year = 'numeric';
   }
@@ -508,6 +521,7 @@ const Util = {
   times,
   scramble,
   getRandomInt,
+  fancyParagraph,
 };
 
 export default Util;

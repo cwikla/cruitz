@@ -110,6 +110,99 @@ class CategorySheet extends Sheet.Index {
 class PositionItem extends Component {
   constructor(props) {
     super(props);
+  }
+
+  renderHeader() {
+    let position = this.props.position;
+    if (!position) {
+      return null;
+    }
+
+    let company = position.company || {};
+    let logo = company.logo;
+
+    let locations = null;
+    if (position.locations) {
+      locations = position.locations.map(v => {
+        return v.full_name;
+      }).join(", ");
+    }
+    locations = locations || "Unknown";
+
+    let skills = null;
+    if (position.skills) {
+      skills = position.skills.map(v => {
+        return v.name;
+      }).join(", ");
+    }
+    skills = skills || "None";
+
+    let title = position.title || company.name || "No Title";
+    let description = position.description || "No Description";
+    let category = position.category ? position.category.name : "Other";
+    let url = logo ? logo.url : "";
+    let companyName = company ? company.name : "Anonymous";
+
+    return (
+      <div className="header flx-row flx-1">
+        <div className="flx-col">
+          <img src={url} className="logo"/>
+        </div>
+
+        <div className="flx-col flx-1">
+          <div className="flx-row">
+            <div className="title flx-1">{ title }</div>
+            <div className="created_at"><Pyr.UI.MagicDate long date={position.created_at}/></div>
+          </div>
+          <div className="company">{ companyName }</div>
+          <div className="locations">{ locations }</div>
+          <div className="salary-range mt-auto">$120,000 - $160,000</div>
+        </div>
+      </div>
+    );
+  }
+
+  renderContent() {
+    let position = this.props.position;
+    if (!position) {
+      return null;
+    }
+
+    let description = position.description || "No Description";
+    let createdAt = position.created_at;
+
+    let count = 0;
+    return (
+      <div className="description flx-col">
+        { Pyr.Util.fancyParagraph(description) }
+      </div>
+    );
+  }
+
+  render() {
+    let position = this.props.position;
+
+    let id = "position-" + position.id;
+    let allClass = ClassNames("position flx-col");
+
+    if (this.props.selected) {
+       allClass.push("selected");
+    }
+
+    return (
+      <div className={allClass}>
+        { this.renderHeader() }
+        { this.renderContent() }
+      </div>
+    );
+  }
+
+
+}
+
+class PositionCardItem extends Component {
+  constructor(props) {
+    super(props);
 
     this.onItemSearch = this.itemSearch.bind(this);
   }
@@ -216,7 +309,7 @@ class IndexSheet extends Sheet.Index {
 
   renderItem(item, isSelected) {
     return (
-      <PositionItem 
+      <PositionCardItem 
         item={item}
         isSelected={isSelected}
         card={this.props.card}
@@ -226,7 +319,7 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-  renderChild(item, isSelected) {
+  unused_renderChild(item, isSelected) {
     let url = this.childURL(item, isSelected);
 
     return (
@@ -239,23 +332,6 @@ class IndexSheet extends Sheet.Index {
   renderChildren(items, isSelected) {
     return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
   }
-
-  unused_renderSearch() {
-    let url = Pyr.URL(SEARCH_URL).push("position");
-
-    return (
-        <Pyr.Form.Form
-          className="search-form d-flex flx-1"
-          model="search"
-          url={url}
-          ref={(node) => {this.form = node;}}
-        >
-          <Pyr.Form.Group name="search" className="flx-row flx-1">
-            <i className="fa fa-search"></i><Pyr.Form.TextField placeholder="Filter" className="flx-1"/>
-          </Pyr.Form.Group>
-        </Pyr.Form.Form>
-    );
-  }   
 
   renderInner() {
     let leftClasses = "col col-3";
