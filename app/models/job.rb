@@ -68,7 +68,7 @@ class Job < ApplicationRecord
     age = POSTING_RANGES.length if age > POSTING_RANGES.length
     val = POSTING_RANGES[age]
 
-    where("created_at >= ?", Time.zone.now - val)
+    where("jobs.created_at >= ?", Time.zone.now - val)
   end
 
   def self.is_open
