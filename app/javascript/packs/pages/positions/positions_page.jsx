@@ -152,7 +152,7 @@ class PositionItem extends Component {
         <div className="flx-col flx-1">
           <div className="flx-row">
             <div className="title flx-1">{ title }</div>
-            <div className="created_at"><Pyr.UI.MagicDate long date={position.created_at}/></div>
+            <div className="created_at"><Pyr.UI.MagicDate dateOnly date={position.created_at}/></div>
           </div>
           <div className="company">{ companyName }</div>
           <div className="locations">{ locations }</div>
@@ -162,7 +162,7 @@ class PositionItem extends Component {
           </div>
 
           <div className="flx-row mt-auto">
-            <div className="ml-auto"><Pyr.UI.PrimaryButton className="ml-auto" name="add">Submit Candidate</Pyr.UI.PrimaryButton></div>
+            <div className="ml-auto"><Link to={"/positions/" + position.id + "/submit"}><Pyr.UI.PrimaryButton className="ml-auto" name="add">Submit Candidate</Pyr.UI.PrimaryButton></Link></div>
           </div>
         </div>
       </div>
@@ -368,6 +368,20 @@ class IndexSheet extends Sheet.Index {
   }
 }
 
+class SubmitSheet extends Sheet.ShowFull {
+  key(position) {
+    return PositionsPage.key(position);
+  }
+
+  renderItem(position, isSelected) {
+    return (
+        <PositionItem 
+          position={position} 
+          selected={isSelected}
+        />
+    );
+  }
+}
 
 class ShowSheet extends Sheet.ShowFull {
   key(position) {
@@ -429,8 +443,12 @@ class PositionsPage extends Page {
   }
 
   actionSheet(action) {
+    console.log("ACTION SHEET " + action);
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
+
+    console.log(ActionSheet);
+
 
         //onAction={this.onAction}
         //onUnaction={this.onUnaction}

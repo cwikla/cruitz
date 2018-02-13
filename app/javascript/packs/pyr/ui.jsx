@@ -91,65 +91,121 @@ class RouterProvider extends BaseComponent {
   }
 }
 
+class RouteURL extends BaseComponent {
+  constructor(props) {
+    super(props);
+    this.onRouteRender = this.routeRender.bind(this);
+  }
 
-class RouterProps extends BaseComponent {
+  onRouteRender(routeProps) {
+    let AComponent = this.props.component;
+    let location = routeProps.location;
+    let history = routeProps.history;
+
+    let params = routeProps.match.params;
+
+    let sendProps = { 
+      location: location,
+      history: history,
+      page: params.page,
+      action: params.action,
+      itemId: params.pid,
+      subPage: params.sub,
+      subItemId: params.subid,
+    };
+   
+    return (
+      <UI.RouteProvider route={sendProps} location={location} history={history}>
+        <AComponent {...rest} {...sendProps} />
+      </UI.RouteProvider>
+    );
+  }
+
   render() {
+    <Route
+      path={this.props.url}
+      render={this.onRouteRender}
+    />
+  }
+}
+
+class DefaultRoute extends BaseComponent {
+  constructor(props) {
+    super(props);
+    this.onDefaultRender = this.defaultRender.bind(this);
+  }
+
+  defaultRender(routeProps) {
     let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
     let AComponent = this.props.component;
     let dashboard = this.props.dashboard;
 
+    let location = routeProps.location;
+    let history = routeProps.history;
+    
+    //console.log("ROUTE: " + location.pathname);
+    //console.log(routeProps);
+    //console.log(location);
+    
+    let action = null;
+    let params = routeProps.match.params;
+    
+    let pid = params.pid;
+    
+    if (pid && isNaN(parseInt(pid))) {
+      action = pid;
+      pid = null;
+    }
+    
+    let sendProps = { 
+      location: location,
+      history: history,
+      page: params.page,
+      action: action,
+      itemId: pid,
+      subPage: params.sub,
+      subItemId: params.subid,
+    };
+   
+    if (!sendProps.page && dashboard) {
+      let dest = Util.URL(dashboard);
+      //console.log("************ REDIRECT TO");
+      //console.log(dest);
+      //console.log(dest.toString());
+      //console.log("+++++++++++");
+      return (
+        <Redirect to={Util.URL(dashboard).toString()}/>
+      );
+    }
+     
+    return (
+      <UI.RouterProvider route={sendProps} location={location}  history={history}>
+        <AComponent {...rest} {...sendProps} />
+      </UI.RouterProvider>
+    );
+  }
+
+  render() {
     let url = "/:page?/:pid?/:sub?/:subid?";
 
     return (
+      <Route
+        path={url}
+        render={this.onDefaultRender}
+      />
+    );
+  }
+}
+
+
+class RouterProps extends BaseComponent {
+  render() {
+    return (
       <Router>
-        <Route
-          path={url}
-          render={(props) => {
-            let location = props.location;
-            let history = props.history;
-  
-            console.log("ROUTE: " + location.pathname);
-            console.log(props);
-            console.log(location);
-  
-            let action = null;
-            let params = props.match.params;
-  
-            let pid = params.pid;
-  
-            if (pid && isNaN(parseInt(pid))) {
-              action = pid;
-              pid = null;
-            }
-  
-            let sendProps = { 
-              location: location,
-              history: history,
-              page: params.page,
-              action: action,
-              itemId: pid,
-              subPage: params.sub,
-              subItemId: params.subid,
-            };
-  
-            if (!sendProps.page && dashboard) {
-              let dest = Util.URL(dashboard);
-              //console.log("************ REDIRECT TO");
-              //console.log(dest);
-              //console.log(dest.toString());
-              //console.log("+++++++++++");
-              return (
-                <Redirect to={Util.URL(dashboard).toString()}/>
-              );
-            }
-    
-            return (
-                <UI.RouterProvider route={sendProps} location={props.location}  history={props.history}>
-                  <AComponent {...rest} {...sendProps} />
-                </UI.RouterProvider>
-            );
-          }}
-        />
+        <div style={{height: '100%', width: '100%'}}>
+          { Util.childrenWithProps(this.props.children, this.props) }
+          <DefaultRoute {...this.props} />
+        </div>
       </Router>
     );
   }
@@ -847,6 +903,7 @@ const UI = {
   RouterProvider,
   RouterReceiver,
   RouterProps,
+  RouteURL,
 
   NoticeContextTypes,
   NoticeProvider,

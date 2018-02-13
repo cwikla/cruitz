@@ -398,6 +398,13 @@ function friendlyDate(date, options) {
     }
   }
 
+  if (options.dateOnly) {
+    longOptions = { weekday: 'long', month: 'long', day: 'numeric'};
+    if (now.getYear() != date.getYear()) {
+      longOptions.year = 'numeric';
+    }
+  }
+
   if (options.short) {
     longOptions = { weekday: 'short', month: 'long', day: 'numeric'};
     if (now.getYear() != date.getYear()) {

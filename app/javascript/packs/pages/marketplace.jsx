@@ -35,6 +35,7 @@ const HolderPage = (props) => (
 
 const PAGE_MAP = {
   "home" : HolderPage,
+  "submit": PositionsPage,
   [POSITIONS_PAGE.toLowerCase()]: PositionsPage,
 };
 
@@ -50,6 +51,9 @@ class MarketPlace extends Container {
   }
 
   pageToComponent(page) {
+    console.log("PAGE TO COMPONENT");
+    console.log(page);
+
     return super.pageToComponent(page) || PAGE_MAP[page];
   }
 
@@ -68,7 +72,7 @@ class MarketPlace extends Container {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_URL}/>
+      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_URL} />
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 
