@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       resources :messages
 
 
+      get 'positions/:id' => 'jobs#position'
       get 'positions' => 'jobs#open'
       post 'positions' => 'jobs#search'
     end

@@ -16,7 +16,8 @@ import Attachment from './attachment';
 import {
   BrowserRouter as Router,
   Route,
-  Redirect
+  Redirect,
+  Switch
 } from 'react-router-dom';
 
 
@@ -97,35 +98,54 @@ class RouteURL extends BaseComponent {
     this.onRouteRender = this.routeRender.bind(this);
   }
 
-  onRouteRender(routeProps) {
+  routeRender(routeProps) {
+
     let AComponent = this.props.component;
     let location = routeProps.location;
     let history = routeProps.history;
 
     let params = routeProps.match.params;
+    console.log("MATCH PARAMS");
+    console.log(params);
+
+    let searchParams = {};
+
+    let search = new URLSearchParams(location.search);
+    for (let pair of search.entries()) {
+      searchParams[pair[0]] = pair[1];
+    }
 
     let sendProps = { 
       location: location,
       history: history,
-      page: params.page,
-      action: params.action,
-      itemId: params.pid,
-      subPage: params.sub,
-      subItemId: params.subid,
+      page: this.props.page || params.page,
+      action: this.props.action || params.action,
+      itemId: this.props.pid || params.pid,
+      subPage: this.props.subPage || params.sub,
+      subItemId: this.props.subid || params.subid,
+      searchParams: Object.assign({}, searchParams, this.props.searchParams || {}),
     };
+
+    console.log("SEND PROPS");
+    console.log(sendProps);
+
+    let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
    
     return (
-      <UI.RouteProvider route={sendProps} location={location} history={history}>
+      <UI.RouterProvider route={sendProps} location={location} history={history}>
         <AComponent {...rest} {...sendProps} />
-      </UI.RouteProvider>
+      </UI.RouterProvider>
     );
   }
 
   render() {
-    <Route
-      path={this.props.url}
-      render={this.onRouteRender}
-    />
+    return (
+      <Route
+        path={this.props.path}
+        render={this.onRouteRender}
+        exact={true}
+      />
+    );
   }
 }
 
@@ -156,6 +176,13 @@ class DefaultRoute extends BaseComponent {
       action = pid;
       pid = null;
     }
+
+    let searchParams = {};
+
+    let search = new URLSearchParams(location.search);
+    for (let pair of search.entries()) {
+      searchParams[pair[0]] = pair[1];
+    }
     
     let sendProps = { 
       location: location,
@@ -165,6 +192,7 @@ class DefaultRoute extends BaseComponent {
       itemId: pid,
       subPage: params.sub,
       subItemId: params.subid,
+      searchParams: Object.assign({}, searchParams, this.props.searchParams || {}),
     };
    
     if (!sendProps.page && dashboard) {
@@ -197,14 +225,25 @@ class DefaultRoute extends BaseComponent {
   }
 }
 
+class Hello extends BaseComponent {
+  render() {
+    return (
+      <div>HELLLO</div>
+    );
+  }
+}
 
 class RouterProps extends BaseComponent {
   render() {
+    let kids = Util.childrenWithProps(this.props.children, this.props);
+
     return (
       <Router>
         <div style={{height: '100%', width: '100%'}}>
-          { Util.childrenWithProps(this.props.children, this.props) }
-          <DefaultRoute {...this.props} />
+          <Switch>
+            { kids }
+            <DefaultRoute {...this.props} />
+          </Switch>
         </div>
       </Router>
     );

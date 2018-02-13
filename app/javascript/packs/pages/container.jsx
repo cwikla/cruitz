@@ -133,6 +133,10 @@ class Container extends Component {
     return this.props.subItemId;
   }
 
+  getSearchParams() {
+    return this.props.searchParams;
+  }
+
   getPageComponent() {
     let page = this.getPage().toLowerCase();
     let result = this.pageToComponent(page);
@@ -204,6 +208,7 @@ class Container extends Component {
       itemId: this.getItemId(),
       subPage: this.getSubPage(),
       subItemId: this.getSubItemId(),
+      searchParams: this.getSearchParams(),
       
       showing: true,
       url: PageURL(page),

@@ -172,7 +172,7 @@ class URLObj {
     //console.log(this);
     //console.log(this.toPath());
 
-    return this.toPath();
+    return this.toPath() + this.parser.search.toString();
 
     //return (this.parser.pathname.toString() + this.parser.search.toString());
   }

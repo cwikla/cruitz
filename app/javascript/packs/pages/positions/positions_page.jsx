@@ -140,13 +140,18 @@ class PositionItem extends Component {
     let title = position.title || company.name || "No Title";
     let description = position.description || "No Description";
     let category = position.category ? position.category.name : "Other";
-    let url = logo ? logo.url : "";
+    let logo_url = logo ? logo.url : "";
     let companyName = company ? company.name : "Anonymous";
+
+    let url = Pyr.URL(POSITIONS_URL).push(position.id).push("submit").set("name", "1");
+    console.log("URL");
+    console.log(url);
+    console.log(url.searchParams.toString());
 
     return (
       <div className="header flx-row flx-1">
         <div className="flx-col">
-          <img src={url} className="logo"/>
+          <img src={logo_url} className="logo"/>
         </div>
 
         <div className="flx-col flx-1">
@@ -162,7 +167,7 @@ class PositionItem extends Component {
           </div>
 
           <div className="flx-row mt-auto">
-            <div className="ml-auto"><Link to={"/positions/" + position.id + "/submit"}><Pyr.UI.PrimaryButton className="ml-auto" name="add">Submit Candidate</Pyr.UI.PrimaryButton></Link></div>
+            <div className="ml-auto"><Pyr.UI.PrimaryButton className="ml-auto" name="add" onClick={this.props.onShowCandidates} >Submit Candidate</Pyr.UI.PrimaryButton></div>
           </div>
         </div>
       </div>
@@ -195,6 +200,8 @@ class PositionItem extends Component {
     if (this.props.selected) {
        allClass.push("selected");
     }
+
+    allClass.push(this.props.className);
 
     return (
       <div className={allClass}>
@@ -374,6 +381,7 @@ class SubmitSheet extends Sheet.ShowFull {
   }
 
   renderItem(position, isSelected) {
+    console.log("SUBMIT: renderItem");
     return (
         <PositionItem 
           position={position} 
@@ -384,18 +392,69 @@ class SubmitSheet extends Sheet.ShowFull {
 }
 
 class ShowSheet extends Sheet.ShowFull {
+  constructor(props) {
+    super(props);
+    this.initState({
+      showCandidates: false
+    });
+
+    this.onShowCandidates = this.showCandidates.bind(this);
+  }
+
+  showCandidates(state=true) {
+    this.setState({
+      showCandidates: state
+    });
+  }
+
   key(position) {
     return PositionsPage.key(position);
   }
 
   renderItem(position, isSelected) {
     return (
+      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll">
         <PositionItem 
           position={position} 
           selected={isSelected}
+          onShowCandidates={this.onShowCandidates}
         />
+      </Pyr.UI.Scroll>
     );
   }
+
+  renderCandidates() {
+    if (!this.state.showCandidates) {
+      return null;
+    }
+
+    return (
+      <Pyr.UI.Scroll className="flx-col flx-1 imascroll">
+        <div>Helloooooo</div>
+      </Pyr.UI.Scroll>
+    );
+  }
+
+  renderInner() {
+    console.log("RENDER INNER");
+    console.log(this.props);
+    if (!this.props.selected) {
+      return (
+          <Pyr.UI.Loading />
+      );
+    }
+
+    // hmm was just a div
+    return (
+      <div className="flx-col flx-1">
+        <div className="flx-row flx-1">
+          {this.renderItem(this.props.selected, false) }
+          { this.renderCandidates() }
+        </div>
+      </div>
+    );
+  }
+
 }
 
 class PositionsPage extends Page {
@@ -403,18 +462,29 @@ class PositionsPage extends Page {
     return "Position";
   }
 
+  loadSelected(itemId, onLoading) {
+    this.getJSON({
+      url: Pyr.URL(this.props.url).push(itemId),
+      onLoading: onLoading
+
+    }).done((data, textStatus, jqXHR) => {
+      console.log("GOT POSITION");
+      console.log(data);
+
+      this.onSelect(data.position);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
   loadItems(onLoading, props={}) {
-    console.log("props");
-    console.log(props);
 
     let urlStuff = Object.assign({}, {
       url: this.props.url,
       context: this,
       onLoading: this.onLoading,
     }, props);
-
-    console.log("STUFF");
-    console.log(urlStuff);
 
     this.getJSON(
       urlStuff
@@ -443,11 +513,9 @@ class PositionsPage extends Page {
   }
 
   actionSheet(action) {
-    console.log("ACTION SHEET " + action);
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    console.log(ActionSheet);
 
 
         //onAction={this.onAction}
@@ -458,6 +526,7 @@ class PositionsPage extends Page {
         selected={this.getSelected()}
         onLoading={this.onLoading}
         onSetItems={this.onSetItems}
+        onLoadSelected={this.onLoadSelected}
       />
     );
   }

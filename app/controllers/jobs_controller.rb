@@ -22,6 +22,11 @@ class JobsController < ApplicationController
     render json: all, company: true
   end
 
+  def position
+    pid = position_params
+    render json: Job.find_safe(pid), root: :position, company: true
+  end
+
   def candidate_counts
     render json: current_user.candidate_counts
   end
@@ -140,6 +145,10 @@ class JobsController < ApplicationController
     puts locations.inspect
 
     job.locations = locations
+  end
+
+  def position_params
+    params.require(:id)
   end
 
   def job_params

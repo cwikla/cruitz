@@ -285,9 +285,10 @@ class CompaniesPage extends Page {
     return EDIT_ACTION;
   }
 
-  loadSelected() {
+  loadSelected(unused, onLoading) {
     this.getJSON({
-      url: COMPANY_URL
+      url: COMPANY_URL,
+      onLoading: onLoading
   
     }).done((data, textStatus, jqXHR) => {
       console.log("GOT COMPANY");

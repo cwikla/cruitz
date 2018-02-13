@@ -5,6 +5,7 @@ import {
 } from 'react-dom';
 
 import {
+  Route,
   Link,
   Redirect,
   BrowserRouter as Router,
@@ -35,7 +36,6 @@ const HolderPage = (props) => (
 
 const PAGE_MAP = {
   "home" : HolderPage,
-  "submit": PositionsPage,
   [POSITIONS_PAGE.toLowerCase()]: PositionsPage,
 };
 
@@ -51,9 +51,6 @@ class MarketPlace extends Container {
   }
 
   pageToComponent(page) {
-    console.log("PAGE TO COMPONENT");
-    console.log(page);
-
     return super.pageToComponent(page) || PAGE_MAP[page];
   }
 
@@ -69,10 +66,21 @@ class MarketPlace extends Container {
 
 }
 
+class Hello extends Component {
+  render() {
+    return (
+      <div>HELLLO</div>
+    );
+  }
+}
+
+
+        //<Pyr.UI.RouteURL path="/positions/:pid/submit" page="positions" action="show" searchParams={{submit: 1}} />
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_URL} />
+      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_URL}  >
+      </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 
