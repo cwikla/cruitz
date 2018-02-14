@@ -149,7 +149,7 @@ class PositionItem extends Component {
     console.log(url.searchParams.toString());
 
     return (
-      <div className="header flx-row flx-1">
+      <div className="header flx-row">
         <div className="flx-col">
           <img src={logo_url} className="logo"/>
         </div>
@@ -185,7 +185,7 @@ class PositionItem extends Component {
 
     let count = 0;
     return (
-      <div className="description flx-col">
+      <div className="scroll description flx-col flx-1">
         { Pyr.Util.fancyParagraph(description) }
       </div>
     );
@@ -413,7 +413,7 @@ class ShowSheet extends Sheet.ShowFull {
 
   renderItem(position, isSelected) {
     return (
-      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll">
+      <Pyr.UI.Scroll className="flx-col flx-1">
         <PositionItem 
           position={position} 
           selected={isSelected}
@@ -435,7 +435,7 @@ class ShowSheet extends Sheet.ShowFull {
     );
   }
 
-  renderInner() {
+  unused_renderInner() {
     console.log("RENDER INNER");
     console.log(this.props);
     if (!this.props.selected) {
@@ -446,12 +446,9 @@ class ShowSheet extends Sheet.ShowFull {
 
     // hmm was just a div
     return (
-      <div className="flx-col flx-1">
-        <div className="flx-row flx-1">
+      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll2">
           {this.renderItem(this.props.selected, false) }
-          { this.renderCandidates() }
-        </div>
-      </div>
+      </Pyr.UI.Scroll>
     );
   }
 

@@ -357,9 +357,15 @@ class Show extends Base {
       );
     }
 
+    //return (
+     // <div className="flx-col flx-1 orange p-5">
+      //  { this.renderItem(this.props.selected, false) }
+      //</div>
+    //);
+
     // hmm was just a div
     return (
-      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll"> 
+      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll orange p-5"> 
         {this.renderItem(this.props.selected, false) }
       </Pyr.UI.Scroll>
     );
