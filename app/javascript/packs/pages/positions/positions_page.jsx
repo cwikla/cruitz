@@ -112,6 +112,18 @@ class PositionItem extends Component {
     super(props);
   }
 
+  renderSubmitButton() {
+    if (!this.props.showSubmitButton) {
+      return null;
+    }
+
+    return (
+      <div className="flx-row mt-auto">
+        <div className="ml-auto"><Pyr.UI.PrimaryButton className="ml-auto" name="add" onClick={this.props.onShowCandidates} >Submit Candidate</Pyr.UI.PrimaryButton></div>
+      </div>
+    );
+  }
+
   renderHeader() {
     let position = this.props.position;
     if (!position) {
@@ -166,9 +178,7 @@ class PositionItem extends Component {
             <div className="salary-range">$120,000 - $160,000</div>
           </div>
 
-          <div className="flx-row mt-auto">
-            <div className="ml-auto"><Pyr.UI.PrimaryButton className="ml-auto" name="add" onClick={this.props.onShowCandidates} >Submit Candidate</Pyr.UI.PrimaryButton></div>
-          </div>
+          { this.renderSubmitButton() }
         </div>
       </div>
     );
@@ -185,8 +195,10 @@ class PositionItem extends Component {
 
     let count = 0;
     return (
-      <div className="scroll description flx-col flx-1">
-        { Pyr.Util.fancyParagraph(description) }
+      <div className="description flx-1 flx-col">
+        <Pyr.UI.Scroll>
+          { Pyr.Util.fancyParagraph(description) }
+        </Pyr.UI.Scroll>
       </div>
     );
   }
@@ -205,8 +217,12 @@ class PositionItem extends Component {
 
     return (
       <div className={allClass}>
-        { this.renderHeader() }
-        { this.renderContent() }
+        <div className="flx-row flx-1">
+          <div className="flx-col flx-1">
+            { this.renderHeader() }
+            { this.renderContent() }
+          </div>
+        </div>
       </div>
     );
   }
@@ -413,13 +429,12 @@ class ShowSheet extends Sheet.ShowFull {
 
   renderItem(position, isSelected) {
     return (
-      <Pyr.UI.Scroll className="flx-col flx-1">
-        <PositionItem 
-          position={position} 
-          selected={isSelected}
-          onShowCandidates={this.onShowCandidates}
-        />
-      </Pyr.UI.Scroll>
+      <PositionItem 
+        position={position} 
+        selected={isSelected}
+        onShowCandidates={this.onShowCandidates}
+        showSubmitButton={!this.state.showCandidates}
+      />
     );
   }
 
@@ -429,13 +444,15 @@ class ShowSheet extends Sheet.ShowFull {
     }
 
     return (
-      <Pyr.UI.Scroll className="flx-col flx-1 imascroll">
-        <div>Helloooooo</div>
-      </Pyr.UI.Scroll>
+      <div className="candidates flx-1 flx-col">
+        <Pyr.UI.Scroll className="candidates border">
+          <div>Helloooooo</div>
+        </Pyr.UI.Scroll>
+      </div>
     );
   }
 
-  unused_renderInner() {
+  renderInner() {
     console.log("RENDER INNER");
     console.log(this.props);
     if (!this.props.selected) {
@@ -446,9 +463,14 @@ class ShowSheet extends Sheet.ShowFull {
 
     // hmm was just a div
     return (
-      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll2">
-          {this.renderItem(this.props.selected, false) }
-      </Pyr.UI.Scroll>
+      <div className="inner flx-col flx-1">
+        <div className="flx-row flx-1">
+          <div className="flx-col flx-1 border">
+            {this.renderItem(this.props.selected, false) }
+          </div>
+          { this.renderCandidates() }
+        </div>
+      </div>
     );
   }
 

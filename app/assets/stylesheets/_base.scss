@@ -40,8 +40,6 @@ label {
 
 .sheet {
   .scroll {
-    background-color: white;
-    border: solid $border_color 1px;
   }
 }
 
@@ -438,6 +436,10 @@ label {
   text-transform: capitalize;
 }
 
+.border {
+  border: 1px solid $border_color;
+}
+
 .sheet .header {
   b-border-bottom: 1px solid rgba($light_gray_color, 0.4);
 }
@@ -447,10 +449,27 @@ h3.title {
 }
 
 .pyr-fullscreen {
-  .content-unused {
-    padding-top: 3rem;
-    padding-left: 8rem;
-    padding-right: 8rem;
+  .title {
+    color: $primary_color;
+    padding-bottom: 1rem;
+  }
+
+  .form {
+    padding: 5rem;
+  }
+
+  .content {
+    .form, .inner {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      padding-left: 4rem;
+      padding-right: 5rem;
+
+      .inner {
+        border: 1px solid $border_color;
+      }
+    }
+
   }
 
   .section {

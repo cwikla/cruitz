@@ -203,7 +203,7 @@ class EditSheet extends Sheet.Edit {
     this.goBack();
   }
 
-  renderTitle() {
+  unused_renderTitle() {
     return (
       <h3 className="mr-auto title flx-row"><span className="mt-auto mb-auto mr-auto">{this.title()}</span> {this.renderButton()}</h3>
     );

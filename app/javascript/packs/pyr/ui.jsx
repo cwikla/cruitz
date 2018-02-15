@@ -921,7 +921,7 @@ class FullScreen extends BaseComponent {
       >
         { this.renderNavBar() }
         { this.renderHeader() }
-        <div className="content">
+        <div className="content flx-col flx-1">
           {this.props.children}
         </div>
       </div>

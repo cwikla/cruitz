@@ -183,7 +183,10 @@ class Form extends Base {
 
   renderTitle() {
     return (
-      <h3 className="mr-auto title flx-row"><span className="mt-auto mb-auto mr-auto">{this.title()}</span> {this.renderButton()}</h3>
+      <div className="flx-row title">
+        <h3 className="mr-auto mb-auto mt-auto flx-row">{this.title()}</h3>
+        <div className="ml-auto">{this.renderButton()}</div>
+      </div>
     );
   }
 
@@ -191,12 +194,12 @@ class Form extends Base {
   render() {
     return (
       <FSWL>
-        <div className="flx-0" >
+        <Pyr.UI.Scroll className="form">
           { this.renderTitle() }
-        </div>
-        <div className="form-content flx-1 mt-auto">
-          { this.renderForm() }
-        </div>
+            <div className="form-content mb-auto">
+              { this.renderForm() }
+            </div>
+        </Pyr.UI.Scroll>
       </FSWL>
     );
   }
@@ -357,18 +360,18 @@ class Show extends Base {
       );
     }
 
-    //return (
-     // <div className="flx-col flx-1 orange p-5">
-      //  { this.renderItem(this.props.selected, false) }
-      //</div>
-    //);
+    return (
+      <div className="inner flx-col flx-1">
+        { this.renderItem(this.props.selected, false) }
+      </div>
+    );
 
     // hmm was just a div
-    return (
-      <Pyr.UI.Scroll className="inner flx-col flx-1 imascroll orange p-5"> 
-        {this.renderItem(this.props.selected, false) }
-      </Pyr.UI.Scroll>
-    );
+    //return (
+      //<Pyr.UI.Scroll className="inner flx-col flx-1">
+        //{this.renderItem(this.props.selected, false) }
+      //</Pyr.UI.Scroll>
+    //);
   }
 
 
