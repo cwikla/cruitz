@@ -153,4 +153,20 @@
       }
     }
   }
+
+  .heads {
+    margin-left: 1rem;
+
+    .inner {
+      padding: 1rem;
+    }
+
+    .head {
+      border: 1px solid $border_color;
+
+      padding: 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
 }

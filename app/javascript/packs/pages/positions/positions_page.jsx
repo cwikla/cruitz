@@ -30,6 +30,7 @@ import {
   COMPANY_URL,
   SKILLS_URL,
   COMPANIES_URL,
+  HEADS_URL,
 
   NEW_ACTION,
   SHOW_ACTION
@@ -48,6 +49,90 @@ const RANGES = {
   9 : '6 month',
   10 : 'All Time'
 };
+
+class HeadItem extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    let head = this.props.head;
+
+    let full_name = head.full_name;
+    let email = head.email;
+    let phone_number = head.phone_number;
+
+    let key = "head-" + head.id;
+
+    return (
+      <div className="head flx-col flx-1" key={key}>
+        <div className="full_name flx-1">{ full_name }</div>
+        <div className="phone_number flx-1">{ phone_number }</div>
+        <div className="email">{ email }</div>
+      </div>
+    );
+  }
+}
+
+class HeadSheet extends Sheet.Index {
+  key(item) {
+    return item.id;
+  }
+
+  constructor(props) {
+    super(props);
+    this.initState({
+      heads : null
+    });
+
+    this.onLoadItems = this.loadItems.bind(this);
+    this.onSetHeads = this.setHeads.bind(this);
+  }
+
+  items() {
+    return this.state.heads;
+  }
+
+  setHeads(heads) {
+    console.log("HEADS");
+    console.log(heads);
+
+    this.setState({
+      heads
+    });
+  }
+
+  loadItems(onLoading) {
+
+    this.getJSON({
+      url: HEADS_URL,
+      context: this,
+      onLoading: onLoading,
+
+    }).done((data, textStatus, jqXHR) => {
+        this.onSetHeads(data.heads || []);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    if (!this.state.heads) {
+      this.onLoadItems(this.onLoading);
+    }
+  }
+
+  renderItem(item) {
+    return (
+      <HeadItem head={item} />
+    );
+  }
+
+  render() {
+    return this.renderInner();
+  }
+}
 
 class CategorySheet extends Sheet.Index {
   key(position) {
@@ -444,10 +529,8 @@ class ShowSheet extends Sheet.ShowFull {
     }
 
     return (
-      <div className="candidates flx-1 flx-col">
-        <Pyr.UI.Scroll className="candidates border">
-          <div>Helloooooo</div>
-        </Pyr.UI.Scroll>
+      <div className="heads flx-1 flx-col">
+          <HeadSheet />
       </div>
     );
   }

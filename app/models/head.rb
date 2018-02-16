@@ -1,11 +1,15 @@
 class Head < ApplicationRecord
   belongs_to :recruiter, :class_name => "User", foreign_key: :user_id
-  has_many :applications, :class_name => "Candidate"
+  has_many :candidates
 
   cache_notify :user
 
   def self.after_cached_candidate(candidate)
     h = Head.new(:id => candidate.head_id)
+  end
+
+  def full_name
+    return "#{first_name} #{last_name}"
   end
 
   def to_s
