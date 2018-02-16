@@ -53,6 +53,14 @@ const RANGES = {
 class HeadItem extends Component {
   constructor(props) {
     super(props);
+
+    this.onSetMe = this.setMe.bind(this);
+  }
+
+  setMe() {
+    if (this.props.onSetSelected) {
+      this.props.onSetSelected(this.props.head);
+    }
   }
 
   render() {
@@ -60,19 +68,43 @@ class HeadItem extends Component {
 
     let full_name = head.full_name;
     let email = head.email;
+    let title = "Sr. Programmer";
+    let company = "Google";
+
     let phone_number = head.phone_number;
 
     let key = "head-" + head.id;
 
     return (
-      <div className="head flx-col flx-1" key={key}>
+      <div 
+        className="head flx-col flx-1" 
+        key={key}
+        onClick={this.onSetMe}
+      >
         <div className="full_name flx-1">{ full_name }</div>
+        <div className="current_title flx-1">{ title }</div>
+        <div className="company flx-1">{ company }</div>
         <div className="phone_number flx-1">{ phone_number }</div>
         <div className="email">{ email }</div>
       </div>
     );
   }
 }
+
+class HeadModal extends Pyr.UI.Modal {
+  constructor(props) {
+    super(props);
+  }
+
+  renderInner() {
+    return (
+      <div className="flx-col flx-1">
+        <HeadItem head={this.props.head} />
+      </div>
+    );
+  }
+}
+
 
 class HeadSheet extends Sheet.Index {
   key(item) {
@@ -82,15 +114,33 @@ class HeadSheet extends Sheet.Index {
   constructor(props) {
     super(props);
     this.initState({
-      heads : null
+      heads : null,
+      selected: null
     });
 
     this.onLoadItems = this.loadItems.bind(this);
     this.onSetHeads = this.setHeads.bind(this);
+    this.onSetSelected = this.setSelected.bind(this);
   }
 
   items() {
     return this.state.heads;
+  }
+
+  setSelected(selected) {
+    console.log("SET SELECTED");
+    console.log(selected);
+
+    this.setState({
+      selected
+    });
+    if (selected) {
+      this.modal.open();
+    }
+    else
+    {
+      this.modal.close();
+    }
   }
 
   setHeads(heads) {
@@ -123,14 +173,53 @@ class HeadSheet extends Sheet.Index {
     }
   }
 
+  renderChild(item, isSelected) {
+    let url = this.childURL(item, isSelected);
+
+    return (
+      <li
+        key={this.key(item)}
+      >{this.renderItem(item, isSelected)}</li>
+    );
+  }
+
+
   renderItem(item) {
     return (
-      <HeadItem head={item} />
+      <HeadItem 
+        head={item} 
+        onSetSelected={this.onSetSelected}
+      />
+    );
+  }
+
+  renderInner() {
+    if (!this.items()) {
+      return this.renderLoading();
+    }
+
+    if (this.items().length == 0) {
+      return this.renderNone();
+    }
+
+    return (
+      <div className="flx-col flx-1">
+        <div className="flx-row ml-auto"><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Candidate</Pyr.UI.PrimaryButton></div>
+        { super.renderInner() }
+      </div>
     );
   }
 
   render() {
-    return this.renderInner();
+    return (
+      <div className="flx-col flx-1">
+        { this.renderInner() }
+        <HeadModal 
+          head={this.state.selected} 
+          ref={node => this.modal = node}
+        />
+      </div>
+    );
   }
 }
 
@@ -523,21 +612,24 @@ class ShowSheet extends Sheet.ShowFull {
     );
   }
 
-  renderCandidates() {
+  renderChooser() {
     if (!this.state.showCandidates) {
       return null;
     }
 
     return (
-      <div className="heads flx-1 flx-col">
+      <div className="chooser flx-row flx-1">
+        <div className="candidates flx-5 flx-col">
           <HeadSheet />
+        </div>
+        <div className="heads flx-7 flx-col">
+          <HeadSheet />
+        </div>
       </div>
     );
   }
 
   renderInner() {
-    console.log("RENDER INNER");
-    console.log(this.props);
     if (!this.props.selected) {
       return (
           <Pyr.UI.Loading />
@@ -547,12 +639,12 @@ class ShowSheet extends Sheet.ShowFull {
     // hmm was just a div
     return (
       <div className="inner flx-col flx-1">
-        <div className="flx-row flx-1">
-          <div className="flx-col flx-1 border">
+        <div className="flx-row flx-1 border">
+          <div className="flx-col flx-1">
             {this.renderItem(this.props.selected, false) }
           </div>
-          { this.renderCandidates() }
         </div>
+        { this.renderChooser() }
       </div>
     );
   }
