@@ -24,7 +24,6 @@ import SettingsPage from './settings/settings_page';
 import MePage from './me/me_page';
 import RegistrationsPage from './registration/registrations_page';
 import CompaniesPage from './companies/companies_page';
-import HeadsPage from './heads/heads_page';
 
 import Logo from './shared/logo';
 
@@ -70,7 +69,6 @@ const PAGE_MAP = {
   [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,
   [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
   [MESSAGES_PAGE.toLowerCase()]: MessagesPage,
-  [HEADS_PAGE.toLowerCase()] : HeadsPage,
 };
 
 

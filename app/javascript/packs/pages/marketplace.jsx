@@ -18,7 +18,10 @@ import Pyr, {
 
 import {
   POSITIONS_PAGE,
+  HEADS_PAGE,
+
   POSITIONS_URL,
+  HEADS_URL,
 
   ME_URL,
 } from './const';
@@ -27,6 +30,7 @@ import Container from './container';
 
 import PositionsPage from './positions/positions_page';
 import MessagesPage from './messages/messages_page';
+import HeadsPage from './heads/heads_page';
 
 const DEFAULT_PAGE = POSITIONS_PAGE;
 
@@ -37,6 +41,7 @@ const HolderPage = (props) => (
 const PAGE_MAP = {
   "home" : HolderPage,
   [POSITIONS_PAGE.toLowerCase()]: PositionsPage,
+  [HEADS_PAGE.toLowerCase()]: HeadsPage,
 };
 
 class MarketPlace extends Container {
