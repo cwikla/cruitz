@@ -24,6 +24,8 @@ import SettingsPage from './settings/settings_page';
 import MePage from './me/me_page';
 import RegistrationsPage from './registration/registrations_page';
 import CompaniesPage from './companies/companies_page';
+import HeadsPage from './heads/heads_page';
+
 import Logo from './shared/logo';
 
 const DashboardPage = (props) => (
@@ -39,6 +41,7 @@ import {
   SEARCH_PAGE,
   ME_PAGE,
   COMPANIES_PAGE,
+  HEADS_PAGE,
 
   HOME_URL,
   JOBS_URL,
@@ -47,6 +50,7 @@ import {
   SETTINGS_URL,
   MESSAGES_URL,
   COMPANIES_URL,
+  HEADS_URL,
   ME_URL,
 
   SEARCH_URL,
@@ -66,6 +70,7 @@ const PAGE_MAP = {
   [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,
   [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
   [MESSAGES_PAGE.toLowerCase()]: MessagesPage,
+  [HEADS_PAGE.toLowerCase()] : HeadsPage,
 };
 
 

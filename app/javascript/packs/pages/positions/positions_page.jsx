@@ -202,9 +202,13 @@ class HeadSheet extends Sheet.Index {
       return this.renderNone();
     }
 
+    let url = Pyr.URL(HEADS_URL).push("new");
+    console.log("URL");
+    console.log(url);
+
     return (
       <div className="flx-col flx-1">
-        <div className="flx-row ml-auto"><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Candidate</Pyr.UI.PrimaryButton></div>
+        <div className="flx-row ml-auto"><Link to={url.toString()}><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Candidate</Pyr.UI.PrimaryButton></Link></div>
         { super.renderInner() }
       </div>
     );
