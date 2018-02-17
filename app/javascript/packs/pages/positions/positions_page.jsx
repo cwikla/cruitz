@@ -86,6 +86,7 @@ class HeadItem extends Component {
         <div className="company flx-1">{ company }</div>
         <div className="phone_number flx-1">{ phone_number }</div>
         <div className="email">{ email }</div>
+        <Pyr.UI.PrimaryButton>Submit Me</Pyr.UI.PrimaryButton>
       </div>
     );
   }
@@ -183,6 +184,9 @@ class HeadSheet extends Sheet.Index {
     );
   }
 
+  renderChildren(items, isSelected) {
+    return super.renderChildren(items, isSelected, {className: "heads flx flx-row flx-wrap"})
+  }
 
   renderItem(item) {
     return (
@@ -202,14 +206,47 @@ class HeadSheet extends Sheet.Index {
       return this.renderNone();
     }
 
+    let leftClasses = "flx-1 flx-col";
+    let rightClasses = "flx-3 flx-col";
+
+    let url = Pyr.URL(HEADS_URL).push("new");
+
+    return (
+      <div className="chooser flx-row">
+        <div className={leftClasses}>
+          <PositionsPage.SearchForm
+            onSetItems={this.props.onSetItems}
+            onPreSubmit={this.props.onPreSubmit}
+            onPostSubmit={this.props.onPostSubmit}
+            onError={this.props.onError}
+          />
+        </div>
+        <div className={rightClasses}>
+          { super.renderInner() }
+          <div className="flx-row ml-auto"><Link to={url.toString()}><Pyr.UI.IconButton name="plus"> Add Candidate</Pyr.UI.IconButton></Link></div>
+        </div>
+      </div>
+    );
+  }
+
+
+  unused_renderInner() {
+    if (!this.items()) {
+      return this.renderLoading();
+    }
+
+    if (this.items().length == 0) {
+      return this.renderNone();
+    }
+
     let url = Pyr.URL(HEADS_URL).push("new");
     console.log("URL");
     console.log(url);
 
     return (
       <div className="flx-col flx-1">
-        <div className="flx-row ml-auto"><Link to={url.toString()}><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Candidate</Pyr.UI.PrimaryButton></Link></div>
         { super.renderInner() }
+        <div className="flx-row ml-auto"><Link to={url.toString()}><Pyr.UI.IconButton name="plus"> Add Candidate</Pyr.UI.IconButton></Link></div>
       </div>
     );
   }
@@ -589,7 +626,7 @@ class ShowSheet extends Sheet.ShowFull {
   constructor(props) {
     super(props);
     this.initState({
-      showCandidates: false
+      showCandidates: true
     });
 
     this.onShowCandidates = this.showCandidates.bind(this);
@@ -622,11 +659,8 @@ class ShowSheet extends Sheet.ShowFull {
     }
 
     return (
-      <div className="chooser flx-row flx-1">
-        <div className="candidates flx-5 flx-col">
-          <HeadSheet />
-        </div>
-        <div className="heads flx-7 flx-col">
+      <div className="flx-row flx-5">
+        <div className="flx-col flx-1">
           <HeadSheet />
         </div>
       </div>
@@ -643,9 +677,14 @@ class ShowSheet extends Sheet.ShowFull {
     // hmm was just a div
     return (
       <div className="inner flx-col flx-1">
-        <div className="flx-row flx-1 border">
-          <div className="flx-col flx-1">
-            {this.renderItem(this.props.selected, false) }
+        <div className="flx-row flx-4">
+          <div className="flx-col flx-6 border">
+            <div className="flx-col flx-1">
+              {this.renderItem(this.props.selected, false) }
+            </div>
+          </div>
+          <div className="submitted flx-col flx-1 border white">
+            Cool stuff goes here.
           </div>
         </div>
         { this.renderChooser() }

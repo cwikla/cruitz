@@ -330,7 +330,7 @@ class Index extends Base {
     let items = this.items();
 
     return (
-      <Pyr.UI.Scroll {...Pyr.Util.propsMergeClassName(props, "inner flx-col flx-1")}>
+      <Pyr.UI.Scroll {...Pyr.Util.propsMergeClassName(props, "inner")}>
         { this.renderChildren(items, this.props.selected) }
       </Pyr.UI.Scroll>
     );

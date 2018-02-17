@@ -1,11 +1,27 @@
 .positions {
   .show {
     .sheet {
+      background-color: $light_gray_color;
       .candidates {
         padding-left: 2rem;
       }
 
+      .inner {
+        border: 0;
+      }
+
+      .scroll.inner {
+        margin-left: 1rem;
+        border: solid $border_color 1px;
+        padding: 0;
+      }
+
+      .submitted {
+        margin-left: 1rem;
+      }
+
       .position {
+        background-color: white;
 
         .description {
           padding: 2rem;
@@ -14,7 +30,7 @@
 
         .header {
           border-bottom: solid $border_color 1px;
-
+          
           & > div {
             padding: 1rem;
           }
@@ -52,7 +68,18 @@
       .chooser {
         margin-top: 1rem;
 
-        .heads, .candidates {
+        .position-search {
+          padding: 1rem;
+          background-color: white;
+          border: solid $border_color 1px;
+        }
+
+        .heads {
+          background-color: $light_gray_color;
+          margin-left: 1rem;
+        }
+
+        .candidates {
           border: solid $border_color 1px;
           margin-left: 1rem;
           background-color: $light_gray_color;
@@ -70,15 +97,19 @@
         .head {
           border: 1px solid $border_color;
           background-color: white;
+          border-radius: 5px;
 
           padding: 1rem;
-          margin-top: 0.5rem;
-          margin-bottom: 0.5rem;
-        }
+          margin: 0.5rem;
 
-        .inner {
-          border: 0;
-          padding: 0.5rem;
+          &:hover {
+            box-shadow: 2px 2px 5px 0px $gray_color;
+  
+            .more {
+              color: $secondary_color;
+            }
+          }
+
         }
 
       }
