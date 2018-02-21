@@ -18,6 +18,21 @@ class PositionsController < ApplicationController
     render json: all, company: true
   end
 
+  def create
+    cp = create_params
+
+    job = Job.find(cp[:job])
+    head = current_user.heads.find(cp[:head])
+
+    @candidate = Candidate.new(job: job, head: head)
+
+    if @candidate.save
+      return render json: @candidate
+    else
+      return render_create_error json: @candidate
+    end
+  end
+
   def candidates
     pid = position_params
     @candies = current_user.submitted_candidates.where(job_id: pid)
@@ -27,6 +42,12 @@ class PositionsController < ApplicationController
   def show
     pid = position_params
     render json: Job.find_safe(pid), root: :position, company: true
+  end
+
+  private
+
+  def create_params
+    params.require(:position).require(:job, :head)
   end
 
   def position_params

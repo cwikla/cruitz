@@ -196,13 +196,13 @@ class DefaultRoute extends BaseComponent {
     };
    
     if (!sendProps.page && dashboard) {
-      let dest = Util.URL(dashboard);
+      let dest = Util.URL(dashboard).toString().toLowerCase();
       //console.log("************ REDIRECT TO");
       //console.log(dest);
       //console.log(dest.toString());
       //console.log("+++++++++++");
       return (
-        <Redirect to={Util.URL(dashboard).toString()}/>
+        <Redirect to={dest} />
       );
     }
      

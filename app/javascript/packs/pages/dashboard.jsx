@@ -446,7 +446,7 @@ class Dashboard extends Container {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_URL}/>
+      <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}/>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 

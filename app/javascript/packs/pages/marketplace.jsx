@@ -84,7 +84,7 @@ class Hello extends Component {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_URL}  >
+      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_PAGE}  >
       </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,

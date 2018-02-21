@@ -7,11 +7,13 @@ import Pyr, {
 } from '../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+import ItemLoader from './item_loader';
+
 import {
   SHOW_ACTION
 } from './const';
 
-class Page extends Component {
+class Page extends ItemLoader {
   constructor(...args) {
     super(...args);
 
@@ -19,34 +21,11 @@ class Page extends Component {
     //console.log(props);
 
     this.initState({
-      items: null,
-      selected: null,
       fullDetail: false,
     });
 
     let jobs = this.props.jobs || [];
     this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
-
-    this.onSelect = this.setSelected.bind(this);
-    this.onUnselect = this.setSelected.bind(this, null);
-
-    this.onSetItems = this.setItems.bind(this);
-    this.onNoItems = this.setItems.bind(this, null);
-
-    this.onLoadItems = this.loadItems.bind(this);
-    this.onAddItem = this.addItem.bind(this);
-
-    this.onLoadSelected = this.loadSelected.bind(this);
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.itemId != this.props.itemId) {
-      //console.log("PAGE GOT NEW ID: " + nextProps.itemId);
-      this.setState({
-        selected: null
-      });
-    }
   }
 
   name() {
@@ -66,64 +45,6 @@ class Page extends Component {
       fullUrl.push(item.id);
     }
     this.context.router.history.push(fullUrl.toString());
-  }
-
-  addItemCompare(a, b) {
-    return a.id == b.id;
-  }
-
-  addItem(item) {
-    //console.log("ITEM: " + item);
-    //console.log(this.state.items);
-
-    if (!item) {
-      return;
-    }
-
-    let items = this.state.items || [];
-    let found = false;
-
-    let copy = items.map((val, pos) => {
-      if (this.addItemCompare(val, item)) {
-        found = true;
-        return item;
-      }
-      return val;
-    });
-
-    //console.log(copy);
-    //console.log("ITEM FOUND: " + found);
-
-    if (!found) {
-      copy.push(item);
-    }
-    this.setItems(copy);
-  }
-
-  sortItems(items) {
-    //console.log("SORTING ITEMS");
-    return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
-  }
-
-
-  setItems(items) {
-    console.log("SET ITEMS");
-    console.log(items);
-    if (items) {
-      items = this.sortItems(items);
-    }
-
-    this.setState({ 
-      items
-    });
-  }
-
-  loadItems(onLoading) {
-    alert("Page:loadItems needs to be implemented");
-  }
-
-  loadSelected(hid) {
-    alert("Page:loadSelected needs to be implemented");
   }
 
 ////// COPY ME INTO SUBCLASS //////
@@ -174,39 +95,6 @@ class Page extends Component {
   }
 
 ///// END ////
-
-  setSelected(selected) {
-    //console.log("SELECTED " + JSON.stringify(selected));
-
-    this.setState({
-      selected
-    });
-  }
-
-  getItemId() {
-    return this.props.itemId;
-  }
-
-  getItems() {
-    return this.state.items;
-  }
-
-  getSelected() {
-    if (this.state.selected) {
-      return this.state.selected;
-    }
-
-    let sid = this.getItemId();
-    return this.getItem(sid);
-  }
-
-  getItem(sid) {
-    let items = this.getItems();
-    if (sid && items) {
-      return items.find((x) => x.id == sid);
-    }
-    return null;
-  }
 
   defaultAction() {
     return SHOW_ACTION;
