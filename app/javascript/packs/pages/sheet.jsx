@@ -318,6 +318,20 @@ class Index extends Base {
      );
    }
 
+  renderInnerNoScroll() {
+    if (!this.items()) {
+      return this.renderLoading();
+    }
+
+    if (this.items().length == 0) {
+      return this.renderNone();
+    }
+
+    let items = this.items();
+
+    return this.renderChildren(items, this.props.selected);
+  }
+
   renderInner(props={}) {
     if (!this.items()) {
       return this.renderLoading();
@@ -331,7 +345,7 @@ class Index extends Base {
 
     return (
       <Pyr.UI.Scroll {...Pyr.Util.propsMergeClassName(props, "inner")}>
-        { this.renderChildren(items, this.props.selected) }
+        { this.renderInnerNoScroll() }
       </Pyr.UI.Scroll>
     );
   }

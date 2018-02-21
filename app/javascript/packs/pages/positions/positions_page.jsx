@@ -50,6 +50,16 @@ const RANGES = {
   10 : 'All Time'
 };
 
+class HeadPlaceholderItem extends Component {
+  render() {
+    return (
+      <div className="placeholder border flx-col">
+        <Pyr.UI.Icon name="plus" className="fa-align-center"/>
+      </div>
+    );
+  }
+}
+
 class HeadItem extends Component {
   constructor(props) {
     super(props);
@@ -81,12 +91,12 @@ class HeadItem extends Component {
         key={key}
         onClick={this.onSetMe}
       >
-        <div className="full_name flx-1">{ full_name }</div>
-        <div className="current_title flx-1">{ title }</div>
-        <div className="company flx-1">{ company }</div>
-        <div className="phone_number flx-1">{ phone_number }</div>
+        <div className="full_name">{ full_name }</div>
+        <div className="current_title">{ title }</div>
+        <div className="company">{ company }</div>
+        <div className="phone_number">{ phone_number }</div>
         <div className="email">{ email }</div>
-        <Pyr.UI.PrimaryButton>Submit Me</Pyr.UI.PrimaryButton>
+        <Pyr.UI.PrimaryButton className="mt-auto">Submit Me</Pyr.UI.PrimaryButton>
       </div>
     );
   }
@@ -206,8 +216,8 @@ class HeadSheet extends Sheet.Index {
       return this.renderNone();
     }
 
-    let leftClasses = "flx-1 flx-col";
-    let rightClasses = "flx-3 flx-col";
+    let leftClasses = "flx-col scroll chooser-search";
+    let rightClasses = "flx-3 flx-col scroll chooser-heads";
 
     let url = Pyr.URL(HEADS_URL).push("new");
 
@@ -222,8 +232,7 @@ class HeadSheet extends Sheet.Index {
           />
         </div>
         <div className={rightClasses}>
-          { super.renderInner() }
-          <div className="flx-row ml-auto"><Link to={url.toString()}><Pyr.UI.IconButton name="plus"> Add Candidate</Pyr.UI.IconButton></Link></div>
+          { super.renderInnerNoScroll() }
         </div>
       </div>
     );
@@ -579,8 +588,8 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderInner() {
-    let leftClasses = "col col-3";
-    let rightClasses = "col flx-col";
+    let leftClasses = "col col-3 flx-col scroll";
+    let rightClasses = "col flx-col scroll";
 
     return (
       <div className="row">
@@ -593,7 +602,9 @@ class IndexSheet extends Sheet.Index {
           />
         </div>
         <div className={rightClasses}>
-          { super.renderInner() }
+          <div className="flx-col">
+            { super.renderInnerNoScroll() }
+          </div>
         </div>
       </div>
     );
@@ -626,16 +637,8 @@ class ShowSheet extends Sheet.ShowFull {
   constructor(props) {
     super(props);
     this.initState({
-      showCandidates: true
     });
 
-    this.onShowCandidates = this.showCandidates.bind(this);
-  }
-
-  showCandidates(state=true) {
-    this.setState({
-      showCandidates: state
-    });
   }
 
   key(position) {
@@ -648,21 +651,24 @@ class ShowSheet extends Sheet.ShowFull {
         position={position} 
         selected={isSelected}
         onShowCandidates={this.onShowCandidates}
-        showSubmitButton={!this.state.showCandidates}
       />
     );
   }
 
   renderChooser() {
-    if (!this.state.showCandidates) {
-      return null;
-    }
-
     return (
       <div className="flx-row flx-5">
         <div className="flx-col flx-1">
           <HeadSheet />
         </div>
+      </div>
+    );
+  }
+
+  renderCandidates() {
+    return (
+      <div className="candidates flx-row border">
+        <HeadPlaceholderItem />
       </div>
     );
   }
@@ -674,20 +680,17 @@ class ShowSheet extends Sheet.ShowFull {
       );
     }
 
-    // hmm was just a div
     return (
       <div className="inner flx-col flx-1">
-        <div className="flx-row flx-4">
-          <div className="flx-col flx-6 border">
-            <div className="flx-col flx-1">
-              {this.renderItem(this.props.selected, false) }
-            </div>
+        { this.renderCandidates() }
+        <div className="flx-row flx-1">
+          <div className="flx-col flx-4 border">
+            {this.renderItem(this.props.selected, false) }
           </div>
-          <div className="submitted flx-col flx-1 border white">
-            Cool stuff goes here.
+          <div className="flx-col flx-5">
+            {this.renderChooser() }
           </div>
         </div>
-        { this.renderChooser() }
       </div>
     );
   }
