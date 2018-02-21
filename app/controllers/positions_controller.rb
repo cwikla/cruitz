@@ -18,6 +18,12 @@ class PositionsController < ApplicationController
     render json: all, company: true
   end
 
+  def candidates
+    pid = position_params
+    @candies = current_user.submitted_candidates.where(job_id: pid)
+    render json: @candies
+  end
+
   def show
     pid = position_params
     render json: Job.find_safe(pid), root: :position, company: true

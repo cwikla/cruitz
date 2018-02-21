@@ -67,7 +67,7 @@ class CandidateComponent extends Component {
   loadItems(onLoading) {
 
     this.getJSON({
-      url: Pyr.URL(CANDIDATES_URL).push(this.props.position.id),
+      url: Pyr.URL(POSITIONS_URL).push(this.props.position.id).push("candidates"),
       context: this,
       onLoading: onLoading,
 

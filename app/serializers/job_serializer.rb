@@ -61,7 +61,7 @@ class JobSerializer < ActiveModel::Serializer
     end
 
     if instance_options[:submitted_candidates]
-      hash[:candidates] = current_user.candidates.where(job_id: object.id)
+      hash[:candidates] = current_user.submitted_candidates.where(job_id: object.id)
     end
 
     if instance_options[:company]
