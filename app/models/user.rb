@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   has_many :candidates, through: :jobs
   has_many :candidate_heads, through: :candidates, source: :head, class_name: "Head"
+  has_many :candidate_jobs, through: :candidates, source: :job, class_name: "Job"
   has_many :recruiters, -> { group(:id) }, through: :candidate_heads, class_name: "User"
 
   has_many :messages

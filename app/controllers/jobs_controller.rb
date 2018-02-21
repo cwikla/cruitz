@@ -5,7 +5,7 @@ class JobsController < ApplicationController
 
   def open
     all = Job.order("-id").limit(10)
-    render json: all, company: true
+    render json: all, company: true, submitted_candidates: true
   end
 
   def search

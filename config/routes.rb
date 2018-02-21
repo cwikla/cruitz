@@ -68,11 +68,9 @@ Rails.application.routes.draw do
 
       post 'messages/:id' => 'messages#create'
       resources :messages
-
-
-      get 'positions/:id' => 'jobs#position'
-      get 'positions' => 'jobs#open'
-      post 'positions' => 'jobs#search'
+   
+      post 'positions/search' => 'positions#search' 
+      resources :positions
     end
   end
 

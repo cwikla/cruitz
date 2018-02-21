@@ -13,6 +13,19 @@ class CandidatesController < ApplicationController
     Message.thread_for_candidate(cid)
   end
 
+  def create
+    cp = create_params
+
+    head = current_user.heads.find(cp[:head])
+    job = Job.find(cp[:job])
+
+    current_user.heads.find(hid)
+
+    @candidate = job.candidates.create(head: head, job: job)
+
+    return render json @candidate
+  end
+
   def update
     puts "PARAMS #{params.inspect}"
     cid = hid()
@@ -25,6 +38,10 @@ class CandidatesController < ApplicationController
   end
 
   private
+
+  def create_params
+    params.require(:job, :head)
+  end
 
   def candidates_params
     params.require(:candidate).permit(:state)

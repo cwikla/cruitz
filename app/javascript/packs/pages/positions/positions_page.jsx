@@ -18,6 +18,10 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 
+import HeadComponent, { 
+  CandidateComponent 
+} from './head';
+
 import { 
   getLogo 
 } from '../shared/user';
@@ -49,287 +53,6 @@ const RANGES = {
   9 : '6 month',
   10 : 'All Time'
 };
-
-class HeadPlaceholderItem extends Component {
-  render() {
-    return (
-      <div className="placeholder border flx-col">
-        <Pyr.UI.Icon name="plus" className="fa-align-center"/>
-      </div>
-    );
-  }
-}
-
-class HeadItem extends Component {
-  constructor(props) {
-    super(props);
-
-    this.onSetMe = this.setMe.bind(this);
-  }
-
-  setMe() {
-    if (this.props.onSetSelected) {
-      this.props.onSetSelected(this.props.head);
-    }
-  }
-
-  render() {
-    let head = this.props.head;
-
-    let full_name = head.full_name;
-    let email = head.email;
-    let title = "Sr. Programmer";
-    let company = "Google";
-
-    let phone_number = head.phone_number;
-
-    let key = "head-" + head.id;
-
-    return (
-      <div 
-        className="head flx-col flx-1" 
-        key={key}
-        onClick={this.onSetMe}
-      >
-        <div className="full_name">{ full_name }</div>
-        <div className="current_title">{ title }</div>
-        <div className="company">{ company }</div>
-        <div className="phone_number">{ phone_number }</div>
-        <div className="email">{ email }</div>
-        <Pyr.UI.PrimaryButton className="mt-auto">Submit Me</Pyr.UI.PrimaryButton>
-      </div>
-    );
-  }
-}
-
-class HeadModal extends Pyr.UI.Modal {
-  constructor(props) {
-    super(props);
-  }
-
-  renderInner() {
-    return (
-      <div className="flx-col flx-1">
-        <HeadItem head={this.props.head} />
-      </div>
-    );
-  }
-}
-
-
-class HeadSheet extends Sheet.Index {
-  key(item) {
-    return item.id;
-  }
-
-  constructor(props) {
-    super(props);
-    this.initState({
-      heads : null,
-      selected: null
-    });
-
-    this.onLoadItems = this.loadItems.bind(this);
-    this.onSetHeads = this.setHeads.bind(this);
-    this.onSetSelected = this.setSelected.bind(this);
-  }
-
-  items() {
-    return this.state.heads;
-  }
-
-  setSelected(selected) {
-    console.log("SET SELECTED");
-    console.log(selected);
-
-    this.setState({
-      selected
-    });
-    if (selected) {
-      this.modal.open();
-    }
-    else
-    {
-      this.modal.close();
-    }
-  }
-
-  setHeads(heads) {
-    console.log("HEADS");
-    console.log(heads);
-
-    this.setState({
-      heads
-    });
-  }
-
-  loadItems(onLoading) {
-
-    this.getJSON({
-      url: HEADS_URL,
-      context: this,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        this.onSetHeads(data.heads || []);
-
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-    });
-  }
-
-  componentDidMount() {
-    if (!this.state.heads) {
-      this.onLoadItems(this.onLoading);
-    }
-  }
-
-  renderChild(item, isSelected) {
-    let url = this.childURL(item, isSelected);
-
-    return (
-      <li
-        key={this.key(item)}
-      >{this.renderItem(item, isSelected)}</li>
-    );
-  }
-
-  renderChildren(items, isSelected) {
-    return super.renderChildren(items, isSelected, {className: "heads flx flx-row flx-wrap"})
-  }
-
-  renderItem(item) {
-    return (
-      <HeadItem 
-        head={item} 
-        onSetSelected={this.onSetSelected}
-      />
-    );
-  }
-
-  renderInner() {
-    if (!this.items()) {
-      return this.renderLoading();
-    }
-
-    if (this.items().length == 0) {
-      return this.renderNone();
-    }
-
-    let leftClasses = "flx-col scroll chooser-search";
-    let rightClasses = "flx-3 flx-col scroll chooser-heads";
-
-    let url = Pyr.URL(HEADS_URL).push("new");
-
-    return (
-      <div className="chooser flx-row">
-        <div className={leftClasses}>
-          <PositionsPage.SearchForm
-            onSetItems={this.props.onSetItems}
-            onPreSubmit={this.props.onPreSubmit}
-            onPostSubmit={this.props.onPostSubmit}
-            onError={this.props.onError}
-          />
-        </div>
-        <div className={rightClasses}>
-          { super.renderInnerNoScroll() }
-        </div>
-      </div>
-    );
-  }
-
-
-  unused_renderInner() {
-    if (!this.items()) {
-      return this.renderLoading();
-    }
-
-    if (this.items().length == 0) {
-      return this.renderNone();
-    }
-
-    let url = Pyr.URL(HEADS_URL).push("new");
-    console.log("URL");
-    console.log(url);
-
-    return (
-      <div className="flx-col flx-1">
-        { super.renderInner() }
-        <div className="flx-row ml-auto"><Link to={url.toString()}><Pyr.UI.IconButton name="plus"> Add Candidate</Pyr.UI.IconButton></Link></div>
-      </div>
-    );
-  }
-
-  render() {
-    return (
-      <div className="flx-col flx-1">
-        { this.renderInner() }
-        <HeadModal 
-          head={this.state.selected} 
-          ref={node => this.modal = node}
-        />
-      </div>
-    );
-  }
-}
-
-class CategorySheet extends Sheet.Index {
-  key(position) {
-    return PositionsPage.key(position);
-  }
-
-  constructor(props) {
-    super(props);
-    this.initState({
-      categories : null
-    });
-
-    this.onLoadItems = this.loadItems.bind(this);
-    this.onSetCategories = this.setCategories.bind(this);
-  }
-
-  items() {
-    return this.state.categories;
-  }
-
-  setCategories(categories) {
-    console.log("CATEGORIES");
-    console.log(categories);
-
-    this.setState({
-      categories
-    });
-  }
-
-  loadItems(onLoading) {
-    console.log("URL:");
-    console.log(this.props.url);
-
-    this.getJSON({
-      url: CATEGORIES_URL,
-      context: this,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        this.onSetCategories(data.categories || []);
-
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-    });
-  }
-
-  componentDidMount() {
-    if (!this.state.categories) {
-      this.onLoadItems(this.onLoading);
-    }
-  }
-
-  renderItem(item) {
-    return (
-      <label key={"cat-" + item.id}>{item.name}</label>
-    );
-  }
-}
 
 class PositionItem extends Component {
   constructor(props) {
@@ -609,12 +332,6 @@ class IndexSheet extends Sheet.Index {
       </div>
     );
   }
-
-  renderHmmm() {
-    return (
-      <CategorySheet {...this.props}/>
-    );
-  }
 }
 
 class SubmitSheet extends Sheet.ShowFull {
@@ -659,7 +376,9 @@ class ShowSheet extends Sheet.ShowFull {
     return (
       <div className="flx-row flx-5">
         <div className="flx-col flx-1">
-          <HeadSheet />
+          <HeadComponent 
+            position={this.props.selected}
+          />
         </div>
       </div>
     );
@@ -668,7 +387,7 @@ class ShowSheet extends Sheet.ShowFull {
   renderCandidates() {
     return (
       <div className="candidates flx-row border">
-        <HeadPlaceholderItem />
+        <CandidateComponent position={this.props.selected} />
       </div>
     );
   }
@@ -803,7 +522,7 @@ class SearchForm extends Component {
     return (
       <div className="position-search">
         <Pyr.Form.Form
-          url={POSITIONS_URL}
+          url={Pyr.URL(POSITIONS_URL).push("search")}
           method={Pyr.Method.POST}
           ref={(node) =>{ this.form = node; }}
           onPreSubmit={this.props.onPreSubmit}
