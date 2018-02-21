@@ -4,9 +4,9 @@ class HeadsController < ApplicationController
   end
 
   def show
-    head = Head.find(params[:id])
-    head = nil if head.user_id != current_user.id
-    render json: head
+    the_head = Head.find(params[:id])
+    the_head = nil if the_head.user_id != current_user.id
+    render json: the_head
   end
 
 end

@@ -17,6 +17,7 @@ const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
 import Sheet from '../sheet';
+import ItemLoader from '../item_loader';
 
 import HeadComponent, { 
   CandidateComponent 
@@ -354,8 +355,102 @@ class ShowSheet extends Sheet.ShowFull {
   constructor(props) {
     super(props);
     this.initState({
+      candidates: null,
     });
 
+    this.onSetCandidates = this.setCandidates.bind(this);
+    this.onAddCandidate = this.addCandidate.bind(this);
+    this.onRemoveCandidate = this.removeCandidate.bind(this);
+  }
+
+  setCandidates(candidates) {
+    this.setState({
+      candidates
+    });
+  }
+
+  addCompare(a, b) {
+    return a.id == b.id;
+  }
+
+  addCandidate(candidate) {
+    //console.log("ITEM: " + item);
+    //console.log(this.state.items);
+
+    if (!candidate) {
+      return;
+    }
+
+    let candidates = this.state.candidates || [];
+    let found = false;
+
+    let copy = candidates.map((val, pos) => {
+      if (this.addCompare(val, candidate)) {
+        found = true;
+        return candidate;
+      }
+      return val;
+    });
+
+    //console.log(copy);
+    //console.log("ITEM FOUND: " + found);
+
+    if (!found) {
+      copy.push(candidate);
+    }
+    this.setCandidates(copy);
+  }
+
+  removeCandidate(candidate) {
+    if (!candidate) {
+      return null;
+    }
+
+    let candidates = this.state.candidates || [];
+
+    let copy = candidates.filter( item => {
+      return item.id != candidate.id;
+    });
+
+    this.setCandidates(copy);
+  }
+
+  loadCandidates(position, onLoading, props={}) {
+    if (!position) {
+      return;
+    }
+
+    console.log("LOADING CANDIDATES");
+
+    let urlStuff = Object.assign({}, {
+      url: Pyr.URL(POSITIONS_URL).push(position.id).push('candidates'),
+      context: this,
+      onLoading: this.props.onLoading,
+    }, props);
+
+    this.getJSON(
+      urlStuff
+    ).done((data, textStatus, jqXHR) => {
+        this.onSetCandidates(data.candidates || []);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    if (!this.state.candidates) {
+      this.loadCandidates(this.props.selected, this.props.onLoading);
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    let pid = this.props.selected ? this.props.selected.id : null;
+    let nid = nextProps.selected ? nextProps.selected.id : null;
+
+    if (pid != nid) {
+      this.loadCandidates(nextProps.selected);
+    }
   }
 
   key(position) {
@@ -373,11 +468,15 @@ class ShowSheet extends Sheet.ShowFull {
   }
 
   renderChooser() {
+    let position = this.props.selected;
+
     return (
       <div className="flx-row flx-5">
         <div className="flx-col flx-1">
           <HeadComponent 
             position={this.props.selected}
+            position={position} 
+            onAddCandidate={this.onAddCandidate}
           />
         </div>
       </div>
@@ -385,15 +484,29 @@ class ShowSheet extends Sheet.ShowFull {
   }
 
   renderCandidates() {
+    if (!this.state.candidates || this.state.candidates.length == 0) {
+      return null;
+    }
+
+    let position = this.props.selected;
+
     return (
       <div className="candidates flx-row border">
-        <CandidateComponent position={this.props.selected} />
+        <CandidateComponent
+          position={position} 
+          onSetCandidates={this.onSetCandidates}
+          onAddCandidate={this.onAddCandidate}
+          onRemoveCandidate={this.onRemoveCandidate}
+          candidates={this.state.candidates}
+        />
       </div>
     );
   }
 
   renderInner() {
-    if (!this.props.selected) {
+    let position = this.props.selected;
+
+    if (!position) {
       return (
           <Pyr.UI.Loading />
       );
@@ -404,7 +517,7 @@ class ShowSheet extends Sheet.ShowFull {
         { this.renderCandidates() }
         <div className="flx-row flx-1">
           <div className="flx-col flx-4 border">
-            {this.renderItem(this.props.selected, false) }
+            {this.renderItem(position, false) }
           </div>
           <div className="flx-col flx-5">
             {this.renderChooser() }

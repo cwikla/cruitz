@@ -12,8 +12,6 @@ class CandidateSerializer < ActiveModel::Serializer
     :education,
     :skills
 
-  has_one :recruiter, through: :head, class_name: 'User'
-
   def id
     object.hashid
   end

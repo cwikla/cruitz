@@ -16,18 +16,24 @@ class CandidatesController < ApplicationController
   def create
     cp = create_params
 
-    head = current_user.heads.find(cp[:head])
+    my_head = current_user.heads.find(cp[:head])
     job = Job.find(cp[:job])
 
-    current_user.heads.find(hid)
+    @candidate = Candidate.submit(my_head, job)
 
-    @candidate = job.candidates.create(head: head, job: job)
+    return render json: @candidate
+  end
 
-    return render json @candidate
+  def destroy
+    cid = params.require(:id)
+    
+    @candidate = current_user.submitted_candidates.find(cid)
+    @candidate.destroy
+
+    render body: nil, status: :no_content
   end
 
   def update
-    puts "PARAMS #{params.inspect}"
     cid = hid()
     @candidate = current_user.candidates.find(cid)
     if @candidate.update(candidates_params)
@@ -40,7 +46,9 @@ class CandidatesController < ApplicationController
   private
 
   def create_params
-    params.require(:job, :head)
+    puts params
+
+    params.require(:candidate).permit(:job, :head)
   end
 
   def candidates_params

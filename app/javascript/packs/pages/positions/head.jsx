@@ -46,49 +46,76 @@ const RANGES = {
   10 : 'All Time'
 };
 
-class CandidateComponent extends Component {
+class CandidateItem extends Component {
   constructor(props) {
     super(props);
   
-    this.initState({
-      candidates: null
-    });
-
-    this.onSetCandidates = this.setCandidates.bind(this);
-    this.onLoadItems = this.loadItems.bind(this);
+    this.onRemoveMe = this.removeMe.bind(this);
   }
 
-  setCandidates(candidates) {
-    this.setState({
-      candidates
-    });
-  }
-
-  loadItems(onLoading) {
+  removeMe(e) {
+    let candidate = this.props.candidate;
 
     this.getJSON({
-      url: Pyr.URL(POSITIONS_URL).push(this.props.position.id).push("candidates"),
+      url: Pyr.URL(CANDIDATES_URL).push(candidate.id),
       context: this,
-      onLoading: onLoading,
+      type: Pyr.Method.DELETE,
+      onLoading: this.props.onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        this.onSetCandidates(data.candidates || []);
+        this.props.onRemoveCandidate(candidate);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
       Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
-  componentDidMount() {
-    if (!this.state.candidates) {
-      this.onLoadItems();
+  render() {
+    let candidate = this.props.candidate;
+
+    return (
+      <div onClick={this.onRemoveMe} className="candidate-item">
+        {candidate.first_name} {candidate.last_name}
+      </div>
+    );
+  }
+
+}
+
+class CandidateComponent extends Component {
+
+  candidates() {
+    return this.props.candidates;
+  }
+
+  renderAll() {
+    if (!this.candidates()) {
+      return (
+        <div>Nothing to see here</div>
+      );
     }
+
+    return (
+      <div className="flx-row">
+        { this.candidates().map((item, pos) => {
+          let key = "cand-" + item.id;
+          return (
+            <CandidateItem 
+              key={key} 
+              candidate={item}
+              onRemoveCandidate={this.props.onRemoveCandidate}
+            />
+          );
+        })}
+      </div>
+    )
   }
 
   render() {
+    
     return (
-      <div className="candidates">
-        Candidates
+      <div className="candidates flx-row">
+        { this.renderAll() }
       </div>
     );
       
@@ -263,7 +290,28 @@ class HeadComponent extends Sheet.Index {
     return this.state.heads;
   }
 
-  setSelected(selected) {
+  setSelected(head) {
+    let position = this.props.position;
+
+    this.getJSON({
+      url: CANDIDATES_URL,
+      context: this,
+      type: Pyr.Method.POST,
+      data: { candidate: {
+        head: head.id,
+        job: position.id
+      }},
+      onLoading: this.props.onLoading,
+
+    }).done((data, textStatus, jqXHR) => {
+        this.props.onAddCandidate(data.candidate);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
+  unused_setSelected(selected) {
     console.log("SET SELECTED");
     console.log(selected);
 
@@ -305,7 +353,7 @@ class HeadComponent extends Sheet.Index {
 
   componentDidMount() {
     if (!this.state.heads) {
-      this.onLoadItems(this.onLoading);
+      this.onLoadItems(this.props.onLoading);
     }
   }
 

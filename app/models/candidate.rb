@@ -26,8 +26,12 @@ class Candidate < ApplicationRecord
   scope :rejected, -> {  where(state: REJECTED_STATE) }
   scope :live, -> { where("state >= ? and state <= ?", SUBMITTED_STATE, HIRE_STATE) }
 
+
   def self.after_cached_candidate_state(state)
     c = Candidate.new(:id => state.candidate_id)
+  end
+
+  def after_destroy_cached
   end
 
   def self.after_cached_message(message)
@@ -45,8 +49,9 @@ class Candidate < ApplicationRecord
     state = SUBMITTED_STATE
 
     Candidate.transaction do
-      recruiter = head.recruiter
-      candidate = Candidate.create(job: job, head: head, state: state)
+      candidate = Candidate.find_or_create_unique(job: job, head: head, state: state)
+
+      recruiter = head.user
     
       msg = nil 
       msg = Message.create(candidate: candidate, user: candidate.hirer, from_user: recruiter, body: body) if body

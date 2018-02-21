@@ -22,9 +22,9 @@ class PositionsController < ApplicationController
     cp = create_params
 
     job = Job.find(cp[:job])
-    head = current_user.heads.find(cp[:head])
+    my_head = current_user.heads.find(cp[:head])
 
-    @candidate = Candidate.new(job: job, head: head)
+    @candidate = Candidate.new(job: job, head: my_head)
 
     if @candidate.save
       return render json: @candidate
