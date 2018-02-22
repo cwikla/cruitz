@@ -101,8 +101,13 @@ class CandidateComponent extends Component {
       );
     }
 
+    let candidateCount = this.candidates().length;
+    let maxForRecruiter = this.props.position.recruiter_limit || (candidateCount + 1);
+
+    console.log("LEFT: " + (maxForRecruiter - candidateCount));
+
     return (
-      <div className="flx-row">
+      <div className="flx-row flx-1">
         { this.candidates().map((item, pos) => {
           let key = "cand-" + item.id;
           return (
@@ -113,6 +118,16 @@ class CandidateComponent extends Component {
             />
           );
         })}
+        { Pyr.Util.times(maxForRecruiter - candidateCount, (pos) => {
+            let key = "p-cand-" + pos;
+            return (
+              <div 
+                key={key}
+                className="placeholder flx-col"
+              ><span className="ml-auto mr-auto">{pos+1}</span></div>
+            );
+          })
+        } 
       </div>
     )
   }

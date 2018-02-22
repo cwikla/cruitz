@@ -6,7 +6,8 @@ class JobSerializer < ActiveModel::Serializer
               :candidate_counts,
               :user_id,
               :created_at,
-              :category
+              :category,
+              :recruiter_limit
 
   #has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
   has_many :locations
@@ -36,6 +37,11 @@ class JobSerializer < ActiveModel::Serializer
 
   def description
     Pyr::Base::Util::String::emojify(object.description)
+  end
+
+  def recruiter_limit
+    settings = object.user.setting
+    settings.use_recruiter_limit ? settings.recruiter_limit : null
   end
 
   def candidate_counts

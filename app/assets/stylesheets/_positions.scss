@@ -21,7 +21,7 @@
         min-height: 8rem;
       }
 
-      .candidate-item {
+      .candidate-item, .placeholder {
         font-size: 0.8rem;
 
         width: 10rem;
@@ -42,13 +42,11 @@
       }
 
       .placeholder {
-        width: 8rem;
-        height: 8rem;
-    
-        i {
-          padding: 1rem;
-          color: rgba($gray_color, 0.4);
-          font-size: 6rem;
+        color: $light_gray_color;
+        font-size: 7rem;
+        line-height: 8rem;
+        &:hover {
+          box-shadow: none;
         }
       }
 
