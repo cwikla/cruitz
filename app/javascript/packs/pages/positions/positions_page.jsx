@@ -484,14 +484,10 @@ class ShowSheet extends Sheet.ShowFull {
   }
 
   renderCandidates() {
-    if (!this.state.candidates || this.state.candidates.length == 0) {
-      return null;
-    }
-
     let position = this.props.selected;
 
     return (
-      <div className="candidates flx-row border">
+      <div className="submitted flx-row border">
         <CandidateComponent
           position={position} 
           onSetCandidates={this.onSetCandidates}
@@ -514,12 +510,12 @@ class ShowSheet extends Sheet.ShowFull {
 
     return (
       <div className="inner flx-col flx-1">
-        { this.renderCandidates() }
         <div className="flx-row flx-1">
           <div className="flx-col flx-4 border">
             {this.renderItem(position, false) }
           </div>
           <div className="flx-col flx-5">
+            {this.renderCandidates() }
             {this.renderChooser() }
           </div>
         </div>

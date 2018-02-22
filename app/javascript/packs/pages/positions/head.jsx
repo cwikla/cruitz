@@ -17,6 +17,8 @@ import Pyr, {
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+import State from '../shared/state';
+
 import {
   POSITIONS_URL,
   SEARCH_URL,
@@ -73,9 +75,13 @@ class CandidateItem extends Component {
   render() {
     let candidate = this.props.candidate;
 
+    let clazzes = ClassNames("candidate-item flx-col").push(State.toClassName(candidate.state)).push("background");
+
     return (
-      <div onClick={this.onRemoveMe} className="candidate-item">
-        {candidate.first_name} {candidate.last_name}
+      <div onClick={this.onRemoveMe} className={clazzes}>
+        <div>{candidate.first_name} {candidate.last_name}</div>
+        <div className="">State: {State.toName(candidate.state)}</div>
+        <div className="">Read At: Unread</div>
       </div>
     );
   }
@@ -114,7 +120,7 @@ class CandidateComponent extends Component {
   render() {
     
     return (
-      <div className="candidates flx-row">
+      <div className="candidates flx-row flx-1">
         { this.renderAll() }
       </div>
     );
@@ -239,16 +245,18 @@ class HeadItem extends Component {
 
     return (
       <div 
-        className="head flx-col flx-1" 
+        className="head flx-row flx-1" 
         key={key}
         onClick={this.onSetMe}
       >
-        <div className="full_name">{ full_name }</div>
-        <div className="current_title">{ title }</div>
-        <div className="company">{ company }</div>
-        <div className="phone_number">{ phone_number }</div>
-        <div className="email">{ email }</div>
-        <Pyr.UI.PrimaryButton className="mt-auto">Submit Me</Pyr.UI.PrimaryButton>
+        <div className="flx-col flx-1">
+          <div className="full_name">{ full_name }</div>
+          <div className="current_title">{ title }</div>
+          <div className="company">{ company }</div>
+          <div className="phone_number">{ phone_number }</div>
+          <div className="email">{ email }</div>
+          <Pyr.UI.PrimaryButton className="mt-auto">Submit Me</Pyr.UI.PrimaryButton>
+        </div>
       </div>
     );
   }
@@ -368,7 +376,7 @@ class HeadComponent extends Sheet.Index {
   }
 
   renderChildren(items, isSelected) {
-    return super.renderChildren(items, isSelected, {className: "heads flx flx-row flx-wrap"})
+    return super.renderChildren(items, isSelected, {className: "heads flx flx-col flx-1"})
   }
 
   renderItem(item) {

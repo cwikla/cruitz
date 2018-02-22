@@ -18,55 +18,13 @@ import {
   Stars,
 } from '../shared/user';
 
+import State from '../shared/state';
+
 import {
   MESSAGES_URL,
   JOBS_URL,
   CANDIDATES_URL
 } from '../const';
-
-const ACCEPTED_STATE = 100;
-const REJECTED_STATE = -100;
-
-const ID_TO_STATE = {
-  0: { name: "New", action: "New"},
-  100 : {name: "Accepted", action: "Accept"},
-  "-100" : {name: "Passed", action: "Pass"},
-  1000 : {name: "Hired", action: "Hire"},
-  "-666" : {name: "SPAM",action: "SPAM"},
-  "-1000" : {name: "Recalled", action: "Recall"},
-  "-5000" : {name: "Cancelled", action: "Cancel"},
-};
-
-const NEXT_STATES = {
-  0: [100, -100],
-  100: [1000, -100],
-  "-100": [100],
-  1000: [-1000],
-  "-666": [100],
-  "-5000": [],
-};
-  
-
-function stateToName(sid) {
-  if (sid in ID_TO_STATE) {
-    return ID_TO_STATE[sid].name;
-  }
-
-  return "Unknown";
-}
-
-function stateToAction(sid) {
-  if (sid in ID_TO_STATE) {
-    return ID_TO_STATE[sid].action;
-  }
-
-  return "Unknown";
-}
-
-function validNextState(sid) {
-  let nexts = NEXT_STATES[sid];
-  return nexts ? sid in nexts : false;
-}
 
 class CandidateHeader extends Component {
   render() {
@@ -118,7 +76,7 @@ class CandidateItem extends Component {
   render() {
     let candidate = this.props.candidate;
     let recruiter = candidate.recruiter;
-    let state = Pyr.Util.squish(stateToName(candidate.state));
+    let state = State.toClassName(candidate.state);
 
     let id = "candidate-" + candidate.id;
     let allClass = ClassNames("item candidate-item flx-row");
@@ -510,14 +468,14 @@ class ShowSheet extends Sheet.ShowFull {
   renderButtons(curState) {
     let self = this;
     let nexts = NEXT_STATES[curState];
-    let name = stateToName(curState);
+    let name = State.toName(curState);
 
     return (
       <div className="ml-auto">
       {
         nexts.map( (state, pos) => {
-          let nextName = stateToName(state);
-          let action = stateToAction(state);
+          let nextName = State.toName(state);
+          let action = State.toAction(state);
   
           if (pos == 0) {
             return (
@@ -540,7 +498,7 @@ class ShowSheet extends Sheet.ShowFull {
 
     console.log("RENDER HEADER");
     console.log(candidate);
-    let stateName = stateToName(candidate.state);
+    let stateName = State.toName(candidate.state);
     let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateName).push("background");
 
 

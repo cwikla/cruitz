@@ -2,10 +2,6 @@
   .show {
     .sheet {
       background-color: $light_gray_color;
-      .candidates {
-        padding-left: 2rem;
-      }
-
 
       .inner {
         padding: 1rem;
@@ -19,22 +15,40 @@
       }
 
       .submitted {
-        margin-left: 1rem;
+        background-color: white;
+        margin-left: 3rem;
+        margin-bottom: 2rem;
+        min-height: 8rem;
       }
 
-      .candidates {
-        padding: 1rem;
-        margin-bottom: 1rem;
+      .candidate-item {
+        font-size: 0.8rem;
 
-        .placeholder {
-          width: 8rem;
-          height: 8rem;
+        width: 10rem;
+        height: 10rem;
+
+        margin: 0.5rem;
+        border: solid $border_color 1px;
+        border-radius: 5px;
+
+        padding-left: 1.0rem;
+        padding-right: 1.0rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+
+        &:hover {
+          box-shadow: 1px 1px 5px 0px $gray_color;
+        }
+      }
+
+      .placeholder {
+        width: 8rem;
+        height: 8rem;
     
-          i {
-            padding: 1rem;
-            color: rgba($gray_color, 0.4);
-            font-size: 6rem;
-          }
+        i {
+          padding: 1rem;
+          color: rgba($gray_color, 0.4);
+          font-size: 6rem;
         }
       }
 
@@ -85,7 +99,7 @@
       }
 
       .chooser {
-        margin-left: 1rem;
+        margin-left: 3rem;
 
         .position-search {
           min-width: 15rem;
