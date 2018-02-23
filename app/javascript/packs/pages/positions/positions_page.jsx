@@ -512,7 +512,7 @@ class ShowSheet extends Sheet.ShowFull {
           <div className="flx-col flx-4 border">
             {this.renderItem(position, false) }
           </div>
-          <div className="flx-col flx-5">
+          <div className="flx-col flx-5 scroll">
             {this.renderCandidates() }
             {this.renderChooser() }
           </div>

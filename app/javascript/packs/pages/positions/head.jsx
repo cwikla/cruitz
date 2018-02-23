@@ -75,7 +75,7 @@ class CandidateItem extends Component {
   render() {
     let candidate = this.props.candidate;
 
-    let clazzes = ClassNames("candidate-item flx-col").push(State.toClassName(candidate.state)).push("background");
+    let clazzes = ClassNames("candidate-item").push(State.toClassName(candidate.state)).push("background").push("scroll-x-inner");
 
     return (
       <div onClick={this.onRemoveMe} className={clazzes}>
@@ -108,7 +108,7 @@ class CandidateComponent extends Component {
     console.log("LEFT: " + (maxForRecruiter - candidateCount));
 
     return (
-      <div className="flx-row flx-1">
+      <div className="flx-row scroll-x">
         { this.candidates().map((item, pos) => {
           let key = "cand-" + item.id;
           return (
@@ -124,7 +124,7 @@ class CandidateComponent extends Component {
             return (
               <div 
                 key={key}
-                className="placeholder flx-col"
+                className="placeholder scroll-x-inner"
               ><span className="ml-auto mr-auto">{pos+1}</span></div>
             );
           })
