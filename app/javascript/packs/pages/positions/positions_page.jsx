@@ -471,7 +471,6 @@ class ShowSheet extends Sheet.ShowFull {
     let position = this.props.selected;
 
     return (
-      <div className="flx-row flx-5">
         <div className="flx-col flx-1">
           <HeadComponent 
             position={this.props.selected}
@@ -479,7 +478,6 @@ class ShowSheet extends Sheet.ShowFull {
             onAddCandidate={this.onAddCandidate}
           />
         </div>
-      </div>
     );
   }
 
@@ -487,7 +485,7 @@ class ShowSheet extends Sheet.ShowFull {
     let position = this.props.selected;
 
     return (
-      <div className="submitted flx-row border">
+      <div className="submitted border">
         <CandidateComponent
           position={position} 
           onSetCandidates={this.onSetCandidates}

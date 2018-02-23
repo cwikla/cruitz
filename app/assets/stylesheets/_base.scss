@@ -22,6 +22,16 @@ a:hover {
   color: $primary_light_color !important;
 }
 
+.scroll-x {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.scroll-x-inner {
+  flex: 0 0 auto;
+}
+
 label {
   margin: 0;
   padding: 0;

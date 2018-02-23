@@ -800,6 +800,11 @@ class Modal extends BaseComponent {
     this.onNoProp = this.noProp.bind(this);
   }
 
+  isOpen() {
+    return this.props.open || false;
+    //return this.state.open;
+  }
+
   componentDidMount() {
     document.addEventListener("keydown", this.onKeyPress);
   }
@@ -844,7 +849,7 @@ class Modal extends BaseComponent {
   }
 
   render() {
-    if (!this.state.open) {
+    if (!this.isOpen()) {
       return null;
     }
 

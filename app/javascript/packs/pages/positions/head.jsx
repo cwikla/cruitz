@@ -103,6 +103,7 @@ class CandidateComponent extends Component {
 
     let candidateCount = this.candidates().length;
     let maxForRecruiter = this.props.position.recruiter_limit || (candidateCount + 1);
+    //maxForRecruiter = 10;
 
     console.log("LEFT: " + (maxForRecruiter - candidateCount));
 
@@ -135,7 +136,7 @@ class CandidateComponent extends Component {
   render() {
     
     return (
-      <div className="candidates flx-row flx-1">
+      <div className="candidates">
         { this.renderAll() }
       </div>
     );
@@ -282,7 +283,14 @@ class HeadModal extends Pyr.UI.Modal {
     super(props);
   }
 
+  isOpen() {
+    return this.props.head != null;
+  }
+
   renderInner() {
+    console.log(this.props.head);
+    console.log(this.props.position);
+
     return (
       <div className="flx-col flx-1">
         <HeadItem head={this.props.head} />
@@ -301,20 +309,28 @@ class HeadComponent extends Sheet.Index {
     super(props);
     this.initState({
       heads : null,
-      selected: null
+      selected: null,
+      showSubmit: false
     });
 
     this.onLoadItems = this.loadItems.bind(this);
     this.onSetHeads = this.setHeads.bind(this);
     this.onSetSelected = this.setSelected.bind(this);
+    this.onCloseModal = this.closeModal.bind(this);
   }
 
   items() {
     return this.state.heads;
   }
 
-  setSelected(head) {
+  unused_setSelected(head) {
     let position = this.props.position;
+    this.setState({
+      showSubmit
+    });
+  }
+
+  submitSelected(head) {
 
     this.getJSON({
       url: CANDIDATES_URL,
@@ -334,13 +350,15 @@ class HeadComponent extends Sheet.Index {
     });
   }
 
-  unused_setSelected(selected) {
-    console.log("SET SELECTED");
+  setSelected(selected) {
+    console.log("SET SELECTED HEAD");
     console.log(selected);
 
     this.setState({
       selected
     });
+
+/*
     if (selected) {
       this.modal.open();
     }
@@ -348,6 +366,7 @@ class HeadComponent extends Sheet.Index {
     {
       this.modal.close();
     }
+*/
   }
 
   setHeads(heads) {
@@ -434,6 +453,12 @@ class HeadComponent extends Sheet.Index {
     );
   }
 
+  closeModal() {
+    this.setState({
+      selected: null
+    });
+  }
+
   render() {
     return (
       <div className="flx-col flx-1">
@@ -441,6 +466,8 @@ class HeadComponent extends Sheet.Index {
         <HeadModal 
           head={this.state.selected} 
           ref={node => this.modal = node}
+          position={this.props.position}
+          onClose={this.onCloseModal}
         />
       </div>
     );
