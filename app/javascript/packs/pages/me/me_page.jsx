@@ -168,18 +168,31 @@ class MeForm extends Component {
 
     this.onShowPassword = this.showPassword.bind(this);
     this.onHidePassword = this.hidePassword.bind(this);
+    this.onSuccess = this.success.bind(this);
+
+    this.initState({
+      showPassword: false
+    });
   }
 
   showPassword(e) {
     if (e) {
       e.preventDefault();
     }
-    this.password.open();
+    this.setState({
+      showPassword: true
+    });
   }
 
   hidePassword() {
+    this.setState({
+      showPassword: false
+    });
+  }
+
+  success() {
+    this.hidePassword();
     this.context.setNotice("Password Updated");
-    this.password.close();
   }
 
   
@@ -197,7 +210,9 @@ class MeForm extends Component {
           ref={node => this.password = node}
           url={url}
           me={this.props.me}
-          onSuccess={this.onHidePassword}
+          onSuccess={this.onSuccess}
+          open={this.state.showPassword}
+          onClose={this.onHidePassword}
         />
         <Pyr.Form.Form
           model="User"

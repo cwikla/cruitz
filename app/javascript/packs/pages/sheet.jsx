@@ -181,6 +181,11 @@ class Form extends Base {
     return this.renderSaveButton();
   }
 
+  renderForm() {
+    console.log("Missing render form");
+    return null;
+  }
+
   renderTitle() {
     return (
       <div className="flx-row title">
@@ -192,15 +197,17 @@ class Form extends Base {
 
 
   render() {
+    let AComponent = this.props.notFullScreen ? Pyr.UI.DIV : FSWL;
+
     return (
-      <FSWL>
+      <AComponent>
         <Pyr.UI.Scroll className="form">
           { this.renderTitle() }
             <div className="form-content mb-auto">
               { this.renderForm() }
             </div>
         </Pyr.UI.Scroll>
-      </FSWL>
+      </AComponent>
     );
   }
 

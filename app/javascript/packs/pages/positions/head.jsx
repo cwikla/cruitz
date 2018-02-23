@@ -278,6 +278,64 @@ class HeadItem extends Component {
   }
 }
 
+class HeadForm extends Sheet.Form {
+  constructor(props) {
+    super(props);
+
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
+    this.props.onAddCandidate(data.candidate);
+    this.props.onClose();
+  }
+
+  title() {
+    return "Submit candidate for " + this.props.position.title;
+  }
+
+  renderButton() {
+    return (
+      <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>Submit Candidate</Pyr.Form.SubmitButton>
+    );
+  }
+
+
+  renderForm() {
+    let url = Pyr.URL(CANDIDATES_URL);
+
+    let head = this.props.head;
+    let position = this.props.position;
+
+    return (
+      <div className="form-parent section">
+        <Pyr.Form.Form
+          model="candidate"
+          object={this.props.candidate}
+          url={url}
+          method={Pyr.Method.POST}
+          id="candidate-form"
+          ref={node => this.form = node}
+          onSuccess={this.onSuccess}
+        >
+          <Pyr.Form.Group name="head" className="hidden">
+            <Pyr.Form.Hidden value={head.id} />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="job" className="hidden">
+            <Pyr.Form.Hidden value={position.id} />
+          </Pyr.Form.Group>
+
+          <div>{head.first_name} {head.last_name}</div>
+          <div>{head.email}</div>
+          <div>{head.phone_number}</div>
+        </Pyr.Form.Form>
+      </div>
+    );
+  }
+  
+}
+
 class HeadModal extends Pyr.UI.Modal {
   constructor(props) {
     super(props);
@@ -288,12 +346,9 @@ class HeadModal extends Pyr.UI.Modal {
   }
 
   renderInner() {
-    console.log(this.props.head);
-    console.log(this.props.position);
-
     return (
       <div className="flx-col flx-1">
-        <HeadItem head={this.props.head} />
+        <HeadForm {...this.props} notFullScreen/>
       </div>
     );
   }
@@ -468,6 +523,7 @@ class HeadComponent extends Sheet.Index {
           ref={node => this.modal = node}
           position={this.props.position}
           onClose={this.onCloseModal}
+          onAddCandidate={this.props.onAddCandidate}
         />
       </div>
     );

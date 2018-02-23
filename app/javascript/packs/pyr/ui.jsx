@@ -60,6 +60,12 @@ const RouterContextTypes = {
   history: PropTypes.object,
 };
 
+const DIV = (props) => (
+  <div {...props}>
+    { props.children }
+  </div>
+);
+
 class RouterReceiver extends BaseComponent {
   static contextTypes = RouterContextTypes;
 
@@ -859,11 +865,11 @@ class Modal extends BaseComponent {
         ref={(node) => this.me = node }
         onClick={this.onClose}
       >
-          <div className="modal-border"
+          <div className="modal-border flx-col flx-1"
               onClick={this.noProp}
           >
-            <IconButton name="close" className="close" onClick={this.onClose}/>
-            <div className="model-inner"
+            <IconButton name="close" className="close ml-auto" onClick={this.onClose}/>
+            <div className="modal-inner"
             >
               { this.renderInner() }
             </div>
@@ -978,6 +984,7 @@ const UI = {
   ImageButton,
   Collapse,
   ImageFile,
+  DIV,
 
   Scroll,
   PieChart,

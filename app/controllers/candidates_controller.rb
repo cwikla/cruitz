@@ -15,6 +15,8 @@ class CandidatesController < ApplicationController
 
   def create
     cp = create_params
+    puts "CP"
+    puts cp
 
     my_head = current_user.heads.find(cp[:head])
     job = Job.find(cp[:job])
