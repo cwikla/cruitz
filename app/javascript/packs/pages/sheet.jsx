@@ -201,12 +201,10 @@ class Form extends Base {
 
     return (
       <AComponent>
-        <Pyr.UI.Scroll className="form">
-          { this.renderTitle() }
-            <div className="form-content mb-auto">
-              { this.renderForm() }
-            </div>
-        </Pyr.UI.Scroll>
+        { this.renderTitle() }
+        <div className="form-content mb-auto">
+          { this.renderForm() }
+        </div>
       </AComponent>
     );
   }

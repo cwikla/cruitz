@@ -301,11 +301,18 @@ class HeadForm extends Sheet.Form {
   }
 
 
+  renderAge(value) {
+    return "" + value + " %";
+  }
+
   renderForm() {
     let url = Pyr.URL(CANDIDATES_URL);
 
     let head = this.props.head;
     let position = this.props.position;
+
+    let title = "Sr. Programmer";
+    let company = "Google";
 
     return (
       <div className="form-parent section">
@@ -318,6 +325,28 @@ class HeadForm extends Sheet.Form {
           ref={node => this.form = node}
           onSuccess={this.onSuccess}
         >
+          <div className="flx-row">
+            <div className="flx-1">
+              <div>{head.first_name} {head.last_name}</div>
+              <div>{head.email}</div>
+              <div>{head.phone_number}</div>
+              <div>{company}</div>
+              <div>{title}</div>
+            </div>
+
+            <div className="flx-1">
+              <Pyr.Form.Group name="commission">
+                <Pyr.Form.Label>Commission</Pyr.Form.Label>
+                <Pyr.Form.Range
+                  minValue={0}
+                  maxValue={100}
+                  step={1}
+                  formatLabel={this.renderAge}
+                />
+              </Pyr.Form.Group>
+            </div>
+          </div>
+
           <Pyr.Form.Group name="head" className="hidden">
             <Pyr.Form.Hidden value={head.id} />
           </Pyr.Form.Group>
@@ -326,9 +355,10 @@ class HeadForm extends Sheet.Form {
             <Pyr.Form.Hidden value={position.id} />
           </Pyr.Form.Group>
 
-          <div>{head.first_name} {head.last_name}</div>
-          <div>{head.email}</div>
-          <div>{head.phone_number}</div>
+
+          <Pyr.Form.Group name="message">
+            <Pyr.Form.TextArea />
+          </Pyr.Form.Group>
         </Pyr.Form.Form>
       </div>
     );

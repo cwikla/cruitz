@@ -53,6 +53,16 @@
   height: 100%;
   display: block;
 
+  .pyr-icon-btn.close {
+    i {
+      &:hover {
+        color: $highlight_color;
+      }
+    }
+    margin-bottom: 1rem;
+  }
+
+
   .modal-border {
     padding: 2.5rem;
     background-color: white;
