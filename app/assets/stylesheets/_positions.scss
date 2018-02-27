@@ -17,9 +17,23 @@
 
       .submitted {
         background-color: white;
-        margin-left: 2rem;
         margin-bottom: 2rem;
         min-height: 8rem;
+      }
+
+      .head-modal {
+        .title {
+          h3 {
+            padding-right: 5rem;
+          }
+        }
+
+        .form-content {
+
+          .work-history {
+          }
+        }
+
       }
 
       .candidate-item, .placeholder {

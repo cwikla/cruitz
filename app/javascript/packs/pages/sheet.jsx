@@ -200,9 +200,9 @@ class Form extends Base {
     let AComponent = this.props.notFullScreen ? Pyr.UI.DIV : FSWL;
 
     return (
-      <AComponent>
+      <AComponent className="">
         { this.renderTitle() }
-        <div className="form-content mb-auto">
+        <div className="form-content mb-auto flx-1 flx-col">
           { this.renderForm() }
         </div>
       </AComponent>

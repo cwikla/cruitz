@@ -34,6 +34,10 @@ a:hover {
   flex: 0 0 auto;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 label {
   margin: 0;
   padding: 0;
@@ -388,7 +392,6 @@ label {
 }
 
 .social {
-  padding-left: 1rem;
   padding-right: 1rem;
   font-size: 1.25rem;
   line-height: 1.5rem;
@@ -663,6 +666,13 @@ label {
   }
 }
 
+.pyr-fullscreen {
+
+  .content {
+    padding: 2rem;
+    overflow: auto;
+  }
+}
 
 @import 'item';
 @import 'message_thread';

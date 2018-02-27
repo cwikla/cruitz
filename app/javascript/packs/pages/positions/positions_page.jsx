@@ -297,16 +297,6 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-  unused_renderChild(item, isSelected) {
-    let url = this.childURL(item, isSelected);
-
-    return (
-      <li
-        key={this.key(item)}
-      >{this.renderItem(item, isSelected)}</li>
-    );
-  }
-
   renderChildren(items, isSelected) {
     return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
   }
@@ -508,12 +498,14 @@ class ShowSheet extends Sheet.ShowFull {
 
     return (
       <div className="inner flx-col flx-1">
+        <div >
+          {this.renderCandidates() }
+        </div>
         <div className="flx-row flx-1">
           <div className="flx-col flx-4 border">
             {this.renderItem(position, false) }
           </div>
           <div className="flx-col flx-5 scroll">
-            {this.renderCandidates() }
             {this.renderChooser() }
           </div>
         </div>
