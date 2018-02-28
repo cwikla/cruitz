@@ -227,7 +227,7 @@ class SearchForm extends Component {
 class HeadPlaceholderItem extends Component {
   render() {
     return (
-      <div className="placeholder border flx-col">
+      <div className="placeholder section flx-col">
         <Pyr.UI.Icon name="plus" className="fa-align-center"/>
       </div>
     );
@@ -291,7 +291,9 @@ class HeadForm extends Sheet.Form {
   }
 
   title() {
-    return "Submit candidate for " + this.props.position.title;
+    let name = this.props.head.first_name;
+
+    return "Submit " + name + " for " + this.props.position.title;
   }
 
   renderButton() {
@@ -311,28 +313,46 @@ class HeadForm extends Sheet.Form {
       return null;
     }
 
-    return skills.map((skill, pos) => {
+    let ts =  skills.map((skill, pos) => {
       let sid = Math.random();
       let key = "skill-" + sid;
       return (
         <span
           key={key}
+          className="skill"
         >{skill}</span>
       );
     });
+
+    return (
+      <div className="skills flx-row flx-wrap section">
+        { ts }
+      </div>
+    );
+  }
+
+  renderLinks() {
+    return (
+        <div className="flx-row links section">
+          <Pyr.UI.Icon name="linkedin-square" className="social"/>
+          <Pyr.UI.Icon name="github" className="social"/>
+          <Pyr.UI.Icon name="dribbble" className="social"/>
+          <Pyr.UI.Icon name="quora" className="social"/>
+        </div>
+    );
   }
 
   renderWork() {
     let workHistory = this.props.work_history;
 
-    workHistory = [1,2,3,4];
+    workHistory = [1,2,3,4,5,6];
 
     return workHistory.map((item, pos) => {
       return (
         <div className="work" key={"work-"+item}>
           <div className="year">2015-Current</div>
           <div className="company">My Company</div>
-          <div className="position">Director Engineering</div>
+          <div className="current_title">Director Engineering</div>
           <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
         </div>
       );
@@ -343,35 +363,20 @@ class HeadForm extends Sheet.Form {
     let head = this.props.head;
     let position = this.props.position;
 
-    let title = "Sr. Programmer";
-    let company = "Google";
-
     return (
-      <div className="deets flx-col">
+      <div className="deets section">
         <div>{head.first_name} {head.last_name}</div>
         <div>{head.email}</div>
         <div>{head.phone_number}</div>
-        <div>{company}</div>
-        <div>{title}</div>
-
-        <div className="flx-row links">
-          <Pyr.UI.Icon name="linkedin-square" className="social"/>
-          <Pyr.UI.Icon name="github" className="social"/>
-          <Pyr.UI.Icon name="dribbble" className="social"/>
-          <Pyr.UI.Icon name="quora" className="social"/>
-        </div>
-
-        <div className="flx-row skills">
-          { this.renderSkills() }
-        </div>
+  
       </div>
     );
   }
 
   renderWorkHistory() {
     return (
-      <div className="work-history flx-row">
-        <div className="flx-col scroll">
+      <div className="work-history flx-row flx-1 scroll section">
+        <div className="flx-col">
           { this.renderWork() }
         </div>
       </div>
@@ -384,8 +389,8 @@ class HeadForm extends Sheet.Form {
     let head = this.props.head;
     let position = this.props.position;
 
-
     return (
+      <div className="head-form flx-1">
         <Pyr.Form.Form
           model="candidate"
           object={this.props.candidate}
@@ -403,18 +408,35 @@ class HeadForm extends Sheet.Form {
             <Pyr.Form.Hidden value={position.id} />
           </Pyr.Form.Group>
 
+          <Pyr.Form.Group name="title">
+            <Pyr.Form.TextField />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="files">
+            <Pyr.Form.FileSelector multiple/>
+          </Pyr.Form.Group>
 
           <Pyr.Form.Group name="message">
             <Pyr.Form.TextArea />
           </Pyr.Form.Group>
+
         </Pyr.Form.Form>
+      </div>
     );
   }
   
   renderForm() {
     return (
-      <div className="form-parent head-form section">
-        { this.renderWorkHistory() }
+      <div className="form-parent flx-row">
+        <div className="flx-col flx-1 left">
+          { this.renderActualForm() }
+        </div>
+        <div className="flx-col flx-1 right">
+          { this.renderDeets() }
+          { this.renderLinks() }
+          { this.renderSkills() }
+          { this.renderWorkHistory() }
+        </div>
       </div>
     );
   }
@@ -433,7 +455,7 @@ class HeadModal extends Pyr.UI.Modal {
 
   renderInner() {
     return (
-      <div className="head-modal">
+      <div className="head-modal flx-col">
         <HeadForm {...this.props} notFullScreen/>
       </div>
     );
@@ -603,7 +625,6 @@ class HeadComponent extends Sheet.Index {
   render() {
     return (
       <div className="flx-col flx-1">
-        { this.renderInner() }
         <HeadModal 
           head={this.state.selected} 
           ref={node => this.modal = node}
@@ -611,6 +632,7 @@ class HeadComponent extends Sheet.Index {
           onClose={this.onCloseModal}
           onAddCandidate={this.props.onAddCandidate}
         />
+        { this.renderInner() }
       </div>
     );
   }

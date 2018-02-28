@@ -104,10 +104,6 @@ label {
   background-color: $hover_background_color;
 }
 
-.section {
-  margin-bottom: 1rem;
-}
-
 //.btn-action, .btn-primary {
   //box-shadow: none;
 //}
@@ -491,6 +487,7 @@ h3.title {
     border: 1px solid $border_color;
     padding: 2rem;
     background-color: white;
+    margin-bottom: 1rem;
   }
 
 }

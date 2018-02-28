@@ -804,7 +804,7 @@ class DropTarget extends BaseComponent {
   }
 
   render() {
-    let clz = Util.ClassNames("pyr-drop-target yellow", (this.state.dragging ? "dragging" : null));
+    let clz = Util.ClassNames("pyr-drop-target", (this.state.dragging ? "dragging" : null));
 
     if (!this.state.valid) {
       clz.push("invalid");

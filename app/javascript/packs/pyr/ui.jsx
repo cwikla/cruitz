@@ -865,11 +865,11 @@ class Modal extends BaseComponent {
         ref={(node) => this.me = node }
         onClick={this.onClose}
       >
-          <div className="modal-border flx-col flx-1"
+          <div className="modal-border flx-col"
               onClick={this.noProp}
           >
             <div className="ml-auto"> <IconButton name="close" className="close ml-auto" onClick={this.onClose}/></div>
-            <div className="modal-inner flx-col flx-1"
+            <div className="modal-inner flx-col"
             >
               { this.renderInner() }
             </div>

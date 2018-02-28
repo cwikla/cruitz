@@ -22,15 +22,62 @@
       }
 
       .head-modal {
+        min-width: 60rem;
+
         .title {
+          flex: 1 0 auto;
           h3 {
             padding-right: 5rem;
           }
         }
 
-        .form-content {
+        .section {
+          padding: 1rem;
+          margin-bottom: 1rem;
+        }
+  
+        .deets {
+          b-border-bottom: 1px solid $border_color;
+          font-size: 1.2rem;
+        }
 
-          .work-history {
+        .eyeball {
+          color: red;
+        }
+
+        .skills {
+          margin-top: 0.5rem;
+        }
+
+        .skill {
+          padding: 0.25rem;
+          margin-right: 0.5rem;
+
+          border: solid $secondary_color 1px;
+          border-radius: 5px;
+        }
+
+        .work {
+          padding-bottom: 2rem;
+        }
+
+        .work-history {
+          padding-bottom: 2rem;
+          border-bottom: 1px solid $border_color;
+          margin-bottom: 1rem;
+        }
+
+        .head-form {
+          padding-bottom: 2rem;
+          margin-bottom: 1rem;
+        }
+
+        .form-parent {
+          .left {
+            margin-right: 0.5rem;
+          }
+          .right {
+            margin-left: 0.5rem;
           }
         }
 
