@@ -231,7 +231,15 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(item, isSelected) {
-    return (<CandidateItem candidate={item} isSelected={isSelected} />);
+    console.log("CANDIDATE RENDER ITEM");
+    console.log(item);
+
+    return (
+      <CandidateItem 
+        candidate={item} 
+        isSelected={isSelected} 
+      />
+    );
   }
 }
 
@@ -467,7 +475,7 @@ class ShowSheet extends Sheet.ShowFull {
 
   renderButtons(curState) {
     let self = this;
-    let nexts = NEXT_STATES[curState];
+    let nexts = State.nexts(curState);
     let name = State.toName(curState);
 
     return (
@@ -623,6 +631,14 @@ class CandidatesPage extends Page {
     });
   }
 
+  getItemId() {
+    return this.props.subItemId;
+  }
+
+  getJobId() {
+    return this.props.itemId;
+  }
+
   name() {
     return "Candidates";
   }
@@ -646,6 +662,7 @@ class CandidatesPage extends Page {
     return (
       <IndexSheet
         {...this.props}
+        itemId={this.getItemId()}
         items={this.state.items}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
@@ -659,12 +676,15 @@ class CandidatesPage extends Page {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
+    let jobId = this.getJobId();
+    let candyId = this.getItemId();
+
     return (
       <ActionSheet
         {...this.props}
-        itemId={this.props.subItemId}
-        jobId={this.props.itemId}
-        selected={this.getItem(this.props.subItemId)}
+        itemId={candyId}
+        jobId={jobId}
+        selected={this.getSelected()}
         jobMap={this.props.jobMap}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
@@ -696,7 +716,7 @@ class CandidatesPage extends Page {
   }
 
   loadItems() {
-    this.getCandidates(this.props.itemId);
+    this.getCandidates(this.getJobId());
   }
 
   getCandidates(jobId) {

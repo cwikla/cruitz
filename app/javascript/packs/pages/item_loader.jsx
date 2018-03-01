@@ -11,6 +11,8 @@ class ItemLoader extends Component {
   constructor(...args) {
     super(...args);
 
+    console.log("ITEM LOADER");
+
     this.initState({
       items: null,
       selected: null,
@@ -31,7 +33,7 @@ class ItemLoader extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.itemId != this.props.itemId) {
-      //console.log("PAGE GOT NEW ID: " + nextProps.itemId);
+      console.log("PAGE GOT NEW ID: " + nextProps.itemId);
       this.setState({
         selected: null
       });
@@ -115,20 +117,11 @@ class ItemLoader extends Component {
   }
 
   getSelected() {
-    if (this.state.selected) {
-      return this.state.selected;
-    }
-
-    let sid = this.getItemId();
-    return this.getItem(sid);
+    return this.state.selected;
   }
 
-  getItem(sid) {
-    let items = this.getItems();
-    if (sid && items) {
-      return items.find((x) => x.id == sid);
-    }
-    return null;
+  getSubItemId() {
+    return this.props.subItemId;
   }
 
 }

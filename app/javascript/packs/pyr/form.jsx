@@ -804,7 +804,7 @@ class DropTarget extends BaseComponent {
   }
 
   render() {
-    let clz = Util.ClassNames("pyr-drop-target", (this.state.dragging ? "dragging" : null));
+    let clz = Util.ClassNames("pyr-drop-target thing", (this.state.dragging ? "dragging" : null));
 
     if (!this.state.valid) {
       clz.push("invalid");
@@ -990,7 +990,7 @@ class FileSelector extends Child {
     });
 
     return (
-      <div className="pyr-files-to-upload">
+      <div className="pyr-files-to-upload hidden">
         { hiddens }
       </div>
     );
@@ -1007,7 +1007,8 @@ class FileSelector extends Child {
   }
 
   renderUploads() {
-    let all = this.allUploads();
+    let all = this.allUploads() || [];
+
     //console.log("RENDER UPLOADS");
     //console.log(all);
 
@@ -1015,7 +1016,7 @@ class FileSelector extends Child {
       //console.log("RENDERING UPLOAD");
       //console.log(upload);
       return (
-        <div key={upload.id + "-img"} className="upload">
+        <div key={upload.id + "-img"} className="upload thing">
           <UI.ImageFile url={upload.url} contentType={upload.content_type} />
         </div>
       );
@@ -1026,7 +1027,9 @@ class FileSelector extends Child {
     //console.log("RENDER FILES");
     //console.log(this.state.files);
 
-    return this.state.files.map((file, pos) => {
+    let files = this.state.files || [];
+
+    return files.map((file, pos) => {
       //console.log("RENDER FILE");
       //console.log(file);
 
@@ -1036,33 +1039,11 @@ class FileSelector extends Child {
         return null; // already in uploads
       }
       return (
-        <div key={this.fhash(file)+"-file"} className="file">
+        <div key={this.fhash(file)+"-file"} className="file thing">
           <UI.ImageFile file={file} className="red"/>
         </div>
       );
     });
-  }
-
-  renderImages() {
-    let uploads = this.allUploads();
-    let files = this.state.files || [];
-
-    if (!uploads.length && !files.length) {
-      return this.renderDefault();
-    }
-
-    //console.log("RENDER IMAGES");
-    //console.log("UP: " + uploads.length);
-    //console.log(uploads);
-    //console.log("FILE: " + files.length);
-    //console.log(files);
-
-    return (
-      <div className="pyr-images">
-        { this.renderUploads() }
-        { this.renderFiles() }
-      </div>
-    );
   }
 
   render() {
@@ -1079,9 +1060,14 @@ class FileSelector extends Child {
           imageOnly={this.props.imageOnly}
           multiple={this.props.multiple}
           onAddFiles={this.onAddFiles}
+          className=""
         >
-          { this.renderImages() }
+          { this.renderDefault() }
         </DropTarget>
+        <div className="guts">
+          { this.renderUploads() }
+          { this.renderFiles() }
+        </div>
       </div>
     );
   }

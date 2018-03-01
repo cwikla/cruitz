@@ -508,6 +508,16 @@ function times(x,f) {
   return result;
 }
 
+function matchAll(s, r) {
+  let results = [];
+
+  let m;
+  while(m = r.exec(s)) {
+    results.push(m[1]);
+  }
+  return results;
+}
+
 const Util = {
   URL : PURL,
   ClassNames,
@@ -529,6 +539,7 @@ const Util = {
   scramble,
   getRandomInt,
   fancyParagraph,
+  matchAll,
 };
 
 export default Util;

@@ -80,11 +80,11 @@ class Hello extends Component {
 }
 
 
-        //<Pyr.UI.RouteURL path="/positions/:pid/submit" page="positions" action="show" searchParams={{submit: 1}} />
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
       <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_PAGE}  >
+        <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
       </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,

@@ -20,6 +20,7 @@ import Sheet from '../sheet';
 import ItemLoader from '../item_loader';
 
 import HeadComponent, { 
+  HeadForm,
   CandidateComponent 
 } from './head';
 
@@ -326,17 +327,66 @@ class IndexSheet extends Sheet.Index {
 }
 
 class SubmitSheet extends Sheet.ShowFull {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      head: null
+    });
+  }
+
   key(position) {
     return PositionsPage.key(position);
   }
 
+  loadHead(headId, onLoading) {
+    console.log("HEADID");
+    console.log(headId);
+
+    let url = Pyr.URL(HEADS_URL).push(headId);
+
+    this.getJSON({
+      url,
+      onLoading
+
+    }).done((data, textStatus, jqXHR) => {
+      console.log("GOT HEAD");
+      console.log(data);
+
+      this.setState({
+        head: data.head
+      });
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
+
+  componentDidMount() {
+    super.componentDidMount();
+    this.loadHead(this.props.subItemId);
+  }
+
   renderItem(position, isSelected) {
     console.log("SUBMIT: renderItem");
+    if (!this.state.head) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+
+    console.log("STATE HEAD");
+    console.log(this.state.head);
+
+    console.log("POSITION");
+    console.log(position);
+
     return (
-        <PositionItem 
-          position={position} 
-          selected={isSelected}
-        />
+      <HeadForm
+        position={position}
+        head={this.state.head}
+      />
     );
   }
 }
@@ -407,6 +457,7 @@ class ShowSheet extends Sheet.ShowFull {
 
   loadCandidates(position, onLoading, props={}) {
     if (!position) {
+      console.log("NO POSITION");
       return;
     }
 
@@ -429,6 +480,10 @@ class ShowSheet extends Sheet.ShowFull {
   }
 
   componentDidMount() {
+    console.log("DIDMOUNT");
+    console.log(this.state.candidates);
+    super.componentDidMount();
+
     if (!this.state.candidates) {
       this.loadCandidates(this.props.selected, this.props.onLoading);
     }
@@ -463,7 +518,6 @@ class ShowSheet extends Sheet.ShowFull {
     return (
         <div className="flx-col flx-1">
           <HeadComponent 
-            position={this.props.selected}
             position={position} 
             onAddCandidate={this.onAddCandidate}
           />
@@ -520,7 +574,21 @@ class PositionsPage extends Page {
     return "Position";
   }
 
+  setSelected(selected) {
+    console.log("SELECTED " + JSON.stringify(selected));
+    if (!selected) {
+      alert("SETTING TO NULL");
+      console.log("SETTING TO NULL!!!!!!");
+    }
+
+    this.setState({
+      selected
+    });
+  }
+
   loadSelected(itemId, onLoading) {
+    console.log("LOAD SELECTED: " + itemId);
+
     this.getJSON({
       url: Pyr.URL(this.props.url).push(itemId),
       onLoading: onLoading
@@ -537,6 +605,7 @@ class PositionsPage extends Page {
   }
 
   loadItems(onLoading, props={}) {
+    console.log("LOAD ITEMS");
 
     let urlStuff = Object.assign({}, {
       url: this.props.url,
@@ -574,7 +643,9 @@ class PositionsPage extends Page {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-
+    console.log("ACTION SHEET");
+    console.log(sheet);
+    console.log(this.props);
 
         //onAction={this.onAction}
         //onUnaction={this.onUnaction}

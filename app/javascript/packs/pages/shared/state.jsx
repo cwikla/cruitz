@@ -56,11 +56,16 @@ function nextIsValid(sid) {
   return nexts ? sid in nexts : false;
 }
 
+function nexts(sid) {
+  return NEXT_STATES[sid];
+}
+
 const State = {
   toName,
   toAction,
   toClassName,
   nextIsValid,
+  nexts
 };
 
 export default State;

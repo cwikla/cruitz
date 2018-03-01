@@ -2,7 +2,7 @@ class Candidate < ApplicationRecord
   belongs_to :job
   belongs_to :head
 
-  has_one :recruiter, through: :head, class_name: 'User'
+  has_one :recruiter, through: :head, class_name: 'User', source: :user
   has_one :hirer, through: :job, source: :user, class_name: 'User'
 
   has_many :states, class_name: "CandidateState"

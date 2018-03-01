@@ -99,8 +99,19 @@ class RouterProvider extends BaseComponent {
 }
 
 class RouteURL extends BaseComponent {
+  getFields(path) {
+    matches = Util.matchAll(this.props.path, /:[a-zA-Z]*/) || [];
+
+    return matches.map((m, pos) => {
+      return m.substring(1, m.length);
+    });
+  }
+
   constructor(props) {
     super(props);
+
+    //let fields = this.getFields(this.props.path);
+
     this.onRouteRender = this.routeRender.bind(this);
   }
 
@@ -128,7 +139,7 @@ class RouteURL extends BaseComponent {
       action: this.props.action || params.action,
       itemId: this.props.pid || params.pid,
       subPage: this.props.subPage || params.sub,
-      subItemId: this.props.subid || params.subid,
+      subItemId: this.props.subItemId || params.subid,
       searchParams: Object.assign({}, searchParams, this.props.searchParams || {}),
     };
 

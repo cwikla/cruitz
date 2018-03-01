@@ -248,6 +248,7 @@ class HeadItem extends Component {
   }
 
   render() {
+    let position = this.props.position;
     let head = this.props.head;
 
     let full_name = head.full_name;
@@ -259,11 +260,14 @@ class HeadItem extends Component {
 
     let key = "head-" + head.id;
 
+    let url = Pyr.URL(POSITIONS_URL).push(position.id).push("submit").push(head.id);
+
+        //onClick={this.onSetMe}
     return (
+      <Link to={url.toString()}>
       <div 
         className="head flx-row flx-1" 
         key={key}
-        onClick={this.onSetMe}
       >
         <div className="flx-col flx-1">
           <div className="full_name">{ full_name }</div>
@@ -274,6 +278,7 @@ class HeadItem extends Component {
           <Pyr.UI.PrimaryButton className="mt-auto">Submit Me</Pyr.UI.PrimaryButton>
         </div>
       </div>
+      </Link>
     );
   }
 }
@@ -426,12 +431,15 @@ class HeadForm extends Sheet.Form {
   }
   
   renderForm() {
+    console.log("RENDER FORM");
+    console.log(this.props);
+
     return (
       <div className="form-parent flx-row">
-        <div className="flx-col flx-1 left">
+        <div className="flx-col flx-1 left scroll">
           { this.renderActualForm() }
         </div>
-        <div className="flx-col flx-1 right">
+        <div className="flx-col flx-1 right scroll">
           { this.renderDeets() }
           { this.renderLinks() }
           { this.renderSkills() }
@@ -580,6 +588,7 @@ class HeadComponent extends Sheet.Index {
     return (
       <HeadItem 
         head={item} 
+        position={this.props.position}
         onSetSelected={this.onSetSelected}
       />
     );
@@ -622,7 +631,7 @@ class HeadComponent extends Sheet.Index {
     });
   }
 
-  render() {
+  unused_render() {
     return (
       <div className="flx-col flx-1">
         <HeadModal 
@@ -639,6 +648,7 @@ class HeadComponent extends Sheet.Index {
 }
 
 export {
+  HeadForm,
   CandidateComponent,
 };
 
