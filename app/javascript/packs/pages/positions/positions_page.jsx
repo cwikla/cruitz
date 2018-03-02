@@ -19,7 +19,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 import ItemLoader from '../item_loader';
 
-import HeadComponent, { 
+import HeadIndex, { 
   HeadForm,
   CandidateComponent 
 } from './head';
@@ -286,6 +286,10 @@ class IndexSheet extends Sheet.Index {
     return PositionsPage.key(position);
   }
 
+  componentWillMount() {
+    super.componentWillMount();
+  }
+
   renderItem(item, isSelected) {
     return (
       <PositionCardItem 
@@ -327,57 +331,20 @@ class IndexSheet extends Sheet.Index {
 }
 
 class SubmitSheet extends Sheet.ShowFull {
-  constructor(props) {
-    super(props);
-
-    this.initState({
-      head: null
-    });
-  }
-
   key(position) {
     return PositionsPage.key(position);
   }
 
-  loadHead(headId, onLoading) {
-    console.log("HEADID");
-    console.log(headId);
-
-    let url = Pyr.URL(HEADS_URL).push(headId);
-
-    this.getJSON({
-      url,
-      onLoading
-
-    }).done((data, textStatus, jqXHR) => {
-      console.log("GOT HEAD");
-      console.log(data);
-
-      this.setState({
-        head: data.head
-      });
-
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-    });
-  }
-
-
-  componentDidMount() {
-    super.componentDidMount();
-    this.loadHead(this.props.subItemId);
-  }
-
   renderItem(position, isSelected) {
     console.log("SUBMIT: renderItem");
-    if (!this.state.head) {
+    if (!this.props.head) {
       return (
         <Pyr.UI.Loading />
       );
     }
 
     console.log("STATE HEAD");
-    console.log(this.state.head);
+    console.log(this.props.head);
 
     console.log("POSITION");
     console.log(position);
@@ -385,7 +352,7 @@ class SubmitSheet extends Sheet.ShowFull {
     return (
       <HeadForm
         position={position}
-        head={this.state.head}
+        head={this.props.head}
       />
     );
   }
@@ -516,12 +483,12 @@ class ShowSheet extends Sheet.ShowFull {
     let position = this.props.selected;
 
     return (
-        <div className="flx-col flx-1">
-          <HeadComponent 
-            position={position} 
-            onAddCandidate={this.onAddCandidate}
-          />
-        </div>
+      <div className="flx-col flx-1">
+        <HeadIndex
+          position={position} 
+          onAddCandidate={this.onAddCandidate}
+        />
+      </div>
     );
   }
 
@@ -569,6 +536,81 @@ class ShowSheet extends Sheet.ShowFull {
 
 }
 
+class HeadLoader extends Component {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      head: null // currently selected head
+    });
+
+    this.onSetHead = this.setHead.bind(this);
+  }
+
+  setHead(head) {
+    this.setState({
+      head
+    });
+  }
+
+  loadHead(headId) {
+    console.log("HEAD LOADER");
+    console.log(headId);
+
+    this.getJSON({
+      url: Pyr.URL(HEADS_URL).push(headId),
+      onLoading: this.props.onLoading
+
+    }).done((data, textStatus, jqXHR) => {
+      console.log("GOT HEAD");
+      console.log(data);
+      this.onSetHead(data.head);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.headId!= this.props.headId) {
+      console.log("PAGE GOT NEW ID: " + nextProps.headId);
+      this.setState({
+        head: null
+      });
+      this.loadHead(nextProps.headId);
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.headId) {
+      this.loadHead(this.props.headId);
+    }
+  }
+
+  actionSheet() {
+    let action = this.props.action;
+    let sheet = Sheet.sheetComponent(action || "Show");
+    let ActionSheet = eval(sheet);
+
+    console.log("ACTION SHEET");
+    console.log(sheet);
+    console.log(this.props);
+    console.log(this.state.head);
+
+    return (
+      <ActionSheet
+        {...this.props}
+        head={this.state.head}
+      />
+    );
+  }
+
+  render() {
+    return this.actionSheet();
+  }
+}
+
 class PositionsPage extends Page {
   name() {
     return "Position";
@@ -577,12 +619,18 @@ class PositionsPage extends Page {
   setSelected(selected) {
     console.log("SELECTED " + JSON.stringify(selected));
     if (!selected) {
-      alert("SETTING TO NULL");
+      //alert("SETTING TO NULL");
       console.log("SETTING TO NULL!!!!!!");
     }
 
     this.setState({
       selected
+    });
+  }
+
+  setHead(head) {
+    this.setState({
+      head
     });
   }
 
@@ -634,24 +682,16 @@ class PositionsPage extends Page {
         onLoading={this.onLoading}
         onLoadItems={this.onLoadItems}
         onSetItems={this.onSetItems}
-        card={false}
       />
     );
   }
 
   actionSheet(action) {
-    let sheet = Sheet.sheetComponent(action || "Show");
-    let ActionSheet = eval(sheet);
-
-    console.log("ACTION SHEET");
-    console.log(sheet);
-    console.log(this.props);
-
-        //onAction={this.onAction}
-        //onUnaction={this.onUnaction}
     return (
-      <ActionSheet
+      <HeadLoader
         {...this.props}
+        headId={this.props.subItemId}
+        action={action}
         selected={this.getSelected()}
         onLoading={this.onLoading}
         onSetItems={this.onSetItems}

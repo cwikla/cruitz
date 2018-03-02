@@ -281,6 +281,10 @@ class Index extends Base {
     return this.props.items;
   }
 
+  componentWillMount() {
+    this.setSelected(null); // zero out anything selected
+  }
+
   componentDidMount() {
     if (!this.items()) {
       //console.log("LOADING ITEMS");

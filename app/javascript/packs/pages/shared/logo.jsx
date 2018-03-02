@@ -13,7 +13,7 @@ import Pyr, {
 } from '../../pyr/pyr';
 
 const Logo = (props) => (
-  <Link to="/home"><Pyr.UI.SmallLabel className="logo nav-item">cruitz</Pyr.UI.SmallLabel></Link>
+  <Link to="/home" replace><Pyr.UI.SmallLabel className="logo nav-item">cruitz</Pyr.UI.SmallLabel></Link>
 );
 
 export default Logo;

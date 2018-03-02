@@ -292,7 +292,7 @@ class HeadForm extends Sheet.Form {
 
   success(data, textStatus, jqXHR) {
     this.props.onAddCandidate(data.candidate);
-    this.props.onClose();
+    this.goBack();
   }
 
   title() {
@@ -471,7 +471,7 @@ class HeadModal extends Pyr.UI.Modal {
 }
 
 
-class HeadComponent extends Sheet.Index {
+class HeadIndex extends Sheet.Index {
   key(item) {
     return item.id;
   }
@@ -486,7 +486,7 @@ class HeadComponent extends Sheet.Index {
 
     this.onLoadItems = this.loadItems.bind(this);
     this.onSetHeads = this.setHeads.bind(this);
-    this.onSetSelected = this.setSelected.bind(this);
+    //this.onSetSelected = this.setSelected.bind(this);
     this.onCloseModal = this.closeModal.bind(this);
   }
 
@@ -494,11 +494,7 @@ class HeadComponent extends Sheet.Index {
     return this.state.heads;
   }
 
-  unused_setSelected(head) {
-    let position = this.props.position;
-    this.setState({
-      showSubmit
-    });
+  setSelected(unused) {
   }
 
   submitSelected(head) {
@@ -519,25 +515,6 @@ class HeadComponent extends Sheet.Index {
     }).fail((jqXHR, textStatus, errorThrown) => {
       Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
-  }
-
-  setSelected(selected) {
-    console.log("SET SELECTED HEAD");
-    console.log(selected);
-
-    this.setState({
-      selected
-    });
-
-/*
-    if (selected) {
-      this.modal.open();
-    }
-    else
-    {
-      this.modal.close();
-    }
-*/
   }
 
   setHeads(heads) {
@@ -652,4 +629,4 @@ export {
   CandidateComponent,
 };
 
-export default HeadComponent;
+export default HeadIndex;
