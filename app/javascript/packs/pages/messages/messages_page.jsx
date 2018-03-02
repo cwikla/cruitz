@@ -344,7 +344,9 @@ class MessagesPage extends Page {
   setSelected(selected) {
     //console.log("SET SELECTED!");
 
-    selected.read_at = new Date();
+    if (selected) {
+      selected.read_at = new Date();
+    }
     super.setSelected(selected);
 
     let nextId = this.getNext(selected);

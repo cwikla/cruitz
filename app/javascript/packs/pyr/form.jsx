@@ -998,6 +998,16 @@ class FileSelector extends Child {
   }
 
   renderDefault() {
+    let files = this.state.files || [];
+    let uploads = this.allUploads() || [];
+
+    if (!this.props.multiple) {
+      if (files.length || uploads.length) {
+        return null;
+      }
+    }
+
+
     return (
       <div className="flx-col drop-site drop-site-size">
         <UI.IconButton name="upload" />
@@ -1063,11 +1073,11 @@ class FileSelector extends Child {
           className=""
         >
           { this.renderDefault() }
-        </DropTarget>
         <div className="guts">
           { this.renderUploads() }
           { this.renderFiles() }
         </div>
+        </DropTarget>
       </div>
     );
   }

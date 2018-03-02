@@ -189,7 +189,7 @@ class Form extends Base {
   renderTitle() {
     return (
       <div className="flx-row title">
-        <h3 className="mr-auto mb-auto mt-auto flx-row">{this.title()}</h3>
+        <h3 className="mr-auto mb-auto mt-auto">{this.title()}</h3>
         <div className="ml-auto">{this.renderButton()}</div>
       </div>
     );
@@ -202,7 +202,7 @@ class Form extends Base {
     return (
       <AComponent className="flx-col">
         { this.renderTitle() }
-        <div className="form-content mb-auto flx-1 flx-col">
+        <div className="form-content mb-auto flx-col">
           { this.renderForm() }
         </div>
       </AComponent>
