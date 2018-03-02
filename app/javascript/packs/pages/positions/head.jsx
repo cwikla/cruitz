@@ -291,7 +291,7 @@ class HeadForm extends Sheet.Form {
   }
 
   success(data, textStatus, jqXHR) {
-    this.props.onAddCandidate(data.candidate);
+    //this.props.onAddCandidate(data.candidate);
     this.goBack();
   }
 
