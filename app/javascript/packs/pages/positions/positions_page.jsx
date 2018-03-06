@@ -19,6 +19,8 @@ import Page from '../page';
 import Sheet from '../sheet';
 import ItemLoader from '../item_loader';
 
+import Blurb from './blurb';
+
 import HeadIndex, { 
   HeadForm,
   CandidateComponent 
@@ -57,81 +59,6 @@ const RANGES = {
 };
 
 class PositionItem extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  renderSubmitButton() {
-    if (!this.props.showSubmitButton) {
-      return null;
-    }
-
-    return (
-      <div className="flx-row mt-auto">
-        <div className="ml-auto"><Pyr.UI.PrimaryButton className="ml-auto" name="add" onClick={this.props.onShowCandidates} >Submit Candidate</Pyr.UI.PrimaryButton></div>
-      </div>
-    );
-  }
-
-  renderHeader() {
-    let position = this.props.position;
-    if (!position) {
-      return null;
-    }
-
-    let company = position.company || {};
-    let logo = company.logo;
-
-    let locations = null;
-    if (position.locations) {
-      locations = position.locations.map(v => {
-        return v.full_name;
-      }).join(", ");
-    }
-    locations = locations || "Unknown";
-
-    let skills = null;
-    if (position.skills) {
-      skills = position.skills.map(v => {
-        return v.name;
-      }).join(", ");
-    }
-    skills = skills || "None";
-
-    let title = position.title || company.name || "No Title";
-    let description = position.description || "No Description";
-    let category = position.category ? position.category.name : "Other";
-    let logo_url = logo ? logo.url : "";
-    let companyName = company ? company.name : "Anonymous";
-
-    let url = Pyr.URL(POSITIONS_URL).push(position.id).push("submit").set("name", "1");
-    console.log("URL");
-    console.log(url);
-    console.log(url.searchParams.toString());
-
-    return (
-      <div className="header flx-row">
-        <div className="flx-col">
-          <img src={logo_url} className="logo"/>
-        </div>
-
-        <div className="flx-col flx-1">
-          <div className="flx-row">
-            <div className="title flx-1">{ title }</div>
-            <div className="created_at"><Pyr.UI.MagicDate dateOnly date={position.created_at}/></div>
-          </div>
-          <div className="company">{ companyName }</div>
-          <div className="locations">{ locations }</div>
-
-          <div className="flx-row mt-auto">
-            <div className="salary-range">$120,000 - $160,000</div>
-          </div>
-
-          { this.renderSubmitButton() }
-        </div>
-      </div>
-    );
-  }
 
   renderContent() {
     let position = this.props.position;
@@ -168,7 +95,7 @@ class PositionItem extends Component {
       <div className={allClass}>
         <div className="flx-row flx-1">
           <div className="flx-col flx-1">
-            { this.renderHeader() }
+            <Blurb {...this.props} />
             { this.renderContent() }
           </div>
         </div>
@@ -368,6 +295,10 @@ class ShowSheet extends Sheet.ShowFull {
     this.onSetCandidates = this.setCandidates.bind(this);
     this.onAddCandidate = this.addCandidate.bind(this);
     this.onRemoveCandidate = this.removeCandidate.bind(this);
+  }
+
+  asPage() {
+    return true;
   }
 
   setCandidates(candidates) {

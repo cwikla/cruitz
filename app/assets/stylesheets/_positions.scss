@@ -1,27 +1,12 @@
 
 .positions {
-  .show {
-    .sheet {
-      background-color: $light_gray_color;
+  .submit {
+    .blurb {
+      border: 1px solid $border_color;
+      margin-bottom: 2rem;
+    }
 
-      .inner {
-        border: 0;
-        padding: 0;
-      }
-
-      .scroll.inner {
-        margin-left: 1rem;
-        border: solid $border_color 1px;
-        padding: 0;
-      }
-
-      .submitted {
-        background-color: white;
-        margin-bottom: 2rem;
-        min-height: 8rem;
-      }
-
-      .head-modal {
+      .form-content {
         min-width: 60rem;
 
         .title {
@@ -32,8 +17,6 @@
         }
 
         .section {
-          padding: 1rem;
-          margin-bottom: 1rem;
         }
   
         .deets {
@@ -70,17 +53,47 @@
         .head-form {
           padding-bottom: 2rem;
           margin-bottom: 1rem;
+
+          #candidate-message {
+            height: 25.5rem;
+          }
+
+          .stuff {
+            margin-bottom: 2rem;
+          }
         }
 
         .form-parent {
           .left {
-            margin-right: 0.5rem;
+            margin-right: 1.5rem;
           }
           .right {
-            margin-left: 0.5rem;
+            margin-left: 1.5rem;
           }
         }
 
+      }
+  }
+
+  .show, .submit {
+    .sheet {
+      background-color: $light_gray_color;
+
+      .inner {
+        border: 0;
+        padding: 0;
+      }
+
+      .scroll.inner {
+        margin-left: 1rem;
+        border: solid $border_color 1px;
+        padding: 0;
+      }
+
+      .submitted {
+        background-color: white;
+        margin-bottom: 2rem;
+        min-height: 8rem;
       }
 
       .candidate-item, .placeholder {
@@ -127,35 +140,42 @@
           & > div {
             padding: 1rem;
           }
-
-          .logo {
-            height: 10rem;
-            width: 10rem;
-            border: solid $border_color 1px;
-            border-radius: 5px;
-          }
-  
-          .title {
-            font-size: 2rem;
-            line-height: 3rem;
-            font-weight: $font_weight_normal;
-          }
-
-          .company {
-            padding-top: 0.5rem;
-            font-size: 1.5rem;
-            line-height: 2rem;
-            font-weight: $font_weight_normal;
-          }
-    
-          .locations {
-            padding-top: 0.5rem;
-            font-size: 1.0rem;
-            line-height: 1.5rem;
-            font-weight: $font_weight_normal;
-          }
         }
 
+
+      }
+
+      .blurb {
+          & > div {
+            padding: 1rem;
+          }
+
+        .logo {
+          height: 10rem;
+          width: 10rem;
+          border: solid $border_color 1px;
+          border-radius: 5px;
+        }
+  
+        .title {
+          font-size: 2rem;
+          line-height: 3rem;
+          font-weight: $font_weight_normal;
+        }
+
+        .company {
+          padding-top: 0.5rem;
+          font-size: 1.5rem;
+          line-height: 2rem;
+          font-weight: $font_weight_normal;
+        }
+    
+        .locations {
+          padding-top: 0.5rem;
+          font-size: 1.0rem;
+          line-height: 1.5rem;
+          font-weight: $font_weight_normal;
+        }
       }
 
       .chooser {

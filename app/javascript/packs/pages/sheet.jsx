@@ -410,9 +410,13 @@ class Show extends Base {
 }
 
 class ShowFull extends Show {
+  asPage() {
+    return false;
+  }
+
   render() {
     return (
-      <FSWL>
+      <FSWL asPage={this.asPage()}>
         { super.render() }
       </FSWL>
     );

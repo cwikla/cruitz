@@ -50,7 +50,7 @@ class CandidatesController < ApplicationController
   def create_params
     puts params
 
-    params.require(:candidate).permit(:job, :head)
+    params.require(:candidate).permit(:job, :head, :message, :commission, :views)
   end
 
   def candidates_params

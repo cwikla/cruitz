@@ -19,6 +19,8 @@ const ClassNames = Pyr.ClassNames;
 
 import State from '../shared/state';
 
+import Blurb from './blurb';
+
 import {
   POSITIONS_URL,
   SEARCH_URL,
@@ -283,6 +285,180 @@ class HeadItem extends Component {
   }
 }
 
+class Deets extends Component {
+  render() {
+    let head = this.props.head;
+    let position = this.props.position;
+
+    return (
+      <div className="deets sub-section">
+        <div>{head.first_name} {head.last_name}</div>
+        <div>{head.email}</div>
+        <div>{head.phone_number}</div>
+  
+      </div>
+    );
+  }
+}
+
+class SocialLinks extends Component {
+  render() {
+    return (
+        <div className="links sub-section">
+          <Pyr.UI.Icon name="linkedin-square" className="social"/>
+          <Pyr.UI.Icon name="github" className="social"/>
+          <Pyr.UI.Icon name="dribbble" className="social"/>
+          <Pyr.UI.Icon name="quora" className="social"/>
+        </div>
+    );
+  }
+}
+
+class Skills extends Component {
+  render() {
+    let skills = ["C++", "C", "Quality Insurance", "Cool Skill", "Skill Me"];
+    if (!skills || skills.length == 0) {
+      return null;
+    }
+
+    let ts =  skills.map((skill, pos) => {
+      let sid = Math.random();
+      let key = "skill-" + sid;
+      return (
+        <div
+          key={key}
+          className="skill"
+        >{skill}</div>
+      );
+    });
+
+    return (
+      <div className="skills sub-section">
+        { ts }
+      </div>
+    );
+  }
+}
+
+class WorkHistory extends Component {
+  render() {
+    let workHistory = this.props.work_history;
+
+    workHistory = [1,2,3,4,5,6];
+
+    let guts = workHistory.map((item, pos) => {
+      return (
+        <div className="work" key={"work-"+item}>
+          <div className="year">2015-Current</div>
+          <div className="company">My Company</div>
+          <div className="current_title">Director Engineering</div>
+          <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        </div>
+      );
+    });
+
+    return (
+      <div className="work-history sub-section">
+        { guts }
+      </div>
+    );
+  }
+}
+
+class Stuff extends Component {
+  old_render() {
+    return (
+      <div className="stuff">
+        <Pyr.Form.Group name="commission">
+          <Pyr.Form.Label>Commission</Pyr.Form.Label>
+          <Pyr.Form.TextField size={5}/>
+        </Pyr.Form.Group>
+
+        <Pyr.Form.Group name="availability">
+          <Pyr.Form.Label>Availability</Pyr.Form.Label>
+          <Pyr.Form.TextField />
+        </Pyr.Form.Group>
+
+        <Pyr.Form.Group name="salary_range">
+          <Pyr.Form.Label>Salary Range</Pyr.Form.Label>
+          <Pyr.Form.TextField />
+        </Pyr.Form.Group>
+
+        <Pyr.Form.Group name="location">
+          <Pyr.Form.Label>Location</Pyr.Form.Label>
+          <Pyr.Form.TextField />
+        </Pyr.Form.Group>
+      </div>
+    );
+  }
+
+  renderComm(value) {
+    return "" + value + "%";
+  }
+
+  render() {
+    return (
+      <div className="stuff">
+        <Pyr.Form.Group name="commission">
+          <Pyr.Form.Label>Commission</Pyr.Form.Label>
+          <Pyr.Form.Range
+            minValue={0}
+            maxValue={100}
+            step={1}
+            formatLabel={this.renderComm}
+          />
+        </Pyr.Form.Group>
+      </div>
+    );
+  }
+}
+
+class ActualForm extends Component {
+  render() {
+    let url = Pyr.URL(CANDIDATES_URL);
+
+    let head = this.props.head;
+    let position = this.props.position;
+
+    return (
+      <div className="head-form flx-1">
+        <Pyr.Form.Form
+          model="candidate"
+          object={this.props.candidate}
+          url={url}
+          method={Pyr.Method.POST}
+          id="candidate-form"
+          ref={node => this.form = node}
+          onSuccess={this.onSuccess}
+        >
+          <Stuff {...this.props}/>
+
+          <Pyr.Form.Group name="message">
+            <Pyr.Form.Label>Message for Hiring Manager</Pyr.Form.Label>
+            <Pyr.Form.TextArea />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="files">
+            <Pyr.Form.Label>Attachments</Pyr.Form.Label>
+            <Pyr.Form.FileSelector multiple/>
+          </Pyr.Form.Group>
+
+
+
+          <Pyr.Form.Group name="head" className="hidden">
+            <Pyr.Form.Hidden value={head.id} />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="job" className="hidden">
+            <Pyr.Form.Hidden value={position.id} />
+          </Pyr.Form.Group>
+
+        </Pyr.Form.Form>
+      </div>
+    );
+  }
+}
+
 class HeadForm extends Sheet.Form {
   constructor(props) {
     super(props);
@@ -307,142 +483,23 @@ class HeadForm extends Sheet.Form {
   }
 
 
-  renderAge(value) {
-    return "" + value + " %";
-  }
-
-  renderSkills() {
-    let skills = ["C++", "C", "Quality Insurance", "Cool Skill", "Skill Me"];
-    if (!skills || skills.length == 0) {
-      return null;
-    }
-
-    let ts =  skills.map((skill, pos) => {
-      let sid = Math.random();
-      let key = "skill-" + sid;
-      return (
-        <span
-          key={key}
-          className="skill"
-        >{skill}</span>
-      );
-    });
-
-    return (
-      <div className="skills flx-row flx-wrap section">
-        { ts }
-      </div>
-    );
-  }
-
-  renderLinks() {
-    return (
-        <div className="flx-row links section">
-          <Pyr.UI.Icon name="linkedin-square" className="social"/>
-          <Pyr.UI.Icon name="github" className="social"/>
-          <Pyr.UI.Icon name="dribbble" className="social"/>
-          <Pyr.UI.Icon name="quora" className="social"/>
-        </div>
-    );
-  }
-
-  renderWork() {
-    let workHistory = this.props.work_history;
-
-    workHistory = [1,2,3,4,5,6];
-
-    return workHistory.map((item, pos) => {
-      return (
-        <div className="work" key={"work-"+item}>
-          <div className="year">2015-Current</div>
-          <div className="company">My Company</div>
-          <div className="current_title">Director Engineering</div>
-          <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-        </div>
-      );
-    });
-  }
-
-  renderDeets() {
-    let head = this.props.head;
-    let position = this.props.position;
-
-    return (
-      <div className="deets section">
-        <div>{head.first_name} {head.last_name}</div>
-        <div>{head.email}</div>
-        <div>{head.phone_number}</div>
-  
-      </div>
-    );
-  }
-
-  renderWorkHistory() {
-    return (
-      <div className="work-history flx-row flx-1 scroll section">
-        <div className="flx-col">
-          { this.renderWork() }
-        </div>
-      </div>
-    );
-  }
-
-  renderActualForm() {
-    let url = Pyr.URL(CANDIDATES_URL);
-
-    let head = this.props.head;
-    let position = this.props.position;
-
-    return (
-      <div className="head-form flx-1">
-        <Pyr.Form.Form
-          model="candidate"
-          object={this.props.candidate}
-          url={url}
-          method={Pyr.Method.POST}
-          id="candidate-form"
-          ref={node => this.form = node}
-          onSuccess={this.onSuccess}
-        >
-          <Pyr.Form.Group name="head" className="hidden">
-            <Pyr.Form.Hidden value={head.id} />
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="job" className="hidden">
-            <Pyr.Form.Hidden value={position.id} />
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="title">
-            <Pyr.Form.TextField />
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="files">
-            <Pyr.Form.FileSelector multiple/>
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="message">
-            <Pyr.Form.TextArea />
-          </Pyr.Form.Group>
-
-        </Pyr.Form.Form>
-      </div>
-    );
-  }
-  
   renderForm() {
     console.log("RENDER FORM");
     console.log(this.props);
 
     return (
-      <div className="form-parent flx-row">
-        <div className="flx-col flx-1 left scroll">
-          { this.renderActualForm() }
-        </div>
-        <div className="flx-col flx-1 right scroll">
-          { this.renderDeets() }
-          { this.renderLinks() }
-          { this.renderSkills() }
-          { this.renderWorkHistory() }
+      <div className="form-parent">
+        <Blurb {...this.props} />
+        <div className="flx-row flx-1">
+          <div className="flx-col flx-1 left section scroll">
+            <ActualForm {...this.props} />
+          </div>
+          <div className="flx-col flx-1 right section scroll">
+            <Deets {...this.props} />
+            <SocialLinks {...this.props} />
+            <Skills {...this.props} />
+            <WorkHistory {...this.props} />
+          </div>
         </div>
       </div>
     );
@@ -450,25 +507,6 @@ class HeadForm extends Sheet.Form {
 
 
 }
-
-class HeadModal extends Pyr.UI.Modal {
-  constructor(props) {
-    super(props);
-  }
-
-  isOpen() {
-    return this.props.head != null;
-  }
-
-  renderInner() {
-    return (
-      <div className="head-modal flx-col">
-        <HeadForm {...this.props} notFullScreen/>
-      </div>
-    );
-  }
-}
-
 
 class HeadIndex extends Sheet.Index {
   key(item) {
@@ -607,20 +645,6 @@ class HeadIndex extends Sheet.Index {
     });
   }
 
-  unused_render() {
-    return (
-      <div className="flx-col flx-1">
-        <HeadModal 
-          head={this.state.selected} 
-          ref={node => this.modal = node}
-          position={this.props.position}
-          onClose={this.onCloseModal}
-          onAddCandidate={this.props.onAddCandidate}
-        />
-        { this.renderInner() }
-      </div>
-    );
-  }
 }
 
 export {

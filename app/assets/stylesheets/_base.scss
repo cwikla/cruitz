@@ -490,6 +490,13 @@ h3.title {
     margin-bottom: 1rem;
   }
 
+  .sub-section {
+    border-bottom: 1px solid $border_color;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: white;
+  }
+
 }
 
 .blurry-text {

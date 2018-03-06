@@ -936,14 +936,16 @@ class FullScreen extends BaseComponent {
   }
 
   renderInner() {
+    let extra = this.props.asPage ? "flx-col flx-1" : "";
+
     return (
       <div 
-        className={ClassNames("pyr-fullscreen flx-col flx-1").push(this.props.className)}
+        className={ClassNames("pyr-fullscreen").push(this.props.className).push(extra)}
         ref={(node) => this.me = node }
       >
         { this.renderNavBar() }
         { this.renderHeader() }
-        <div className="content flx-col flx-1">
+        <div className={ClassNames("content").push(extra)}>
           {this.props.children}
         </div>
       </div>
