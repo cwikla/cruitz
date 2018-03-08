@@ -2,7 +2,7 @@
 .positions {
   .submit {
     .blurb {
-      border: 1px solid $border_color;
+      box-shadow: 1px 1px 5px 0px $gray_color;
       margin-bottom: 2rem;
     }
 
@@ -17,6 +17,17 @@
         }
 
         .section {
+        }
+
+        .sub-section {
+          .unview-msg {
+            color: white;
+          }
+          &:hover {
+            .unview-msg {
+              color: rgba(red, 0.5);
+            }
+          }
         }
   
         .deets {
@@ -46,7 +57,6 @@
 
         .work-history {
           padding-bottom: 2rem;
-          border-bottom: 1px solid $border_color;
           margin-bottom: 1rem;
         }
 

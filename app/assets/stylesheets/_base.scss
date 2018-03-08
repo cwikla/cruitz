@@ -678,6 +678,10 @@ label {
   }
 }
 
+.unview {
+  color: $med_gray_color;
+}
+
 @import 'item';
 @import 'message_thread';
 @import 'messages';

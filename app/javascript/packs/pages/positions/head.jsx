@@ -292,9 +292,9 @@ class Deets extends Component {
 
     return (
       <div className="deets sub-section">
-        <div>{head.first_name} {head.last_name}</div>
-        <div>{head.email}</div>
-        <div>{head.phone_number}</div>
+        <div className="flx-row"><div className="unview">{head.first_name} {head.last_name}</div><div className="ml-auto unview-msg">(Contact info hidden until accepted)</div></div>
+        <div className="unview">{head.email}</div>
+        <div className="unview">{head.phone_number}</div>
   
       </div>
     );
@@ -305,10 +305,11 @@ class SocialLinks extends Component {
   render() {
     return (
         <div className="links sub-section">
-          <Pyr.UI.Icon name="linkedin-square" className="social"/>
-          <Pyr.UI.Icon name="github" className="social"/>
-          <Pyr.UI.Icon name="dribbble" className="social"/>
-          <Pyr.UI.Icon name="quora" className="social"/>
+          <Pyr.UI.Icon name="linkedin-square" className="social unview"/>
+          <Pyr.UI.Icon name="github" className="social unview"/>
+          <Pyr.UI.Icon name="dribbble" className="social unview"/>
+          <Pyr.UI.Icon name="quora" className="social unview"/>
+          <span className="unview-msg">(Links hidden until accepted)</span>
         </div>
     );
   }
@@ -333,7 +334,7 @@ class Skills extends Component {
     });
 
     return (
-      <div className="skills sub-section">
+      <div className="skills sub-section flx-row flx-wrap">
         { ts }
       </div>
     );
@@ -414,7 +415,33 @@ class Stuff extends Component {
 }
 
 class ActualForm extends Component {
-  render() {
+}
+
+class HeadForm extends Sheet.Form {
+  constructor(props) {
+    super(props);
+
+    this.onSuccess = this.success.bind(this);
+    this.onGetTarget = this.getTarget.bind(this);
+  }
+
+  success(data, textStatus, jqXHR) {
+    this.goBack();
+  }
+
+  title() {
+    let name = this.props.head.first_name;
+
+    return "Submit " + name + " for " + this.props.position.title;
+  }
+
+  renderButton() {
+    return (
+      <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>Submit Candidate</Pyr.Form.SubmitButton>
+    );
+  }
+
+  renderActualForm() {
     let url = Pyr.URL(CANDIDATES_URL);
 
     let head = this.props.head;
@@ -457,31 +484,6 @@ class ActualForm extends Component {
       </div>
     );
   }
-}
-
-class HeadForm extends Sheet.Form {
-  constructor(props) {
-    super(props);
-
-    this.onSuccess = this.success.bind(this);
-  }
-
-  success(data, textStatus, jqXHR) {
-    this.goBack();
-  }
-
-  title() {
-    let name = this.props.head.first_name;
-
-    return "Submit " + name + " for " + this.props.position.title;
-  }
-
-  renderButton() {
-    return (
-      <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>Submit Candidate</Pyr.Form.SubmitButton>
-    );
-  }
-
 
   renderForm() {
     console.log("RENDER FORM");
@@ -491,10 +493,10 @@ class HeadForm extends Sheet.Form {
       <div className="form-parent">
         <Blurb {...this.props} />
         <div className="flx-row flx-1">
-          <div className="flx-col flx-1 left section scroll">
-            <ActualForm {...this.props} />
+          <div className="section flx-4 left">
+            { this.renderActualForm() }
           </div>
-          <div className="flx-col flx-1 right section scroll">
+          <div className="section flx-5 right">
             <Deets {...this.props} />
             <SocialLinks {...this.props} />
             <Skills {...this.props} />

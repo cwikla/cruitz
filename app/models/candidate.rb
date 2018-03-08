@@ -8,8 +8,6 @@ class Candidate < ApplicationRecord
   has_many :states, class_name: "CandidateState"
   has_many :messages
 
-  cache_notify :user
-
   SUBMITTED_STATE = 0
   ACCEPTED_STATE = 100
   REJECTED_STATE = -100
@@ -21,11 +19,16 @@ class Candidate < ApplicationRecord
   RECALL_STATE = -1000
   CANCEL_STATE = -5000
 
+  cache_notify :user
+
   scope :isnew, -> { where(state: SUBMITTED_STATE) }
   scope :accepted, -> {  where(state: ACCEPTED_STATE) }
   scope :rejected, -> {  where(state: REJECTED_STATE) }
   scope :live, -> { where("state >= ? and state <= ?", SUBMITTED_STATE, HIRE_STATE) }
 
+  validates :job_id, presence: true
+  validates :head_id, presence: true
+  validates :commission, presence: true
 
   def self.after_cached_candidate_state(state)
     c = Candidate.new(:id => state.candidate_id)
@@ -44,22 +47,31 @@ class Candidate < ApplicationRecord
     "#{job.id} => #{job.title} => #{head}"
   end
 
-  def self.submit(head, job, body=nil)
+  def self.submit(head, job, commission, body=nil)
+
     candidate = nil
     state = SUBMITTED_STATE
 
+    puts "SUBMIT"
+
     Candidate.transaction do
-      candidate = Candidate.find_or_create_unique(job: job, head: head, state: state)
+      candidate = Candidate.find_or_create_unique(job: job, head: head, commission: commission, state: state)
+      candidate.commission = commission if !candidate.commission || (commission.to_f < candidate.commission.to_f) # allow commission to be less
+      candidate.state = state
+      candidate.save!
+
+      puts "GOT CANDIDATE"
+      puts candidate.inspect
 
       recruiter = head.user
     
       msg = nil 
-      msg = Message.create(candidate: candidate, user: candidate.hirer, from_user: recruiter, body: body) if body
+      msg = Message.create!(candidate: candidate, user: candidate.hirer, from_user: recruiter, job: job, body: body) if body
     
-      CandidateState.create(candidate: candidate, 
-        state: candidate.state,
-        recruiter: recruiter,
-        message: msg)
+      #CandidateState.create!(candidate: candidate, 
+        #state: candidate.state,
+        #recruiter: recruiter,
+        #message: msg)
     end
 
     return candidate

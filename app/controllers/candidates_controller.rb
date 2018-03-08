@@ -20,8 +20,10 @@ class CandidatesController < ApplicationController
 
     my_head = current_user.heads.find(cp[:head])
     job = Job.find(cp[:job])
+    commission = cp[:commission]
+    body = cp[:message] || cp[:body]
 
-    @candidate = Candidate.submit(my_head, job)
+    @candidate = Candidate.submit(my_head, job, commission, body)
 
     return render json: @candidate
   end

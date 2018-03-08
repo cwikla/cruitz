@@ -730,13 +730,15 @@ class CandidatesPage extends Page {
       url = Pyr.URL(CANDIDATES_URL);
     }
 
+    //url.set("candidates", 1);
+
     this.getJSON({
       url: url,
       context: this,
       onLoading: this.onLoading,
 
     }).done((data, textStatus, jaXHR) => {
-      this.jobLoad(data.job, data.job.candidates);
+      this.jobLoad(data.job, data.candidates || data.job.candidates);
 
     }).fail((jaXHR, textStatus, errorThrown) => {
       Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
