@@ -32,7 +32,7 @@ class CandidatesController < ApplicationController
     cid = params.require(:id)
     
     @candidate = current_user.submitted_candidates.find(cid)
-    @candidate.destroy
+    @candidate.cancel
 
     render body: nil, status: :no_content
   end

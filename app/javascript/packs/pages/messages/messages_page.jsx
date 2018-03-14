@@ -77,6 +77,10 @@ class MessageItem extends Sheet.Item {
       allClass.push("new");
     }
 
+    if (message.candidate) {
+      allClass.push(message.candidate.state);
+    }
+
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
     let theRecruiter = getRecruiter(this.user(), message);
 

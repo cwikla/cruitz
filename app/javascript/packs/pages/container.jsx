@@ -81,6 +81,25 @@ class NavSearch extends Component {
   }
 }
 
+
+class MainNavBar extends Component{
+  render() {
+    return (
+       <Pyr.Grid.Row className="navbar flx-row align-items-center">
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
+            <Logo />
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row align-items-center">
+            <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
+            <NavUserMenu user={this.props.user} />
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
+    );
+  }
+}
+
 class Container extends Component {
   constructor(props) {
     super(props);
@@ -180,18 +199,7 @@ class Container extends Component {
 
   renderNav() {
     return (
-       <Pyr.Grid.Row className="navbar flx-row align-items-center">
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
-            <Logo />
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
-            { this.renderSearchNav() }
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row align-items-center">
-            <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
-            <NavUserMenu user={this.user()}/>
-          </Pyr.Grid.Col>
-        </Pyr.Grid.Row>
+      <MainNavBar user={this.user()} />
     );
   }
 

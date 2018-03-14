@@ -77,63 +77,64 @@ class Candidate < ApplicationRecord
     return candidate
   end
 
-  def accept(body)
+  def accept(body=nil)
     setState(self.hirer, ACCEPTED_STATE, body)
   end
 
-  def reject(body)
+  def reject(body=nil)
     setState(self.hirer, REJECTED_STATE, body)
   end
 
-  def spam(body)
+  def spam(body=nil)
     setState(self.hirer, SPAM_STATE, body)
   end
 
-  def precall(body)
+  def precall(body=nil)
     setState(self.hirer, PRECALL_STATE, body)
   end
 
-  def onsite(body)
+  def onsite(body=nil)
     setState(self.hirer, ONSITE_STATE, body)
   end
 
-  def checks(body)
+  def checks(body=nil)
     setState(self.hirer, CHECKS_STATE, body)
   end
 
-  def hire(salary, body) # FIXME
+  def hire(salary, body=nil) # FIXME
     setState(self.hirer, HIRE_STATE, body)
   end
 
-  def recall(body)
+  def recall(body=nil)
     setState(self.hirer, RECALL_STATE, body)
   end
 
-  def cancel(body)
+  def cancel(body=nil)
     setState(self.recruiter, CANCEL_STATE, body)
   end
 
   private
 
-  def setState(actor, state, body)
+  def setState(actor, state, body=nil)
     Candidate.transaction do
-      recruiter = self.head.recruiter
       self.state = state
       self.save
 
-      to_user = (actor.id == job.user_id) ? recruiter : job.user
 
       msg = nil
       if body
+        recruiter = self.head.recruiter
+        to_user = (actor.id == job.user_id) ? recruiter : job.user
+
         msg = self.messages.order("-id").first
         msg = msg.reply_from(actor) if msg
         msg ||= Message.create(candidate: self, user: to_user, from_user: actor, body: body)
       end
       
-      CandidateState.create(candidate: self,
-        state: self.state,
-        recruiter: recruiter,
-        message: msg)
+      #CandidateState.create(candidate: self,
+        #state: self.state,
+        #recruiter: recruiter,
+        #message: msg)
     end
 
     return self

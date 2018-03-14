@@ -890,6 +890,34 @@ class Modal extends BaseComponent {
   }
 }
 
+class NavBar extends BaseComponent {
+  renderHeaderLeft() {
+    return null;
+  }
+
+  renderHeaderRight() {
+    return (
+          <div className="col navbar-nav" >
+            <BackButton name="close"
+              className="ml-auto nav-item"
+              ><IconButton name="arrow-left">Back</IconButton></BackButton>
+          </div>
+    );
+  }
+
+  render() {
+    return (
+        <div 
+          className="navbar flx-row controls align-items-center"
+          onClick={this.props.onClick}
+        >
+          { this.renderHeaderLeft() }
+          { this.renderHeaderRight() }
+        </div>
+    );
+  }
+}
+
 
 class FullScreen extends BaseComponent {
   constructor(props) {
@@ -911,27 +939,13 @@ class FullScreen extends BaseComponent {
     return null;
   }
 
-  renderLeft() {
-    return null;
-  }
-
   renderNavBar() {
     if (this.props.noNavBar) {
       return null;
     }
 
     return (
-        <div 
-          className="navbar flx-row controls align-items-center"
-          onClick={this.onClose}
-        >
-          { this.renderLeft() }
-          <div className="col navbar-nav" >
-            <BackButton name="close"
-              className="ml-auto nav-item"
-              ><IconButton name="arrow-left">Back</IconButton></BackButton>
-          </div>
-        </div>
+      <NavBar onClick={this.onClose} />
     );
   }
 

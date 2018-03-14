@@ -60,13 +60,15 @@ class MessageSerializer < ActiveModel::Serializer
   def candidate
     result = nil
     if object.candidate_id
-      candy = Candidate.find(object.candidate_id)
-      head = candy.head
-      result = { 
-        id: candy.id,
-        first_name: head.first_name,
-        last_name: head.last_name
-      }
+      candy = Candidate.find_safe(object.candidate_id)
+      if candy
+        head = candy.head
+        result = { 
+          id: candy.id,
+          first_name: head.first_name,
+          last_name: head.last_name
+        }
+      end
     end
     return result
   end

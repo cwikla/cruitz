@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :heads
 
   has_many :candidates, through: :jobs
-  has_many :submitted_candidates, through: :heads, source: :candidates, class_name: "Candidate"
+  has_many :submitted_candidates, -> { where("candidates.state >= 0") }, through: :heads, source: :candidates, class_name: "Candidate"
 
   has_many :candidate_heads, through: :candidates, source: :head, class_name: "Head"
   has_many :candidate_jobs, through: :candidates, source: :job, class_name: "Job"
