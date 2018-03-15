@@ -14,6 +14,7 @@ import {
 import Pyr, {
   Component 
 } from '../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
 
 
 import {
@@ -25,6 +26,8 @@ import {
 
   ME_URL,
 } from './const';
+
+import Logo from './shared/logo';
 
 import Container from './container';
 
@@ -44,7 +47,72 @@ const PAGE_MAP = {
   [HEADS_PAGE.toLowerCase()]: HeadsPage,
 };
 
-class MarketPlace extends Container {
+class NavBar extends Component {
+  render() {
+    return (
+       <Pyr.Grid.Row className="navbar flx-row">
+          <Pyr.Grid.Col className="col col-1 navbar-nav">
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
+              <Logo className="mr-auto"/>
+
+              <div className="flx-row ml-auto align-items-center">
+                <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
+                <Container.NavUserMenu user={this.props.user} />
+              </div>
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1">
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
+    );
+  }
+}
+
+
+
+class SubIcon extends Component {
+  render() {
+    let clazzes = ClassNames("nav-item sub-nav-icon flx-row");
+    if (this.props.selected) {
+      clazzes.push("selected");
+    }
+
+    let all = Pyr.Util.propsMergeClassName(this.props, clazzes);
+
+    return (
+      <div {...all}>
+        <Pyr.UI.Icon name={this.props.icon} className="mt-auto mb-auto"/>
+        <div className="title">{this.props.name}</div>
+      </div>
+    );
+  }
+}
+
+class SubNavBar extends Container.NavBar {
+  render() {
+    console.log("SUB NAV BAR");
+    console.log(this.props.page);
+
+    return (
+       <Pyr.Grid.Row className="subnavbar flx-row">
+          <Pyr.Grid.Col className="col col-1 navbar-nav">
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
+            <div className="mr-auto flx-row">
+              <SubIcon name="Jobs" icon="bullseye" selected={this.props.page == "positions"}/>
+              <SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page == "messages"}/>
+              <SubIcon name="Candidates" icon="users" selected={this.props.page == "candidates"}/>
+            </div>
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1">
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
+    );
+  }
+
+}
+
+class MarketPlace extends Container.Base {
   componentDidMount() {
     this.setState({
       loading: false
@@ -59,13 +127,15 @@ class MarketPlace extends Container {
     return super.pageToComponent(page) || PAGE_MAP[page];
   }
 
-  unusedrenderSideBar() {
+  renderSubNavBar() {
     return (
-      <div
-        className="col col-2 col-sm-2 col-md-3 flx-col h-100 sidebar"
-      >
-        <PositionsPage.SearchForm />
-      </div>
+      <SubNavBar user={this.user()} page={this.getPage()}/>
+    );
+  }
+
+  renderNavBar() {
+    return (
+      <NavBar user={this.user()} page={this.getPage()}/>
     );
   }
 

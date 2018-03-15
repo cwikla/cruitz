@@ -13,6 +13,7 @@ import {
 import Pyr, {
   Component 
 } from '../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
 
 import Container from './container';
 import Sidebar from './side_bar';
@@ -151,7 +152,7 @@ class NavViewMenu extends Component {
 }
 
 
-class Dashboard extends Container {
+class Dashboard extends Container.Base {
   constructor(props) {
     super(props);
 

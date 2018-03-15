@@ -82,25 +82,27 @@ class NavSearch extends Component {
 }
 
 
-class MainNavBar extends Component{
+class NavBar extends Component {
   render() {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-2 navbar-nav">
+          <Pyr.Grid.Col className="col col-1 navbar-nav">
             <Logo />
           </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-10 col-sm-10 col-md-9 navbar-nav hidden-sm-down flx-row">
+          <Pyr.Grid.Col className="col col-6 navbar-nav flx-row">
           </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-1 col-sm-1 col-md-1 navbar-nav flx-row align-items-center">
-            <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
-            <NavUserMenu user={this.props.user} />
+          <Pyr.Grid.Col className="col col-5 flx-row navbar-nav align-items-center">
+            <div className="flx-row ml-auto">
+              <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
+              <NavUserMenu user={this.props.user} />
+            </div>
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
     );
   }
 }
 
-class Container extends Component {
+class Base extends Component {
   constructor(props) {
     super(props);
 
@@ -193,13 +195,27 @@ class Container extends Component {
     return null; // HMMM
 
     return (
-      <div className="nav-item ml-auto flx-row"><NavSearch url={url}/></div>
+      <div className="nav-item ml-auto flx-row"><NavSearch url={url} page={this.getPage()}/></div>
     );
   }
 
-  renderNav() {
+
+  renderSubNavBar() {
+    return null;
+  }
+
+  renderNavBar() {
     return (
-      <MainNavBar user={this.user()} />
+      <NavBar user={this.user()} page={this.getPage()} />
+    );
+  }
+
+  renderTop() {
+    return (
+      <div>
+        { this.renderNavBar() }
+        { this.renderSubNavBar() }
+      </div>
     );
   }
 
@@ -289,7 +305,7 @@ class Container extends Component {
 
     return(
       <Pyr.Grid.FullContainer key="react-top"  className={clz} >
-        { this.renderNav() }
+        { this.renderTop() }
         { this.renderContent() }
 
         <Pyr.UI.NoticeReceiver />
@@ -297,5 +313,11 @@ class Container extends Component {
     );
   }
 }
+
+const Container = {
+  Base,
+  NavUserMenu,
+  NavBar,
+};
 
 export default Container;
