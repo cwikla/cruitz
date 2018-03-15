@@ -224,7 +224,7 @@ $pfs_height: 10rem;
     padding-right: 0.5rem;
 
     border-color: 1px solid $border_color;
-    background-color: rgba($light_gray_color, 0.5);
+    background-color: $alt_background_color;
 
     width: $pfs_width;
     height: $pfs_height;

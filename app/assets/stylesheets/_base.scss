@@ -51,7 +51,7 @@ label {
 }
 
 .container-content {
-  background-color: $light_gray_color;
+  background-color: $alt_background_color;
 }
 
 .sheet {
@@ -650,7 +650,7 @@ label {
   padding: 0.75rem;
   border: 1px solid $border_color;
   border-radius: 10px;
-  background-color: $light_gray_color;
+  background-color: $alt_background_color;
 }
 
 .password-modal {
