@@ -107,10 +107,22 @@ class Base extends Component {
     super(props);
 
     this.initState({
-      loading: false
+      loading: false,
+      buttonItemCount: {},
     });
 
     this.onLoading = this.setLoading.bind(this);
+    this.onSetButtonCount = this.setButtonCount.bind(this);
+  }
+
+  setButtonCount(page, count=0) {
+    //console.log("BUTTON COUNT: " + page + ":" + count);
+    let buttonItemCount = Object.assign({}, this.state.buttonItemCount);
+    buttonItemCount[page] = count;
+
+    this.setState({
+      buttonItemCount
+    });
   }
 
   setLoading(loading=true) {
@@ -236,6 +248,7 @@ class Base extends Component {
       
       showing: true,
       url: PageURL(page),
+      onSetButtonCount: this.onSetButtonCount,
     };
 
     return props;

@@ -173,8 +173,6 @@ class Dashboard extends Container.Base {
     this.onJobDelete = this.jobDelete.bind(this);
     this.onJobNew = this.jobNew.bind(this);
 
-    this.onSetButtonCount = this.setButtonCount.bind(this);
-
     this.onShowSlide = this.showSlide.bind(this);
   }
 
@@ -184,16 +182,6 @@ class Dashboard extends Container.Base {
 
   pageToComponent(page) {
     return super.pageToComponent(page) || PAGE_MAP[page];
-  }
-
-  setButtonCount(page, count=0) {
-    //console.log("BUTTON COUNT: " + page + ":" + count);
-    let buttonItemCount = Object.assign({}, this.state.buttonItemCount);
-    buttonItemCount[page] = count;
-
-    this.setState({
-      buttonItemCount
-    });
   }
 
   getJobs() {

@@ -20,6 +20,7 @@ const ClassNames = Pyr.ClassNames;
 import {
   POSITIONS_PAGE,
   HEADS_PAGE,
+  MESSAGES_PAGE,
 
   POSITIONS_URL,
   HEADS_URL,
@@ -45,6 +46,7 @@ const PAGE_MAP = {
   "home" : HolderPage,
   [POSITIONS_PAGE.toLowerCase()]: PositionsPage,
   [HEADS_PAGE.toLowerCase()]: HeadsPage,
+  [MESSAGES_PAGE.toLowerCase()] : MessagesPage,
 };
 
 class NavBar extends Component {
@@ -73,17 +75,22 @@ class NavBar extends Component {
 class SubIcon extends Component {
   render() {
     let clazzes = ClassNames("nav-item sub-nav-icon flx-row");
-    if (this.props.selected) {
+
+
+    let selected = this.props.page.toLowerCase() == this.props.selected.toLowerCase();
+    if (selected) {
       clazzes.push("selected");
     }
 
     let all = Pyr.Util.propsMergeClassName(this.props, clazzes);
 
     return (
-      <div {...all}>
-        <Pyr.UI.Icon name={this.props.icon} className="mt-auto mb-auto"/>
-        <div className="title">{this.props.name}</div>
-      </div>
+      <Link to={this.props.page}>
+        <div {...all}>
+          <Pyr.UI.Icon name={this.props.icon} className="mt-auto mb-auto"/>
+          <div className="title">{this.props.name}</div>
+        </div>
+      </Link>
     );
   }
 }
@@ -99,9 +106,9 @@ class SubNavBar extends Container.NavBar {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
             <div className="mr-auto flx-row">
-              <SubIcon name="Jobs" icon="bullseye" selected={this.props.page == "positions"}/>
-              <SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page == "messages"}/>
-              <SubIcon name="Candidates" icon="users" selected={this.props.page == "candidates"}/>
+              <SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions"/>
+              <SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages"/>
+              <SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates"/>
             </div>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1">
