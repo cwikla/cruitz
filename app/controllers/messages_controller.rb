@@ -1,5 +1,8 @@
 class MessagesController < ApplicationController
   def index
+    puts "MESSAGES"
+    puts current_user.inspect
+
     mjson = current_user.roots[0..10] # FIXME Message.roots(Message.all_for(current_user))
     render json: mjson
   end

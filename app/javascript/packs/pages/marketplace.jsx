@@ -88,7 +88,7 @@ class SubIcon extends Component {
       <Link to={this.props.page}>
         <div {...all}>
           <Pyr.UI.Icon name={this.props.icon} className="mt-auto mb-auto"/>
-          <div className="title">{this.props.name}</div>
+          <div className="title">{this.props.count} - {this.props.name}</div>
         </div>
       </Link>
     );
@@ -106,9 +106,9 @@ class SubNavBar extends Container.NavBar {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
             <div className="mr-auto flx-row">
-              <SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions"/>
-              <SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages"/>
-              <SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates"/>
+              <SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={this.props.buttonItemCount.positions}/>
+              <SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages" count={this.props.buttonItemCount.messages}/>
+              <SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates" count={this.props.buttonItemCount.candidates}/>
             </div>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1">
@@ -136,7 +136,7 @@ class MarketPlace extends Container.Base {
 
   renderSubNavBar() {
     return (
-      <SubNavBar user={this.user()} page={this.getPage()}/>
+      <SubNavBar user={this.user()} page={this.getPage()} buttonItemCount={this.state.buttonItemCount}/>
     );
   }
 

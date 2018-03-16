@@ -17,8 +17,10 @@ class User < ApplicationRecord
   has_many :recruiters, -> { group(:id) }, through: :candidate_heads, class_name: "User"
 
   has_many :messages
-  has_many :roots, -> { where("root_message_id is null") }, class_name: "Message"
+  has_many :message_roots, -> { where("root_message_id is null") }, class_name: "Message"
+
   has_many :sent_messages, class_name: "Message", foreign_key: :from_user_id
+  has_many :sent_message_roots, -> { where("root_message_id is null") }, foreign_key: :from_user_id, class_name: "Message"
 
   has_many :invites
   has_many :sent_invites, class_name: "Invite", foreign_key: :from_user_id
@@ -78,6 +80,10 @@ class User < ApplicationRecord
     u = User.new(:id => invite.user_id)
 
     iu = User.new(:id => invite.from_user_id)
+  end
+
+  def roots
+    self.is_recruiter ? self.sent_message_roots : self.message_roots
   end
 
   def password_is_nil?

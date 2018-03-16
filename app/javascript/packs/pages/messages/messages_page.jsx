@@ -55,13 +55,54 @@ function getRecruiter(user, message) {
 }
 
 class MessageItem extends Sheet.Item {
+  constructor(props) {
+    super(props);
 
+    this.initState({
+      job: this.props.job,
+    });
+  }
+
+  setJob(job) {
+    this.setState({
+      job
+    });
+  }
+
+  loadJob() {
+    this.getJSON({
+      url: Pyr.URL(JOBS_URL).push(this.props.message.job_id),
+      context: this,
+      onLoading: this.props.onLoading,
+
+    }).done((data, textStatus, jqXHR) => {
+        console.log("LOAD JOB");
+        console.log(data.job);
+
+        this.setJob(data.job);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+  }
+
+  componentDidMount() {
+    if (!this.state.job) {
+      this.loadJob();
+    }
+  }
 
   render() {
+    if (!this.state.job) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+
     let message = this.props.message;
     //console.log(JSON.stringify(message));
 
-    let job = this.props.job;
+    let job = this.state.job;
     let id = MID(message);
 
     let mine = message.mine;

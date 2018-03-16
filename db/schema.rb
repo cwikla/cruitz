@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180307014406) do
+ActiveRecord::Schema.define(version: 20180316013905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,18 +385,17 @@ ActiveRecord::Schema.define(version: 20180307014406) do
     t.string "twitter_id"
     t.boolean "anon", default: true, null: false
     t.integer "employer_id"
-    t.integer "is_recruiter", default: 0
     t.string "first_name"
     t.string "last_name"
     t.string "jti", null: false
     t.boolean "first_time", default: true, null: false
     t.integer "pyr_upload_id"
+    t.boolean "is_recruiter", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["digits_user_id", "deleted_at"], name: "index_users_on_digits_user_id_and_deleted_at", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["employer_id"], name: "index_users_on_employer_id"
     t.index ["facebook_id"], name: "index_users_on_facebook_id", unique: true
-    t.index ["is_recruiter"], name: "index_users_on_is_recruiter"
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["last_name", "first_name"], name: "index_users_on_last_name_and_first_name"
     t.index ["pyr_upload_id"], name: "index_users_on_pyr_upload_id"

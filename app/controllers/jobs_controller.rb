@@ -96,9 +96,9 @@ class JobsController < ApplicationController
 
   def show
     jid = hid()
-    @job = current_user.jobs.includes(:user).find(jid)
+    @job = Job.find(jid) # current_user.jobs.includes(:user).find(jid) # FIXME
 
-    getCands = params[:candidates] && params[:candidates].downcase == 'candidates'
+    getCands = params[:candidates] # && params[:candidates].downcase == 'candidates'
 
     render json: @job, candidates: getCands
   end
