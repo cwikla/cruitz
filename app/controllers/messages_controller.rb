@@ -45,7 +45,7 @@ class MessagesController < ApplicationController
   def show
     mid = hid()
     @message = Message.find(mid)
-    @message = nil if @message.user_id != current_user.id
+    @message = nil if (@message.user_id != current_user.id) && (@message.from_user_id != current_user.id)
     @thread = nil
 
     if @message

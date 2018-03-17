@@ -127,31 +127,24 @@ class MessageItem extends Sheet.Item {
 
     return (
       <div className={allClass} id={id}>
-        <Grid.Column className="recruiter col-2 d-flex">
+        <div className="recruiter flx-col">
           <UserAvatar
-            className={"flx-1"}
+            className={"mt-auto mb-auto"}
             userId={theRecruiter.id}
-            name={theRecruiter.first_name}
             small
           />
-        </Grid.Column>
-        <Grid.Column className="item-content">
-          <Grid.Row className=""> 
-            <Grid.Column className="col-8">
+        </div>
+        <div className="flx-col">
+          <div className="ml-auto">
+              <Pyr.UI.MagicDate date={message.created_at} short/>
+          </div>
+          <div className="flx-row">
               <Header className="title" message={message} job={job} isNew={!message.read_at}/>
-            </Grid.Column>
-            <Grid.Column className="col-4 created-at text-right">
-              <Pyr.UI.MagicDate date={message.created_at} />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row> 
-            <Grid.Column className="">
-              <div className="summary">
-                {Pyr.Util.summarize(message.body, 300)}
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid.Column>
+          </div>
+          <div className="summary mt-auto">
+            {Pyr.Util.summarize(message.body, 400)}
+          </div>
+        </div>
       </div>
     );
   }
@@ -335,7 +328,11 @@ class MessagesPage extends Page {
     }, 0);
     this.props.onSetButtonCount("Messages", count);
 
-    this.setSelected(items ? items[0] : null);
+    let first = items ? items[0] : null;
+    console.log("SET FIRST SELECTED");
+    console.log(first);
+
+    this.setSelected(first);
     super.setItems(items);
   }
 

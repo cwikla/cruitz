@@ -17,7 +17,37 @@
 
   .sheet.index {
 
+    margin-right: 1rem;
+
     .item {
+      padding: 0.5rem;
+
+      max-height: 10rem;
+      height: 10rem;
+
+      max-width: 25rem;
+      width: 25rem;
+
+      font-size: 0.85rem;
+
+      .selected {
+        background-color: $selected_background_color;
+      }
+
+      .title, .created-at {
+        font-size: 0.9rem;
+      }
+
+      .title {
+        text-overflow: ellipsis;
+      }
+
+      .summary {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0.25rem;
+      }
+
       &.new {
         .title {
           font-weight: $font_weight_bold;
