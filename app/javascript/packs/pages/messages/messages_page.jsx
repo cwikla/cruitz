@@ -122,6 +122,10 @@ class MessageItem extends Sheet.Item {
       allClass.push(message.candidate.state);
     }
 
+    if (this.props.isSelected) {
+      allClass.push("selected");
+    }
+
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
     let theRecruiter = getRecruiter(this.user(), message);
 
@@ -157,6 +161,24 @@ class IndexSheet extends Sheet.Index {
 
   renderItem(message, isSelected) {
     return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
+  }
+
+  renderHeader() {
+    return (
+      <div className="flx-row">
+        <div className="mr-auto">Messages</div>
+        <div className="dropdown ml-auto">
+          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="messageSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <div className="dropdown-menu" aria-labelledby="messageSortMenuButton">
+            <label className="dropdown-header">Sort</label>
+            <div className="dropdown-divider"></div>
+            <label className="dropdown-item" >Date</label>
+            <label className="dropdown-item" >Unread</label>
+            <label className="dropdown-item" >Position</label>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   renderNone() {

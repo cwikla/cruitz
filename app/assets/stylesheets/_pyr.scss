@@ -17,7 +17,6 @@ input[type=text] {
   margin-right: 0;
   margin-left: 0;
   padding-right: 0;
-  padding-left: 0;
 }
 
 .pyr-fullscreen {
@@ -196,7 +195,7 @@ input[type=text] {
     font-size: 1rem;
     color: rgba(#fff, 0.5);
     &:hover {
-      color: #fff;
+      color: $highlight_color;
     }
   }
 }
@@ -300,7 +299,7 @@ $pfs_height: 10rem;
 
 .pyr-icon-btn {
   :hover {
-    color: white;
+    color: $highlight_color;
   }
   &.disabled {
     color: rgba(255,255,255,0.2);

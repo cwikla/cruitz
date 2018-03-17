@@ -50,9 +50,16 @@ class Message < ApplicationRecord
     @the_thread_last ||= thread_last_cached
   end
 
-  def self.for(user, mid)
+  def self.find_for(user, mid)
     message = self.find(mid)
     return nil if message.user_id != user.id && message.from_user_id != user.id
+    return message
+  end
+
+  def self.last_for(user, mid)
+    message = self.find_for(user, mid)
+    return nil if message.nil?
+
     return message.thread_last
   end
 

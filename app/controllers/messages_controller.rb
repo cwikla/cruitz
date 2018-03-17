@@ -18,7 +18,7 @@ class MessagesController < ApplicationController
     puts "DATA: #{request.params}"
 
     mid = hid()
-    @parentMessage = Message.for(current_user, mid)
+    @parentMessage = Message.last_for(current_user, mid)
 
     puts "GOT PARENT MSG: #{@parentMessage.id}"
 
@@ -34,7 +34,7 @@ class MessagesController < ApplicationController
 
   def update
     mid = hid()
-    @message = Message.for(current_user, mid)
+    @message = Message.last_for(current_user, mid)
     if @message.update(message_params)
       return render json: @message
     else
@@ -44,7 +44,7 @@ class MessagesController < ApplicationController
 
   def show
     mid = hid()
-    @message = Message.find(mid)
+    @message = Message.find_for(current_user, mid)
     @message = nil if (@message.user_id != current_user.id) && (@message.from_user_id != current_user.id)
     @thread = nil
 

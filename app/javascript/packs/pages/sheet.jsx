@@ -339,6 +339,9 @@ class Index extends Base {
     //console.log(this.props);
 
               /*onClick={this.onClicks[this.key(item)] }  */
+    console.log("MESSAGE SELECTED IS");
+    console.log(selected);
+
     return (
       <ul {...Pyr.Util.propsMergeClassName(props, "")}>
         {items.map((item, pos) => {
