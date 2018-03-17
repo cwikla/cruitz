@@ -52,7 +52,7 @@
 }
   
 @include media-breakpoint-down(xs) {
-  .action.show .sheet {
+  .sheet.show {
     .thread-item.yours {
       padding-right: #{0.5}rem;
     }
@@ -63,7 +63,7 @@
 }
 
 @include media-breakpoint-down(sm) {
-  .action.show .sheet {
+  .sheet.show {
     .thread-item.yours {
       padding-right: #{1.0}rem;
     }

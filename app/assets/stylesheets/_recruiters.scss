@@ -1,6 +1,6 @@
 
 .page.recruiters {
-  .index .sheet {
+  .sheet.index {
     .header {
       border-bottom: 1px solid $border_color;
     }
@@ -24,7 +24,7 @@
     }
   }
 
-  .new .sheet {
+  .sheet.new {
     .form-parent {
       #body {
         height: 15rem;
@@ -32,7 +32,7 @@
     }
   }
   
-  .show .sheet {
+  .sheet.show {
     background-color: $alt_background_color;
 
     .review {

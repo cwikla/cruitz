@@ -9,6 +9,7 @@ import {
 import Pyr, {
   Component
 } from '../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
 
 import Logo from './shared/logo';
 
@@ -37,6 +38,17 @@ class Base extends Component {
     this.onLoaded = this.setLoading.bind(this, false);
     this.onBack = this.back.bind(this);
     this.onClose = this.close.bind(this);
+  }
+
+  name() {
+    let fullName = this.constructor.name;
+    let pos = fullName.search("Sheet");
+    if (pos == -1) {
+      alert("page.jsx: You need to define a name cuz you didn't name your subclass *Sheet");
+      alert(fullName);
+    }
+    let name = fullName.substring(0, pos);
+    return name;
   }
 
   close(e) {
@@ -118,13 +130,24 @@ class Base extends Component {
     return null;
   }
 
+  size() {
+    return 1;
+  }
+
   render() {
     //if (this.state.isLoading) {
       //return (<Pyr.UI.Loading />);
     //}
 
+    let clz = ClassNames("sheet flx-col");
+    clz.push(this.name());
+
+    if (this.size()) {
+      clz.push("flx-" + this.size());
+    }
+
     return (
-      <div className="sheet flx-col flx-1">
+      <div className={clz}>
         <div className="header">
           {this.renderHeader(this.props.selected)}
         </div>
@@ -409,6 +432,25 @@ class Show extends Base {
 
 }
 
+class IndexShow extends Base {
+  renderIndex() {
+    return null;
+  }
+
+  renderShow() {
+    return null;
+  }
+
+  render() {
+    return (
+      <div className="index-show flx-row flx-1">
+        { this.renderIndex() }
+        { this.renderShow() }
+      </div>
+    );
+  }
+}
+
 class ShowFull extends Show {
   asPage() {
     return false;
@@ -481,6 +523,7 @@ const Sheet = {
   Index,
   Show,
   ShowFull,
+  IndexShow,
   New, 
   Edit,
   Form,

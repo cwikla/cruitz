@@ -510,7 +510,7 @@ class HeadForm extends Sheet.Form {
 
 }
 
-class HeadIndex extends Sheet.Index {
+class HeadIndexSheet extends Sheet.Index {
   key(item) {
     return item.id;
   }
@@ -654,4 +654,4 @@ export {
   CandidateComponent,
 };
 
-export default HeadIndex;
+export default HeadIndexSheet;

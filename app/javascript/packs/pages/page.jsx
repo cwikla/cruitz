@@ -91,7 +91,7 @@ class Page extends ItemLoader {
   }
 
   showActionSheet() {
-    return !!this.props.action;
+    return !!this.getAction();
   }
 
 ///// END ////

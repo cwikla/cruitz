@@ -1,6 +1,6 @@
 .page.jobs {
 
-  .new .sheet {
+  .sheet.new {
     .form-parent {
       #job-description {
         height: 15rem;
@@ -20,13 +20,13 @@
     }
   }
 
-  .show .sheet {
+  .sheet.show {
     .side {
     }
   
   }
   
-  .index .sheet {
+  .sheet.index {
     .spacer {
       padding: 1.5rem;
     }

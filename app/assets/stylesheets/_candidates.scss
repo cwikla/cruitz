@@ -14,7 +14,7 @@
       }
     }
 
-    .sheet {
+    &.sheet {
       .header {
           border-bottom: 1px solid $border_color;
       }
@@ -59,7 +59,7 @@
     }
   }
   
-  .index .sheet {
+  .sheet.index {
     .item {
       @extend %state;
     }

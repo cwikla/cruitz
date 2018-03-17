@@ -23,6 +23,7 @@
 .navbar {
   margin-left: 0;
   margin-right: 0;
+  font-weight: 500;
 
   .form-group {
     margin: 0;
@@ -56,6 +57,10 @@
     }
     &.alerts:hover {
       color: white !important;
+    }
+
+    &.logo {
+      padding-left: 0;
     }
   }
 
@@ -91,7 +96,7 @@
   box-shadow: 0px 1px 1px 0px rgba($navbar_background_color, 0.25);
 
   .nav-item, .form-control {
-    color: rgba($navbar_background_color, 0.7);
+    color: rgba($navbar_background_color, 0.6);
    }
 
   .sub-nav-icon {
@@ -104,6 +109,7 @@
     }
 
     font-size: 0.9rem;
+    font-weight: 500;
 
     &:hover, &.selected {
       color: $navbar_background_color !important;

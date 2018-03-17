@@ -189,7 +189,11 @@ class ShowSheet extends Sheet.Show {
     super(props);
   }
 
-  renderHeader(item) {
+  size() {
+    return 3;
+  }
+
+  unusedRrenderHeader(item) {
     //if (this.state.isLoading || !item) {
       //return (<Pyr.UI.Loading />);
     //}
@@ -243,6 +247,24 @@ class ShowSheet extends Sheet.Show {
     return MessagesPage.key(a)
   }
 
+}
+
+class IndexShowSheet extends Sheet.IndexShow {
+  renderIndex() {
+    return (
+        <IndexSheet 
+          {...this.props} 
+        />
+    );
+  }
+
+  renderShow() {
+    return (
+        <ShowSheet 
+          {...this.props}
+        />
+    );
+  }
 }
 
 ///////////////
@@ -313,11 +335,16 @@ class MessagesPage extends Page {
     }, 0);
     this.props.onSetButtonCount("Messages", count);
 
+    this.setSelected(items ? items[0] : null);
     super.setItems(items);
   }
 
   loadSelected(itemId, onLoading) {
     //console.log("GET ITEM: " + itemId);
+
+    if (!itemId) {
+      return;
+    }
 
     let me = this;
 
@@ -405,7 +432,7 @@ class MessagesPage extends Page {
 
   indexSheet() {
     return (
-      <IndexSheet 
+      <IndexShowSheet
         {...this.props} 
         items={this.state.items}
         jobMap={this.jobMap}
@@ -413,10 +440,15 @@ class MessagesPage extends Page {
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}
+        onSetItems={this.onSetItems}
+        onAddItem={this.onAddItem}
+        onLoadSelected={this.onLoadSelected}
+        nextId={this.state.nextId}
+        prevId={this.state.prevId}
       />
     );
   }
-  
+
   actionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);

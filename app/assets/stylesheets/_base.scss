@@ -55,12 +55,7 @@ label {
 }
 
 .sheet {
-  .scroll {
-  }
-}
-
-.index {
-  .sheet {
+  &.index {
     margin-left: 0;
     margin-right: 0;
     padding-right: 0;
@@ -97,12 +92,12 @@ label {
       }
     }
   }
+
+  .header {
+    b-border-bottom: 1px solid rgba($light_gray_color, 0.4);
+  }
 }
 
-
-.sheet.action {
-  background-color: $hover_background_color;
-}
 
 //.btn-action, .btn-primary {
   //box-shadow: none;
@@ -449,10 +444,6 @@ label {
 
 .border {
   border: 1px solid $border_color;
-}
-
-.sheet .header {
-  b-border-bottom: 1px solid rgba($light_gray_color, 0.4);
 }
 
 h3.title {

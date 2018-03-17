@@ -21,7 +21,7 @@ import ItemLoader from '../item_loader';
 
 import Blurb from './blurb';
 
-import HeadIndex, { 
+import HeadIndexSheet, { 
   HeadForm,
   CandidateComponent 
 } from './head';
@@ -415,7 +415,7 @@ class ShowSheet extends Sheet.ShowFull {
 
     return (
       <div className="flx-col flx-1">
-        <HeadIndex
+        <HeadIndexSheet
           position={position} 
           onAddCandidate={this.onAddCandidate}
         />
@@ -476,6 +476,10 @@ class HeadLoader extends Component {
     });
 
     this.onSetHead = this.setHead.bind(this);
+  }
+
+  name() {
+    return "head-loader";
   }
 
   setHead(head) {

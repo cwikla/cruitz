@@ -15,7 +15,7 @@
     }
   }
 
-  .index .sheet {
+  .sheet.index {
 
     .item {
       &.new {
@@ -29,14 +29,14 @@
     }
   }
   
-  .new .sheet {
+  .sheet.new {
     .title {
       color: orange;
       text-align: center;
     }
   }
 
-  .show .sheet {
+  .sheet.show {
 
     .header {
       background-color: white;
@@ -87,7 +87,7 @@
 }
   
 @include media-breakpoint-down(xs) {
-  .action.show .sheet {
+  .sheet.show {
     .thread-item.mine {
       padding-right: #{0.5}rem;
     }
@@ -98,7 +98,7 @@
 }
 
 @include media-breakpoint-down(sm) {
-  .action.show .sheet {
+  .sheet.show {
     .thread-item.mine {
       padding-right: #{1.0}rem;
     }
