@@ -133,6 +133,12 @@ class MessageItem extends Sheet.Item {
     console.log("THE MESSAGE");
     console.log(message);
 
+    let summary = Pyr.Util.summarize(message.body, 400);
+    summary = summary || "";
+    if (summary.length == 0) {
+      summary = "(No message)";
+    }
+
     return (
       <div className={allClass} id={id}>
         <div className="recruiter flx-col">
@@ -148,7 +154,7 @@ class MessageItem extends Sheet.Item {
           </div>
           <Header className="title flx-row" message={message} job={job} isNew={!message.read_at}/>
           <div className="summary mt-auto flx-1">
-            {Pyr.Util.summarize(message.body, 400)}
+            { summary }
           </div>
         </div>
       </div>

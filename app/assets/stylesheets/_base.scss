@@ -673,7 +673,7 @@ label {
   color: $med_gray_color;
 }
 
-.job-blurb {
+.job-blurb, %job-blurb {
   box-shadow: 1px 1px 5px 0px $gray_color;
   margin-bottom: 2rem;
 
