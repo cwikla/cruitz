@@ -84,8 +84,10 @@ class SubIcon extends Component {
 
     let all = Pyr.Util.propsMergeClassName(this.props, clazzes);
 
+    let url = Pyr.URL("/").push(this.props.page);
+
     return (
-      <Link to={this.props.page}>
+      <Link to={url.toString()}>
         <div {...all}>
           <Pyr.UI.Icon name={this.props.icon} className="mt-auto mb-auto"/>
           <div className="title">{this.props.count} - {this.props.name}</div>

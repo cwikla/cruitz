@@ -8,7 +8,10 @@ class MessageSerializer < ActiveModel::Serializer
     :user,
     :from_user,
     :created_at,
-    :read_at
+    :read_at,
+    :job
+
+    belongs_to :job
 
   def id
     object.hashid

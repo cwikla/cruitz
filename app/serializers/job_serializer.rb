@@ -58,9 +58,6 @@ class JobSerializer < ActiveModel::Serializer
   end
 
   def attributes(*args)
-    puts "ATTRIBUTES"
-    puts "current_user: #{current_user}"
-
     hash = super
     if instance_options[:candidates]
       hash[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(object.candidates) 

@@ -138,14 +138,12 @@ class MessageItem extends Sheet.Item {
             small
           />
         </div>
-        <div className="flx-col">
+        <div className="flx-col flx-1">
           <div className="ml-auto">
               <Pyr.UI.MagicDate date={message.created_at} short/>
           </div>
-          <div className="flx-row">
-              <Header className="title" message={message} job={job} isNew={!message.read_at}/>
-          </div>
-          <div className="summary mt-auto">
+          <Header className="title flx-row" message={message} job={job} isNew={!message.read_at}/>
+          <div className="summary mt-auto flx-1">
             {Pyr.Util.summarize(message.body, 400)}
           </div>
         </div>
@@ -202,19 +200,25 @@ class IndexSheet extends Sheet.Index {
 class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
+    console.log("SHOW SHEET JOB");
+    console.log(this.props.job);
+
+    this.initState({
+      job: this.props.job
+    });
   }
 
   size() {
     return 3;
   }
 
-  unusedRrenderHeader(item) {
+  unused_renderHeader(item) {
     //if (this.state.isLoading || !item) {
       //return (<Pyr.UI.Loading />);
     //}
 
     let message = item;
-    let job = message ? this.props.jobMap[message.job_id] : null;
+    let job = message.job;
 
     return (
         <MessageThreadHeader
@@ -233,17 +237,22 @@ class ShowSheet extends Sheet.Show {
       return (<Pyr.UI.Loading />);
     }
 
+    console.log("MESSAGE JOB");
+    console.log(item);
+
     let message = item;
     let thread = message.thread;
+    let job = message.job;
 
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
     return (
      <Pyr.Grid.Row className="item flx-1">
         <Pyr.Grid.Col className="flx-col left">
+          <div>{job.title}</div>
           <MessageRender
             message={message}
-            job={this.props.jobMap[message.job_id]}
+            job={job}
             onBack={this.onBack}
             url={Pyr.URL(MESSAGES_URL)}
             onSetItems={this.props.onSetItems}
@@ -265,11 +274,6 @@ class ShowSheet extends Sheet.Show {
 }
 
 class IndexShowSheet extends Sheet.IndexShow {
-  constructor(props) {
-    super(props);
-    console.log("INDEX SHOW SHEET CONSTRUCTOR");
-  }
-
   renderIndex() {
     return (
         <IndexSheet 
@@ -359,7 +363,7 @@ class MessagesPage extends Page {
     console.log("SET FIRST SELECTED");
     console.log(first);
 
-    this.setSelected(first);
+    this.loadSelected(first.id);
     super.setItems(items);
   }
 
