@@ -19,7 +19,7 @@ const ClassNames = Pyr.ClassNames;
 
 import State from '../shared/state';
 
-import Blurb from './blurb';
+import Job from '../shared/job';
 
 import {
   POSITIONS_URL,
@@ -491,7 +491,7 @@ class HeadForm extends Sheet.Form {
 
     return (
       <div className="form-parent">
-        <Blurb {...this.props} />
+        <Job.Header {...this.props} />
         <div className="flx-row flx-1">
           <div className="section flx-4 left">
             { this.renderActualForm() }

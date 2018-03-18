@@ -7,11 +7,14 @@ class JobSerializer < ActiveModel::Serializer
               :user_id,
               :created_at,
               :category,
-              :recruiter_limit
+              :recruiter_limit,
+              :company
 
   #has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
   has_many :locations
   has_many :skills
+
+  belongs_to :company
 
   def id
     object.hashid

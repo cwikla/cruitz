@@ -673,6 +673,42 @@ label {
   color: $med_gray_color;
 }
 
+.job-blurb {
+  box-shadow: 1px 1px 5px 0px $gray_color;
+  margin-bottom: 2rem;
+
+  & > div {
+    padding: 1rem;
+  }
+
+  .logo {
+    height: 10rem;
+    width: 10rem;
+    border: solid $border_color 1px;
+    border-radius: 5px;
+  }
+
+  .title {
+    font-size: 2rem;
+    line-height: 3rem;
+    font-weight: $font_weight_normal;
+  }
+
+  .company {
+    padding-top: 0.5rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: $font_weight_normal;
+  }
+
+  .locations {
+    padding-top: 0.5rem;
+    font-size: 1.0rem;
+    line-height: 1.5rem;
+    font-weight: $font_weight_normal;
+  }
+}
+
 @import 'item';
 @import 'message_thread';
 @import 'messages';

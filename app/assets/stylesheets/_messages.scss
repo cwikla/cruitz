@@ -82,7 +82,12 @@
       background-color: white;
     }
 
-    .header {
+    .job-title {
+      padding: 0.5rem;
+      font-weight: 500rem;
+      font-size: 1.1rem;
+      border: 1px solid $border_color;
+      color: $primary_color;
     }
 
     .col, .row {

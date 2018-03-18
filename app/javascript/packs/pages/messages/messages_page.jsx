@@ -27,6 +27,7 @@ import {
 } from '../shared/user';
 
 import Recruiter from '../shared/recruiter';
+import Job from '../shared/job';
 
 import ThreadItem, { 
   THREAD_ID 
@@ -129,6 +130,9 @@ class MessageItem extends Sheet.Item {
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
     let theRecruiter = getRecruiter(this.user(), message);
 
+    console.log("THE MESSAGE");
+    console.log(message);
+
     return (
       <div className={allClass} id={id}>
         <div className="recruiter flx-col">
@@ -196,6 +200,24 @@ class IndexSheet extends Sheet.Index {
 
 }
 
+class SideBlurb extends Component {
+  render() {
+    let isRecruiter = this.user().is_recruiter;
+
+    if (isRecruiter) {
+      return (
+        <Job.Blurb job={this.props.job} />
+      );
+    }
+
+    if (!isRecruiter) {
+      return (
+        <Recruiter.Blurb recruiter={getRecruiter(this.user(), this.props.message)}/>
+      );
+    }
+  }
+}
+
 
 class ShowSheet extends Sheet.Show {
   constructor(props) {
@@ -249,7 +271,7 @@ class ShowSheet extends Sheet.Show {
     return (
      <Pyr.Grid.Row className="item flx-1">
         <Pyr.Grid.Col className="flx-col left">
-          <div>{job.title}</div>
+          <div className="job-title">{job.title}</div>
           <MessageRender
             message={message}
             job={job}
@@ -260,7 +282,10 @@ class ShowSheet extends Sheet.Show {
           />
         </Pyr.Grid.Col>
         <Pyr.Grid.Col className="col-3 right">
-          <Recruiter.Blurb recruiter={getRecruiter(this.user(), message)}/>
+          <SideBlurb 
+            message={message} 
+            job={job}
+          />
         </Pyr.Grid.Col>
       </Pyr.Grid.Row>
     );

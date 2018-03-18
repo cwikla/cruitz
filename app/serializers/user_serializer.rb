@@ -6,6 +6,7 @@ class UserSerializer < ActiveModel::Serializer
     :full_name,
     :created_at,
     :updated_at,
+    :is_recruiter,
     :logo
 
   has_one :company

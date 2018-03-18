@@ -19,7 +19,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 import ItemLoader from '../item_loader';
 
-import Blurb from './blurb';
+import Job from '../shared/job';
 
 import HeadIndexSheet, { 
   HeadForm,
@@ -95,7 +95,7 @@ class PositionItem extends Component {
       <div className={allClass}>
         <div className="flx-row flx-1">
           <div className="flx-col flx-1">
-            <Blurb {...this.props} />
+            <Job.Header {...this.props} job={position}/>
             { this.renderContent() }
           </div>
         </div>
