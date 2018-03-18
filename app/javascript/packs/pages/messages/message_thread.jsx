@@ -313,7 +313,7 @@ class MessageThread extends Component {
     let oid = prevProps.message ? prevProps.message.id : prevProps.messageId;
 
     if (mid != oid) {
-      this.getMessage(mid);
+      this.getThread(mid);
     }
   }
 

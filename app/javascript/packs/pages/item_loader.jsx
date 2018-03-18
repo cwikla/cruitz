@@ -11,8 +11,6 @@ class ItemLoader extends Component {
   constructor(...args) {
     super(...args);
 
-    console.log("ITEM LOADER");
-
     this.initState({
       items: null,
       selected: null,

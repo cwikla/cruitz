@@ -265,6 +265,11 @@ class ShowSheet extends Sheet.Show {
 }
 
 class IndexShowSheet extends Sheet.IndexShow {
+  constructor(props) {
+    super(props);
+    console.log("INDEX SHOW SHEET CONSTRUCTOR");
+  }
+
   renderIndex() {
     return (
         <IndexSheet 
@@ -359,7 +364,7 @@ class MessagesPage extends Page {
   }
 
   loadSelected(itemId, onLoading) {
-    //console.log("GET ITEM: " + itemId);
+    console.log("MESSAGES GET ITEM: " + itemId);
 
     if (!itemId) {
       return;
@@ -373,8 +378,8 @@ class MessagesPage extends Page {
       onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        //console.log("LOAD SELECTED");
-        //console.log(data.message);
+        console.log("LOADED SELECTED");
+        console.log(data.message);
 
         me.onSelect(data.message);
 
@@ -388,7 +393,7 @@ class MessagesPage extends Page {
   }
 
   loadItems(onLoading) {
-    console.log("GET ITEMS..." + this.constructor.name);
+    console.log("MESSAGES GET ITEMS..." + this.constructor.name);
     console.log(MESSAGES_URL);
 
     let me = this;
@@ -479,9 +484,13 @@ class MessagesPage extends Page {
 
     return (
       <ActionSheet 
-        {...this.props}
+        {...this.props} 
+        items={this.state.items}
         jobMap={this.jobMap}
         selected={this.getSelected()}
+        onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
+        onLoadItems={this.onLoadItems}
         onSetItems={this.onSetItems}
         onAddItem={this.onAddItem}
         onLoadSelected={this.onLoadSelected}

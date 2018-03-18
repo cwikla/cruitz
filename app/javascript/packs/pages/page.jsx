@@ -91,7 +91,12 @@ class Page extends ItemLoader {
   }
 
   showActionSheet() {
-    return !!this.getAction();
+    let action = this.getAction();
+    if (!action || (action.toLowerCase() == 'index')) {
+      return false;
+    }
+
+    return true;
   }
 
 ///// END ////
