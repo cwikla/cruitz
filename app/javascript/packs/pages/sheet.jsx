@@ -389,6 +389,10 @@ class Index extends Base {
 
 class Show extends Base {
 
+  size() {
+    return 3;
+  }
+
   componentDidMount() {
     console.log("DID MOUNT");
     console.log(this.props.selected);

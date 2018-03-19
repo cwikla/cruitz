@@ -486,7 +486,7 @@ class JobsPage extends Page {
     return (
       <IndexSheet
         {...this.props}
-        items={this.state.items}
+        items={this.getItems()}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
         onSelect={this.onSelect}
@@ -510,7 +510,7 @@ class JobsPage extends Page {
       <ActionSheet
         {...this.props}
         selected={this.getSelected()}
-        items={this.state.items}
+        items={this.getItems()}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
         onLoadSelected={this.onLoadSelected}

@@ -110,7 +110,7 @@ class SubNavBar extends Container.NavBar {
             <div className="mr-auto flx-row">
               <SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={this.props.buttonItemCount.positions}/>
               <SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages" count={this.props.buttonItemCount.messages}/>
-              <SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates" count={this.props.buttonItemCount.candidates}/>
+              <SubIcon name="Heads" icon="users" selected={this.props.page} page="heads" count={this.props.buttonItemCount.heads}/>
             </div>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1">
@@ -164,6 +164,7 @@ render (
     <Pyr.UI.NoticeProvider>
       <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_PAGE}  >
         <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+        <Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
         <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
       </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>

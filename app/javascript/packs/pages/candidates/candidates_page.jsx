@@ -647,7 +647,7 @@ class CandidatesPage extends Page {
     return (
       <CandidateTable 
         {...this.props}
-        items={this.state.items}
+        items={this.getItems()}
         selected={this.getSelected()}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
@@ -663,7 +663,7 @@ class CandidatesPage extends Page {
       <IndexSheet
         {...this.props}
         itemId={this.getItemId()}
-        items={this.state.items}
+        items={this.getItems()}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}

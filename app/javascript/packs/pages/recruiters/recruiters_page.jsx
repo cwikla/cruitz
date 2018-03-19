@@ -387,7 +387,7 @@ class RecruitersPage extends Page {
     return (
       <IndexSheet
         {...this.props}
-        items={this.state.items}
+        items={this.getItems()}
         recruiter={this.state.selected}
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}

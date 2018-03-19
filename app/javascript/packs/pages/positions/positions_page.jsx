@@ -313,7 +313,7 @@ class ShowSheet extends Sheet.ShowFull {
 
   addCandidate(candidate) {
     //console.log("ITEM: " + item);
-    //console.log(this.state.items);
+    //console.log(this.getItems());
 
     if (!candidate) {
       return;
@@ -611,7 +611,7 @@ class PositionsPage extends Page {
     return (
       <IndexSheet
         {...this.props}
-        items={this.state.items}
+        items={this.getItems()}
         onSelect={this.onSelect}
         onPreSubmit={this.onNoItems}
         onLoading={this.onLoading}

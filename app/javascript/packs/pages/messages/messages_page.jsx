@@ -447,26 +447,30 @@ class MessagesPage extends Page {
   }
 
   getNext(item) {
-    if ((item == null) || !this.state.items || (this.state.items.length == 1)) {
+    let allItems = this.getItems();
+
+    if ((item == null) || !allItems || (allItems.length == 1)) {
       return null;
     }
 
-    for(let i=0;i<this.state.items.length-1;i++) {
-      if (this.state.items[i].id == item.id) {
-        return this.state.items[i+1].id;
+    for(let i=0;i<allItems.length-1;i++) {
+      if (allItems[i].id == item.id) {
+        return allItems[i+1].id;
       }
     }
     return null;
   }
 
   getPrevious(item) {
-    if ((item == null) || !this.state.items || (this.state.items.length == 1)) {
+    let allItems = this.getItems();
+
+    if ((item == null) || !allItems || (allItems.length == 1)) {
       return null;
     }
 
-    for(let i=1;i<this.state.items.length;i++) {
-      if (this.state.items[i].id == item.id) {
-        return this.state.items[i-1].id;
+    for(let i=1;i<allItems.length;i++) {
+      if (allItems[i].id == item.id) {
+        return allItems[i-1].id;
       }
     }
     return null;
@@ -493,7 +497,7 @@ class MessagesPage extends Page {
     return (
       <IndexShowSheet
         {...this.props} 
-        items={this.state.items}
+        items={this.getItems()}
         jobMap={this.jobMap}
         selected={this.getSelected()}
         onSelect={this.onSelect}
@@ -520,7 +524,7 @@ class MessagesPage extends Page {
     return (
       <ActionSheet 
         {...this.props} 
-        items={this.state.items}
+        items={this.getItems()}
         jobMap={this.jobMap}
         selected={this.getSelected()}
         onSelect={this.onSelect}

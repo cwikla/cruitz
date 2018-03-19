@@ -6,4 +6,6 @@ class HeadSerializer < ActiveModel::Serializer
     :email,
     :full_name
 
+  has_many :candidates
+
 end

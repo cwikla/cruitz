@@ -15,14 +15,6 @@
 
   .sheet.index {
 
-    .header {
-      padding: 0.5rem;
-      font-weight: 500rem;
-      font-size: 1.1rem;
-      border: 1px solid $border_color;
-      color: $primary_color;
-    }
-
     margin-right: 1rem;
 
     .item {
@@ -76,10 +68,6 @@
     .inner {
       border: 0;
       padding: 0;
-    }
-
-    .header {
-      background-color: white;
     }
 
     .job-title {

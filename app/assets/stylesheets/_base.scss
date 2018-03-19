@@ -709,6 +709,22 @@ label {
   }
 }
 
+.index-show {
+  .sheet {
+    .header > div {
+      padding: 0.5rem;
+      font-weight: 500rem;
+      font-size: 1.1rem;
+      background-color: white;
+      border: 1px solid $border_color;
+      color: $primary_color;
+    }
+  }
+  .sheet.index {
+    margin-right: 1rem;
+  }
+}
+
 @import 'item';
 @import 'message_thread';
 @import 'messages';

@@ -62,16 +62,7 @@ class HeadItem extends Component {
     
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="head col-6">
-          <div>{head.id}:{head.title}</div>
-          <div>Created: <Pyr.UI.MagicDate date={head.created_at}/></div>
-        </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="item-content">
-          <div>Total: {head.candidate_counts.total}</div>
-          <div>Accepted: {head.candidate_counts.accepted}</div>
-          <div>New: {head.candidate_counts.waiting}</div>
-          <div>Rejected: {head.candidate_counts.rejected}</div>
-        </Pyr.Grid.Column>
+        <div className="ml-auto">{head.id}:{head.full_name}</div>
       </div>
     );
   }
@@ -268,7 +259,29 @@ class IndexSheet extends Sheet.Index {
     return HeadsPage.key(head);
   }
 
+  renderHeader() {
+    return (
+      <div className="flx-row">
+        <div className="mr-auto">Heads</div>
+        <div className="dropdown ml-auto">
+          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="headSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <div className="dropdown-menu" aria-labelledby="headSortMenuButton">
+            <label className="dropdown-header">Sort</label>
+            <div className="dropdown-divider"></div>
+            <label className="dropdown-item" >Date</label>
+            <label className="dropdown-item" >Unread</label>
+            <label className="dropdown-item" >Position</label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+
   renderItem(head, isSelected) {
+    console.log("RENDER ITEM HEAD");
+    console.log(head);
+
     return (
       <HeadItem 
         head={head} 
@@ -315,16 +328,6 @@ class IndexSheet extends Sheet.Index {
     );
   }   
 
-  renderHeader() {
-    return (
-      <div className="heads-index-header">
-          <div className="head-new p-1 d-flex flx-end">
-              <Link to={Pyr.URL(HEADS_URL).push("new").toString()}><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Head</Pyr.UI.PrimaryButton></Link>
-          </div>
-      </div>
-    );
-  }
-
   renderNone() {
     return (
       <div className="empty flx-col flx-align-center flx-justify-center">
@@ -339,19 +342,39 @@ class IndexSheet extends Sheet.Index {
 
 }
 
-class ShowSheet extends Sheet.ShowFull {
+class ShowSheet extends Sheet.Show {
   key(head) {
     return HeadsPage.key(head);
   }
 
   renderItem(head, isSelected) {
     return (
-        <HeadItem 
-          head={head} 
-          selected={isSelected}
-        />
+      <div className="item flx-1">
+        <div>Show Item {head.full_name}</div>
+      </div>
     );
   }
+
+  renderItem(item, isSelected) {
+    if (this.state.isLoading || !item) {
+      return (<Pyr.UI.Loading />);
+    }
+
+    let head = item;
+
+    return (
+     <div className="item flx-1 flx-row">
+        <div className="flx-col flx-3 left">
+          <div className="head-name">{head.full_name}</div>
+          <div>Head stuff</div>
+        </div>
+        <div className="flx-1 right">
+          <div>blurb</div>
+        </div>
+      </div>
+    );
+  }
+
 }
 
 class NewSheet extends Sheet.New {
@@ -395,11 +418,29 @@ class NewSheet extends Sheet.New {
   }
 }
 
+class IndexShowSheet extends Sheet.IndexShow {
+  renderIndex() {
+    return (
+        <IndexSheet
+          {...this.props}
+        />
+    );
+  }
+
+  renderShow() {
+    return (
+        <ShowSheet
+          {...this.props}
+        />
+    );
+  }
+}
+
+
 class HeadsPage extends Page {
   constructor(props) {
     super(props);
     this.initState({
-      categories: null
     });
 
   }
@@ -412,46 +453,78 @@ class HeadsPage extends Page {
    // return this.props.heads;
   //}
 
-  loadItems() {
-    this.onSetItems(this.props.heads);
-  }
+  loadItems(onLoading) {
+    console.log("HEADS GET ITEMS..." + this.constructor.name);
+    console.log(HEADS_URL);
 
-  loadSelected(sid) {
-    this.onSelect(this.props.headMap[sid]);
-    //this.props.headMap[sid];
-  }
+    let me = this;
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextProps.heads != this.props.heads) {
-      this.onSetItems(nextProps.heads);
-    }
-  }
-
-  componentWillMount() {
     this.getJSON({
-      url: CATEGORIES_URL
+      url: Pyr.URL(HEADS_URL),
+      context: me,
+      onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
+        me.setItems(data.heads);
 
-      this.setState({
-        categories: data.categories
-      });
     }).fail((jqXHR, textStatus, errorThrown) => {
       Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
+  setItems(items) {
+    this.props.onSetButtonCount("Heads", (items || []).length);
+
+    let first = items ? items[0] : null;
+    console.log("SET FIRST SELECTED");
+    console.log(first);
+
+    this.loadSelected(first.id);
+    super.setItems(items);
+  }
+
+
+  loadSelected(itemId, onLoading) {
+    console.log("HEADS GET ITEM: " + itemId);
+
+    if (!itemId) {
+      return;
+    }
+
+    let me = this;
+
+    this.getJSON({
+      url: Pyr.URL(HEADS_URL).push(itemId),
+      context: me,
+      onLoading: onLoading,
+
+    }).done((data, textStatus, jqXHR) => {
+        console.log("LOADED HEAD SELECTED");
+        console.log(data.head);
+
+        me.onSelect(data.head);
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
+    });
+
+  }
+
         //heads={this.props.heads}
   indexSheet() {
     return (
-      <IndexSheet
+      <IndexShowSheet
         {...this.props}
-        items={this.state.items}
-        heads={this.props.heads}
-        headMap={this.props.headMap}
+        items={this.getItems()}
+        selected={this.getSelected()}
         onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}
-        card={false}
+        onSetItems={this.onSetItems}
+        onAddItem={this.onAddItem}
+        onLoadSelected={this.onLoadSelected}
+        nextId={this.state.nextId}
+        prevId={this.state.prevId}
       />
     );
   }
@@ -470,7 +543,7 @@ class HeadsPage extends Page {
       <ActionSheet
         {...this.props}
         selected={this.getSelected()}
-        items={this.state.items}
+        items={this.getItems()}
         heads={this.props.heads}
         headMap={this.props.headMap}
         onLoadSelected={this.onLoadSelected}
