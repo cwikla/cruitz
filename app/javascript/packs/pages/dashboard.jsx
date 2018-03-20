@@ -21,10 +21,7 @@ import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
 import MessagesPage from './messages/messages_page';
 import RecruitersPage from './recruiters/recruiters_page';
-import SettingsPage from './settings/settings_page';
-import MePage from './me/me_page';
 import RegistrationsPage from './registration/registrations_page';
-import CompaniesPage from './companies/companies_page';
 
 const DashboardPage = (props) => (
   <Redirect to="/" />
@@ -34,22 +31,14 @@ import {
   JOBS_PAGE,
   CANDIDATES_PAGE,
   RECRUITERS_PAGE,
-  SETTINGS_PAGE,
   MESSAGES_PAGE,
   SEARCH_PAGE,
-  ME_PAGE,
-  COMPANIES_PAGE,
-  HEADS_PAGE,
 
   HOME_URL,
   JOBS_URL,
   CANDIDATES_URL,
   RECRUITERS_URL,
-  SETTINGS_URL,
   MESSAGES_URL,
-  COMPANIES_URL,
-  HEADS_URL,
-  ME_URL,
 
   SEARCH_URL,
   USERS_URL,
@@ -66,7 +55,6 @@ const PAGE_MAP = {
   [JOBS_PAGE.toLowerCase()]: JobsPage,
   [CANDIDATES_PAGE.toLowerCase()]: CandidatesPage,
   [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,
-  [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
   [MESSAGES_PAGE.toLowerCase()]: MessagesPage,
 };
 

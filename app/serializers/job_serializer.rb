@@ -7,14 +7,13 @@ class JobSerializer < ActiveModel::Serializer
               :user_id,
               :created_at,
               :category,
-              :recruiter_limit,
-              :company
+              :recruiter_limit
 
   #has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
   has_many :locations
   has_many :skills
 
-  belongs_to :company
+  #belongs_to :company
 
   def id
     object.hashid
@@ -70,9 +69,9 @@ class JobSerializer < ActiveModel::Serializer
       hash[:candidates] = current_user.submitted_candidates.where(job_id: object.id).live
     end
 
-    if instance_options[:company]
+    #if instance_options[:company]
       hash[:company] = CompanySerializer.new(object.user.company)
-    end
+    #end
     hash
   end
 

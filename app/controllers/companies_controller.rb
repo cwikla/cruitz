@@ -1,10 +1,14 @@
 class CompaniesController < ApplicationController
 
-  def show
+  def mine
     render json: current_user.company
   end
 
-  def update
+  def show
+    render json: Company.find(params[:id])
+  end
+
+  def mine_update
     cp = company_params
 
     if cp[:logo] # should refactor this out

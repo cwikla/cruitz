@@ -33,6 +33,9 @@ class Blurb extends Component {
     let company = position.company || {};
     let logo = company.logo;
 
+    console.log("BLURB");
+    console.log(company);
+
     let locations = null;
     if (position.locations) {
       locations = position.locations.map(v => {
@@ -56,7 +59,7 @@ class Blurb extends Component {
     let companyName = company ? company.name : "Anonymous";
 
     return (
-      <div className="header job-blurb flx-col">
+      <div className="header job-blurb flx-col" id={"job-" + position.id}>
         <div className="flx-col">
           <img src={logo_url} className="logo"/>
         </div>

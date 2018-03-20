@@ -50,10 +50,8 @@ Rails.application.routes.draw do
       get 'skills/auto' => 'skills#search'
       get 'locations/auto' => 'locations#search'
       get 'categories/auto' => 'categories#search'
-      get 'company/auto' => 'companies#search'
 
       resources :ratings
-      resource :company
       resources :candidates
       resources :heads
       resources :jobs
@@ -61,6 +59,12 @@ Rails.application.routes.draw do
       resources :categories
       resource :me, { controller: "me" }
       patch 'password' => 'me#password'
+
+      get 'company' => 'companies#mine'
+      put 'company' => 'companies#mine_update'
+
+      get 'companies/auto' => 'companies#search'
+      resources :companies
 
       resources :uploads
       post 'uploads/make' => 'uploads#make', as: :api_v1_upload_url

@@ -8,7 +8,8 @@ export const SETTINGS_PAGE = 'Settings';
 export const MESSAGES_PAGE = 'Messages';
 export const SEARCH_PAGE = 'Search';
 export const ME_PAGE = 'Me';
-export const COMPANIES_PAGE = 'Company';
+export const COMPANY_PAGE = 'Company';
+export const COMPANIES_PAGE = 'Companies';
 export const POSITIONS_PAGE = 'Positions';
 export const HEADS_PAGE = 'Heads';
 
@@ -21,7 +22,7 @@ export const MESSAGES_URL = "/messages";
 export const SEARCH_URL = "/search";
 export const POSTINGS_URL = "/postings";
 export const COMPANY_URL = "/company";
-export const COMPANIES_URL = COMPANY_URL;
+export const COMPANIES_URL = "/companies";
 export const POSITIONS_URL = "/positions";
 export const HEADS_URL = "/heads";
 

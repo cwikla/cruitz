@@ -17,10 +17,10 @@ const ClassNames = Pyr.ClassNames;
 
 import {
   ME_PAGE,
-  COMPANIES_PAGE,
+  COMPANY_PAGE,
   SETTINGS_PAGE,
 
-  COMPANIES_URL,
+  COMPANY_URL,
   ME_URL,
   SETTINGS_URL,
 
@@ -31,7 +31,7 @@ import {
 
 import Logo from './shared/logo';
 import MePage from './me/me_page';
-import CompaniesPage from './companies/companies_page';
+import CompanyPage from './company/company_page';
 import SettingsPage from './settings/settings_page';
 
 function PageURL(page) {
@@ -40,7 +40,7 @@ function PageURL(page) {
 
 const PAGE_MAP = {
   [ME_PAGE.toLowerCase()]: MePage,
-  [COMPANIES_PAGE.toLowerCase()]: CompaniesPage,
+  [COMPANY_PAGE.toLowerCase()]: CompanyPage,
   [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
 };
 
@@ -78,7 +78,7 @@ class NavUserMenu extends Component {
           <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.UI.Icon name="user"/></a> 
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <Link to={Pyr.URL(ME_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="user-circle" /> My Profile</Link>
-              <Link to={Pyr.URL(COMPANIES_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="building" /> My Company</Link>
+              <Link to={Pyr.URL(COMPANY_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="building" /> My Company</Link>
               <Link to={Pyr.URL(SETTINGS_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="gear" /> Settings</Link>
             </div>
         </li>

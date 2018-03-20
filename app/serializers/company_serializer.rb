@@ -4,11 +4,11 @@ class CompanySerializer < ActiveModel::Serializer
             :name,
             :description,
             :location,
-            :logo,
-            :created_at
+            :created_at,
+            :logo
 
   #belongs_to :user
-  belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
+  #belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
 
   def id
     object.hashid

@@ -272,7 +272,7 @@ class EditSheet extends Sheet.Edit {
 
 }
 
-class CompaniesPage extends Page {
+class CompanyPage extends Page {
   name() {
     return "Company";
   }
@@ -321,4 +321,4 @@ class CompaniesPage extends Page {
 
 }
 
-export default CompaniesPage;
+export default CompanyPage;
