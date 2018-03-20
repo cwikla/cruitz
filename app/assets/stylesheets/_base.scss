@@ -716,13 +716,49 @@ label {
       font-weight: 500rem;
       font-size: 1.1rem;
       background-color: white;
-      border: 1px solid $border_color;
       color: $primary_color;
+      border: 1px solid $border_color;
     }
   }
+
   .sheet.index {
     margin-right: 1rem;
+    padding-left: 0;
+
+
+    .item {
+      padding: 0.5rem;
+  
+      max-height: 10rem;
+      height: 10rem;
+  
+      max-width: 25rem;
+      width: 25rem;
+  
+      font-size: 0.85rem;
+  
+      &.selected {
+        background-color: rgba($primary_light_color, 0.05);
+      }
+    }
   }
+
+  .sheet.show {
+    .inner {
+      border: none;
+    }
+
+    .left {
+      border: 1px solid $border_color;
+    }
+
+    .right {
+      margin-left: 1rem;
+    }
+  }
+
+   margin-right: 1rem;
+
 }
 
 @import 'item';

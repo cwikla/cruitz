@@ -275,8 +275,8 @@ class ShowSheet extends Sheet.Show {
     let MessageRender = message.candidate ? MessageThread : MessageQA;
 
     return (
-     <Pyr.Grid.Row className="item flx-1">
-        <Pyr.Grid.Col className="flx-col left">
+     <div className="item flx-1 flx-row">
+        <div className="flx-col flx-3 left">
           <div className="job-title">{job.title}</div>
           <MessageRender
             message={message}
@@ -286,14 +286,14 @@ class ShowSheet extends Sheet.Show {
             onSetItems={this.props.onSetItems}
             onAddItem={this.props.onAddItem}
           />
-        </Pyr.Grid.Col>
-        <Pyr.Grid.Col className="col-3 right">
+        </div>
+        <div className="flx-1 blurb right">
           <SideBlurb 
             message={message} 
             job={job}
           />
-        </Pyr.Grid.Col>
-      </Pyr.Grid.Row>
+        </div>
+      </div>
     );
   }
 
