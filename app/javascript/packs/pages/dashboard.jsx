@@ -16,7 +16,7 @@ import Pyr, {
 const ClassNames = Pyr.ClassNames;
 
 import Container from './container';
-import Sidebar from './side_bar';
+
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
 import MessagesPage from './messages/messages_page';
@@ -25,8 +25,6 @@ import SettingsPage from './settings/settings_page';
 import MePage from './me/me_page';
 import RegistrationsPage from './registration/registrations_page';
 import CompaniesPage from './companies/companies_page';
-
-import Logo from './shared/logo';
 
 const DashboardPage = (props) => (
   <Redirect to="/" />
@@ -90,67 +88,30 @@ function same(a,b) {
   return a.id == b.id;
 }
 
-class PagePicker extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class SubNavBar extends Container.NavBar {
   render() {
-    if (this.user().first_time) {
-      return (
-        <RegistrationsPage {...this.props} showing/>
-      );
-    }
+    console.log("SUB NAV BAR");
+    console.log(this.props.page);
 
     return (
-      <Dashboard {...this.props} />
-    );
-  }
-}
-
-class NavMenuButton extends Component {
-  render() {
-    let url = Pyr.URL(MESSAGES_URL).set("sort", this.props.sort);
-
-    //console.log("NavMenuButton: " + this.props.sort);
-
-    url.bake();
-    //console.log(url.parser.pathname.toString());
-    //console.log(url.parser.search.toString());
-    //console.log(url.parser);
-
-    let us = url.toString();
-    //console.log("US: " + us);
-
-    let icon = <Pyr.UI.Icon name="sort-asc" className={!this.props.dir ? "ghost" : ""}/>;
-
-    return (
-      <Link className={this.props.className} to={url.toString()}>{icon}{this.props.children}</Link>
-    );
-  }
-}
-
-
-class NavViewMenu extends Component {
-  render () {
-    return (
-      <div className="flx-row page-nav-bar">
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Pyr.UI.Icon name="sort"/></a>
-            <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-              <NavMenuButton className="dropdown-item" sort="received" dir="asc">Received</NavMenuButton>
-              <NavMenuButton className="dropdown-item" sort="job">Job</NavMenuButton>
-              <NavMenuButton className="dropdown-item" sort="rank">Rank</NavMenuButton>
-              <hr/>
-              <NavMenuButton className="dropdown-item" sort="list"><Pyr.UI.Icon name="list"/> List</NavMenuButton>
-              <NavMenuButton className="dropdown-item" sort="grid"><Pyr.UI.Icon name="th"/> Grid</NavMenuButton>
+       <Pyr.Grid.Row className="subnavbar flx-row">
+          <Pyr.Grid.Col className="col col-1 navbar-nav">
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
+            <div className="mr-auto flx-row">
+              <Container.SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages" count={this.props.buttonItemCount.messages}/>
+              <Container.SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates" count={this.props.buttonItemCount.candidates}/>
+              <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="jobs" count={this.props.buttonItemCount.jobs}/>
+              <Container.SubIcon name="Recruiters" icon="cubes" selected={this.props.page} page="recruiters" count={this.props.buttonItemCount.recruiters}/>
             </div>
-        </li>
-      </div>
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1">
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
     );
   }
-}
 
+}
 
 class Dashboard extends Container.Base {
   constructor(props) {
@@ -206,21 +167,6 @@ class Dashboard extends Container.Base {
 
   same(j1, j2) {
     return j1.id == j2.id;
-  }
-
-  unused_componentWillReceiveProps(nextProps) {
-    if ((this.props.page != nextProps.page) ||
-        (this.props.subPage != nextProps.subPage) ||
-        (this.props.itemId != nextProps.itemId) ||
-        (this.props.subPageId != nextProps.subPageId)) {
-      let page = Pyr.Util.capFirstLetter(this.props.page || DEFAULT_PAGE);
-
-      //console.log("WILL RECEIVE");
-      //console.log(nextProps);
-      //console.log(page);
-
-      
-    }
   }
 
   jobNew() {
@@ -322,91 +268,13 @@ class Dashboard extends Container.Base {
       <span>({count})</span>
     );
   }
- 
-  renderSideBar() {
-    let self = this;
-    let page = this.getPage();
-    let itemId = this.getItemId();
-    let subPage = this.getSubPage();
 
-    let jobs = this.state.jobs; //.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
-
-    let jobKids = jobs.map( (job, pos) => {
-        let isJob = isPage(page, CANDIDATES_PAGE);
-        let jobId = itemId;
-
-        let candCount = job.candidate_counts.total;
-
-        if (candCount == 0) {
-          return null;
-        }
-
-        return (<Sidebar.Button 
-                  key={job.id} 
-                  url={Pyr.URL(JOBS_URL).push(job.id).push(CANDIDATES_PAGE)}
-                  selected={isJob && (job.id == jobId)}
-                ><span className="hidden-sm-down">{job.title} {this.renderCandidateCount(job.candidate_counts.accepted + job.candidate_counts.waiting)}</span></Sidebar.Button>
-        );
-      }
-    );
-
-
+  renderSubNavBar() {
     return (
-        <Sidebar.Main className="col col-1 col-sm-1 col-md-2 flx-col h-100">
-          <Sidebar.Header 
-            id="messages"
-            icon="envelope-open-o"
-            selected={isPage(page, MESSAGES_PAGE, true)}
-            itemCount={this.state.buttonItemCount[MESSAGES_PAGE] || 0}
-            url={PageURL(MESSAGES_PAGE)}
-            >Messages</Sidebar.Header>
-
-          <Sidebar.Header 
-            id="candidates" 
-            icon="users"
-            selected={isPage(page, CANDIDATES_PAGE) }
-            itemCount={this.state.buttonItemCount[CANDIDATES_PAGE] || 0}
-            url={PageURL(CANDIDATES_PAGE)}
-          >Candidates</Sidebar.Header>
-
-          <Pyr.UI.Scroll className="sidebar-scroll hidden-sm-down flx-1">
-            <Sidebar.Menu>
-              {jobKids}
-            </Sidebar.Menu>
-          </Pyr.UI.Scroll>
-
-          <Sidebar.Header 
-            id="jobs"
-            icon="bullseye"
-            itemCount={this.state.buttonItemCount[JOBS_PAGE] || 0}
-            selected={isPage(page, JOBS_PAGE)}
-            url={PageURL(JOBS_PAGE)}
-          >Jobs</Sidebar.Header>
-          <Sidebar.Header 
-            id="recruiters"
-            icon="cubes"
-            itemCount={this.state.buttonItemCount[RECRUITERS_PAGE] || 0}
-            selected={isPage(page, RECRUITERS_PAGE)}
-            url={PageURL(RECRUITERS_PAGE)}
-          >Recruiters</Sidebar.Header>
-          <Sidebar.Header 
-            id="settings"
-            icon="gear"
-            selected={isPage(page, SETTINGS_PAGE)}
-            className="p-b-1"
-            url={PageURL(SETTINGS_PAGE)}
-          >Settings</Sidebar.Header>
-        </Sidebar.Main>
+      <SubNavBar user={this.user()} page={this.getPage()} buttonItemCount={this.state.buttonItemCount}/>
     );
   }
-
-  renderMain() {
-    let props = {
-      className: "col col-11 offset-1 col-sm-11 offset-sm-1 col-md-10 offset-md-2"
-    };
-    return super.renderMain(props);
-  }
-
+ 
   pageProps(page) {
     let props = super.pageProps(page);
     let dashboardProps = {

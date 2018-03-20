@@ -13,6 +13,7 @@ import {
 import Pyr, {
   Component
 } from '../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
 
 import {
   ME_PAGE,
@@ -42,6 +43,31 @@ const PAGE_MAP = {
   [COMPANIES_PAGE.toLowerCase()]: CompaniesPage,
   [SETTINGS_PAGE.toLowerCase()]: SettingsPage,
 };
+
+class SubIcon extends Component {
+  render() {
+    let clazzes = ClassNames("nav-item sub-nav-icon flx-row");
+
+
+    let selected = this.props.page.toLowerCase() == this.props.selected.toLowerCase();
+    if (selected) {
+      clazzes.push("selected");
+    }
+
+    let all = Pyr.Util.propsMergeClassName(this.props, clazzes);
+
+    let url = Pyr.URL("/").push(this.props.page);
+
+    return (
+      <Link to={url.toString()}>
+        <div {...all}>
+          <Pyr.UI.Icon name={this.props.icon} className="mt-auto mb-auto"/>
+          <div className="title">{this.props.count} - {this.props.name}</div>
+        </div>
+      </Link>
+    );
+  }
+}
 
 
 class NavUserMenu extends Component {
@@ -87,7 +113,7 @@ class NavSearch extends Component {
 }
 
 
-class NavBar extends Component {
+class OldNavBar extends Component {
   render() {
     return (
        <Pyr.Grid.Row className="navbar flx-row align-items-center">
@@ -106,6 +132,28 @@ class NavBar extends Component {
     );
   }
 }
+
+class NavBar extends Component {
+  render() {
+    return (
+       <Pyr.Grid.Row className="navbar flx-row">
+          <Pyr.Grid.Col className="col col-1 navbar-nav">
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
+              <Logo className="mr-auto"/>
+
+              <div className="flx-row ml-auto align-items-center">
+                <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
+                <Container.NavUserMenu user={this.props.user} />
+              </div>
+          </Pyr.Grid.Col>
+          <Pyr.Grid.Col className="col col-1">
+          </Pyr.Grid.Col>
+        </Pyr.Grid.Row>
+    );
+  }
+}
+
 
 class Base extends Component {
   constructor(props) {
@@ -336,6 +384,7 @@ const Container = {
   Base,
   NavUserMenu,
   NavBar,
+  SubIcon,
 };
 
 export default Container;
