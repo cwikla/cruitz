@@ -15,23 +15,90 @@ import Pyr, {
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+class Head extends Component {
+  render () {
+    return (
+      <div {...Pyr.Util.propsMergeClassName(this.props, "head")}>
+        { this.props.children }
+      </div>
+    );
+  }
+}
 
-class Primary extends Component {
+class HeadComponent extends Component {
   render() {
     let head = this.props.head;
     let position = this.props.position;
 
-    let clazzes = ClassNames("sub-section primary");
+    let clazzes = ClassNames("head-details", this.props.className);
+
     if (this.props.locked) {
       clazzes.push("locked");
     }
 
     return (
       <div className={clazzes}>
-        <div className="name">{head.first_name} {head.last_name}</div>
+        { this.props.children }
+      </div>
+    );
+  }
+}
+
+class Name extends Component {
+  render() {
+    let head = this.props.head;
+
+    let clazzes = ClassNames(this.props.className, "name");
+
+    return (
+      <HeadComponent {...this.props} className={clazzes}>
+        {head.first_name} {head.last_name}
+      </HeadComponent>
+    );
+  }
+}
+
+
+class Primary extends Component {
+  render() {
+    let head = this.props.head;
+
+    let clazzes = ClassNames(this.props.className, "primary");
+
+    return (
+      <HeadComponent {...this.props} className={clazzes}>
         <div className="email">{head.email}</div>
         <div className="phone-number">{head.phone_number}</div>
+      </HeadComponent>
+    );
+  }
+}
 
+class Address extends Component {
+  render() {
+    let head = this.props.head;
+
+    let clazzes = ClassNames(this.props.className, "address");
+
+    let street = "1060 W. Addison";
+    let city = "Chicago";
+    let state = "IL";
+    let country = "US";
+
+    return (
+      <HeadComponent {...this.props} className={clazzes}>
+        <div className="street">{ street }</div>
+        <div className="city">{ city }, { state }</div>
+      </HeadComponent>
+    );
+  }
+}
+
+class SLink extends Component {
+  render() {
+    return (
+      <div className="social-link">
+        <Pyr.UI.Icon name={this.props.name} className={this.props.name} />
       </div>
     );
   }
@@ -39,18 +106,17 @@ class Primary extends Component {
 
 class SocialLinks extends Component {
   render() {
-    let clazzes = ClassNames("sub-section social");
-    if (this.props.locked) {
-      clazzes.push("locked");
-    }
+    let head = this.props.head;
+
+    let clazzes = ClassNames(this.props.className, "social-links flx-row flx-wrap");
 
     return (
-        <div className={clazzes}>
-          <Pyr.UI.Icon name="linkedin-square" className="linkedin-square"/>
-          <Pyr.UI.Icon name="github" className="github"/>
-          <Pyr.UI.Icon name="dribbble" className="dribble"/>
-          <Pyr.UI.Icon name="quora" className="quora"/>
-        </div>
+        <HeadComponent {...this.props} className={clazzes}>
+          <SLink name="linkedin-square" />
+          <SLink name="github" />
+          <SLink name="dribbble" />
+          <SLink name="quora" />
+        </HeadComponent>
     );
   }
 }
@@ -73,10 +139,14 @@ class Skills extends Component {
       );
     });
 
+    let head = this.props.head;
+
+    let clazzes = ClassNames(this.props.className, "skills flx-row flx-wrap");
+
     return (
-      <div className="skills sub-section flx-row flx-wrap">
+      <HeadComponent {...this.props} className={clazzes}>
         { ts }
-      </div>
+      </HeadComponent>
     );
   }
 }
@@ -98,15 +168,22 @@ class WorkHistory extends Component {
       );
     });
 
+    let head = this.props.head;
+
+    let clazzes = ClassNames(this.props.className, "work-history");
+
     return (
-      <div className="work-history sub-section">
+      <HeadComponent {...this.props} className={clazzes}>
         { guts }
-      </div>
+      </HeadComponent>
     );
   }
 }
 
 const HeadDetails = {
+  Head,
+  Name,
+  Address,
   Primary,
   SocialLinks,
   Skills,

@@ -758,13 +758,12 @@ label {
 
 }
 
-@import 'item';
-@import 'message_thread';
-@import 'messages';
-@import 'recruiters';
-@import 'candidates';
-@import 'jobs';
-@import 'settings';
-@import 'registration';
-@import 'companies';
-@import 'positions';
+.skill {
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+
+  border: solid $secondary_color 1px;
+  border-radius: 5px;
+}
+
+

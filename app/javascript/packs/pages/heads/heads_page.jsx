@@ -368,12 +368,16 @@ class ShowSheet extends Sheet.Show {
 
     return (
      <div className="item flx-1 flx-row">
-        <div className="flx-col flx-3 left">
-          <div className="section flx-5 right">
-            <HeadDetails.Primary {...this.props} head={head}/>
-            <HeadDetails.SocialLinks {...this.props} head={head}/>
-            <HeadDetails.Skills {...this.props} head={head}/>
-            <HeadDetails.WorkHistory {...this.props} head={head}/>
+        <div className="flx-col flx-3 left scroll">
+          <div className="section flx-5">
+            <HeadDetails.Head>
+              <HeadDetails.Name {...this.props} head={head}/>
+              <HeadDetails.Primary {...this.props} head={head}/>
+              <HeadDetails.Address {...this.props} head={head}/>
+              <HeadDetails.SocialLinks {...this.props} head={head}/>
+              <HeadDetails.Skills {...this.props} head={head}/>
+              <HeadDetails.WorkHistory {...this.props} head={head}/>
+            </HeadDetails.Head>
           </div>
         </div>
         <div className="flx-1 right">
@@ -487,7 +491,9 @@ class HeadsPage extends Page {
     console.log("SET FIRST SELECTED");
     console.log(first);
 
-    if (first && !this.selected || (this.selected.id != first.id)) {
+    let selected = this.getSelected();
+
+    if (first && (!selected || (selected.id != first.id))) {
       this.loadSelected(first.id);
     }
     super.setItems(items);

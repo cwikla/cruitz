@@ -1,0 +1,123 @@
+.navbar {
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: 500;
+
+  .form-group {
+    margin: 0;
+    padding: 0;
+
+    input {
+      border-color: $navbar_menu_color !important;
+
+    }
+  }
+
+  .nav-item, .navbar, .form-control {
+    color: $navbar_menu_color !important;
+    font-size: 1rem;
+   }
+
+  .nav-item {
+    margin: 0;
+    padding-left: 0.5rem;
+    padding-right: 0rem;
+
+    #arrow {
+      color: $navbar_background_color;
+    }
+
+    &#user:hover {
+      color: white !important;
+      #arrow {
+        color: white !important;
+      }
+    }
+    &.alerts:hover {
+      color: white !important;
+    }
+
+    &.logo {
+      padding-left: 0;
+    }
+  }
+
+  input[type=text] {
+    color: $navbar_menu_color !important;
+    font-size: 1rem;
+    width: 20rem;
+    display: inline-block;
+  }
+
+  input::placeholder {
+    color: rgba($navbar_menu_color, 0.5);
+    font-size: 1rem;
+  }
+
+  .logo:hover {
+    color: white !important;
+  }
+
+  .alerts:hover {
+    color: white !important;
+  }
+}
+
+.subnavbar {
+  margin-left: 0;
+  margin-right: 0;
+
+  background-color: $navbar_menu_color !important;
+  color: rgba($navbar_background_color, 0.7);
+
+  border-top: 1px solid $navbar_menu_color;
+  box-shadow: 0px 1px 1px 0px rgba($navbar_background_color, 0.25);
+
+  .nav-item, .form-control {
+    color: rgba($navbar_background_color, 0.6);
+   }
+
+  .sub-nav-icon {
+    margin: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    .title {
+      border-bottom: 1px solid $navbar_menu_color;
+    }
+
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    &:hover, &.selected {
+      color: $navbar_background_color !important;
+    }
+    &:hover:not(.selected) {
+      .title {
+        border-bottom: 1px solid $navbar_background_color;
+      }
+    }
+
+  }
+
+
+}
+
+
+.nav-bar-user {
+  padding-left: 2rem;
+}
+
+.nav-bar-search:hover {
+  color: white !important;
+}
+
+.container-content {
+  padding: 1rem;
+}
+
+.marketplace {
+  .container-content {
+    padding-top: 1.5rem;
+  }
+}
