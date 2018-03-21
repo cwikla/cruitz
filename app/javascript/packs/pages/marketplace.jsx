@@ -36,7 +36,7 @@ import PositionsPage from './positions/positions_page';
 import MessagesPage from './messages/messages_page';
 import HeadsPage from './heads/heads_page';
 
-const DEFAULT_PAGE = POSITIONS_PAGE;
+const DEFAULT_PAGE = HEADS_PAGE; /* POSITIONS_PAGE; */
 
 const HolderPage = (props) => (
   <Redirect to="/" />
@@ -130,7 +130,7 @@ class Hello extends Component {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={MarketPlace} dashboard={POSITIONS_PAGE}  >
+      <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE}  >
         <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
         <Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
         <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />

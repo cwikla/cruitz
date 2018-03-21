@@ -41,6 +41,7 @@ export const SHOW_ACTION = 'show';
 export const NEW_ACTION = 'new';
 export const EDIT_ACTION = 'edit';
 export const DELETE_ACTION = 'delete';
+export const INDEX_SHOW_ACTION = 'indexshow';
 
 
 //===

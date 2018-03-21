@@ -427,7 +427,7 @@ function squish(str) {
 }
 
 function capFirstLetter(string) {
-    string = string.toLowerCase();
+    //string = string.toLowerCase();
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 

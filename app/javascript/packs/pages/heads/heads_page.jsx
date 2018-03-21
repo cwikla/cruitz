@@ -22,6 +22,8 @@ import {
   getLogo 
 } from '../shared/user';
 
+import HeadDetails from './head_details';
+
 import {
   HEADS_URL,
   SEARCH_URL,
@@ -52,7 +54,7 @@ class HeadItem extends Component {
     let head = this.props.head;
     
     let id = "head-" + head.id;
-    let allClass = ClassNames("item head-item flx-row");
+    let allClass = ClassNames("item head-item flx-col");
     
     if (this.props.selected) {
        allClass.push("selected");
@@ -62,7 +64,9 @@ class HeadItem extends Component {
     
     return (
       <div className={allClass} id={id}>
-        <div className="ml-auto">{head.id}:{head.full_name}</div>
+        <div className="mr-auto full-name">{head.full_name}</div>
+        <div className="mr-auto current-company">Google</div>
+        <div className="mr-auto submitted-count">{head.candidates.count}</div>
       </div>
     );
   }
@@ -365,8 +369,12 @@ class ShowSheet extends Sheet.Show {
     return (
      <div className="item flx-1 flx-row">
         <div className="flx-col flx-3 left">
-          <div className="head-name">{head.full_name}</div>
-          <div>Head stuff</div>
+          <div className="section flx-5 right">
+            <HeadDetails.Primary {...this.props} head={head}/>
+            <HeadDetails.SocialLinks {...this.props} head={head}/>
+            <HeadDetails.Skills {...this.props} head={head}/>
+            <HeadDetails.WorkHistory {...this.props} head={head}/>
+          </div>
         </div>
         <div className="flx-1 right">
           <div>blurb</div>
@@ -479,7 +487,9 @@ class HeadsPage extends Page {
     console.log("SET FIRST SELECTED");
     console.log(first);
 
-    this.loadSelected(first.id);
+    if (first && !this.selected || (this.selected.id != first.id)) {
+      this.loadSelected(first.id);
+    }
     super.setItems(items);
   }
 
@@ -512,6 +522,8 @@ class HeadsPage extends Page {
 
         //heads={this.props.heads}
   indexSheet() {
+    return this.actionSheet("IndexShow");
+
     return (
       <IndexShowSheet
         {...this.props}
@@ -542,12 +554,16 @@ class HeadsPage extends Page {
     return (
       <ActionSheet
         {...this.props}
-        selected={this.getSelected()}
         items={this.getItems()}
-        heads={this.props.heads}
-        headMap={this.props.headMap}
+        selected={this.getSelected()}
+        onSelect={this.onSelect}
+        onUnselect={this.onUnselect}
+        onLoadItems={this.onLoadItems}
+        onSetItems={this.onSetItems}
+        onAddItem={this.onAddItem}
         onLoadSelected={this.onLoadSelected}
-        categories={this.state.categories}
+        nextId={this.state.nextId}
+        prevId={this.state.prevId}
       />
     );
 
