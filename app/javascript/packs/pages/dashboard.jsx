@@ -34,6 +34,7 @@ import {
   MESSAGES_PAGE,
   SEARCH_PAGE,
 
+  ME_URL,
   HOME_URL,
   JOBS_URL,
   CANDIDATES_URL,
@@ -291,7 +292,9 @@ class Dashboard extends Container.Base {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}/>
+      <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}>
+        <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+      </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 

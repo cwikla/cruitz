@@ -61,7 +61,7 @@ Rails.application.routes.draw do
       patch 'password' => 'me#password'
 
       get 'company' => 'companies#mine'
-      put 'company' => 'companies#mine_update'
+      patch 'company' => 'companies#mine_update'
 
       get 'companies/auto' => 'companies#search'
       resources :companies
