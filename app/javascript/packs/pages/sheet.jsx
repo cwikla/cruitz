@@ -184,6 +184,10 @@ class Form extends Base {
     this.form = null;
   }
 
+  name() {
+    return "Form";
+  }
+
   getTarget() {
     console.log("FORM GET TARGET");
     return this.form;
@@ -236,6 +240,9 @@ class Form extends Base {
 }
 
 class Wizard extends Base {
+  name() {
+    return "Wizard";
+  }
 
   constructor(...args) {
     super(...args);
@@ -301,6 +308,10 @@ class Wizard extends Base {
 }
 
 class Index extends Base {
+  name() {
+    return "Index";
+  }
+
   items() {
     return this.props.items;
   }
@@ -389,6 +400,9 @@ class Index extends Base {
 }
 
 class Show extends Base {
+  name() {
+    return "Show";
+  }
 
   size() {
     return 3;
@@ -441,6 +455,10 @@ class Show extends Base {
 }
 
 class IndexShow extends Base {
+  name() {
+    return "IndexShow";
+  }
+
   renderIndex() {
     return null;
   }
@@ -494,6 +512,9 @@ class SearchForm extends Form {
 }
 
 class New extends Form {
+  name() {
+    return "New";
+  }
 
   title() {
     return null;
@@ -502,6 +523,9 @@ class New extends Form {
 }
 
 class Edit extends Form {
+  name() {
+    return "Edit";
+  }
 
   componentDidMount() {
     if (!this.props.selected) {
