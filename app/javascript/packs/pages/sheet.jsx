@@ -44,8 +44,9 @@ class Base extends Component {
     let fullName = this.constructor.name;
     let pos = fullName.search("Sheet");
     if (pos == -1) {
-      alert("page.jsx: You need to define a name cuz you didn't name your subclass *Sheet");
-      alert(fullName);
+      console.log("page.jsx: You need to define a name cuz you didn't name your subclass *Sheet");
+      console.log(fullName);
+      console.log(this);
     }
     let name = fullName.substring(0, pos);
     return name;
