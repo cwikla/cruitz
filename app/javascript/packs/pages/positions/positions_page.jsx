@@ -277,18 +277,18 @@ class SubmitSheet extends Sheet.ShowFull {
   }
 
   renderItem(position, isSelected) {
-    console.log("SUBMIT: renderItem");
+    //console.log("SUBMIT: renderItem");
     if (!this.props.head) {
       return (
         <Pyr.UI.Loading />
       );
     }
 
-    console.log("STATE HEAD");
-    console.log(this.props.head);
+    //console.log("STATE HEAD");
+    //console.log(this.props.head);
 
-    console.log("POSITION");
-    console.log(position);
+    //console.log("POSITION");
+    //console.log(position);
 
     return (
       <HeadForm
@@ -369,11 +369,11 @@ class ShowSheet extends Sheet.ShowFull {
 
   loadCandidates(position, onLoading, props={}) {
     if (!position) {
-      console.log("NO POSITION");
+      //console.log("NO POSITION");
       return;
     }
 
-    console.log("LOADING CANDIDATES");
+    //console.log("LOADING CANDIDATES");
 
     let urlStuff = Object.assign({}, {
       url: Pyr.URL(POSITIONS_URL).push(position.id).push('candidates'),
@@ -392,8 +392,8 @@ class ShowSheet extends Sheet.ShowFull {
   }
 
   componentDidMount() {
-    console.log("DIDMOUNT");
-    console.log(this.state.candidates);
+    //console.log("DIDMOUNT");
+    //console.log(this.state.candidates);
     super.componentDidMount();
 
     if (!this.state.candidates) {
@@ -503,16 +503,16 @@ class HeadLoader extends Component {
   }
 
   loadHead(headId) {
-    console.log("HEAD LOADER");
-    console.log(headId);
+    //console.log("HEAD LOADER");
+    //console.log(headId);
 
     this.getJSON({
       url: Pyr.URL(HEADS_URL).push(headId),
       onLoading: this.props.onLoading
 
     }).done((data, textStatus, jqXHR) => {
-      console.log("GOT HEAD");
-      console.log(data);
+      //console.log("GOT HEAD");
+      //console.log(data);
       this.onSetHead(data.head);
 
     }).fail((jqXHR, textStatus, errorThrown) => {
@@ -523,7 +523,7 @@ class HeadLoader extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.headId!= this.props.headId) {
-      console.log("PAGE GOT NEW ID: " + nextProps.headId);
+      //console.log("PAGE GOT NEW ID: " + nextProps.headId);
       this.setState({
         head: null
       });
@@ -542,10 +542,10 @@ class HeadLoader extends Component {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    console.log("ACTION SHEET");
-    console.log(sheet);
-    console.log(this.props);
-    console.log(this.state.head);
+    //console.log("ACTION SHEET");
+    //console.log(sheet);
+    //console.log(this.props);
+    //console.log(this.state.head);
 
     return (
       <ActionSheet
@@ -566,10 +566,10 @@ class PositionsPage extends Page {
   }
 
   setSelected(selected) {
-    console.log("SELECTED " + JSON.stringify(selected));
+    //console.log("SELECTED " + JSON.stringify(selected));
     if (!selected) {
       //alert("SETTING TO NULL");
-      console.log("SETTING TO NULL!!!!!!");
+      //console.log("SETTING TO NULL!!!!!!");
     }
 
     this.setState({
@@ -584,15 +584,15 @@ class PositionsPage extends Page {
   }
 
   loadSelected(itemId, onLoading) {
-    console.log("LOAD SELECTED: " + itemId);
+    //console.log("LOAD SELECTED: " + itemId);
 
     this.getJSON({
       url: Pyr.URL(this.props.url).push(itemId),
       onLoading: onLoading
 
     }).done((data, textStatus, jqXHR) => {
-      console.log("GOT POSITION");
-      console.log(data);
+      //console.log("GOT POSITION");
+      //console.log(data);
 
       this.onSelect(data.position);
 
@@ -602,7 +602,7 @@ class PositionsPage extends Page {
   }
 
   loadItems(onLoading, props={}) {
-    console.log("LOAD ITEMS");
+    //console.log("LOAD ITEMS");
 
     let urlStuff = Object.assign({}, {
       url: this.props.url,

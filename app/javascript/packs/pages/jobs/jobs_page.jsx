@@ -163,8 +163,8 @@ class JobForm extends Component {
   }
 
   getTarget() {
-    console.log("GETTING TARGET");
-    console.log(this.form);
+    //console.log("GETTING TARGET");
+    //console.log(this.form);
     return this.form;
   }
 

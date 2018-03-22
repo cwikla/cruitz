@@ -44,9 +44,8 @@ class Base extends Component {
     let fullName = this.constructor.name;
     let pos = fullName.search("Sheet");
     if (pos == -1) {
-      console.log("page.jsx: You need to define a name cuz you didn't name your subclass *Sheet");
-      console.log(fullName);
-      console.log(this);
+      alert("page.jsx: You need to define a name cuz you didn't name your subclass *Sheet");
+      alert(fullName);
     }
     let name = fullName.substring(0, pos);
     return name;
@@ -409,23 +408,23 @@ class Show extends Base {
   }
 
   componentDidMount() {
-    console.log("DID MOUNT");
-    console.log(this.props.selected);
+    //console.log("DID MOUNT");
+    //console.log(this.props.selected);
 
     if (!this.props.selected) {
-      console.log("GETTING SELECTED");
+      //console.log("GETTING SELECTED");
       this.props.onLoadSelected(this.props.itemId, this.onLoading);
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("DID UPDATE");
-    console.log(this.props.itemId);
-    console.log(prevProps.itemId);
-    console.log(this.props.selected);
+    //console.log("DID UPDATE");
+    //console.log(this.props.itemId);
+    //console.log(prevProps.itemId);
+    //console.log(this.props.selected);
 
     if (this.props.itemId != prevProps.itemId) {
-      console.log("UPDATED GETTING SELECTED");
+      //console.log("UPDATED GETTING SELECTED");
       this.props.onLoadSelected(this.props.itemId, this.onLoading);
     }
   }
@@ -529,7 +528,7 @@ class Edit extends Form {
 
   componentDidMount() {
     if (!this.props.selected) {
-      console.log("GETTING SELECTED");
+      //console.log("GETTING SELECTED");
       this.props.onLoadSelected(this.props.itemId, this.onLoading);
     }
   }

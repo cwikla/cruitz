@@ -118,8 +118,8 @@ class HeadForm extends Component {
   }
 
   getTarget() {
-    console.log("GETTING TARGET");
-    console.log(this.form);
+    //console.log("GETTING TARGET");
+    //console.log(this.form);
     return this.form;
   }
 
@@ -283,8 +283,8 @@ class IndexSheet extends Sheet.Index {
 
 
   renderItem(head, isSelected) {
-    console.log("RENDER ITEM HEAD");
-    console.log(head);
+    //console.log("RENDER ITEM HEAD");
+    //console.log(head);
 
     return (
       <HeadItem 
@@ -466,8 +466,8 @@ class HeadsPage extends Page {
   //}
 
   loadItems(onLoading) {
-    console.log("HEADS GET ITEMS..." + this.constructor.name);
-    console.log(HEADS_URL);
+    //console.log("HEADS GET ITEMS..." + this.constructor.name);
+    //console.log(HEADS_URL);
 
     let me = this;
 
@@ -488,8 +488,8 @@ class HeadsPage extends Page {
     this.props.onSetButtonCount("Heads", (items || []).length);
 
     let first = items ? items[0] : null;
-    console.log("SET FIRST SELECTED");
-    console.log(first);
+    //console.log("SET FIRST SELECTED");
+    //console.log(first);
 
     let selected = this.getSelected();
 
@@ -501,7 +501,7 @@ class HeadsPage extends Page {
 
 
   loadSelected(itemId, onLoading) {
-    console.log("HEADS GET ITEM: " + itemId);
+    //console.log("HEADS GET ITEM: " + itemId);
 
     if (!itemId) {
       return;
@@ -515,8 +515,8 @@ class HeadsPage extends Page {
       onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        console.log("LOADED HEAD SELECTED");
-        console.log(data.head);
+        //console.log("LOADED HEAD SELECTED");
+        //console.log(data.head);
 
         me.onSelect(data.head);
 
