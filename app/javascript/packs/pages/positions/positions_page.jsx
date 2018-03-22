@@ -232,7 +232,22 @@ class IndexSheet extends Sheet.Index {
     return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
   }
 
+  renderInnerNoScroll() {
+    let items = this.items();
+
+    if (!items) {
+      return this.renderLoading();
+    }
+
+    if (items.length == 0) {
+      return this.renderNone();
+    }
+
+    return super.renderInnerNoScroll();
+  }
+
   renderInner() {
+
     let leftClasses = "col col-3 flx-col scroll";
     let rightClasses = "col flx-col scroll";
 
@@ -247,8 +262,8 @@ class IndexSheet extends Sheet.Index {
           />
         </div>
         <div className={rightClasses}>
-          <div className="flx-col">
-            { super.renderInnerNoScroll() }
+          <div className="flx-col flx-1">
+            { this.renderInnerNoScroll() }
           </div>
         </div>
       </div>
