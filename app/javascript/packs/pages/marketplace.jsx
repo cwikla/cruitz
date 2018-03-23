@@ -36,7 +36,7 @@ import PositionsPage from './positions/positions_page';
 import MessagesPage from './messages/messages_page';
 import HeadsPage from './heads/heads_page';
 
-const DEFAULT_PAGE = HEADS_PAGE; /* POSITIONS_PAGE; */
+const DEFAULT_PAGE = POSITIONS_PAGE; 
 
 const HolderPage = (props) => (
   <Redirect to="/" />
