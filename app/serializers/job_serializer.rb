@@ -7,7 +7,10 @@ class JobSerializer < ActiveModel::Serializer
               :user_id,
               :created_at,
               :category,
-              :recruiter_limit
+              :recruiter_limit,
+              :salary,
+              :salary_high,
+              :salary_doe
 
   #has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
   has_many :locations

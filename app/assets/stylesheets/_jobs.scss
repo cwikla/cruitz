@@ -1,6 +1,11 @@
 .page.jobs {
 
   .sheet.new {
+    .company-name {
+      color: $primary_color;
+      padding-bottom: 1rem;
+    }
+
     .form-parent {
       #job-description {
         height: 15rem;

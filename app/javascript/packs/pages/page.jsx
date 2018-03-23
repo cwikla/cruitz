@@ -109,7 +109,7 @@ class Page extends ItemLoader {
   }
 
   renderIndexSheet() {
-    let extraClass = ClassNames("index flx-col flx-1");
+    let extraClass = ClassNames("flx-col flx-1");
 
     if (this.showActionSheet()) {
       return this.renderNoSheet(); // extraClass.push("hidden");
@@ -133,7 +133,7 @@ class Page extends ItemLoader {
 
     let action = this.getAction();
 
-    let extraClass = ClassNames("action flx-col flx-1").push(action.toLowerCase());
+    let extraClass = ClassNames("flx-col flx-1"); // .push(action.toLowerCase());
 
     return (
       <div className={extraClass}>

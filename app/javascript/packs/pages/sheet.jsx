@@ -140,7 +140,7 @@ class Base extends Component {
     //}
 
     let clz = ClassNames("sheet flx-col");
-    clz.push(this.name());
+    clz.push(this.name().toLowerCase());
 
     if (this.size()) {
       clz.push("flx-" + this.size());
@@ -226,8 +226,11 @@ class Form extends Base {
   render() {
     let AComponent = this.props.notFullScreen ? Pyr.UI.DIV : FSWL;
 
+    let clz = ClassNames("sheet flx-col");
+    clz.push(this.name().toLowerCase());
+
     return (
-      <AComponent className="flx-col">
+      <AComponent className={clz}>
         { this.renderTitle() }
         <div className="form-content mb-auto flx-col">
           { this.renderForm() }
@@ -430,6 +433,10 @@ class Show extends Base {
   }
 
   renderInner() {
+    if (this.props.items && !this.props.selected) {
+      return this.renderNone();
+    }
+
     if (!this.props.selected) {
       return (
           <Pyr.UI.Loading />

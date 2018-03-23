@@ -189,21 +189,6 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-  renderNone() {
-    return (
-      <div className="empty flx-1 flx-row-stretch">
-        <div className="flx-1 flx-col-stretch flx-align-center ml-auto mr-auto">
-          <div className="">Welcome to <b>cruitz</b>!</div>
-          <p/>
-          <div>Since you are new here, you have no messages.  To begin, start by creating a <Link to={JOBS_URL}>new Job</Link></div>
-          <div>which will automatically alert our network of recruiters to your needs. As recruiters find</div>
-          <div>and submit candidates, you will begin to receive messages that might be questions about the job</div>
-          <div>or candidates for you to review.</div>
-        </div>
-      </div>
-    );
-  }
-
 }
 
 class SideBlurb extends Component {
@@ -260,9 +245,29 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
+  renderNone() {
+    return (
+      <div className="empty flx-1 flx-row-stretch">
+        <div className="flx-1 flx-col-stretch flx-align-center ml-auto mr-auto">
+          <div className="">Welcome to <b>cruitz</b>!</div>
+          <p/>
+          <div>Since you are new here, you have no messages.  To begin, start by creating a <Link to={JOBS_URL}>new Job</Link></div>
+          <div>which will automatically alert our network of recruiters to your needs. As recruiters find</div>
+          <div>and submit candidates, you will begin to receive messages that might be questions about the job</div>
+          <div>or candidates for you to review.</div>
+        </div>
+      </div>
+    );
+  }
+
+
   renderItem(item, isSelected) {
-    if (this.state.isLoading || !item) {
+    if (this.state.isLoading || !this.props.items) {
       return (<Pyr.UI.Loading />);
+    }
+
+    if (!item) {
+        return null;
     }
 
     console.log("MESSAGE JOB");
@@ -394,7 +399,13 @@ class MessagesPage extends Page {
     console.log("SET FIRST SELECTED");
     console.log(first);
 
-    this.loadSelected(first.id);
+    if (first) {
+      this.loadSelected(first.id);
+    }
+
+    console.log("MMMMM");
+    console.log(items);
+
     super.setItems(items);
   }
 

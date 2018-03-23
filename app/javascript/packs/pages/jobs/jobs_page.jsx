@@ -152,12 +152,7 @@ class JobForm extends Component {
     }
 
     return (
-      <Pyr.Form.Group name="company" key="company">
-        <Pyr.Form.Label>Company</Pyr.Form.Label> 
-        <div>
-          <Pyr.UI.Label>{ this.props.company.name } <Link to={Pyr.URL(COMPANY_URL).toString()}> <Pyr.UI.Icon name="pencil" /></Link></Pyr.UI.Label>
-        </div>
-      </Pyr.Form.Group>
+      <h3 className="company-name">{ this.props.company.name }</h3>
     );
 
   }
@@ -216,6 +211,18 @@ class JobForm extends Component {
             <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
             <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID/>
           </Pyr.Form.Group>
+
+          <div className="flx-row">
+            <Pyr.Form.Group name="salary">
+              <Pyr.Form.Label>Salary</Pyr.Form.Label>
+              <Pyr.Form.TextField placeholder="Salary" />
+            </Pyr.Form.Group>
+
+            <Pyr.Form.Group name="salary_doe">
+              <Pyr.Form.Label>DOE</Pyr.Form.Label>
+              <Pyr.Form.CheckBox />
+            </Pyr.Form.Group>
+          </div>
 
           <Pyr.Form.Group name="skills">
             <Pyr.Form.Label>Skills</Pyr.Form.Label>
@@ -420,18 +427,6 @@ class NewSheet extends Sheet.New {
         categories={this.props.categories}
       />
     );
-  }
-
-  render() {
-/*
-    if (!this.user().company || !this.user().company.name) {
-      return (
-        <Redirect to="/company/new" />
-      );
-    }
-*/
-
-    return super.render();
   }
 }
 

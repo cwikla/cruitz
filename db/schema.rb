@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180321004332) do
+ActiveRecord::Schema.define(version: 20180322200132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,15 @@ ActiveRecord::Schema.define(version: 20180321004332) do
     t.integer "message_id"
     t.integer "state"
     t.index ["candidate_id", "state"], name: "index_candidate_states_on_candidate_id_and_state"
+  end
+
+  create_table "candidate_uploads", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "candidate_id", null: false
+    t.integer "pyr_upload_id", null: false
+    t.index ["candidate_id", "pyr_upload_id"], name: "index_candidate_uploads_on_candidate_id_and_pyr_upload_id"
   end
 
   create_table "candidates", id: :serial, force: :cascade do |t|
@@ -170,6 +179,15 @@ ActiveRecord::Schema.define(version: 20180321004332) do
     t.index ["job_id", "skill_id"], name: "index_job_skills_on_job_id_and_skill_id"
   end
 
+  create_table "job_uploads", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "job_id", null: false
+    t.integer "pyr_upload_id", null: false
+    t.index ["job_id", "pyr_upload_id"], name: "index_job_uploads_on_job_id_and_pyr_upload_id"
+  end
+
   create_table "jobs", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -182,6 +200,9 @@ ActiveRecord::Schema.define(version: 20180321004332) do
     t.datetime "filled_at"
     t.integer "time_commit", default: 0, null: false
     t.string "uuid", limit: 36
+    t.integer "salary"
+    t.integer "salary_high"
+    t.boolean "salary_doe", default: false
     t.index ["user_id"], name: "index_jobs_on_user_id"
     t.index ["uuid"], name: "index_jobs_on_uuid", unique: true
   end
