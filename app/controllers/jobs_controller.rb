@@ -152,7 +152,14 @@ class JobsController < ApplicationController
   end
 
   def job_params
-    params.require(:job).permit(:title, :description, :time_commit, :category, locations: [], skills: [])
+    jp = params.require(:job).permit(:title, :description, :time_commit, :category, :salary, :salary_doe, locations: [], skills: [])
+    if !jp[:salary].blank?
+      val = jp[:salary]
+      val = val.sub(",", "")
+      val = val.split(".")[0]
+      jp[:salary] = val
+    end
+    jp
   end
 
   def search_params

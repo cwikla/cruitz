@@ -44,6 +44,8 @@ class Job < ApplicationRecord
   validates :description, presence: true
   validates :time_commit, presence: true, inclusion: [JOB_FULL_TIME, JOB_PART_TIME, JOB_CONTRACTOR]
 
+  validates :salary, :numericality => {:only_integer => true}, allow_blank: true
+
   pg_search_scope :search, against: [:title, :description] #, using: :trigram
 
   def self.after_cached_candidate(candidate)
