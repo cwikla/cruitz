@@ -396,11 +396,7 @@ class ShowSheet extends Sheet.Show {
   renderItem(job, isSelected) {
     return (
       <div className="flx-col">
-        <Job.Header job={job} />
-        <JobItem 
-          job={job} 
-          selected={isSelected}
-        />
+        <Job.View job={job} />
       </div>
     );
   }

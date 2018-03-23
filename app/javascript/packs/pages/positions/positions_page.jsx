@@ -57,55 +57,7 @@ const RANGES = {
   10 : 'All Time'
 };
 
-class PositionItem extends Component {
-
-  renderContent() {
-    let position = this.props.position;
-    if (!position) {
-      return null;
-    }
-
-    let description = position.description || "No Description";
-    let createdAt = position.created_at;
-
-    let count = 0;
-    return (
-      <div className="description flx-1 flx-col">
-        <Pyr.UI.Scroll>
-          { Pyr.Util.fancyParagraph(description) }
-        </Pyr.UI.Scroll>
-      </div>
-    );
-  }
-
-  render() {
-    let position = this.props.position;
-
-    let id = "position-" + position.id;
-    let allClass = ClassNames("position flx-col flx-1");
-
-    if (this.props.selected) {
-       allClass.push("selected");
-    }
-
-    allClass.push(this.props.className);
-
-    return (
-      <div className={allClass}>
-        <div className="flx-row flx-1">
-          <div className="flx-col flx-1">
-            <Job.Header {...this.props} job={position}/>
-            { this.renderContent() }
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-
-}
-
-class PositionCardItem extends Component {
+class IndexSheet extends Sheet.Index {
   constructor(props) {
     super(props);
 
@@ -129,101 +81,18 @@ class PositionCardItem extends Component {
     this.props.onLoadItems(this.props.onLoading, all);
   }
 
-  render() {
-    let item = this.props.item;
-    if (!item) {
-      return null;
-    }
-
-    let company = item.company || {};
-    let logo = company.logo;
-
-    let id = "item-" + item.id;
-    let allClass = ClassNames("item flx-col");
-
-    if (this.props.selected) {
-       allClass.push("selected");
-    }
-
-    let locations = null;
-    if (item.locations) {
-      locations = item.locations.map(v => {
-        return v.full_name;
-      }).join(", ");
-    }
-    locations = locations || "Unknown";
-
-    let skills = null;
-    if (item.skills) {
-      skills = item.skills.map(v => {
-        return v.name;
-      }).join(", ");
-    }
-    skills = skills || "None";
-
-    let title = item.title || company.name || "No Title";
-    let description = item.description || "No Description";
-    let category = item.category ? item.category.name : "Other";
-    let url = logo ? logo.url : "";
-    let companyName = company ? company.name : "Anonymous";
-    let createdAt = item.created_at;
-
-    return (
-      <div className={allClass}>
-        <div className="category flx-row">
-          <span className="flx-1">{ category }</span>
-
-          <div className="dropdown">
-            <Pyr.UI.Icon name="bars" className="dropdown-toggle" id="dropdownFilterMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-            <div className="dropdown-menu" aria-labelledby="dropdownFilterMenuButton">
-              <label className="dropdown-header">Filter with same</label>
-              <div className="dropdown-divider"></div>
-              <label className="dropdown-item" onClick={this.onItemSearch}>Company</label>
-              <label className="dropdown-item" >Position</label>
-              <label className="dropdown-item" >Category</label>
-              <label className="dropdown-item" >Location</label>
-            </div>
-          </div>
-        </div>
-        <div className="company flx-row">
-          <Pyr.UI.Image src={url} className="mr-auto" />
-          <div className="flx-1 mr-auto mt-auto mb-auto">{ companyName }</div>
-        </div>
-        <div className="position">
-          { title }
-        </div>
-        <div className="location">
-          { locations }
-        </div>
-        <div className="age">
-          <Pyr.UI.MagicFuzzyDate short date={item.created_at}/>
-        </div>
-        <div className="more flx-row mt-auto">
-          <span className="ml-auto">More...</span>
-        </div>
-      </div>
-    );
-
-  }
-}
-
-class IndexSheet extends Sheet.Index {
   key(position) {
     return PositionsPage.key(position);
   }
 
-  componentWillMount() {
-    super.componentWillMount();
-  }
-
   renderItem(item, isSelected) {
     return (
-      <PositionCardItem 
-        item={item}
+      <Job.Card
+        job={item}
         isSelected={isSelected}
-        card={this.props.card}
         onLoading={this.props.onLoading}
         onLoadItems={this.props.onLoadItems}
+        className="item"
       />
     );
   }
@@ -416,10 +285,9 @@ class ShowSheet extends Sheet.ShowFull {
 
   renderItem(position, isSelected) {
     return (
-      <PositionItem 
-        position={position} 
+      <Job.View
+        job={position} 
         selected={isSelected}
-        onShowCandidates={this.onShowCandidates}
       />
     );
   }

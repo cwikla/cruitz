@@ -34,11 +34,12 @@ class Card extends Component {
     let logo = company.logo;
 
     let id = "item-" + item.id;
-    let allClass = ClassNames("item flx-col");
+    let allClass = ClassNames("job-card flx-col");
 
     if (this.props.selected) {
        allClass.push("selected");
     }
+    allClass.push(this.props.className);
 
     let locations = null;
     if (item.locations) {
@@ -73,7 +74,7 @@ class Card extends Component {
             <div className="dropdown-menu" aria-labelledby="dropdownFilterMenuButton">
               <label className="dropdown-header">Filter with same</label>
               <div className="dropdown-divider"></div>
-              <label className="dropdown-item" onClick={this.onItemSearch}>Company</label>
+              <label className="dropdown-item" onClick={this.props.onClick}>Company</label>
               <label className="dropdown-item" >Position</label>
               <label className="dropdown-item" >Category</label>
               <label className="dropdown-item" >Location</label>
@@ -84,7 +85,7 @@ class Card extends Component {
           <Pyr.UI.Image src={url} className="mr-auto" />
           <div className="flx-1 mr-auto mt-auto mb-auto">{ companyName }</div>
         </div>
-        <div className="position">
+        <div className="job">
           { title }
         </div>
         <div className="location">
@@ -193,7 +194,7 @@ class Header extends Component {
     let companyName = company ? company.name : "Anonymous";
 
     return (
-      <div className="header job-blurb flx-row">
+      <div className="job-header job-blurb flx-row">
         <div className="flx-col">
           <img src={logo_url} className="logo"/>
         </div>
@@ -215,11 +216,61 @@ class Header extends Component {
   }
 }
 
+class View extends Component {
+
+  renderContent() {
+    let job = this.props.job;
+    if (!job) {
+      return null;
+    }
+
+    let description = job.description || "No Description";
+    let createdAt = job.created_at;
+
+    let count = 0;
+    return (
+      <div className="description flx-1 flx-col">
+        <Pyr.UI.Scroll>
+          { Pyr.Util.fancyParagraph(description) }
+        </Pyr.UI.Scroll>
+      </div>
+    );
+  }
+
+  render() {
+    let job = this.props.job;
+
+    let id = "job-" + job.id;
+    let allClass = ClassNames("job-view flx-col flx-1");
+
+    if (this.props.selected) {
+       allClass.push("selected");
+    }
+
+    allClass.push(this.props.className);
+
+    return (
+      <div className={allClass} id={id} key={id}>
+        <div className="flx-row flx-1">
+          <div className="flx-col flx-1">
+            <Header {...this.props} job={job}/>
+            { this.renderContent() }
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+
+}
+
+
 
 const Job = {
   Blurb,
   Header,
   Card,
+  View,
 }
 
 export default Job;
