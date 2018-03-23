@@ -213,7 +213,7 @@ class IndexSheet extends Sheet.Index {
 
   renderNone() {
     return (
-      <div className="empty flx-1 flx-col-stretch">
+      <div className="empty flx-3 flx-col-stretch">
         <div className="flx-1 flx-row-stretch flx-align-center ml-auto mr-auto">
           <Pyr.UI.Icon name="user-times"/> No candidates have been submitted for this job.
         </div>
@@ -237,6 +237,82 @@ class IndexSheet extends Sheet.Index {
     return (
       <CandidateItem 
         candidate={item} 
+        isSelected={isSelected} 
+      />
+    );
+  }
+}
+
+class JobItem extends Component {
+
+  render() {
+    let job = this.props.job;
+
+    let id = "job-" + job.id;
+    let allClass = ClassNames("item job-item flx-row");
+
+    if (this.props.selected) {
+       allClass.push("selected");
+    }
+
+    let description = job.description || "No Description";
+
+    return (
+      <div className={allClass} id={id}>
+        <Pyr.Grid.Column className="job col-6">
+          <div>{job.id}:{job.title}</div>
+          <div>Created: <Pyr.UI.MagicDate date={job.created_at}/></div>
+        </Pyr.Grid.Column>
+        <Pyr.Grid.Column className="item-content">
+          <div>Total: {job.candidate_counts.total}</div>
+          <div>Accepted: {job.candidate_counts.accepted}</div>
+          <div>New: {job.candidate_counts.waiting}</div>
+          <div>Rejected: {job.candidate_counts.rejected}</div>
+        </Pyr.Grid.Column>
+      </div>
+    );
+  }
+}
+
+
+class JobIndexSheet extends Sheet.Index {
+  key(item) {
+    return "job-" + CandidatesPage.key(item);
+  }
+
+  getItems() {
+    let jm = Object.values(this.props.jobMap || {});
+    return jm;
+  }
+
+  renderNone() {
+    return (
+      <div className="empty flx-1 flx-col-stretch">
+        <div className="flx-1 flx-row-stretch flx-align-center ml-auto mr-auto">
+          <Pyr.UI.Icon name="user-times"/> No candidates have been submitted for this job.
+        </div>
+      </div>
+    );
+  }
+
+  sortItems(items) {
+    return items;
+  }
+
+  childURL(item, isSelected) {
+    console.log("CHILD URL");
+    console.log(item);
+
+    return Pyr.URL(JOBS_URL).push(item.id).push(CANDIDATES_URL);
+  }
+
+  renderItem(item, isSelected) {
+    console.log("CANDIDATE RENDER ITEM");
+    console.log(item);
+
+    return (
+      <JobItem 
+        job={item} 
         isSelected={isSelected} 
       />
     );
@@ -435,6 +511,10 @@ class ShowSheet extends Sheet.ShowFull {
   }
 
   getJob(jobId) {
+    if (!jobId) {
+      return;
+    }
+
     let url = Pyr.URL(JOBS_URL).push(jobId);
 
     this.setState({
@@ -621,6 +701,24 @@ class CandidateTable extends Sheet.Index {
   }
 }
 
+class IndexShowSheet extends Sheet.IndexShow {
+  renderIndex() {
+    return (
+        <IndexSheet
+          {...this.props}
+        />
+    );
+  }
+
+  renderShow() {
+    return (
+        <ShowSheet
+          {...this.props}
+        />
+    );
+  }
+}
+
 class CandidatesPage extends Page {
   constructor(props) {
     super(props);
@@ -629,6 +727,12 @@ class CandidatesPage extends Page {
       job: props.jobMap[props.itemId], // placeholder until we can fetch the full one
       fullDetail: false
     });
+
+    this.onJobSelect = this.jobSelect.bind(this);
+  }
+
+  jobSelect(job) {
+    // nothing to see here
   }
 
   getItemId() {
@@ -658,16 +762,33 @@ class CandidatesPage extends Page {
 
   indexSheet() {
     console.log("CANDINDEX");
+    let jobId = this.getJobId();
+    let candyId = this.getItemId();
 
     return (
-      <IndexSheet
-        {...this.props}
-        itemId={this.getItemId()}
-        items={this.getItems()}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadItems={this.onLoadItems}
-      />
+      <div className="flx-row">
+        <JobIndexSheet
+          {...this.props}
+          jobId={jobId}
+          jobMap={this.props.jobMap}
+          onSelect={this.onJobSelect}
+        />
+        <IndexSheet
+          {...this.props}
+          itemId={candyId}
+          items={this.getItems()}
+          jobId={jobId}
+          selected={this.getSelected()}
+          jobMap={this.props.jobMap}
+          onAction={this.onAction}
+          onUnaction={this.onUnaction}
+          onSelect={this.onSelect}
+          onUnselect={this.onUnselect}
+          onLoadSelected={this.onLoadSelected}
+          onLoadItems={this.onLoadItems}
+          onAddItem={this.onAddItem}
+        />
+      </div>
     );
   }
 
@@ -723,6 +844,10 @@ class CandidatesPage extends Page {
   getCandidates(jobId) {
     console.log("GET CANDIDATES: " + jobId);
     let url = null;
+
+    if (!jobId) {
+      this.setItems([]);
+    }
 
     if (jobId) {
       url = Pyr.URL(JOBS_URL).push(jobId).push(CANDIDATES_URL);
