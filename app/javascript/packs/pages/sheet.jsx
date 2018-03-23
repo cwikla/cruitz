@@ -134,6 +134,11 @@ class Base extends Component {
     return 1;
   }
 
+  getItems() {
+    return this.props.items;
+  }
+
+
   render() {
     //if (this.state.isLoading) {
       //return (<Pyr.UI.Loading />);
@@ -314,16 +319,12 @@ class Index extends Base {
     return "Index";
   }
 
-  items() {
-    return this.props.items;
-  }
-
   componentWillMount() {
     this.setSelected(null); // zero out anything selected
   }
 
   componentDidMount() {
-    if (!this.items()) {
+    if (!this.getItems()) {
       //console.log("LOADING ITEMS");
       this.props.onLoadItems(this.onLoading);
     }
@@ -368,29 +369,29 @@ class Index extends Base {
    }
 
   renderInnerNoScroll() {
-    if (!this.items()) {
+    let items = this.getItems();
+
+    if (this.state.isLoading || !items) {
       return this.renderLoading();
     }
 
-    if (this.items().length == 0) {
+    if (items.length == 0) {
       return this.renderNone();
     }
-
-    let items = this.items();
 
     return this.renderChildren(items, this.props.selected);
   }
 
   renderInner(props={}) {
-    if (!this.items()) {
+    let items = this.getItems();
+
+    if (this.state.isLoading || !items) {
       return this.renderLoading();
     }
 
-    if (this.items().length == 0) {
+    if (items.length == 0) {
       return this.renderNone();
     }
-
-    let items = this.items();
 
     return (
       <Pyr.UI.Scroll {...Pyr.Util.propsMergeClassName(props, "inner")}>
@@ -433,15 +434,18 @@ class Show extends Base {
   }
 
   renderInner() {
-    if (this.props.items && !this.props.selected) {
-      return this.renderNone();
-    }
+    let items = this.getItems();
 
-    if (!this.props.selected) {
+    if (this.state.isLoading || (items && !this.props.selected)) {
       return (
           <Pyr.UI.Loading />
       );
     }
+
+    if (!this.props.selected) {
+      return this.renderNone();
+    }
+
 
     return (
       <div className="inner flx-col flx-1">

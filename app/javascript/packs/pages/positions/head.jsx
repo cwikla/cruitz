@@ -446,7 +446,7 @@ class HeadIndexSheet extends Sheet.Index {
     this.onCloseModal = this.closeModal.bind(this);
   }
 
-  items() {
+  getItems() {
     return this.state.heads;
   }
 
@@ -528,11 +528,11 @@ class HeadIndexSheet extends Sheet.Index {
   }
 
   renderInner() {
-    if (!this.items()) {
+    if (!this.getItems()) {
       return this.renderLoading();
     }
 
-    if (this.items().length == 0) {
+    if (this.getItems().length == 0) {
       return this.renderNone();
     }
 

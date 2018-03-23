@@ -233,7 +233,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderInnerNoScroll() {
-    let items = this.items();
+    let items = this.getItems();
 
     if (!items) {
       return this.renderLoading();
