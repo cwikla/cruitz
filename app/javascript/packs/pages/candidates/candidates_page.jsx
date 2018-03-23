@@ -699,7 +699,7 @@ class CandidatesPage extends Page {
   }
 
   loadSelected(itemId, onLoading) {
-    console.log("GET ITEM: " + itemId);
+  //  console.log("GET ITEM: " + itemId);
 
     let me = this;
 
