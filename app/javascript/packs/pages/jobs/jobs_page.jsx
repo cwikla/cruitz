@@ -18,6 +18,8 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 
+import Job from '../shared/job';
+
 import { 
   getLogo 
 } from '../shared/user';
@@ -386,20 +388,43 @@ class IndexSheet extends Sheet.Index {
 
 }
 
-class ShowSheet extends Sheet.ShowFull {
+class ShowSheet extends Sheet.Show {
   key(job) {
     return JobsPage.key(job);
   }
 
   renderItem(job, isSelected) {
     return (
+      <div className="flx-col">
+        <Job.Header job={job} />
         <JobItem 
           job={job} 
           selected={isSelected}
         />
+      </div>
+    );
+  }
+
+}
+
+class IndexShowSheet extends Sheet.IndexShow {
+  renderIndex() {
+    return (
+        <IndexSheet
+          {...this.props}
+        />
+    );
+  }
+
+  renderShow() {
+    return (
+        <ShowSheet
+          {...this.props}
+        />
     );
   }
 }
+
 
 class NewSheet extends Sheet.New {
   success(data, textStatus, jqXHR) {
@@ -449,9 +474,13 @@ class JobsPage extends Page {
 
   loadItems() {
     this.onSetItems(this.props.jobs);
+    if (this.props.jobs) {
+      this.loadSelected(this.props.jobs[0].id);
+    }
   }
 
   loadSelected(sid) {
+    console.log("LOAD SELECTED JOB " + sid);
     this.onSelect(this.props.jobMap[sid]);
     //this.props.jobMap[sid];
   }
@@ -479,13 +508,16 @@ class JobsPage extends Page {
         //jobs={this.props.jobs}
   indexSheet() {
     return (
-      <IndexSheet
+      <IndexShowSheet
         {...this.props}
         items={this.getItems()}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
         onSelect={this.onSelect}
         onLoadItems={this.onLoadItems}
+        selected={this.getSelected()}
+        onLoadSelected={this.onLoadSelected}
+        categories={this.state.categories}
         card={false}
       />
     );
@@ -504,12 +536,15 @@ class JobsPage extends Page {
     return (
       <ActionSheet
         {...this.props}
-        selected={this.getSelected()}
         items={this.getItems()}
         jobs={this.props.jobs}
         jobMap={this.props.jobMap}
+        onSelect={this.onSelect}
+        onLoadItems={this.onLoadItems}
+        selected={this.getSelected()}
         onLoadSelected={this.onLoadSelected}
         categories={this.state.categories}
+        card={false}
       />
     );
 

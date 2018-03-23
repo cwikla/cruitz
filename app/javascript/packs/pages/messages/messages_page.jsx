@@ -77,8 +77,8 @@ class MessageItem extends Sheet.Item {
       onLoading: this.props.onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        console.log("LOAD JOB");
-        console.log(data.job);
+        //console.log("LOAD JOB");
+        //console.log(data.job);
 
         this.setJob(data.job);
 
@@ -130,8 +130,8 @@ class MessageItem extends Sheet.Item {
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
     let theRecruiter = getRecruiter(this.user(), message);
 
-    console.log("THE MESSAGE");
-    console.log(message);
+    //console.log("THE MESSAGE");
+    //console.log(message);
 
     let summary = Pyr.Util.summarize(message.body, 400);
     summary = summary || "";
@@ -213,8 +213,8 @@ class SideBlurb extends Component {
 class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
-    console.log("SHOW SHEET JOB");
-    console.log(this.props.job);
+    //console.log("SHOW SHEET JOB");
+    //console.log(this.props.job);
 
     this.initState({
       job: this.props.job
@@ -270,8 +270,8 @@ class ShowSheet extends Sheet.Show {
         return null;
     }
 
-    console.log("MESSAGE JOB");
-    console.log(item);
+    //console.log("MESSAGE JOB");
+    //console.log(item);
 
     let message = item;
     let thread = message.thread;
@@ -396,8 +396,8 @@ class MessagesPage extends Page {
     this.props.onSetButtonCount("Messages", count);
 
     let first = items ? items[0] : null;
-    console.log("SET FIRST SELECTED");
-    console.log(first);
+    //console.log("SET FIRST SELECTED");
+    //console.log(first);
 
     if (first) {
       this.loadSelected(first.id);
@@ -424,8 +424,8 @@ class MessagesPage extends Page {
       onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        console.log("LOADED SELECTED");
-        console.log(data.message);
+        //console.log("LOADED SELECTED");
+        //console.log(data.message);
 
         me.onSelect(data.message);
 
@@ -439,8 +439,8 @@ class MessagesPage extends Page {
   }
 
   loadItems(onLoading) {
-    console.log("MESSAGES GET ITEMS..." + this.constructor.name);
-    console.log(MESSAGES_URL);
+    //console.log("MESSAGES GET ITEMS..." + this.constructor.name);
+    //console.log(MESSAGES_URL);
 
     let me = this;
 

@@ -771,4 +771,21 @@ label {
   color: $primary_color;
 }
 
+.job-view {
+  background-color: white;
+  box-shadow: 1px 1px 5px 0px $gray_color;
+
+  .description {
+    padding: 2rem;
+    font-size: 1rem;
+  }
+
+  .header {
+    border-bottom: solid $border_color 1px;
+
+    & > div {
+    }
+  }
+}
+
 

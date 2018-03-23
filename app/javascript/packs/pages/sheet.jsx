@@ -415,7 +415,7 @@ class Show extends Base {
     //console.log("DID MOUNT");
     //console.log(this.props.selected);
 
-    if (!this.props.selected) {
+    if (!this.props.selected && this.props.itemId) {
       //console.log("GETTING SELECTED");
       this.props.onLoadSelected(this.props.itemId, this.onLoading);
     }
@@ -429,23 +429,32 @@ class Show extends Base {
 
     if (this.props.itemId != prevProps.itemId) {
       //console.log("UPDATED GETTING SELECTED");
-      this.props.onLoadSelected(this.props.itemId, this.onLoading);
+      if (this.props.itemId) {
+        this.props.onLoadSelected(this.props.itemId, this.onLoading);
+      }
     }
   }
 
   renderInner() {
     let items = this.getItems();
 
-    if (this.state.isLoading || (items && !this.props.selected)) {
-      return (
-          <Pyr.UI.Loading />
-      );
+    //console.log("RENDER INNER");
+    //console.log(this.state.isLoading);
+    //console.log(this.props.selected);
+
+    //console.log(items);
+
+    if (this.state.isLoading || !items) {
+      return this.renderLoading();
+    }
+
+    if (items.length == 0) {
+      return this.renderNone();
     }
 
     if (!this.props.selected) {
       return this.renderNone();
     }
-
 
     return (
       <div className="inner flx-col flx-1">
