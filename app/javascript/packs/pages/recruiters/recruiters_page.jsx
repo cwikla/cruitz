@@ -385,6 +385,23 @@ class RecruitersPage extends Page {
     });
   }
 
+  loadSelected(itemId, onLoading) {
+    let me = this;
+
+    this.getJSON({
+      url: Pyr.URL(RECRUITERS_URL).push(itemId),
+      context: me,
+      onLoading: onLoading,
+
+    }).done((data, textStatus, jaXHR) => {
+        me.onSelect(data.recruiter);
+
+    }).fail((jaXHR, textStatus, errorThrown) => {
+      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
+    });
+  }
+
+
   indexSheet() {
     return (
       <IndexSheet
@@ -394,6 +411,7 @@ class RecruitersPage extends Page {
         onSelect={this.onSelect}
         onUnselect={this.onUnselect}
         onLoadItems={this.onLoadItems}
+        onLoadSelected={this.onLoadSelected}
       />
     );
   }
@@ -405,9 +423,11 @@ class RecruitersPage extends Page {
     return (
       <ActionSheet 
         {...this.props}
+        items={this.getItems()}
         selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
+        onLoadSelected={this.onLoadSelected}
       />
     );
     

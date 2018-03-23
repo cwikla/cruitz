@@ -683,6 +683,7 @@ class CandidatesPage extends Page {
       <ActionSheet
         {...this.props}
         itemId={candyId}
+        items={this.getItems()}
         jobId={jobId}
         selected={this.getSelected()}
         jobMap={this.props.jobMap}

@@ -445,17 +445,21 @@ class Show extends Base {
     //console.log(items);
 
     if (this.state.isLoading || !items) {
+      console.log("A");
       return this.renderLoading();
     }
 
     if (items.length == 0) {
+      console.log("B");
       return this.renderNone();
     }
 
     if (!this.props.selected) {
+      console.log("C");
       return this.renderNone();
     }
 
+    console.log("D");
     return (
       <div className="inner flx-col flx-1">
         { this.renderItem(this.props.selected, false) }
