@@ -349,7 +349,9 @@ class IndexSheet extends Sheet.Index {
 
   renderNone() {
     return (
-      <h2> Recruiters Empty</h2>
+      <div className="render-none ml-auto mr-auto">
+        <h3 className="">There are no recruiters to look at here!</h3>
+      </div>
     );
   }
 
