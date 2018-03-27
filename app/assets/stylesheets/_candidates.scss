@@ -15,10 +15,6 @@
     }
 
     &.sheet {
-      .header {
-          border-bottom: 1px solid $border_color;
-      }
-  
       .scroll.inner {
         margin-top: 1rem;
       }
@@ -60,6 +56,10 @@
   }
   
   .sheet.index {
+    @extend %index-column;
+
+    margin-right: 1rem;
+
     .item {
       @extend %state;
     }
@@ -68,6 +68,14 @@
       .recruiter {
         border-left: 1px solid $border_color;
         border-right: 0;
+      }
+    }
+
+    .job-item {
+      padding: 1rem;
+   
+      .title {
+        font-weight: $font_weight_bold;
       }
     }
   }

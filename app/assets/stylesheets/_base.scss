@@ -709,36 +709,49 @@ label {
   }
 }
 
-.index-show {
-  .sheet {
-    .header > div {
-      padding: 0.5rem;
-      font-weight: 500rem;
-      font-size: 1.1rem;
-      background-color: white;
-      color: $primary_color;
-      border: 1px solid $border_color;
+.sheet {
+  .header > div {
+    padding: 0.5rem;
+    font-weight: 500rem;
+    font-size: 1.1rem;
+    background-color: white;
+    color: $primary_color;
+    border: 1px solid $border_color;
+  }
+}
+
+.index-column, %index-column {
+  margin-right: 1rem;
+  padding-left: 0;
+  max-width: 25rem;
+
+
+  .item {
+    padding: 0.5rem;
+
+    max-height: 10rem;
+    height: 10rem;
+  
+    font-size: 0.85rem;
+
+    &.selected {
+      background-color: rgba($primary_light_color, 0.05);
+    }
+
+    .title, .created-at {
+      font-size: 0.9rem;
+    }
+
+    .title {
+      text-overflow: ellipsis;
     }
   }
+}
+
+.index-show {
 
   .sheet.index {
-    margin-right: 1rem;
-    padding-left: 0;
-    max-width: 25rem;
-
-
-    .item {
-      padding: 0.5rem;
-  
-      max-height: 10rem;
-      height: 10rem;
-  
-      font-size: 0.85rem;
-
-      &.selected {
-        background-color: rgba($primary_light_color, 0.05);
-      }
-    }
+    @extend %index-column;
   }
 
   .sheet.show {

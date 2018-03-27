@@ -211,6 +211,36 @@ class IndexSheet extends Sheet.Index {
     return CandidatesPage.key(item);
   }
 
+  size() {
+    return 5;
+  }
+
+  renderHeader() {
+    let job = this.props.jobId ? this.props.jobMap[this.props.jobId] : null;
+    let title = "Candidates";
+  
+    if (job) {
+      title = title + " for " + job.title;
+    }
+
+    return (
+      <div className="flx-row">
+        <div className="mr-auto">{ title } </div>
+        <div className="dropdown ml-auto">
+          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="candySortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <div className="dropdown-menu" aria-labelledby="candySortMenuButton">
+            <label className="dropdown-header">Sort</label>
+            <div className="dropdown-divider"></div>
+            <label className="dropdown-item" >Date</label>
+            <label className="dropdown-item" >Unread</label>
+            <label className="dropdown-item" >Position</label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+
   renderNone() {
     return (
       <div className="empty flx-3 flx-col-stretch">
@@ -231,9 +261,6 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(item, isSelected) {
-    console.log("CANDIDATE RENDER ITEM");
-    console.log(item);
-
     return (
       <CandidateItem 
         candidate={item} 
@@ -249,7 +276,7 @@ class JobItem extends Component {
     let job = this.props.job;
 
     let id = "job-" + job.id;
-    let allClass = ClassNames("item job-item flx-row");
+    let allClass = ClassNames("item job-item flx-col");
 
     if (this.props.selected) {
        allClass.push("selected");
@@ -259,16 +286,20 @@ class JobItem extends Component {
 
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="job col-6">
-          <div>{job.id}:{job.title}</div>
-          <div>Created: <Pyr.UI.MagicDate date={job.created_at}/></div>
-        </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="item-content">
-          <div>Total: {job.candidate_counts.total}</div>
-          <div>Accepted: {job.candidate_counts.accepted}</div>
-          <div>New: {job.candidate_counts.waiting}</div>
-          <div>Rejected: {job.candidate_counts.rejected}</div>
-        </Pyr.Grid.Column>
+        <div className="flx-row">
+          <div className="ml-auto created-at"><Pyr.UI.MagicDate date={job.created_at} mini/></div>
+        </div>
+        <div className="flx-row">
+          <div className="flx-1 title">{job.title}</div>
+        </div>
+        <div className="flx-row item-content">
+          <div className="flx-row">
+            <div className="state total">({job.candidate_counts.total})</div>
+            <div className="state accepted">({job.candidate_counts.accepted})</div>
+            <div className="state new">({job.candidate_counts.waiting})</div>
+            <div className="state rejected">({job.candidate_counts.rejected})</div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -280,16 +311,28 @@ class JobIndexSheet extends Sheet.Index {
     return "job-" + CandidatesPage.key(item);
   }
 
+  size() {
+    return 2;
+  }
+
   getItems() {
     let jm = Object.values(this.props.jobMap || {});
     return jm;
   }
 
-  renderNone() {
+  renderHeader() {
     return (
-      <div className="empty flx-1 flx-col-stretch">
-        <div className="flx-1 flx-row-stretch flx-align-center ml-auto mr-auto">
-          <Pyr.UI.Icon name="user-times"/> No candidates have been submitted for this job.
+      <div className="flx-row">
+        <div className="mr-auto">Jobs</div>
+        <div className="dropdown ml-auto">
+          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="jobSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <div className="dropdown-menu" aria-labelledby="jobSortMenuButton">
+            <label className="dropdown-header">Sort</label>
+            <div className="dropdown-divider"></div>
+            <label className="dropdown-item" >Date</label>
+            <label className="dropdown-item" >Unread</label>
+            <label className="dropdown-item" >Position</label>
+          </div>
         </div>
       </div>
     );
@@ -766,7 +809,7 @@ class CandidatesPage extends Page {
     let candyId = this.getItemId();
 
     return (
-      <div className="flx-row">
+      <div className="flx-row flx-1">
         <JobIndexSheet
           {...this.props}
           jobId={jobId}
@@ -787,6 +830,7 @@ class CandidatesPage extends Page {
           onLoadSelected={this.onLoadSelected}
           onLoadItems={this.onLoadItems}
           onAddItem={this.onAddItem}
+          className="flx-3"
         />
       </div>
     );

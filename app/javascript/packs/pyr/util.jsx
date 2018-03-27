@@ -412,6 +412,10 @@ function friendlyDate(date, options) {
     }
   }
 
+  if (options.mini || options.short) {
+    longOptions = { month: 'numeric', day: 'numeric', year: 'numeric'};
+  }
+
   return (
     <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", longOptions)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
   );
