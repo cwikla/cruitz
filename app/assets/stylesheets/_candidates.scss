@@ -56,9 +56,11 @@
   }
   
   .sheet.index {
-    @extend %index-column;
-
     margin-right: 1rem;
+
+    .job-item {
+      @extend %index-column-item;
+    }
 
     .item {
       @extend %state;
