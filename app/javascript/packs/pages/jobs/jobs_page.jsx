@@ -401,6 +401,12 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
+  render() {
+    console.log("JOBS SHOW SHEET");
+    console.log(this.props);
+    return super.render();
+  }
+
 }
 
 class IndexShowSheet extends Sheet.IndexShow {
@@ -470,14 +476,32 @@ class JobsPage extends Page {
 
   loadItems() {
     this.onSetItems(this.props.jobs);
-    if (this.props.jobs) {
-      this.loadSelected(this.props.jobs[0].id);
+    if (this.props.jobs && this.props.jobs.length) {
+      this.onSelect(this.props.jobs[0]);
     }
   }
 
+  getSelected() {
+    if (this.props.itemId) {
+      return this.props.jobMap[this.props.itemId];
+    }
+
+    return null;
+  }
+
   loadSelected(sid) {
-    console.log("LOAD SELECTED JOB " + sid);
-    this.onSelect(this.props.jobMap[sid]);
+    return; // nothing to see here
+
+    console.log("JOB LOAD SELECTED JOB " + sid);
+    console.log(this.props);
+    console.log(this.props.jobMap);
+
+    let job = this.props.jobMap[sid];
+
+    console.log("JOB JOB");
+    console.log(job);
+
+    this.onSelect(job);
     //this.props.jobMap[sid];
   }
 
@@ -507,8 +531,6 @@ class JobsPage extends Page {
       <IndexShowSheet
         {...this.props}
         items={this.getItems()}
-        jobs={this.props.jobs}
-        jobMap={this.props.jobMap}
         onSelect={this.onSelect}
         onLoadItems={this.onLoadItems}
         selected={this.getSelected()}
@@ -522,9 +544,9 @@ class JobsPage extends Page {
   actionSheet(action) {
     action = action || "Show";
 
-    if (action.toLowerCase() == "show") {
-      action = 'Edit';
-    }
+    //if (action.toLowerCase() == "show") {
+     // action = 'Edit';
+    //}
 
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
@@ -533,8 +555,6 @@ class JobsPage extends Page {
       <ActionSheet
         {...this.props}
         items={this.getItems()}
-        jobs={this.props.jobs}
-        jobMap={this.props.jobMap}
         onSelect={this.onSelect}
         onLoadItems={this.onLoadItems}
         selected={this.getSelected()}

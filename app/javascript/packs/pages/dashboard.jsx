@@ -176,6 +176,9 @@ class Dashboard extends Container.Base {
 
     let job = jobs.length ? jobs[jobs.length-1] : null;
 
+    console.log("JOBINDEX GOT JOBS");
+    console.log(jobs);
+
     this.setState({
       buttonItemCount,
       jobs,
@@ -294,6 +297,7 @@ render (
     <Pyr.UI.NoticeProvider>
       <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}>
         <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+        <Pyr.UI.RouteURL path="/jobs/:pid" page="jobs" action="index" />
       </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,

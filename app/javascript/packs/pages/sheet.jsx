@@ -193,7 +193,7 @@ class Form extends Base {
   }
 
   getTarget() {
-    console.log("FORM GET TARGET");
+    //console.log("FORM GET TARGET");
     return this.form;
   }
 
@@ -350,12 +350,6 @@ class Index extends Base {
 
   renderChildren(items, selected, props={}) {
     let self = this;
-    //console.log("render children");
-    //console.log(this.props);
-
-              /*onClick={this.onClicks[this.key(item)] }  */
-    console.log("MESSAGE SELECTED IS");
-    console.log(selected);
 
     return (
       <ul {...Pyr.Util.propsMergeClassName(props, "")}>
@@ -412,9 +406,6 @@ class Show extends Base {
   }
 
   componentDidMount() {
-    //console.log("DID MOUNT");
-    //console.log(this.props.selected);
-
     if (!this.props.selected && this.props.itemId) {
       //console.log("GETTING SELECTED");
       this.props.onLoadSelected(this.props.itemId, this.onLoading);
@@ -422,11 +413,6 @@ class Show extends Base {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    //console.log("DID UPDATE");
-    //console.log(this.props.itemId);
-    //console.log(prevProps.itemId);
-    //console.log(this.props.selected);
-
     if (this.props.itemId != prevProps.itemId) {
       //console.log("UPDATED GETTING SELECTED");
       if (this.props.itemId) {
@@ -437,12 +423,6 @@ class Show extends Base {
 
   renderInner() {
     let items = this.getItems();
-
-    //console.log("RENDER INNER");
-    //console.log(this.state.isLoading);
-    //console.log(this.props.selected);
-
-    //console.log(items);
 
     if (this.state.isLoading || !items) {
       console.log("A");

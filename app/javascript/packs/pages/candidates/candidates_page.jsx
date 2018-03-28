@@ -504,7 +504,7 @@ class CandidateCVItem extends Component {
   }
 }
 
-class ShowSheet extends Sheet.ShowFull {
+class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
     this.initState({
