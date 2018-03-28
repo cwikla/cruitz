@@ -297,6 +297,7 @@ render (
     <Pyr.UI.NoticeProvider>
       <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}>
         <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+        <Pyr.UI.RouteURL path="/jobs/new" page="jobs" action="new" />
         <Pyr.UI.RouteURL path="/jobs/:pid" page="jobs" action="index" />
       </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>
