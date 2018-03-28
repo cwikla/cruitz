@@ -278,7 +278,7 @@ class JobItem extends Component {
     let id = "job-" + job.id;
     let allClass = ClassNames("item job-item flx-col");
 
-    if (this.props.selected) {
+    if (this.props.isSelected) {
        allClass.push("selected");
     }
 
@@ -352,6 +352,9 @@ class JobIndexSheet extends Sheet.Index {
   renderItem(item, isSelected) {
     console.log("CANDIDATE RENDER ITEM");
     console.log(item);
+    console.log(isSelected);
+
+    isSelected = this.props.jobId
 
     return (
       <JobItem 
@@ -808,6 +811,8 @@ class CandidatesPage extends Page {
     let jobId = this.getJobId();
     let candyId = this.getItemId();
 
+    let job = this.props.jobMap ? this.props.jobMap[jobId] : null;
+
     return (
       <div className="flx-row flx-1">
         <JobIndexSheet
@@ -815,6 +820,7 @@ class CandidatesPage extends Page {
           jobId={jobId}
           jobMap={this.props.jobMap}
           onSelect={this.onJobSelect}
+          selected={job}
         />
         <IndexSheet
           {...this.props}
