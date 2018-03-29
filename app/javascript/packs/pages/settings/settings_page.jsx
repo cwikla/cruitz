@@ -162,9 +162,6 @@ class SettingsPage extends Page {
     }).done((data, textStatus, jqXHR) => {
         this.onSelect(data.setting);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

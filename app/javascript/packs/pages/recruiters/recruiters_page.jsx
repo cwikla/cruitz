@@ -120,9 +120,6 @@ class FullRecruiterItem extends Pyr.Network.Component {
     }).done((data, textStatus, jqXHR) => {
       this.setReviews(data.recruiter.reviews);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-
     });
   }
 
@@ -272,9 +269,6 @@ class NewSheet extends Sheet.New {
       this.setState({
         invite: data.invite
       });
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-
     });
   }
 
@@ -380,8 +374,6 @@ class RecruitersPage extends Page {
     }).done((data, textStatus, jqXHR) => {
         this.onSetItems(data.recruiters || []);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -396,8 +388,6 @@ class RecruitersPage extends Page {
     }).done((data, textStatus, jaXHR) => {
         me.onSelect(data.recruiter);
 
-    }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
     });
   }
 

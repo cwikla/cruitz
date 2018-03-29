@@ -255,8 +255,6 @@ class ShowSheet extends Sheet.ShowFull {
     ).done((data, textStatus, jqXHR) => {
         this.onSetCandidates(data.candidates || []);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -383,9 +381,6 @@ class HeadLoader extends Component {
       //console.log(data);
       this.onSetHead(data.head);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-
     });
   }
 
@@ -464,8 +459,6 @@ class PositionsPage extends Page {
 
       this.onSelect(data.position);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -483,8 +476,6 @@ class PositionsPage extends Page {
     ).done((data, textStatus, jqXHR) => {
         this.onSetItems(data.jobs || []);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

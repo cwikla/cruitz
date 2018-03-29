@@ -67,8 +67,6 @@ class CandidateItem extends Component {
     }).done((data, textStatus, jqXHR) => {
         this.props.onRemoveCandidate(candidate);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -468,8 +466,6 @@ class HeadIndexSheet extends Sheet.Index {
     }).done((data, textStatus, jqXHR) => {
         this.props.onAddCandidate(data.candidate);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -492,8 +488,6 @@ class HeadIndexSheet extends Sheet.Index {
     }).done((data, textStatus, jqXHR) => {
         this.onSetHeads(data.heads || []);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

@@ -343,16 +343,16 @@ class JobIndexSheet extends Sheet.Index {
   }
 
   childURL(item, isSelected) {
-    console.log("CHILD URL");
-    console.log(item);
+    //console.log("CHILD URL");
+    //console.log(item);
 
     return Pyr.URL(JOBS_URL).push(item.id).push(CANDIDATES_URL);
   }
 
   renderItem(item, isSelected) {
-    console.log("CANDIDATE RENDER ITEM");
-    console.log(item);
-    console.log(isSelected);
+    //console.log("CANDIDATE RENDER ITEM");
+    //console.log(item);
+    //console.log(isSelected);
 
     isSelected = this.props.jobId
 
@@ -372,8 +372,8 @@ class RecruiterMessage extends Component {
       return ( <Pyr.UI.Label>No messages</Pyr.UI.Label>);
     }
 
-    console.log("message id");
-    console.log(this.props.candidate);
+    //console.log("message id");
+    //console.log(this.props.candidate);
 
     if (!this.props.job) {
       return <Pyr.UI.Loading />
@@ -530,22 +530,19 @@ class ShowSheet extends Sheet.Show {
     }).done((data, textStatus, jaXHR) => {
       this.setCandidate(data.candidate);
 
-    }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
-
     });
   }
 
   candidateStateChange(sid, e) {
-    console.log("F");
-    console.log(sid);
-    console.log("E");
-    console.log(e);
+    //console.log("F");
+    //console.log(sid);
+    //console.log("E");
+    //console.log(e);
     this.candidateStateUpdate(sid);
   }
 
   setCandidate(candidate) {
-    console.log(candidate);
+    //console.log(candidate);
     this.props.onAddItem(candidate);
     this.props.onSelect(candidate);
   }
@@ -557,6 +554,7 @@ class ShowSheet extends Sheet.Show {
   }
 
   getJob(jobId) {
+    //console.log("CANDY GET JOB ID: " + jobId);
     if (!jobId) {
       return;
     }
@@ -573,9 +571,8 @@ class ShowSheet extends Sheet.Show {
 
     }).done((data, textStatus, jaXHR) => {
       this.setJob(data.job);
-
-    }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
+      //console.log("GOT THE JOB");
+      //console.log(data);
 
     });
   }
@@ -590,8 +587,9 @@ class ShowSheet extends Sheet.Show {
   }
 
   componentWillMount() {
-    console.log("WILL MOUNT");
-    console.log(this.props);
+    //console.log("WILL MOUNT");
+    //console.log(this.props);
+    super.componentWillMount();
     this.getJob(this.props.jobId);
   }
 
@@ -630,8 +628,8 @@ class ShowSheet extends Sheet.Show {
       return null;
     }
 
-    console.log("RENDER HEADER");
-    console.log(candidate);
+    //console.log("RENDER HEADER");
+    //console.log(candidate);
     let stateName = State.toName(candidate.state);
     let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateName).push("background");
 
@@ -648,10 +646,11 @@ class ShowSheet extends Sheet.Show {
     let clazzes = ClassNames(this.state.showMessages ? "" : "hide");
     let recruiter = candidate.recruiter;
 
-    console.log("RECRUITER ITEM CANDIDATE");
-    console.log(candidate);
+    //console.log("RECRUITER ITEM CANDIDATE");
+    //console.log(candidate);
 
     if (!this.state.job) {
+      //console.log("NO JOB");
       return ( <Pyr.UI.Loading /> );
     }
 
@@ -807,7 +806,7 @@ class CandidatesPage extends Page {
   }
 
   indexSheet() {
-    console.log("CANDINDEX");
+    //console.log("CANDINDEX");
     let jobId = this.getJobId();
     let candyId = this.getItemId();
 
@@ -843,12 +842,16 @@ class CandidatesPage extends Page {
   }
 
   actionSheet(action) {
-    console.log("ACDTION SHEET?: ");
+    //console.log("ACTION SHEET?: " + action);
+
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
     let jobId = this.getJobId();
     let candyId = this.getItemId();
+
+    //console.log("JOBID: " + jobId);
+    //console.log("CANDYID: " + candyId);
 
     return (
       <ActionSheet
@@ -870,7 +873,8 @@ class CandidatesPage extends Page {
   }
 
   loadSelected(itemId, onLoading) {
-  //  console.log("GET ITEM: " + itemId);
+    //console.log("CANDIDATES GET ITEM: " + itemId);
+    //alert(itemId);
 
     let me = this;
 
@@ -880,10 +884,10 @@ class CandidatesPage extends Page {
       onLoading: onLoading,
 
     }).done((data, textStatus, jaXHR) => {
+        //console.log("GOT CANDIDATE");
+        //console.log(data);
         me.onSelect(data.candidate);
 
-    }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
     });
   }
 
@@ -892,7 +896,7 @@ class CandidatesPage extends Page {
   }
 
   getCandidates(jobId) {
-    console.log("GET CANDIDATES: " + jobId);
+    //console.log("GET CANDIDATES: " + jobId);
     let url = null;
 
     if (!jobId) {
@@ -916,9 +920,6 @@ class CandidatesPage extends Page {
     }).done((data, textStatus, jaXHR) => {
       this.jobLoad(data.job, data.candidates || data.job.candidates);
 
-    }).fail((jaXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jaXHR, textStatus, errorThrown);
-
     });
   }
 
@@ -930,7 +931,7 @@ class CandidatesPage extends Page {
   }
 
   componentDidUpdate(prevProps, prevState) {
-     console.log("Did Update");
+     //console.log("Did Update");
     //alert(this.props.job);
     if(this.props.job){
      //alert(this.props.job.uuid);
@@ -938,8 +939,8 @@ class CandidatesPage extends Page {
     let prevId = prevProps.itemId;
     let nextId = this.props.itemId;
 
-    console.log("PREV: " + prevId);
-    console.log("NEXT: " + nextId);
+    //console.log("PREV: " + prevId);
+    //console.log("NEXT: " + nextId);
 
     if (prevId != nextId) {
       this.setItems(null);

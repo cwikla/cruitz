@@ -82,8 +82,6 @@ class MessageItem extends Sheet.Item {
 
         this.setJob(data.job);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -429,8 +427,6 @@ class MessagesPage extends Page {
 
         me.onSelect(data.message);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -452,8 +448,6 @@ class MessagesPage extends Page {
     }).done((data, textStatus, jqXHR) => {
         me.setItems(data.messages);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

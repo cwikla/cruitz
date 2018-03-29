@@ -283,8 +283,6 @@ class MessageThread extends Component {
     }).done((data, textStatus, jqXHR) => {
       self.setThread(data.message.thread);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

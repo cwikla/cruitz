@@ -160,7 +160,7 @@ class RouteURL extends BaseComponent {
       <Route
         path={this.props.path}
         render={this.onRouteRender}
-        exact={true}
+        exact
       />
     );
   }
@@ -180,9 +180,9 @@ class DefaultRoute extends BaseComponent {
     let location = routeProps.location;
     let history = routeProps.history;
     
-    //console.log("ROUTE: " + location.pathname);
-    //console.log(routeProps);
-    //console.log(location);
+    console.log("ROUTE: " + location.pathname);
+    console.log(routeProps);
+    console.log(location);
     
     let action = null;
     let params = routeProps.match.params;

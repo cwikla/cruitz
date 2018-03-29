@@ -144,9 +144,6 @@ class Dashboard extends Container.Base {
     }).done((data, textStatus, jqXHR) => {
         this.onJobIndex(data.jobs);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
-
     });
   }
 
@@ -290,6 +287,7 @@ class Dashboard extends Container.Base {
 
 ///
 /// 
+        ///<Pyr.UI.RouteURL path="/jobs/:pid/candidates/:subid" page="candidates" action="show" />
 ///
 
 render (
@@ -298,6 +296,8 @@ render (
       <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}>
         <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
         <Pyr.UI.RouteURL path="/jobs/new" page="jobs" action="new" />
+        <Pyr.UI.RouteURL path="/jobs/:pid/candidates/:subid" page="candidates" action="show" />
+        <Pyr.UI.RouteURL path="/jobs/:pid/candidates" page="candidates" action="index" />
         <Pyr.UI.RouteURL path="/jobs/:pid" page="jobs" action="index" />
       </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>

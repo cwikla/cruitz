@@ -296,8 +296,6 @@ class CompanyPage extends Page {
 
       this.setCompany(data.company);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

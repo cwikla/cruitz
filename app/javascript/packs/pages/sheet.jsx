@@ -422,6 +422,7 @@ class Show extends Base {
   }
 
   renderInner() {
+/*
     let items = this.getItems();
 
     if (this.state.isLoading || !items) {
@@ -433,6 +434,7 @@ class Show extends Base {
       console.log("B");
       return this.renderNone();
     }
+*/
 
     if (!this.props.selected) {
       console.log("C");

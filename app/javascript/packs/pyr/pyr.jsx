@@ -86,8 +86,6 @@ class UserProvider extends Network.Component {
     }).done((data, textStatus, jqXHR) => {
       self.setUser(data.user);
 
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 

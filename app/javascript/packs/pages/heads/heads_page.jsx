@@ -479,8 +479,6 @@ class HeadsPage extends Page {
     }).done((data, textStatus, jqXHR) => {
         me.setItems(data.heads);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
@@ -520,8 +518,6 @@ class HeadsPage extends Page {
 
         me.onSelect(data.head);
 
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
 
   }

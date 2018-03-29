@@ -520,13 +520,13 @@ class JobsPage extends Page {
       this.setState({
         categories: data.categories
       });
-    }).fail((jqXHR, textStatus, errorThrown) => {
-      Pyr.Network.ajaxError(jqXHR, textStatus, errorThrown);
     });
   }
 
         //jobs={this.props.jobs}
   indexSheet() {
+    console.log("JOB INDEX");
+
     return (
       <IndexShowSheet
         {...this.props}
@@ -543,6 +543,7 @@ class JobsPage extends Page {
 
   actionSheet(action) {
     action = action || "Show";
+    console.log("JOB " + action);
 
     //if (action.toLowerCase() == "show") {
      // action = 'Edit';

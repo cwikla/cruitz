@@ -130,7 +130,15 @@ class NetworkComponent extends BaseComponent {
 
     return ax.done(() => {
       delete this.ajaxii[ax.uuid];
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      console.log("getJSON: Fail");
+      console.log(stuff);
+      console.log(ax);
     });
+  }
+
+  ajaxError(jqXHR, textStatus, errorThrown) {
+    Network.ajaxError(jqXHR, textStatus, errorThrown);
   }
 
   componentWillMount() {
