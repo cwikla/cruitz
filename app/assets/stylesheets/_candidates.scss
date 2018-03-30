@@ -94,6 +94,10 @@
     }
   
     .candidate-item {
+      &> div {
+        margin: 0.5rem;
+      }
+
       .recruiter {
         border-left: 1px solid $border_color;
         border-right: 0;

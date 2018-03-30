@@ -27,8 +27,8 @@ class CompanyHeaderForm extends Component {
   render() {
     let method = Pyr.Method.PATCH;
 
-    console.log("COMPANY HEADER");
-    console.log(this.props.company);
+    //console.log("COMPANY HEADER");
+    //console.log(this.props.company);
 
     let logo = this.props.company.logo;
 
@@ -149,9 +149,9 @@ class CompanyLinksForm extends Component {
   render() {
     let method = Pyr.Method.PATCH;
 
-    console.log("COMPANY RENDER");
-    console.log(this.props);
-    console.log(this.props.company);
+    //console.log("COMPANY RENDER");
+    //console.log(this.props);
+    //console.log(this.props.company);
 
     return (
       <div className="form-links-parent section">
@@ -291,8 +291,8 @@ class CompanyPage extends Page {
       onLoading: onLoading
   
     }).done((data, textStatus, jqXHR) => {
-      console.log("GOT COMPANY");
-      console.log(data.company);
+      //console.log("GOT COMPANY");
+      //console.log(data.company);
 
       this.setCompany(data.company);
 
@@ -300,8 +300,8 @@ class CompanyPage extends Page {
   }
 
   actionSheet(action) {
-    console.log("ACTION SHEET");
-    console.log(this.context.user.company);
+    //console.log("ACTION SHEET");
+    //console.log(this.context.user.company);
 
     return (
       <EditSheet

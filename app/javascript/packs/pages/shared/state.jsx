@@ -60,12 +60,19 @@ function nexts(sid) {
   return NEXT_STATES[sid];
 }
 
+const Bubble = (props) => (
+  <div className="state-bubble state background">
+    { toName(props.state)[0] }
+  </div>
+);
+
 const State = {
   toName,
   toAction,
   toClassName,
   nextIsValid,
-  nexts
+  nexts,
+  Bubble,
 };
 
 export default State;

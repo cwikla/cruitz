@@ -78,7 +78,7 @@ class CandidateItem extends Component {
   render() {
     let candidate = this.props.candidate;
     let recruiter = candidate.recruiter;
-    let state = State.toClassName(candidate.state);
+    let stateName = State.toClassName(candidate.state);
 
     let id = "candidate-" + candidate.id;
     let allClass = ClassNames("item candidate-item flx-row");
@@ -87,7 +87,7 @@ class CandidateItem extends Component {
        allClass.push("selected");
     }
 
-    allClass.push("state").push(state).push("hover");
+    allClass.push("state").push(stateName).push("hover");
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -96,22 +96,22 @@ class CandidateItem extends Component {
 
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="item-content">
-          <div className="flx-row">
-            <div className="state col-md-2">{state}</div>
-            <div className="name col-md-3">{fullName}</div>
-            <div className="email col-md-3">{email}</div>
-            <div className="phone-number col-md-3">{phoneNumber}</div>
-          </div>
-        </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="recruiter col-2 d-flex">
+        <div className="flx-1 flx-align-center">
+          { State.toName(candidate.state) }
+        </div>
+        <div className="flx-col flx-3 item-content">
+          <div className="name">{fullName}</div>
+          <div className="email">{email}</div>
+          <div className="phone-number">{phoneNumber}</div>
+        </div>
+        <div className="flx-col flx-1 recruiter">
           <UserAvatar
             className={"flx-1"}
             userId={recruiter.id}
             name={recruiter.first_name}
             small
           />
-        </Pyr.Grid.Column>
+        </div>
       </div>
     );
   }
@@ -230,11 +230,11 @@ class IndexSheet extends Sheet.Index {
         <div className="mr-auto">{ title } </div>
         <div className="dropdown ml-auto">
           <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="candySortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-          <div className="dropdown-menu" aria-labelledby="candySortMenuButton">
+          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="candySortMenuButton">
             <label className="dropdown-header">Sort</label>
             <div className="dropdown-divider"></div>
             <label className="dropdown-item" >Date</label>
-            <label className="dropdown-item" >Unread</label>
+            <label className="dropdown-item" >State</label>
             <label className="dropdown-item" >Position</label>
           </div>
         </div>
