@@ -12,7 +12,13 @@
     &.sheet {
       .user-score {
         margin-left: 2rem;
+        font-size: 3rem;
       }
+
+      .status {
+        font-size: 2.0rem;
+      }
+
 
       .left {
         font-size: 1rem;
@@ -21,19 +27,22 @@
         margin-right: 1rem;
 
         .candidate-header {
-          line-height: 1.5rem;
           font-size: 1.25rem;
 
+          &> div {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+          }
+
           .social {
-            margin-top: 1rem;
             font-size: 2rem;
           }
 
           .name {
             font-size: 2rem;
             color: $primary_color;
-            margin-bottom: 1rem;
           }
+
         }
       }
 

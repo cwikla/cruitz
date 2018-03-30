@@ -605,7 +605,7 @@ class ShowSheet extends Sheet.Show {
     let name = State.toName(curState);
 
     return (
-      <div className="ml-auto">
+      <div className="">
       {
         nexts.map( (state, pos) => {
           let nextName = State.toName(state);
@@ -633,12 +633,15 @@ class ShowSheet extends Sheet.Show {
     //console.log("RENDER HEADER");
     //console.log(candidate);
     let stateName = State.toName(candidate.state);
-    let clazzes = ClassNames("actions flx-row p-1 flx-start").push("state").push(stateName).push("background");
+    let sclz = ClassNames("state").push(stateName);
+    let clazzes = ClassNames("actions flx-row p-1 flx-start").push(sclz).push("background");
 
+    let score = "88";
 
     return (
       <div className={clazzes}>
-        <UserScore className="flx-align-content-start">88</UserScore>
+        <UserScore className={ClassNames("flx-align-content-start").push(sclz)}>{score}</UserScore>
+        <div className={ClassNames("status ml-auto mr-auto mt-auto mb-auto").push(sclz)}>{stateName}</div>
         { this.renderButtons(candidate.state) }
       </div>
     );
