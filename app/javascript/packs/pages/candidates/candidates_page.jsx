@@ -645,7 +645,6 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderItem(candidate, isSelected) {
-    let clazzes = ClassNames(this.state.showMessages ? "" : "hide");
     let recruiter = candidate.recruiter;
 
     //console.log("RECRUITER ITEM CANDIDATE");
@@ -656,8 +655,13 @@ class ShowSheet extends Sheet.Show {
       return ( <Pyr.UI.Loading /> );
     }
 
+    let sclass = State.toClassName(candidate.state);
+
+    let clazzes = ClassNames("flx-row item flx-1");
+    clazzes.push(this.state.showMessages ? "" : "hide");
+
     return (
-      <div className="flx-row item flx-1">
+      <div className={clazzes}>
         <div className="flx-col flx-3 section left">
           <Pyr.UI.Scroll>
             <CandidateCVItem 
