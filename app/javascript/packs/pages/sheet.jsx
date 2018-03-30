@@ -437,11 +437,11 @@ class Show extends Base {
 */
 
     if (!this.props.selected) {
-      console.log("C");
+      //console.log("C");
       return this.renderNone();
     }
 
-    console.log("D");
+    //console.log("D");
     return (
       <div className="inner flx-col flx-1">
         { this.renderItem(this.props.selected, false) }

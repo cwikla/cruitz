@@ -31,7 +31,7 @@ class ItemLoader extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.itemId != this.props.itemId) {
-      console.log("PAGE GOT NEW ID: " + nextProps.itemId);
+      //console.log("PAGE GOT NEW ID: " + nextProps.itemId);
       this.setState({
         selected: null
       });
@@ -77,8 +77,8 @@ class ItemLoader extends Component {
 
 
   setItems(items) {
-    console.log("SET ITEMS");
-    console.log(items);
+    //console.log("SET ITEMS");
+    //console.log(items);
     if (items) {
       items = this.sortItems(items);
     }

@@ -401,14 +401,14 @@ class MessagesPage extends Page {
       this.loadSelected(first.id);
     }
 
-    console.log("MMMMM");
-    console.log(items);
+    //console.log("MMMMM");
+    //console.log(items);
 
     super.setItems(items);
   }
 
   loadSelected(itemId, onLoading) {
-    console.log("MESSAGES GET ITEM: " + itemId);
+    //console.log("MESSAGES GET ITEM: " + itemId);
 
     if (!itemId) {
       return;

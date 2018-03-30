@@ -122,8 +122,8 @@ class RouteURL extends BaseComponent {
     let history = routeProps.history;
 
     let params = routeProps.match.params;
-    console.log("MATCH PARAMS");
-    console.log(params);
+    //console.log("MATCH PARAMS");
+    //console.log(params);
 
     let searchParams = {};
 
@@ -143,8 +143,8 @@ class RouteURL extends BaseComponent {
       searchParams: Object.assign({}, searchParams, this.props.searchParams || {}),
     };
 
-    console.log("SEND PROPS");
-    console.log(sendProps);
+    //console.log("SEND PROPS");
+    //console.log(sendProps);
 
     let rest = Util.propsRemove(this.props, ["component", "dashboard"]);
    
@@ -180,9 +180,9 @@ class DefaultRoute extends BaseComponent {
     let location = routeProps.location;
     let history = routeProps.history;
     
-    console.log("ROUTE: " + location.pathname);
-    console.log(routeProps);
-    console.log(location);
+    //console.log("ROUTE: " + location.pathname);
+    //console.log(routeProps);
+    //console.log(location);
     
     let action = null;
     let params = routeProps.match.params;

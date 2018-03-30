@@ -138,10 +138,10 @@ class Content extends Component {
   }
 
   scrollToLastRead(firstUnread=false) {
-    console.log("SCROLL TO LAST");
+    //console.log("SCROLL TO LAST");
 
     if (!firstUnread) {
-      console.log("Scroll To Bottom");
+      //console.log("Scroll To Bottom");
       //console.log("Scroll Height: " + this.scroll().scrollHeight);
       this.scroll.scrollToBottom(SCROLL_TIME);
       return;
@@ -290,7 +290,7 @@ class MessageThread extends Component {
     let thread = this.state.thread || [];
     thread = thread.concat(data.message);
 
-    console.log("THREAD LENGTH: " + thread.length);
+    //console.log("THREAD LENGTH: " + thread.length);
 
     this.setThread(thread);
 

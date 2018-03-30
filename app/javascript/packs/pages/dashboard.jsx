@@ -79,9 +79,6 @@ function same(a,b) {
 
 class SubNavBar extends Container.NavBar {
   render() {
-    console.log("SUB NAV BAR");
-    console.log(this.props.page);
-
     return (
        <Pyr.Grid.Row className="subnavbar flx-row">
           <Pyr.Grid.Col className="col col-1 navbar-nav">
@@ -172,9 +169,6 @@ class Dashboard extends Container.Base {
     let jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
 
     let job = jobs.length ? jobs[jobs.length-1] : null;
-
-    console.log("JOBINDEX GOT JOBS");
-    console.log(jobs);
 
     this.setState({
       buttonItemCount,
