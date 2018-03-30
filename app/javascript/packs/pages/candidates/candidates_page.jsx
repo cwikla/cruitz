@@ -399,9 +399,9 @@ class RecruiterMessage extends Component {
 
 const ExperienceItem = (props) => (
   <div className="item">
-    <div><Pyr.UI.Label>{props.item.title} @ {props.item.organization}</Pyr.UI.Label> </div>
-    <div><Pyr.UI.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.UI.Label></div>
-    <div>{props.item.description}</div>
+    <div className="title">{props.item.title} @ {props.item.organization}</div>
+    <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
+    <div className="description">{props.item.description}</div>
   </div>
 );
 
@@ -414,7 +414,7 @@ class Experience extends Component {
     let experience = this.props.experience;
 
     return (
-      <div id="experience" className="cv-section">
+      <div id="experience" className="cv-section experience">
       {
         experience.map( (item, pos) => {
           return (<ExperienceItem item={item} key={"exp"+pos}/>);
@@ -427,8 +427,8 @@ class Experience extends Component {
 
 const EducationItem = (props) => (
   <div className="item">
-    <div><Pyr.UI.Label>{props.item.degree} @ {props.item.school}</Pyr.UI.Label> </div>
-    <div><Pyr.UI.Label>{props.item.year_start} - {props.item.year_end || "Current"}</Pyr.UI.Label></div>
+    <div className="degree">{props.item.degree} @ {props.item.school}</div>
+    <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
   </div>
 );
 
@@ -441,7 +441,7 @@ class Education extends Component {
     let education = this.props.education;
 
     return (
-      <div id="education" className="cv-section">
+      <div id="education" className="cv-section education">
       {
         education.map( (item, pos) => {
           return (<EducationItem item={item} key={"ed"+pos}/>);
@@ -461,10 +461,10 @@ class Skills extends Component {
     let skills = this.props.skills;
 
     return (
-      <div id="skills" className="cv-section">
+      <div id="skills" className="cv-section skills flx-row">
         {
           skills.map( (item, pos) => {
-            return (<Pyr.UI.FancyLabel key={"sk"+pos}>{item}</Pyr.UI.FancyLabel>);
+            return (<div className="skill flx-0 flx-nowrap" key={"sk"+pos}>{item}</div>);
           })
         }
       </div>

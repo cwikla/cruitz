@@ -28,10 +28,14 @@
 
         .candidate-header {
           font-size: 1.25rem;
+          padding-bottom: 1rem;
 
           &> div {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
+            margin-top: 0.5rem;
+          }
+
+          .social-links {
+            margin-top: 1rem;
           }
 
           .social {
@@ -39,11 +43,39 @@
           }
 
           .name {
+            margin-bottom: 0.5rem;
             font-size: 2rem;
             color: $primary_color;
           }
 
+          .skill {
+          }
+
         }
+
+        .item {
+          margin-bottom: 1rem;
+        }
+
+        .education {
+          .item {
+            .degree {
+              font-size: 1.15rem;
+              font-weight: 500;
+            }
+          }
+        }
+
+        .experience {
+          .item {
+
+            .title {
+              font-size: 1.15rem;
+              font-weight: 500;
+            }
+          }
+        }
+
       }
 
     }
@@ -80,15 +112,15 @@
   .recruiter-message {
   }
   
-  .candidate-header {
-    padding-bottom: 1rem;
-  }
-
   .cv-label {
-    font-size: 1.2rem;
+    font-weight: 500;
+    font-size: 1.5rem;
+
     padding-bottom: 0.25rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+
     border-bottom: 1px solid $border_color;
-    margin-bottom: 0.25rem;
   }
   
   .candidate-action {
