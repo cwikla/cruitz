@@ -41,31 +41,33 @@ class CandidateHeader extends Component {
     let phoneNumber = Pyr.Util.scramble(candidate.phone_number || "No Phone");
     let email = candidate.email || "No Email";
     let description = candidate.description || "No Description";
+    let company = candidate.company || "No Company";
+    let salary = candidate.salary || "No Salary";
 
-    let clazzes = ClassNames("candidate-header flx-noshrink");
+    let clazzes = ClassNames("candidate-header flx-col flx-noshrink");
     if (candidate.state < 100) {
       //clazzes.push("blurry-text");
     }
 
     return (
       <div className={clazzes} >
-          <Pyr.Grid.Row className="title">
-            <Pyr.Grid.ColFull className="name col col-md-12"><Pyr.UI.SmallLabel>Candidate:</Pyr.UI.SmallLabel><span className="">{fullName}</span></Pyr.Grid.ColFull>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf className="phone-number"><Pyr.UI.SmallLabel>PhoneNumber:</Pyr.UI.SmallLabel><span className="">{phoneNumber}</span></Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf className="email"><Pyr.UI.SmallLabel>Email:</Pyr.UI.SmallLabel>{email}</Pyr.Grid.ColHalf>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row>
-            <Pyr.Grid.ColHalf className="employer"><Pyr.UI.SmallLabel>Employer:</Pyr.UI.SmallLabel> Hmmmmmm</Pyr.Grid.ColHalf>
-            <Pyr.Grid.ColHalf className="cost"><Pyr.UI.SmallLabel>Est. Commission:</Pyr.UI.SmallLabel> $27,000</Pyr.Grid.ColHalf>
-          </Pyr.Grid.Row>
-          <Pyr.Grid.Row className="flx-row-stretch">
-            <Pyr.UI.Icon name="linkedin-square" className="social"/>
-            <Pyr.UI.Icon name="github" className="social"/>
-            <Pyr.UI.Icon name="dribbble" className="social"/>
-            <Pyr.UI.Icon name="quora" className="social"/>
-          </Pyr.Grid.Row>
+        <div className="flx-row flx-1">
+          <div className="name mr-auto">{fullName}</div>
+        </div>
+        <div className="flx-row flx-1">
+          <div className="phone-number mr-auto flx-1">{phoneNumber}</div>
+          <div className="email mr-auto flx-1">{email}</div>
+        </div>
+        <div className="flx-row flx-1">
+          <div className="employer mr-auto flx-1">{company}</div>
+          <div className="cost mr-auto flx-1">{salary}</div>
+        </div>
+        <div className="social-links flx-row-stretch">
+          <Pyr.UI.Icon name="linkedin-square" className="social"/>
+          <Pyr.UI.Icon name="github" className="social"/>
+          <Pyr.UI.Icon name="dribbble" className="social"/>
+          <Pyr.UI.Icon name="quora" className="social"/>
+        </div>
       </div>
     );
   }
@@ -655,8 +657,8 @@ class ShowSheet extends Sheet.Show {
     }
 
     return (
-      <Pyr.Grid.Row className="item flx-1">
-        <Pyr.Grid.Col className="flx-col left">
+      <div className="flx-row item flx-1">
+        <div className="flx-col flx-3 section left">
           <Pyr.UI.Scroll>
             <CandidateCVItem 
               candidate={candidate} 
@@ -665,31 +667,13 @@ class ShowSheet extends Sheet.Show {
             />
           </Pyr.UI.Scroll>
  
-        </Pyr.Grid.Col>
-        <Pyr.Grid.Col className="col-3 right">
+        </div>
+        <div className="flx-col flx-1 right">
           <Recruiter.Blurb recruiter={recruiter}/>
-        </Pyr.Grid.Col>
-      </Pyr.Grid.Row>
-    );
-  
-  }
-
-  renderUnused() {
-    return (
-    <div>
-      <Pyr.Grid.Row className="flx-1 high">
-        <Pyr.Grid.Col>
-          <Pyr.UI.Label className="cv-label">Messages</Pyr.UI.Label>
-          <RecruiterMessage 
-            className=""
-            job={this.state.job}
-            candidate={candidate} 
-            onSetItem={this.props.onSetItem}
-          />
-        </Pyr.Grid.Col>
-      </Pyr.Grid.Row>
+        </div>
       </div>
     );
+  
   }
 }
 

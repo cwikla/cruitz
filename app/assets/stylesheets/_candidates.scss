@@ -3,54 +3,37 @@
 
   .show {
       .inner {
-        padding: 1rem;
-
-        .col.left {
-          padding: 1rem;
-          background-color: white;
-          border: 1px solid $border_color;
-        }
+        margin-top: 1rem;
+        background-color: white;
+        padding: 0;
+        border: none;
       }
 
     &.sheet {
-      .scroll.inner {
-        margin-top: 1rem;
-      }
-  
-      .candidate-item {
-        .actions {
-          border-bottom: 1px solid $border_color;
-          margin-bottom: 1rem;
-  
-        }
+      .left {
+        font-size: 1rem;
 
-        .left {
-          padding-left: 2rem;
-          padding-right: 0.5rem;
-          padding-bottom: 1rem;
-        }
+        margin-bottom: 0;
+        margin-right: 1rem;
 
-        .right {
-          padding-left: 0.5rem;
-          padding-right: 2rem;
-        }
+        .candidate-header {
+          line-height: 1.5rem;
+          font-size: 1.25rem;
 
-        .cv-item {
-          padding: 1rem;
-          background-color: white;
-          border: 1px solid $border_color;
-          border-radius: 10px;
+          .social-links {
+            margin-top: 1rem;
+          }
 
-          .cv-section {
-            .item {
-              padding-bottom: 1rem;
-            }
-            padding-bottom: 1rem;
+          .name {
+            font-size: 2rem;
+            color: $primary_color;
+            margin-bottom: 1rem;
           }
         }
       }
-  
+
     }
+
   }
   
   .sheet.index {
