@@ -395,8 +395,13 @@ class ShowSheet extends Sheet.Show {
 
   renderItem(job, isSelected) {
     return (
-      <div className="flx-col">
-        <Job.View job={job} />
+      <div className="flx-row">
+        <div className="flx-col flx-3 left">
+          <Job.View job={job} />
+        </div>
+        <div className="flx-col flx-1 right">
+          <Job.Stats job={job} />
+        </div>
       </div>
     );
   }

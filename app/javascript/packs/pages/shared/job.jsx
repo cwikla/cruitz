@@ -264,6 +264,45 @@ class View extends Component {
 
 }
 
+class Stats extends Component {
+  render() {
+    let rest = Pyr.Util.propsRemove(this.props, "job");
+    let job = this.props.job;
+
+    let views = 22;
+
+    let newCandy = 2;
+    let acceptedCandy = 8;
+    let rejectedCandy = 2;
+
+    let total = newCandy + acceptedCandy + rejectedCandy;
+
+    return (
+      <div {...Pyr.Util.propsMergeClassName(rest, "job-stats flx-col")} >
+        <div className="header">Stats</div>
+        <div className="guts">
+          <div className="views">{views} Views</div>
+          <div className="pie">
+            <Pyr.UI.PieChart
+              slices={[
+                { color: 'orange', value: newCandy },
+                { color: 'green', value: acceptedCandy },
+                { color: 'red', value: rejectedCandy },
+              ]}
+            />
+          </div>
+
+          <div className="total">{total} Candidates</div>
+          <div className="new">{newCandy} New</div>
+          <div className="accepted">{acceptedCandy} Accepted</div>
+          <div className="rejected">{rejectedCandy} Rejected</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
 
 
 const Job = {
@@ -271,6 +310,7 @@ const Job = {
   Header,
   Card,
   View,
-}
+  Stats,
+};
 
 export default Job;

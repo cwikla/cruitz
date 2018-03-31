@@ -93,16 +93,26 @@ class CandidateItem extends Component {
     let phoneNumber = candidate.phone_number || "No Phone";
     let email = candidate.email || "No Email";
     let description = candidate.description || "No Description";
+    let position = "Sr. Software Engineer";
+    let company = "Google";
+    let yearsExp = "4 years exp";
 
     return (
       <div className={allClass} id={id}>
         <div className="flx-1 flx-align-center">
           { State.toName(candidate.state) }
         </div>
-        <div className="flx-col flx-3 item-content">
-          <div className="name">{fullName}</div>
-          <div className="email">{email}</div>
-          <div className="phone-number">{phoneNumber}</div>
+        <div className="flx-row flx-3 item-content">
+          <div className="flx-col flx-1">
+            <div className="name">{fullName}</div>
+            <div className="position">{position}</div>
+            <div className="company">{company}</div>
+          </div>
+          <div className="flx-col flx-1">
+            <div className="email">{email}</div>
+            <div className="phoneNumber">{phoneNumber}</div>
+            <div className="years">{yearsExp}</div>
+          </div>
         </div>
         <div className="flx-col flx-1 recruiter">
           <UserAvatar
