@@ -284,6 +284,7 @@ class Stats extends Component {
           <div className="views">{views} Views</div>
           <div className="pie">
             <Pyr.UI.PieChart
+              className="ml-auto mr-auto"
               slices={[
                 { color: 'orange', value: newCandy },
                 { color: 'green', value: acceptedCandy },
@@ -292,10 +293,12 @@ class Stats extends Component {
             />
           </div>
 
-          <div className="total">{total} Candidates</div>
-          <div className="new">{newCandy} New</div>
-          <div className="accepted">{acceptedCandy} Accepted</div>
-          <div className="rejected">{rejectedCandy} Rejected</div>
+          <div className="candy ml-auto mr-auto">
+            <div className="total">{total} Candidates</div>
+            <div className="new">{newCandy} New</div>
+            <div className="accepted">{acceptedCandy} Accepted</div>
+            <div className="rejected">{rejectedCandy} Rejected</div>
+          </div>
         </div>
       </div>
     );
