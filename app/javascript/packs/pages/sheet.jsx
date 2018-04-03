@@ -229,7 +229,7 @@ class Form extends Base {
 
 
   render() {
-    let AComponent = this.props.notFullScreen ? Pyr.UI.DIV : FSWL;
+    let AComponent = Pyr.UI.DIV; // this.props.notFullScreen ? Pyr.UI.DIV : FSWL;
 
     let clz = ClassNames("sheet flx-col");
     clz.push(this.name().toLowerCase());

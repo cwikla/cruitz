@@ -298,8 +298,9 @@ $pfs_height: 10rem;
 }
 
 .pyr-icon-btn {
-  :hover {
-    color: $highlight_color;
+  color: $unselected_button_color;
+  &:hover {
+    color: $navbar_background_color;
   }
   &.disabled {
     color: rgba(255,255,255,0.2);
@@ -307,6 +308,9 @@ $pfs_height: 10rem;
     &:hover {
       color: rgba(255,255,255,0.2);
     }
+  }
+  &.selected {
+    color: $navbar_background_color;
   }
 }
 

@@ -469,7 +469,7 @@ h3.title {
   background-color: white;
 }
 
-.pyr-fullscreen {
+.sheet {
   .title {
     color: $primary_color;
     padding-bottom: 1rem;
@@ -507,6 +507,13 @@ h3.title {
     background-color: white;
   }
 
+}
+
+.sheet.new, .sheet.edit {
+  padding: 3rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  overflow: auto;
 }
 
 .blurry-text {
@@ -924,5 +931,54 @@ label {
   border-radius: 50%;
   border: solid $border_color 1px;
 }
+
+.stats, %stats {
+
+  .header {
+    @extend %header;
+  }
+
+  .guts {
+    padding: 1rem;
+    border: solid $border_color 1px;
+  }
+
+  .views {
+    color: $primary_color;
+    padding-bottom: 1rem;
+  }
+
+  .total {
+    color: $primary_color;
+  }
+
+  .new {
+    color: orange;
+    padding-left: 0.5rem;
+  }
+
+  .accepted {
+    color: green;
+    padding-left: 0.5rem;
+  }
+
+  .rejected {
+    color: red;
+    padding-left: 0.5rem;
+  }
+}
+
+.page {
+  .content {
+    .title {
+      h3 {
+        font-size: 1.5rem;
+        color: $primary_color;
+      }
+    }
+  }
+}
+
+
 
 

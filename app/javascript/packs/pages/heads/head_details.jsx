@@ -180,6 +180,62 @@ class WorkHistory extends Component {
   }
 }
 
+class Full extends Component {
+  render() {
+    return (
+      <Head>
+        <Name {...this.props} />
+        <Primary {...this.props}/>
+        <Address {...this.props} />
+        <SocialLinks {...this.props} />
+        <Skills {...this.props} />
+        <WorkHistory {...this.props} />
+      </Head>
+    )
+  }
+}
+
+class Stats extends Component {
+  render() {
+    let rest = Pyr.Util.propsRemove(this.props, "head");
+    let head = this.props.head;
+
+    let views = 22;
+
+    let newCandy = 2;
+    let acceptedCandy = 8;
+    let rejectedCandy = 2;
+
+    let total = newCandy + acceptedCandy + rejectedCandy;
+
+    return (
+      <div {...Pyr.Util.propsMergeClassName(rest, "head-stats flx-col")} >
+        <div className="header">Stats</div>
+        <div className="guts">
+          <div className="views">{views} Views</div>
+          <div className="pie">
+            <Pyr.UI.PieChart
+              className="ml-auto mr-auto"
+              slices={[
+                { color: 'orange', value: newCandy },
+                { color: 'green', value: acceptedCandy },
+                { color: 'red', value: rejectedCandy },
+              ]}
+            />
+          </div>
+
+          <div className="candy ml-auto mr-auto">
+            <div className="total">{total} Applications</div>
+            <div className="accepted">{acceptedCandy} Accepted</div>
+            <div className="rejected">{rejectedCandy} Rejected</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
 const HeadDetails = {
   Head,
   Name,
@@ -188,6 +244,8 @@ const HeadDetails = {
   SocialLinks,
   Skills,
   WorkHistory,
+  Full,
+  Stats,
 };
 
 export default HeadDetails;

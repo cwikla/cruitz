@@ -6,39 +6,7 @@
   }
 
   .job-stats {
-
-    .header {
-      @extend %header;
-    }
-
-    .guts {
-      padding: 1rem;
-      border: solid $border_color 1px;
-    }
-    
-    .views {
-      color: $primary_color;
-      padding-bottom: 1rem;
-    }
-
-    .total {
-      color: $primary_color;
-    }
-
-    .new {
-      color: orange;
-      padding-left: 0.5rem;
-    }
-
-    .accepted {
-      color: green;
-      padding-left: 0.5rem;
-    }
-
-    .rejected {
-      color: red;
-      padding-left: 0.5rem;
-    }
+    @extend %stats;
   }
 
   .sheet.new {

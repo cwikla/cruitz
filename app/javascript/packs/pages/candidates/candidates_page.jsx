@@ -239,7 +239,7 @@ class IndexSheet extends Sheet.Index {
       <div className="flx-row">
         <div className="mr-auto">{ title } </div>
         <div className="dropdown ml-auto">
-          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="candySortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <Pyr.UI.IconButton name="sort" className="dropdown-toggle" id="candySortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
           <div className="dropdown-menu dropdown-menu-right" aria-labelledby="candySortMenuButton">
             <label className="dropdown-header">Sort</label>
             <div className="dropdown-divider"></div>
@@ -337,7 +337,7 @@ class JobIndexSheet extends Sheet.Index {
       <div className="flx-row">
         <div className="mr-auto">Jobs</div>
         <div className="dropdown ml-auto">
-          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="jobSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <Pyr.UI.IconButton name="sort" className="dropdown-toggle" id="jobSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
           <div className="dropdown-menu" aria-labelledby="jobSortMenuButton">
             <label className="dropdown-header">Sort</label>
             <div className="dropdown-divider"></div>

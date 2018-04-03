@@ -174,7 +174,7 @@ class IndexSheet extends Sheet.Index {
       <div className="flx-row">
         <div className="mr-auto">Messages</div>
         <div className="dropdown ml-auto">
-          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="messageSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <Pyr.UI.IconButton name="sort" className="dropdown-toggle" id="messageSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
           <div className="dropdown-menu" aria-labelledby="messageSortMenuButton">
             <label className="dropdown-header">Sort</label>
             <div className="dropdown-divider"></div>

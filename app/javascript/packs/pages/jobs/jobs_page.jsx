@@ -365,11 +365,22 @@ class IndexSheet extends Sheet.Index {
   }   
 
   renderHeader() {
+    let url = Pyr.URL(JOBS_URL).push(NEW_ACTION);
+
     return (
-      <div className="jobs-index-header">
-          <div className="job-new p-1 d-flex flx-end">
-              <Link to={Pyr.URL(JOBS_URL).push("new").toString()}><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Add Job</Pyr.UI.PrimaryButton></Link>
+      <div className="flx-row">
+        <div className="mr-auto">Jobs</div>
+        <Link to={url.toString()}><Pyr.UI.IconButton name="plus" className="ml-auto">Add Job</Pyr.UI.IconButton></Link>
+        <div className="dropdown ml-auto">
+          <Pyr.UI.IconButton name="sort" className="dropdown-toggle pyr-icon-btn" id="jobSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <div className="dropdown-menu" aria-labelledby="jobSortMenuButton">
+            <label className="dropdown-header">Sort</label>
+            <div className="dropdown-divider"></div>
+            <label className="dropdown-item" >Newest</label>
+            <label className="dropdown-item" >Oldest</label>
+            <label className="dropdown-item" >Most Candidates</label>
           </div>
+        </div>
       </div>
     );
   }

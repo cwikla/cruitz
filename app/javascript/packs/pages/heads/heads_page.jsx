@@ -48,6 +48,7 @@ function methodToName(method) {
   }
 }
 
+
 class HeadItem extends Component {
 
   render() {
@@ -264,11 +265,14 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderHeader() {
+    let url = Pyr.URL(HEADS_URL).push(NEW_ACTION);
+
     return (
       <div className="flx-row">
         <div className="mr-auto">Heads</div>
+        <Link to={url.toString()}><Pyr.UI.IconButton name="plus" className="ml-auto">Add Head</Pyr.UI.IconButton></Link>
         <div className="dropdown ml-auto">
-          <Pyr.UI.Icon name="sort" className="dropdown-toggle" id="headSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <Pyr.UI.IconButton name="sort" className="dropdown-toggle pyr-icon-btn" id="headSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
           <div className="dropdown-menu" aria-labelledby="headSortMenuButton">
             <label className="dropdown-header">Sort</label>
             <div className="dropdown-divider"></div>
@@ -370,18 +374,11 @@ class ShowSheet extends Sheet.Show {
      <div className="item flx-1 flx-row">
         <div className="flx-col flx-3 left scroll">
           <div className="section flx-5">
-            <HeadDetails.Head>
-              <HeadDetails.Name {...this.props} head={head}/>
-              <HeadDetails.Primary {...this.props} head={head}/>
-              <HeadDetails.Address {...this.props} head={head}/>
-              <HeadDetails.SocialLinks {...this.props} head={head}/>
-              <HeadDetails.Skills {...this.props} head={head}/>
-              <HeadDetails.WorkHistory {...this.props} head={head}/>
-            </HeadDetails.Head>
+            <HeadDetails.Full {...this.props} head={head} />
           </div>
         </div>
         <div className="flx-1 right">
-          <div>blurb</div>
+          <HeadDetails.Stats head={head} />
         </div>
       </div>
     );

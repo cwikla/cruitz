@@ -226,7 +226,7 @@ class HeadPlaceholderItem extends Component {
   render() {
     return (
       <div className="placeholder section flx-col">
-        <Pyr.UI.Icon name="plus" className="fa-align-center"/>
+        <Pyr.UI.IconButton name="plus" className="fa-align-center"/>
       </div>
     );
   }

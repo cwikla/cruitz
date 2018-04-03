@@ -132,6 +132,7 @@ render (
     <Pyr.UI.NoticeProvider>
       <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE}  >
         <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+        <Pyr.UI.RouteURL path="/heads/new" page="heads" action="new" />
         <Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
         <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
       </Pyr.UI.RouterProps>
