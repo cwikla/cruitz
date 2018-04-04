@@ -17,11 +17,11 @@ class Message < ApplicationRecord
   validates :candidate, presence: true
 
   def after_cached
-    puts "AFTER MESSAGE CACHED MESSAGE"
+    puts "AFTER MESSAGE CACHED MESSAGE => #{self.id}"
     self.thread_ids_cached(true)
     self.thread_last_cached(true)
 
-    Message.new(id: self.parent_message_id).after_cached if self.parent_message_id
+    #Message.new(id: self.parent_message_id).after_cached if self.parent_message_id
     Message.new(id: self.root_message_id).after_cached if self.root_message_id
   end
 
@@ -69,6 +69,7 @@ class Message < ApplicationRecord
 
     key="thids_#{rid}"
     cache_fetch(key, force: clear) {
+      puts "MESSAGE RECACHING #{rid}"
       Message.where(root_message_id: rid).or(Message.where(id: rid)).order(:id).pluck(:id)
     }
   end
