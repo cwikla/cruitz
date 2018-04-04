@@ -24,8 +24,8 @@ class JobSerializer < ActiveModel::Serializer
 
   def category
     cat = object.categories.first
-    puts "CATEGORY"
-    puts "#{cat.inspect}"
+    #puts "CATEGORY"
+    #puts "#{cat.inspect}"
 
     return nil if cat.nil?
 
