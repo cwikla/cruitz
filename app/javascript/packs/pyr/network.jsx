@@ -20,14 +20,14 @@ const Method = {
 };
 
 
-function ajaxError(jqXHR, textStatus, errorThrown) {
+function _ajaxError(jqXHR, textStatus, errorThrown) {
   console.log(jqXHR);
   console.log(textStatus)
   console.log("AJAX Error: " + errorThrown);
 }
 
 
-function getJSON(stuff) {
+function _getJSON(stuff) {
   let url = stuff.url;
   let data = stuff.data;
   let method = stuff.method || stuff.type || Method.GET;
@@ -89,10 +89,8 @@ function getJSON(stuff) {
   return ajx;
 }
 
-class NetworkComponent extends BaseComponent {
-  constructor(props) {
-    super(props);
-
+class Connector {
+  constructor() {
     this.ajaxii = {};
   }
 
@@ -125,7 +123,7 @@ class NetworkComponent extends BaseComponent {
   }
 
   getJSON(stuff) {
-    let ax = Network.getJSON(stuff);
+    let ax = _getJSON(stuff);
     this.ajaxii[ax.uuid] = ax;
 
     return ax.done(() => {
@@ -138,24 +136,47 @@ class NetworkComponent extends BaseComponent {
   }
 
   ajaxError(jqXHR, textStatus, errorThrown) {
-    Network.ajaxError(jqXHR, textStatus, errorThrown);
+    _ajaxError(jqXHR, textStatus, errorThrown);
+  }
+
+  reset() {
+    this.ajaxii = {};
+  }
+}
+
+class NetworkComponent extends BaseComponent {
+  constructor(props) {
+    super(props);
+
+    this.network = new Connector();
+  }
+
+  getJSON(stuff) {
+    return this.network.getJSON(stuff);
+  }
+
+  ajaxError(jqXHR, textStatus, errorThrown) {
+    return this.network.ajaxError(jqXHR, textStatus, errorThrown);
+  }
+
+  reset() {
+    this.network.reset();
   }
 
   componentWillMount() {
-    this.ajaxii = {};
+    this.network.reset();
   }
 
   componentWillUnmount() {
-    this.abortJSON();
+    this.network.abortJSON();
   }
 
 }
 
 const Network = {
+  Network: Connector,
   Component : NetworkComponent,
-  Method,
-  getJSON,
-  ajaxError,
+  Method
 };
 
 export default Network;
