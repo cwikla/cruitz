@@ -353,9 +353,9 @@ class SubmitButton extends BaseComponent {
   target() {
     let val = this.props.target;
     if ($.isFunction(val)) {
-      val = val();
+      return val();
     }
-    return val;
+    return val.form || val;
   }
  
   onClickHandler(e) {
@@ -368,8 +368,8 @@ class SubmitButton extends BaseComponent {
       return;
     }
 
-    console.log("CLICK");
-    console.log(this.props);
+    //console.log("CLICK");
+    //console.log(this.props);
 
     let t = this.target();
 
