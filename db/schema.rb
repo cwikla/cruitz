@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180322200132) do
+ActiveRecord::Schema.define(version: 20180404011906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,20 @@ ActiveRecord::Schema.define(version: 20180322200132) do
     t.index ["name"], name: "index_companies_on_name"
     t.index ["pyr_upload_id"], name: "index_companies_on_pyr_upload_id"
     t.index ["user_id"], name: "index_companies_on_user_id"
+  end
+
+  create_table "experiences", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "head_id", null: false
+    t.string "place", null: false
+    t.string "title"
+    t.integer "exp_type", default: 0, null: false
+    t.integer "year_start", null: false
+    t.integer "year_end"
+    t.text "description"
+    t.index ["head_id"], name: "index_experiences_on_head_id"
   end
 
   create_table "heads", id: :serial, force: :cascade do |t|
@@ -375,6 +389,15 @@ ActiveRecord::Schema.define(version: 20180322200132) do
     t.datetime "deleted_at"
     t.string "name", null: false
     t.index ["name"], name: "index_skills_on_name", unique: true
+  end
+
+  create_table "universities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "name", null: false
+    t.integer "rank"
+    t.index ["rank"], name: "index_universities_on_rank"
   end
 
   create_table "users", force: :cascade do |t|

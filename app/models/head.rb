@@ -2,6 +2,7 @@ class Head < ApplicationRecord
   belongs_to :recruiter, :class_name => "User", foreign_key: :user_id
   has_many :candidates
   has_many :jobs, through: :candidates
+  has_many :experiences
 
   cache_notify :user
 

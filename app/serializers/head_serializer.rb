@@ -7,5 +7,6 @@ class HeadSerializer < ActiveModel::Serializer
     :full_name
 
   has_many :candidates
+  has_many :experiences
 
 end

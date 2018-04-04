@@ -153,22 +153,22 @@ class Skills extends Component {
 
 class WorkHistory extends Component {
   render() {
-    let workHistory = this.props.work_history;
+    let head = this.props.head;
 
-    workHistory = [1,2,3,4,5,6];
+    let experiences = (head.experiences || []).sort((x,y) => {
+      return (x.year_start - y.year_start);
+    });
 
-    let guts = workHistory.map((item, pos) => {
+    let guts = experiences.map((exp, pos) => {
       return (
-        <div className="work" key={"work-"+item}>
-          <div className="year">2015-Current</div>
-          <div className="company">My Company</div>
-          <div className="current_title">Director Engineering</div>
-          <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        <div className="work" key={"work-"+exp.id}>
+          <div className="year">{exp.year_start}-{exp.year_end || "Current"}</div>
+          <div className="company">{exp.place}</div>
+          <div className="current_title">{exp.title}</div>
+          <div className="description">{exp.description}</div>
         </div>
       );
     });
-
-    let head = this.props.head;
 
     let clazzes = ClassNames(this.props.className, "work-history");
 
