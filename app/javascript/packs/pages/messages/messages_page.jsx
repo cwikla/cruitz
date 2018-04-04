@@ -165,6 +165,11 @@ class IndexSheet extends Sheet.Index {
     return MessagesPage.key(a)
   }
 
+  sortItems(items) {
+    return items.sort((x, y) => (y.root_msg_id || y.msg_id) - (x.root_msg_id || y.msg_id));
+  }
+
+
   renderItem(message, isSelected) {
     return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
   }
