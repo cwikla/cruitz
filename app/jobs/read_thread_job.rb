@@ -17,6 +17,8 @@ class ReadThreadJob < Pyr::Async::BaseJob
     messages = message.thread()
     puts "GOT #{messages.count} MESSAGES"
     messages.each do |m|
+      next if m.read_at
+
       m.read_at ||= Time.zone.now
       m.save
     end
