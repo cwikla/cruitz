@@ -45,42 +45,43 @@ class User < ApplicationRecord
 
   validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }, unless: :password_is_nil?
 
+  def after_cached
+    self.score_cached(true)
+    self.thread_last_cached(true)
+  end
+
   def self.after_cached_job(job)
-    u = User.new(:id => job.user_id)
-    u.candidate_counts_cached(true)
+    User.new(id: job.user_id).after_cached
   end
 
   def self.after_cached_head(head)
-    u = User.new(:id => head.user_id)
+    User.new(id: head.user_id).after_cached
   end
 
   def self.after_cached_review(review)
-    u = User.new(:id => review.user_id)
-    u.score_cached(true)
+    User.new(id: review.user_id).after_cached
   end
 
   def self.after_cached_recruiter(recruiter)
-    u = User.new(:id => recruiter.head)
+    User.new(id: recruiter.head).after_cached
   end
 
   def self.after_cached_candidate(candidate)
-    candidate.hirer.candidate_counts_cached(true)
+    candidate.recruiter.after_cached
+    candidate.hirer.after_cached
   end
 
   def self.after_cached_message(message)
-
-    from = User.new(:id => message.from_user_id)
-    user = User.new(:id => message.user_id)
-
-    user.thread_last_cached(message, true)
-    from.thread_last_cached(message, true)
+    User.new(id: message.from_user_id).after_cached
+    User.new(id: message.user_id).after_cached
   end
 
   def self.after_cached_invite(invite)
-    u = User.new(:id => invite.user_id)
-
-    iu = User.new(:id => invite.from_user_id)
+    User.new(id: invite.user_id).after_cached
+    User.new(id: invite.from_user_id).after_cached
   end
+
+  ####
 
   def roots
     self.is_recruiter ? self.sent_message_roots : self.message_roots
@@ -114,14 +115,11 @@ class User < ApplicationRecord
     candidates.live
   end
 
-  def candidate_counts_cached(clear=false) # FIXME
-    #candidates.group(:state).count
-    named_cache_fetch(:can_counts, :delete=>clear) {
-      results = jobs.pluck(:id, :title)
-      results.map { |jid|
-        j = Job.find(jid[0])
-        [jid[0], jid[1], j.candidates.isnew.count, j.candidates.live.count]
-      }
+  def candidate_counts
+    results = jobs.pluck(:id, :title)
+    results.map { |jid|
+      j = Job.find(jid[0])
+      [jid[0], jid[1], j.candidates.isnew.count, j.candidates.live.count]
     }
   end
 
@@ -137,7 +135,7 @@ class User < ApplicationRecord
     return msg if msg.root_message_id.nil?
 
     key = "tlast_#{msg.root_message_id}"
-    cache_fetch(key, delete: clear) {
+    cache_fetch(key, force: clear) {
       messages.where("root_message_id = ? or id = ?", msg.root_message_id, msg.root_message_id).order("-id").first
     }
   end
@@ -147,11 +145,8 @@ class User < ApplicationRecord
   end
 
   def self.find_recruiter(id, clear=false)
-    key = "rex"
-    cache_fetch(key, delete:clear) {
-      ux = User.find(id)
-      ux = ux.is_recruiter ? ux : nil
-    }
+    ux = User.find(id)
+    ux = ux.is_recruiter ? ux : nil
   end
 
   def ui_identifier
@@ -170,7 +165,7 @@ class User < ApplicationRecord
 
   def score_cached(clear=false)
     key = 'scr'
-    cache_fetch(key, delete: clear) {
+    cache_fetch(key, force: clear) {
       reviews.average(:score) || 0
     }
   end

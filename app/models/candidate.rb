@@ -19,7 +19,7 @@ class Candidate < ApplicationRecord
   RECALL_STATE = -1000
   CANCEL_STATE = -5000
 
-  cache_notify :user
+  #cache_notify :user # FIXME
 
   scope :isnew, -> { where(state: SUBMITTED_STATE) }
   scope :accepted, -> {  where(state: ACCEPTED_STATE) }
@@ -29,19 +29,6 @@ class Candidate < ApplicationRecord
   validates :job_id, presence: true
   validates :head_id, presence: true
   validates :commission, presence: true
-
-  def self.after_cached_candidate_state(state)
-    c = Candidate.new(:id => state.candidate_id)
-  end
-
-  def after_destroy_cached
-  end
-
-  def self.after_cached_message(message)
-    return if !message.candidate_id
-
-    c = Candidate.new(:id => message.candidate_id)
-  end
 
   def to_s
     "#{job.id} => #{job.title} => #{head}"

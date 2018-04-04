@@ -202,11 +202,10 @@ class Stats extends Component {
 
     let views = 22;
 
-    let newCandy = 2;
     let acceptedCandy = 8;
     let rejectedCandy = 2;
 
-    let total = newCandy + acceptedCandy + rejectedCandy;
+    let total = acceptedCandy + rejectedCandy;
 
     return (
       <div {...Pyr.Util.propsMergeClassName(rest, "head-stats flx-col")} >
@@ -217,7 +216,6 @@ class Stats extends Component {
             <Pyr.UI.PieChart
               className="ml-auto mr-auto"
               slices={[
-                { color: 'orange', value: newCandy },
                 { color: 'green', value: acceptedCandy },
                 { color: 'red', value: rejectedCandy },
               ]}

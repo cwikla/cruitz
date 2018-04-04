@@ -16,12 +16,13 @@ class Message < ApplicationRecord
   validates :job_id, presence: true
   validates :candidate, presence: true
 
-  def after_cached_message(msg)
-    msg.root_message_cached(true)
-    msg.parent_message_cached(true)
-    msg.thread_ids_cached(true)
-    msg.thread_last_cached(true)
-    threads_for_candidate_ids(self.candidate_id, true) if self.candidate_id
+  def after_cached
+    puts "AFTER MESSAGE CACHED MESSAGE"
+    self.thread_ids_cached(true)
+    self.thread_last_cached(true)
+
+    Message.new(id: self.parent_message_id).after_cached if self.parent_message_id
+    Message.new(id: self.root_message_id).after_cached if self.root_message_id
   end
 
   def reply_from(from_user)
@@ -80,27 +81,12 @@ class Message < ApplicationRecord
     thread_ids_cached.count
   end
 
-  def self.threads_for_candidate_ids_cached(candidate, clear=false)
-    cid = candidate.respond_to?(:id) ? candidate.id : candidate
-
-    key="cand_thid"
-    cache_fetch(key, force: clear) {
-      Message.where(candidate_id: cid).select(:id).order(:id).map(&:id)
-    }
-  end
-
   def good(uid)
     return message.user_id == uid || message.from_user_id == uid
   end
 
   def self.threads_for_candidate(candidate)
-    Message.find(threads_for_candidate_ids_cached(candidate))
-  end
-
-  def after_cache
-    threads_for_candidate_ids(self.candidate_id, true) if self.candidate_id
-    threads_ids(clear)
-    thread_last(clear)
+    Message.where(candidate_id: candidate.id).order(:id)
   end
 
     private
