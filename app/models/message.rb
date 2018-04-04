@@ -47,7 +47,7 @@ class Message < ApplicationRecord
   end
 
   def thread_last
-    @the_thread_last ||= thread_last_cached
+    thread_last_cached
   end
 
   def self.find_for(user, mid)
@@ -73,7 +73,7 @@ class Message < ApplicationRecord
   end
 
   def thread(clear=false)
-    @the_thread ||= Message.find_safe(thread_ids_cached(clear))
+    Message.find_safe(thread_ids_cached(clear))
   end
 
   def thread_count
