@@ -156,7 +156,7 @@ class WorkHistory extends Component {
     let head = this.props.head;
 
     let experiences = (head.experiences || []).sort((x,y) => {
-      return (x.year_start - y.year_start);
+      return (y.year_start - x.year_start);
     });
 
     let guts = experiences.map((exp, pos) => {
