@@ -20,6 +20,6 @@ module Cruitz
       g.javascripts = false
       g.helper = false
     end
-    config.autoload_paths += ["#{config.root}/lib", "#{config.root}/util"]
+    config.autoload_paths += ["#{config.root}/lib", "#{config.root}/app/util"]
   end
 end
