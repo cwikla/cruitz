@@ -31,6 +31,7 @@ import {
 import Logo from './shared/logo';
 
 import Container from './container';
+import Loader from './loader/loader';
 
 import PositionsPage from './positions/positions_page';
 import MessagesPage from './messages/messages_page';
@@ -76,6 +77,10 @@ class SubNavBar extends Container.NavBar {
   render() {
     console.log("SUB NAV BAR");
     console.log(this.props.page);
+    
+    let positionsCount = this.props.pageItemsCount.positions;
+    let messagesCount = this.props.pageItemsCount.messages;
+    let headsCount = this.props.pageItemsCount.heads;
 
     return (
        <Pyr.Grid.Row className="subnavbar flx-row">
@@ -83,9 +88,9 @@ class SubNavBar extends Container.NavBar {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
             <div className="mr-auto flx-row">
-              <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={this.props.buttonItemCount.positions}/>
-              <Container.SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages" count={this.props.buttonItemCount.messages}/>
-              <Container.SubIcon name="Heads" icon="users" selected={this.props.page} page="heads" count={this.props.buttonItemCount.heads}/>
+              <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={positionsCount}/>
+              <Container.SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages" count={messagesCount}/>
+              <Container.SubIcon name="Heads" icon="users" selected={this.props.page} page="heads" count={headsCount}/>
             </div>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1">
@@ -97,10 +102,37 @@ class SubNavBar extends Container.NavBar {
 }
 
 class MarketPlace extends Container.Base {
-  componentDidMount() {
-    this.setState({
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      positions: null,
+      positionsMap: null,
+
+      heads: null,
+      headsMap: null,
     });
+
+    let loaderProps = {
+      onSetState: this.onSetState,
+      onGetState: this.onGetState,
+      onLoading: this.onLoading,
+      onSetItems: this.onSetItems,
+    };
+
+
+
+    this.positionsLoader = new Loader.Positions(loaderProps);
+    this.headsLoader = new Loader.Heads(loaderProps);
   }
+
+  extraProps(page) {
+    return {
+      positions: this.positionsLoader,
+      heads: this.headsLoader,
+    };
+  }
+
 
   getDefaultPage() {
     return DEFAULT_PAGE;
@@ -112,8 +144,9 @@ class MarketPlace extends Container.Base {
 
   renderSubNavBar() {
     return (
-      <SubNavBar user={this.user()} page={this.getPage()} buttonItemCount={this.state.buttonItemCount}/>
+      <SubNavBar user={this.user()} page={this.getPage()} pageItemsCount={this.state.pageItemsCount}/>
     );
+
   }
 
 }

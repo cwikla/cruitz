@@ -382,35 +382,15 @@ class RecruitersPage extends Page {
     return this.props.recruiters.items();
   }
 
-  indexSheet() {
-    return (
-      <IndexSheet
-        {...this.props}
-        items={this.getItems()}
-        recruiter={this.state.selected}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadItems={this.onLoadItems}
-        onLoadSelected={this.onLoadSelected}
-      />
-    );
+  getIndexSheet() {
+    return IndexSheet;
   }
-  
-  actionSheet(action) {
+
+  getActionSheet() {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    return (
-      <ActionSheet 
-        {...this.props}
-        items={this.getItems()}
-        selected={this.getSelected()}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
-        onLoadSelected={this.onLoadSelected}
-      />
-    );
-    
+    return ActionSheet;
   }
 }
 function key(item) {

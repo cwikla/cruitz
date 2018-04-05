@@ -22,10 +22,12 @@ class Page extends ItemLoader {
 
     this.initState({
       fullDetail: false,
+      nextId: null,
+      previd: null,
     });
 
-    let jobs = this.props.jobs || [];
-    this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
+    //let jobs = this.props.jobs || [];
+    //this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
   }
 
   name() {
@@ -54,9 +56,7 @@ class Page extends ItemLoader {
     return (
       <IndexSheet 
         {...this.props} 
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadSelected ={this.onLoadSelected}
+        {...this.pageProps()}
         loading={this.state.loading}
       />
     );
@@ -78,11 +78,8 @@ class Page extends ItemLoader {
     return (
       <ActionSheet 
         {...this.props}
+        {...this.pageProps()}
         item={item}
-        onSelect={this.onSelect} 
-        onAddItem={this.onAddItem}
-        onLoadSelected={this.onLoadSelected}
-
         loading={this.state.loading}
       />
     );
@@ -115,9 +112,14 @@ class Page extends ItemLoader {
       return this.renderNoSheet(); // extraClass.push("hidden");
     }
 
+    let IndexSheet = this.getIndexSheet();
+
     return (
       <div className={extraClass}>
-        {this.indexSheet()}
+        <IndexSheet
+          {...this.props}
+          {...this.pageProps()}
+        />
       </div>
     );
   }
@@ -132,18 +134,38 @@ class Page extends ItemLoader {
     }
 
     let action = this.getAction();
+    let ActionSheet = this.getActionSheet(action);
 
     let extraClass = ClassNames("flx-col flx-1"); // .push(action.toLowerCase());
 
     return (
       <div className={extraClass}>
-        {this.actionSheet(action)}
+        <ActionSheet
+          {...this.props}
+          {...this.pageProps()}
+        />
       </div>
     );
   }
 
   renderHeader() {
     return null;
+  }
+
+  pageProps() {
+    return({
+      items: this.getItems(),
+      selected: this.getSelected(),
+      onSelect: this.onSelect,
+      onUnselect: this.onUnselect,
+      onLoadItems: this.onLoadItems,
+      onSetItems: this.onSetItems,
+      onAddItem: this.onAddItem,
+      onLoadSelected: this.onLoadSelected,
+      onDefaultSelect: this.onDefaultSelect,
+      nextId: this.state.nextId,
+      prevId: this.state.prevId,
+    });
   }
 
 

@@ -33,7 +33,10 @@ import {
   SKILLS_URL,
 
   NEW_ACTION,
-  SHOW_ACTION
+  SHOW_ACTION,
+
+  HEADS_PAGE,
+
 } from '../const';
 
 function methodToName(method) {
@@ -458,114 +461,32 @@ class HeadsPage extends Page {
     return "Heads";
   }
 
-  //getItems() {
-   // return this.props.heads;
-  //}
-
   loadItems(onLoading) {
-    //console.log("HEADS GET ITEMS..." + this.constructor.name);
-    //console.log(HEADS_URL);
-
-    let me = this;
-
-    this.getJSON({
-      url: Pyr.URL(HEADS_URL),
-      context: me,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        me.setItems(data.heads);
-
-    });
+    return this.props.heads.loadItems(onLoading);
   }
-
-  setItems(items) {
-    this.props.onSetButtonCount("Heads", (items || []).length);
-
-    let first = items ? items[0] : null;
-    //console.log("SET FIRST SELECTED");
-    //console.log(first);
-
-    let selected = this.getSelected();
-
-    if (first && (!selected || (selected.id != first.id))) {
-      this.loadSelected(first.id);
-    }
-    super.setItems(items);
-  }
-
 
   loadSelected(itemId, onLoading) {
-    //console.log("HEADS GET ITEM: " + itemId);
-
-    if (!itemId) {
-      return;
-    }
-
     let me = this;
 
-    this.getJSON({
-      url: Pyr.URL(HEADS_URL).push(itemId),
-      context: me,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        //console.log("LOADED HEAD SELECTED");
-        //console.log(data.head);
-
-        me.onSelect(data.head);
-
+    return this.props.heads.loadItem(itemId, onLoading).done((data, textStatus, jaXHR) => {
+      me.onSelect(data.position);
     });
-
   }
 
-        //heads={this.props.heads}
-  indexSheet() {
-    return this.actionSheet("IndexShow");
-
-    return (
-      <IndexShowSheet
-        {...this.props}
-        items={this.getItems()}
-        selected={this.getSelected()}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadItems={this.onLoadItems}
-        onSetItems={this.onSetItems}
-        onAddItem={this.onAddItem}
-        onLoadSelected={this.onLoadSelected}
-        nextId={this.state.nextId}
-        prevId={this.state.prevId}
-      />
-    );
+  getItems() {
+    return this.props.heads.items();
   }
 
-  actionSheet(action) {
-    action = action || "Show";
 
-    if (action.toLowerCase() == "show") {
-      action = 'Edit';
-    }
+  getIndexSheet() {
+    return this.getActionSheet("IndexShow");
+  }
 
+  getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    return (
-      <ActionSheet
-        {...this.props}
-        items={this.getItems()}
-        selected={this.getSelected()}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadItems={this.onLoadItems}
-        onSetItems={this.onSetItems}
-        onAddItem={this.onAddItem}
-        onLoadSelected={this.onLoadSelected}
-        nextId={this.state.nextId}
-        prevId={this.state.prevId}
-      />
-    );
-
+    return ActionSheet;
   }
 
 }

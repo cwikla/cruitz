@@ -62,20 +62,21 @@ class JobSerializer < ActiveModel::Serializer
     return instance_options[:cand]
   end
 
-  def attributes(*args)
-    hash = super
+  def attributes(*args) # FIXME
+    stuff = super
+    stuff[:company] = CompanySerializer.new(object.user.company)
+
+    if 0
     if instance_options[:candidates]
-      hash[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(object.candidates) 
+      stuff[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(object.candidates) 
     end
 
     if instance_options[:submitted_candidates]
-      hash[:candidates] = current_user.submitted_candidates.where(job_id: object.id).live
+      stuff[:candidates] = current_user.submitted_candidates.where(job_id: object.id).live
+    end
     end
 
-    #if instance_options[:company]
-      hash[:company] = CompanySerializer.new(object.user.company)
-    #end
-    hash
+    stuff 
   end
 
 end

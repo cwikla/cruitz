@@ -16,6 +16,7 @@ class ItemLoader extends Component {
       selected: null,
     });
 
+    this.onDefaultSelect = this.defaultSelect.bind(this);
     this.onSelect = this.setSelected.bind(this);
     this.onUnselect = this.setSelected.bind(this, null);
 
@@ -104,6 +105,16 @@ class ItemLoader extends Component {
     this.setState({
       selected
     });
+  }
+
+  defaultSelect() {
+    console.log("DEFAULT SELECT");
+    let items = this.getItems();
+    if (items && items.length) {
+      console.log(items[0]);
+      this.setSelected(items[0]);
+    }
+    console.log("****");
   }
 
   getItemId() {

@@ -892,8 +892,8 @@ class CandidatesPage extends Page {
     });
   }
 
-  loadItems() {
-    this.getCandidates(this.getJobId());
+  loadItems() { // FIXME
+    return this.getCandidates(this.getJobId());
   }
 
   getCandidates(jobId) {
@@ -913,7 +913,7 @@ class CandidatesPage extends Page {
 
     //url.set("candidates", 1);
 
-    this.getJSON({
+    return this.getJSON({
       url: url,
       context: this,
       onLoading: this.onLoading,

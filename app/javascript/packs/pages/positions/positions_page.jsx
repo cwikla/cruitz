@@ -86,6 +86,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(item, isSelected) {
+    console.log("RENDER ITEM");
     return (
       <Job.Card
         job={item}
@@ -98,6 +99,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderChildren(items, isSelected) {
+    console.log("RENDER CHILDREN");
     return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
   }
 
@@ -105,6 +107,7 @@ class IndexSheet extends Sheet.Index {
     let items = this.getItems();
 
     if (!items) {
+      console.log("POS RENDER LOADING");
       return this.renderLoading();
     }
 
@@ -446,68 +449,33 @@ class PositionsPage extends Page {
     });
   }
 
+  loadItems(onLoading) {
+    return this.props.positions.loadItems(onLoading);
+  }
+
   loadSelected(itemId, onLoading) {
-    //console.log("LOAD SELECTED: " + itemId);
+    let me = this;
 
-    this.getJSON({
-      url: Pyr.URL(this.props.url).push(itemId),
-      onLoading: onLoading
-
-    }).done((data, textStatus, jqXHR) => {
-      //console.log("GOT POSITION");
-      //console.log(data);
-
-      this.onSelect(data.position);
-
+    return this.props.positions.loadItem(itemId, onLoading).done((data, textStatus, jaXHR) => {
+      me.onSelect(data.position);
     });
   }
 
-  loadItems(onLoading, props={}) {
-    //console.log("LOAD ITEMS");
-
-    let urlStuff = Object.assign({}, {
-      url: this.props.url,
-      context: this,
-      onLoading: this.onLoading,
-    }, props);
-
-    this.getJSON(
-      urlStuff
-    ).done((data, textStatus, jqXHR) => {
-        this.onSetItems(data.jobs || []);
-
-    });
+  getItems() {
+    return this.props.positions.items();
   }
 
 
-  indexSheet() {
-    return (
-      <IndexSheet
-        {...this.props}
-        items={this.getItems()}
-        onSelect={this.onSelect}
-        onPreSubmit={this.onNoItems}
-        onLoading={this.onLoading}
-        onLoadItems={this.onLoadItems}
-        onSetItems={this.onSetItems}
-      />
-    );
+  getIndexSheet() {
+    return IndexSheet;
   }
 
-  actionSheet(action) {
-    return (
-      <HeadLoader
-        {...this.props}
-        headId={this.props.subItemId}
-        action={action}
-        selected={this.getSelected()}
-        onLoading={this.onLoading}
-        onSetItems={this.onSetItems}
-        onLoadSelected={this.onLoadSelected}
-      />
-    );
-  }
+  getActionSheet() {
+    let sheet = Sheet.sheetComponent(action || "Show");
+    let ActionSheet = eval(sheet);
 
+    return ActionSheet;
+  }
 }
 
 function key(item) {

@@ -17,6 +17,8 @@ import {
   MESSAGES_URL,
   JOBS_URL,
 
+  MESSAGES_PAGE,
+
 } from '../const';
 
 import Page from '../page';
@@ -56,56 +58,16 @@ function getRecruiter(user, message) {
 }
 
 class MessageItem extends Sheet.Item {
-  constructor(props) {
-    super(props);
-
-    this.initState({
-      job: this.props.job,
-    });
-  }
-
-  setJob(job) {
-    this.setState({
-      job
-    });
-  }
-
-  loadJob() {
-    this.getJSON({
-      url: Pyr.URL(JOBS_URL).push(this.props.message.job_id),
-      context: this,
-      onLoading: this.props.onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        //console.log("LOAD JOB");
-        //console.log(data.job);
-
-        this.setJob(data.job);
-
-    });
-  }
-
-  componentDidMount() {
-    if (!this.state.job) {
-      this.loadJob();
-    }
-  }
-
   render() {
-    if (!this.state.job) {
-      return (
-        <Pyr.UI.Loading />
-      );
-    }
-
     let message = this.props.message;
     //console.log(JSON.stringify(message));
 
-    let job = this.state.job;
+    let job = this.props.job;
+
     let id = MID(message);
 
     let mine = message.mine;
-    let ownerClass = (mine ? "mine" : "recruiter");
+    let ownerClass = (mine ? "mine" : "recruiter"); // FIXME
 
     let allClass = ClassNames("item message-item flx-row", ownerClass);
 
@@ -171,7 +133,7 @@ class IndexSheet extends Sheet.Index {
 
 
   renderItem(message, isSelected) {
-    return ( <MessageItem message={message} job={this.props.jobMap[message.job_id]} isSelected={isSelected}/> );
+    return ( <MessageItem message={message} job={message.job} isSelected={isSelected}/> );
   }
 
   renderHeader() {
@@ -214,16 +176,6 @@ class SideBlurb extends Component {
 
 
 class ShowSheet extends Sheet.Show {
-  constructor(props) {
-    super(props);
-    //console.log("SHOW SHEET JOB");
-    //console.log(this.props.job);
-
-    this.initState({
-      job: this.props.job
-    });
-  }
-
   size() {
     return 3;
   }
@@ -338,20 +290,11 @@ class MessagesPage extends Page {
 
     this.initState({
       fullDetail: true,
-      nextId: null,
-      prevId: null,
     });
   }
 
   name() {
     return "Messages";
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.jobs != prevProps.jobs) {
-      let jobs = this.props.jobs || [];
-      this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
-    }
   }
 
   reduceItems(messages) { // throw out all but the last from the thread
@@ -362,7 +305,7 @@ class MessagesPage extends Page {
 
       if (!mmap[threadId] || mmap[threadId].id < msg.id) {
 
-        let job = this.jobMap[msg.job_id]; // FIXME, if job not here go fetch it
+        let job = msg.job;
         //console.log("MINE: " + msg.from_user_id + ":" + this.user().id);
         let mine = (msg.from_user.id == this.user().id);
         let is_root = !msg.root_message_id;
@@ -396,7 +339,7 @@ class MessagesPage extends Page {
       sum = sum + ((msg.mine || msg.read_at) ? 0 :1);
       return sum;
     }, 0);
-    this.props.onSetButtonCount("Messages", count);
+    this.props.onSetPageItemsCount(MESSAGES_PAGE, count);
 
     let first = items ? items[0] : null;
     //console.log("SET FIRST SELECTED");
@@ -445,7 +388,7 @@ class MessagesPage extends Page {
 
     let me = this;
 
-    this.getJSON({
+    return this.getJSON({
       url: Pyr.URL(MESSAGES_URL),
       context: me,
       onLoading: onLoading,
@@ -503,52 +446,17 @@ class MessagesPage extends Page {
     });
   }
 
-  indexSheet() {
-    return (
-      <IndexShowSheet
-        {...this.props} 
-        items={this.getItems()}
-        jobMap={this.jobMap}
-        selected={this.getSelected()}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadItems={this.onLoadItems}
-        onSetItems={this.onSetItems}
-        onAddItem={this.onAddItem}
-        onLoadSelected={this.onLoadSelected}
-        nextId={this.state.nextId}
-        prevId={this.state.prevId}
-      />
-    );
+  getIndexSheet() {
+    return IndexShowSheet;
   }
 
-  actionSheet(action) {
+  getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    //alert("actionSheet: " + this.state.selected.id);
-
-    //console.log("ACTION SHEET");
-    //console.log(this.state);
-
-    return (
-      <ActionSheet 
-        {...this.props} 
-        items={this.getItems()}
-        jobMap={this.jobMap}
-        selected={this.getSelected()}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadItems={this.onLoadItems}
-        onSetItems={this.onSetItems}
-        onAddItem={this.onAddItem}
-        onLoadSelected={this.onLoadSelected}
-        nextId={this.state.nextId}
-        prevId={this.state.prevId}
-      />
-    );
-    
+    return ActionSheet;
   }
+
 }
 
 function key(item) {

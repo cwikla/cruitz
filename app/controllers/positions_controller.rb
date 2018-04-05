@@ -1,6 +1,8 @@
 class PositionsController < ApplicationController
+  LIMIT = 10
+
   def index
-    all = Job.order("-id").limit(50)
+    all = Job.order("-id").limit(LIMIT)
     render json: all, company: true, submitted_candidates: true
   end
 
@@ -12,7 +14,7 @@ class PositionsController < ApplicationController
     puts "PARAMS"
     puts spar
 
-    all = Job.full_search(spar).limit(50)
+    all = Job.full_search(spar).limit(LIMIT)
     #all = []
 
     render json: all, company: true

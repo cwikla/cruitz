@@ -11,6 +11,8 @@ import Network, {
 import {
   JOBS_URL,
   RECRUITERS_URL,
+  POSITIONS_URL,
+  HEADS_URL,
 } from '../const';
 
 class LoaderBase {
@@ -32,37 +34,10 @@ class LoaderBase {
     alert("Loader::url needs to be implemented");
   }
 
-  sortItems(items) {
-    //console.log("SORTING ITEMS");
-    if (!items || (items.length == 0)) {
-      return items;
-    }
-    if (items[0].id) {
-      return items.sort((x, y) => y.id - x.id);
-    }
-    if (items[0].created_at) {
-      return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
-    }
-    return items;
-  }
-
   setItems(newItems) {
     let name = this.name();
-    let stuff = {};
-    let itemMap = null;
 
-    if (newItems) {
-      newItems = this.sortItems(newItems);
-      itemMap = newItems.reduce((m, o) => {m[o.id] = o; return m;}, {});
-    }
-
-
-    stuff[name] = newItems;
-    stuff[name + 'Map'] = itemMap;
-
-    console.log("STUFFF");
-    console.log(stuff);
-    this.props.onSetState(stuff);
+    this.props.onSetItems(name, newItems);
   }
 
   setData(data) {
@@ -164,9 +139,41 @@ class Recruiters extends LoaderBase {
   }
 }
 
+class Positions extends LoaderBase {
+  name() {
+    return 'positions';
+  }
+
+  url() {
+    return POSITIONS_URL;
+  }
+
+  setData(data) {
+    let field = 'jobs';
+
+    console.log("POSITIONS LOADER");
+    console.log(this.props);
+    this.setItems(data[field]);
+  }
+
+}
+
+class Heads extends LoaderBase {
+  name() {
+    return 'heads';
+  }
+
+  url() {
+    return HEADS_URL;
+  }
+
+}
+
 const Loader = {
   Jobs,
-  Recruiters
+  Recruiters,
+  Positions,
+  Heads,
 };
 
 export default Loader;

@@ -326,7 +326,9 @@ class Index extends Base {
   componentDidMount() {
     if (!this.getItems()) {
       //console.log("LOADING ITEMS");
-      this.props.onLoadItems(this.onLoading);
+      this.props.onLoadItems(this.onLoading).done(() => {
+        this.props.onDefaultSelect();
+      });
     }
   }
 
@@ -366,6 +368,7 @@ class Index extends Base {
     let items = this.getItems();
 
     if (this.state.isLoading || !items) {
+      console.log("A");
       return this.renderLoading();
     }
 
@@ -380,6 +383,7 @@ class Index extends Base {
     let items = this.getItems();
 
     if (this.state.isLoading || !items) {
+      console.log("B");
       return this.renderLoading();
     }
 
