@@ -50,6 +50,13 @@ class JobSerializer < ActiveModel::Serializer
   end
 
   def candidate_counts
+    return {
+      total: 0,
+      accepted: 0,
+      rejected: 0,
+      waiting: 0
+    }
+
    {
       total: object.candidates.count,
       accepted: object.candidates.accepted.count,

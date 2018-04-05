@@ -39,7 +39,7 @@ import {
   ME_URL,
 } from './const';
 
-const DEFAULT_PAGE = MESSAGES_PAGE;
+const DEFAULT_PAGE = RECRUITERS_PAGE;
 
 const PAGE_MAP = {
   "home" : DashboardPage,
@@ -87,23 +87,25 @@ class Dashboard extends Container.Base {
       recruiters: null,
       recruitersMap: null,
 
+      candidates: null,
+      candidatesMap: null,
+      
+      messages: null,
+      messagesMap: null,
+
       slide: false,
     });
 
-    this.recruitersLoader = new Loader.Recruiters({
+    let loaderProps = {
       onSetState: this.onSetState,
       onGetState: this.onGetState,
       onLoading: this.onLoading,
       onSetItems: this.onSetItems,
-    });
+    };
 
-    this.jobsLoader = new Loader.Jobs({
-      onSetState: this.onSetState,
-      onGetState: this.onGetState,
-      onLoading: this.onLoading,
-      onSetItems: this.onSetItems,
-    });
-
+    this.recruitersLoader = new Loader.Recruiters(loaderProps);
+    this.jobsLoader = new Loader.Jobs(loaderProps);
+    this.candidatesLoader = new Loader.Candidates(loaderProps);
   }
 
   getDefaultPage() {
@@ -131,6 +133,7 @@ class Dashboard extends Container.Base {
     let dashboardProps = {
       recruiters: this.recruitersLoader,
       jobs: this.jobsLoader,
+      candidates: this.candidatesLoader,
     };
     return dashboardProps;
   }
@@ -144,12 +147,12 @@ class Dashboard extends Container.Base {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={Dashboard} dashboard={MESSAGES_PAGE}>
-        <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+      <Pyr.UI.RouterProps component={Dashboard} dashboard={DEFAULT_PAGE}>
+        <Pyr.UI.RouteURL path="/messages/:pid?" page="messages" action="index" />
         <Pyr.UI.RouteURL path="/jobs/new" page="jobs" action="new" />
         <Pyr.UI.RouteURL path="/jobs/:pid/candidates/:subid" page="candidates" action="show" />
         <Pyr.UI.RouteURL path="/jobs/:pid/candidates" page="candidates" action="index" />
-        <Pyr.UI.RouteURL path="/jobs/:pid" page="jobs" action="index" />
+        <Pyr.UI.RouteURL path="/jobs/:pid?" page="jobs" action="index" />
       </Pyr.UI.RouterProps>
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,

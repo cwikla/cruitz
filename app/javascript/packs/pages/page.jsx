@@ -13,7 +13,7 @@ import {
   SHOW_ACTION
 } from './const';
 
-class Page extends ItemLoader {
+class Page extends Component {
   constructor(...args) {
     super(...args);
 
@@ -21,14 +21,26 @@ class Page extends ItemLoader {
     //console.log(props);
 
     this.initState({
-      fullDetail: false,
       nextId: null,
       previd: null,
     });
 
-    //let jobs = this.props.jobs || [];
-    //this.jobMap = jobs.reduce((m, o) => {m[o.id] = o; return m;}, {});
+    this.onLoadItems = this.loadItems.bind(this);
+    this.onLoadItem = this.loadItem.bind(this);
   }
+
+/// OVERRIDE THESE IN SUBLCASS
+
+  getIndexSheet() {
+    alert("Missing override Page::getIndexSheet");
+  }
+
+  getActionSheet(action) {
+    alert("Missing override Page::getActionSheet");
+  }
+
+///// END
+
 
   name() {
     let fullName = this.constructor.name;
@@ -48,7 +60,27 @@ class Page extends ItemLoader {
     this.context.router.history.push(fullUrl.toString());
   }
 
-////// COPY ME INTO SUBCLASS //////
+  loader() {
+    alert("You need to override Page::loader");
+  }
+
+  loadItems(onLoading) {
+    return this.loader().load({onLoading});
+  }
+
+  loadItem(itemId, onLoading) {
+    let me = this;
+
+    return this.loader().loadItem(itemId, {onLoading});
+  }
+
+  getItems() {
+    return this.loader().items();
+  }
+
+  getItemsMap() {
+    return this.loader().itemsMap();
+  }
 
   indexSheet() {
     alert("page.jsx: IF YOU ARE SEEING THIS, COPY indexSheet() INTO SUBCLASS");
@@ -65,7 +97,7 @@ class Page extends ItemLoader {
   actionSheet(action) {
     alert("page.jsx: IF YOU ARE SEEING THIS, COPY actionSheet() INTO SUBCLASS");
 
-    let sheet = Sheet.sheetComponent(action || SHOW_ACTION);
+    let sheet = Sheet.sheetComponent(action || this.defaultAction());
     let ActionSheet = eval(sheet);
 
     let item = null;
@@ -95,7 +127,6 @@ class Page extends ItemLoader {
     return true;
   }
 
-///// END ////
 
   defaultAction() {
     return SHOW_ACTION;
@@ -152,19 +183,38 @@ class Page extends ItemLoader {
     return null;
   }
 
+  getSelected() {
+    let items = this.getItems();
+
+    if (!items || (items.length == 0)) {
+      return null;
+    }
+
+    let imap = this.getItemsMap();
+    if (this.props.itemId) {
+      return imap[this.props.itemId];
+    }
+
+    return items[0];
+  }
+
+  getNext() {
+    return this.state.nextId;
+  }
+
+  getPrev() {
+    return this.state.prevId;
+  }
+
   pageProps() {
     return({
       items: this.getItems(),
+      itemsMap: this.getItemsMap(),
       selected: this.getSelected(),
-      onSelect: this.onSelect,
-      onUnselect: this.onUnselect,
+      nextId: this.getNext(),
+      prevId: this.getPrev(),
       onLoadItems: this.onLoadItems,
-      onSetItems: this.onSetItems,
-      onAddItem: this.onAddItem,
-      onLoadSelected: this.onLoadSelected,
-      onDefaultSelect: this.onDefaultSelect,
-      nextId: this.state.nextId,
-      prevId: this.state.prevId,
+      onLoadItem: this.onLoadItem,
     });
   }
 

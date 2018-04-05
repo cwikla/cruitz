@@ -7,136 +7,245 @@ import Pyr, {
 } from '../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
-class ItemLoader extends Component {
+import ItemLoader from './item_loader';
+
+import {
+  SHOW_ACTION
+} from './const';
+
+class Page extends Component {
   constructor(...args) {
     super(...args);
 
+    //console.log("PAGE PARAMS: ");
+    //console.log(props);
+
     this.initState({
-      items: null,
-      selected: null,
+      nextId: null,
+      previd: null,
     });
-
-    this.onDefaultSelect = this.defaultSelect.bind(this);
-    this.onSelect = this.setSelected.bind(this);
-    this.onUnselect = this.setSelected.bind(this, null);
-
-    this.onSetItems = this.setItems.bind(this);
-    this.onNoItems = this.setItems.bind(this, null);
 
     this.onLoadItems = this.loadItems.bind(this);
-    this.onAddItem = this.addItem.bind(this);
-
-    this.onLoadSelected = this.loadSelected.bind(this);
-
+    this.onLoadItem = this.loadItem.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.itemId != this.props.itemId) {
-      //console.log("PAGE GOT NEW ID: " + nextProps.itemId);
-      this.setState({
-        selected: null
-      });
+/// OVERRIDE THESE IN SUBLCASS
+
+  getIndexSheet() {
+    alert("Missing override Page::getIndexSheet");
+  }
+
+  getActionSheet(action) {
+    alert("Missing override Page::getActionSheet");
+  }
+
+///// END
+
+
+  name() {
+    let fullName = this.constructor.name;
+    let pos = fullName.search("Page");
+    if (pos == -1) {
+      alert("page.jsx: You need to define a name cuz you didn't name your subclass *Page");
     }
+    let name = fullName.substring(0, pos);
+    return name;
   }
 
-  addItemCompare(a, b) {
-    return a.id == b.id;
-  }
-
-  addItem(item) {
-    //console.log("ITEM: " + item);
-    //console.log(this.state.items);
-
-    if (!item) {
-      return;
+  setRoute(item) {
+    let fullUrl = Pyr.URL(this.props.url);
+    if (item) {
+      fullUrl.push(item.id);
     }
-
-    let items = this.state.items || [];
-    let found = false;
-
-    let copy = items.map((val, pos) => {
-      if (this.addItemCompare(val, item)) {
-        found = true;
-        return item;
-      }
-      return val;
-    });
-
-    //console.log(copy);
-    //console.log("ITEM FOUND: " + found);
-
-    if (!found) {
-      copy.push(item);
-    }
-    this.setItems(copy);
+    this.context.router.history.push(fullUrl.toString());
   }
 
-  sortItems(items) {
-    //console.log("SORTING ITEMS");
-    return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
-  }
-
-
-  setItems(items) {
-    //console.log("SET ITEMS");
-    //console.log(items);
-    if (items) {
-      items = this.sortItems(items);
-    }
-
-    this.setState({ 
-      items
-    });
+  loader() {
+    alert("You need to override Page::loader");
   }
 
   loadItems(onLoading) {
-    alert("Page:loadItems needs to be implemented");
+    return this.loader().load({onLoading});
   }
 
-  loadSelected(hid) {
-    alert("Page:loadSelected needs to be implemented");
-  }
+  loadItem(itemId, onLoading) {
+    let me = this;
 
-///// END ////
-
-  setSelected(selected) {
-    //console.log("SELECTED " + JSON.stringify(selected));
-
-    this.setState({
-      selected
-    });
-  }
-
-  defaultSelect() {
-    console.log("DEFAULT SELECT");
-    let items = this.getItems();
-    if (items && items.length) {
-      console.log(items[0]);
-      this.setSelected(items[0]);
-    }
-    console.log("****");
-  }
-
-  getItemId() {
-    return this.props.itemId;
+    return this.loader().loadItem(itemId, {onLoading});
   }
 
   getItems() {
-    return this.state.items;
+    return this.loader().items();
+  }
+
+  getItemsMap() {
+    return this.loader().itemsMap();
+  }
+
+  indexSheet() {
+    alert("page.jsx: IF YOU ARE SEEING THIS, COPY indexSheet() INTO SUBCLASS");
+
+    return (
+      <IndexSheet 
+        {...this.props} 
+        {...this.pageProps()}
+        loading={this.state.loading}
+      />
+    );
+  }
+
+  actionSheet(action) {
+    alert("page.jsx: IF YOU ARE SEEING THIS, COPY actionSheet() INTO SUBCLASS");
+
+    let sheet = Sheet.sheetComponent(action || this.defaultAction());
+    let ActionSheet = eval(sheet);
+
+    let item = null;
+    let sid = this.getItemId();
+
+    if (sid) {
+      item = items.find((x) => x.id == sid);
+    }
+  
+    return (
+      <ActionSheet 
+        {...this.props}
+        {...this.pageProps()}
+        item={item}
+        loading={this.state.loading}
+      />
+    );
+   
+  }
+
+  showActionSheet() {
+    let action = this.getAction();
+    if (!action || (action.toLowerCase() == 'index')) {
+      return false;
+    }
+
+    return true;
+  }
+
+
+  defaultAction() {
+    return SHOW_ACTION;
+  }
+
+  getAction() {
+    return this.props.action;
+  }
+
+  renderIndexSheet() {
+    let extraClass = ClassNames("flx-col flx-1");
+
+    if (this.showActionSheet()) {
+      return this.renderNoSheet(); // extraClass.push("hidden");
+    }
+
+    let IndexSheet = this.getIndexSheet();
+
+    return (
+      <div className={extraClass}>
+        <IndexSheet
+          {...this.props}
+          {...this.pageProps()}
+        />
+      </div>
+    );
+  }
+
+  renderNoSheet() {
+    return null;
+  }
+
+  renderActionSheet() {
+    if (!this.showActionSheet()) {
+      return this.renderNoSheet();
+    }
+
+    let action = this.getAction();
+    let ActionSheet = this.getActionSheet(action);
+
+    let extraClass = ClassNames("flx-col flx-1"); // .push(action.toLowerCase());
+
+    return (
+      <div className={extraClass}>
+        <ActionSheet
+          {...this.props}
+          {...this.pageProps()}
+        />
+      </div>
+    );
+  }
+
+  renderHeader() {
+    return null;
   }
 
   getSelected() {
-    return this.state.selected;
+    let items = this.getItems();
+
+    if (!items || (items.length == 0)) {
+      return null;
+    }
+
+    let imap = this.getItemsMap();
+    if (this.props.itemId) {
+      return imap[this.props.itemId];
+    }
+
+    return items[0];
   }
 
-  getSubItemId() {
-    return this.props.subItemId;
+  getNext() {
+    return this.state.nextId;
+  }
+
+  getPrev() {
+    return this.state.prevId;
+  }
+
+  pageProps() {
+    return({
+      items: this.getItems(),
+      itemsMap: this.getItemsMap(),
+      selected: this.getSelected(),
+      nextId: this.getNext(),
+      prevId: this.getPrev(),
+      onLoadItems: this.onLoadItems,
+      onLoadItem: this.onLoadItem,
+    });
+  }
+
+
+  render() {
+    if (this.props.showing == undefined) {
+      alert("If you don't send in showing you won't see shit!");
+    }
+    if (!this.props.showing) {
+      return null;
+    }
+
+    let id = this.name().toLowerCase() + "-page";
+
+    //console.log("PAGE props");
+    //console.log(this.props);
+
+    let cname = ClassNames("d-flex flx-1 page flx-col").push(this.props.page.toLowerCase());
+
+    return (
+      <div className={cname}>
+        {this.renderHeader()}
+        {this.renderIndexSheet()}
+        {this.renderActionSheet()}
+      </div>
+    );
   }
 
 }
-
-ItemLoader.key = (item) => {
+Page.key = (item) => {
   return item.id;
 }
 
-export default ItemLoader;
+export default Page;

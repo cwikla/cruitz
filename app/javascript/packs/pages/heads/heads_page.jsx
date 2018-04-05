@@ -461,22 +461,9 @@ class HeadsPage extends Page {
     return "Heads";
   }
 
-  loadItems(onLoading) {
-    return this.props.heads.loadItems(onLoading);
+  loader() {
+    return this.props.heads;
   }
-
-  loadSelected(itemId, onLoading) {
-    let me = this;
-
-    return this.props.heads.loadItem(itemId, onLoading).done((data, textStatus, jaXHR) => {
-      me.onSelect(data.position);
-    });
-  }
-
-  getItems() {
-    return this.props.heads.items();
-  }
-
 
   getIndexSheet() {
     return this.getActionSheet("IndexShow");

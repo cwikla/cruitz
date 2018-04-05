@@ -39,6 +39,8 @@ class CandidateSerializer < ActiveModel::Serializer
   end
 
   def root_message_id
+    return nil # FIXME
+
     m = Message.threads_for_candidate(object).first
     m ? m.hashid : nil
   end

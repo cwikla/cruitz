@@ -449,28 +449,16 @@ class PositionsPage extends Page {
     });
   }
 
-  loadItems(onLoading) {
-    return this.props.positions.loadItems(onLoading);
+
+  loader() {
+    return this.props.positions;
   }
-
-  loadSelected(itemId, onLoading) {
-    let me = this;
-
-    return this.props.positions.loadItem(itemId, onLoading).done((data, textStatus, jaXHR) => {
-      me.onSelect(data.position);
-    });
-  }
-
-  getItems() {
-    return this.props.positions.items();
-  }
-
 
   getIndexSheet() {
     return IndexSheet;
   }
 
-  getActionSheet() {
+  getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

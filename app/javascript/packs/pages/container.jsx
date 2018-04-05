@@ -217,7 +217,7 @@ class Base extends Component {
     let stuff = {};
     stuff[name] = items;
     stuff[name + 'Map'] = itemMap;
-    stuff['pageItemsCount'] = this.state.pageItemsCount[name] || {};
+    stuff['pageItemsCount'] = this.state.pageItemsCount || {};
     stuff.pageItemsCount[name] = items ? items.length : 0;
 
     this.setState(stuff);

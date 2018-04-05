@@ -55,7 +55,7 @@ class JobCard extends Component {
     let id = "job-" + job.id;
     let allClass = ClassNames("item job-item");
 
-    if (this.props.selected) {
+    if (this.props.isSelected) {
        allClass.push("selected");
     }
     let description = job.description || "No Description";
@@ -96,7 +96,7 @@ class JobItem extends Component {
     let id = "job-" + job.id;
     let allClass = ClassNames("item job-item flx-row");
     
-    if (this.props.selected) {
+    if (this.props.isSelected) {
        allClass.push("selected");
     }  
     
@@ -486,103 +486,20 @@ class JobsPage extends Page {
     return "Jobs";
   }
 
-  //getItems() {
-   // return this.props.jobs;
-  //}
-
-  loadItems() {
-    this.onSetItems(this.props.jobs);
-    if (this.props.jobs && this.props.jobs.length) {
-      this.onSelect(this.props.jobs[0]);
-    }
+  loader() {
+    return this.props.jobs;
   }
 
-  getSelected() {
-    if (this.props.itemId) {
-      return this.props.jobMap[this.props.itemId];
-    }
-
-    return null;
+  getIndexSheet() {
+    return IndexShowSheet;
   }
 
-  loadSelected(sid) {
-    return; // nothing to see here
-
-    console.log("JOB LOAD SELECTED JOB " + sid);
-    console.log(this.props);
-    console.log(this.props.jobMap);
-
-    let job = this.props.jobMap[sid];
-
-    console.log("JOB JOB");
-    console.log(job);
-
-    this.onSelect(job);
-    //this.props.jobMap[sid];
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (nextProps.jobs != this.props.jobs) {
-      this.onSetItems(nextProps.jobs);
-    }
-  }
-
-  componentWillMount() {
-    this.getJSON({
-      url: CATEGORIES_URL
-
-    }).done((data, textStatus, jqXHR) => {
-
-      this.setState({
-        categories: data.categories
-      });
-    });
-  }
-
-        //jobs={this.props.jobs}
-  indexSheet() {
-    console.log("JOB INDEX");
-
-    return (
-      <IndexShowSheet
-        {...this.props}
-        items={this.getItems()}
-        onSelect={this.onSelect}
-        onLoadItems={this.onLoadItems}
-        selected={this.getSelected()}
-        onLoadSelected={this.onLoadSelected}
-        categories={this.state.categories}
-        card={false}
-      />
-    );
-  }
-
-  actionSheet(action) {
-    action = action || "Show";
-    console.log("JOB " + action);
-
-    //if (action.toLowerCase() == "show") {
-     // action = 'Edit';
-    //}
-
+  getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    return (
-      <ActionSheet
-        {...this.props}
-        items={this.getItems()}
-        onSelect={this.onSelect}
-        onLoadItems={this.onLoadItems}
-        selected={this.getSelected()}
-        onLoadSelected={this.onLoadSelected}
-        categories={this.state.categories}
-        card={false}
-      />
-    );
-
+    return ActionSheet;
   }
-
 }
 
 function key(item) {

@@ -68,6 +68,7 @@ class Base extends Component {
   }
 
   setSelected(item, e) {
+
     //alert("SELECTED: " + item.id);
     if (e) {
       e.preventDefault()
@@ -319,16 +320,9 @@ class Index extends Base {
     return "Index";
   }
 
-  componentWillMount() {
-    this.setSelected(null); // zero out anything selected
-  }
-
   componentDidMount() {
     if (!this.getItems()) {
-      //console.log("LOADING ITEMS");
-      this.props.onLoadItems(this.onLoading).done(() => {
-        this.props.onDefaultSelect();
-      });
+      this.props.onLoadItems(this.onLoading);
     }
   }
 
@@ -357,7 +351,6 @@ class Index extends Base {
       <ul {...Pyr.Util.propsMergeClassName(props, "")}>
         {items.map((item, pos) => {
           let isSelected = this.same(item, selected);
-          //console.log("RENDERING " + item);
           return this.renderChild(item, isSelected);
         })}
       </ul>
@@ -384,6 +377,8 @@ class Index extends Base {
 
     if (this.state.isLoading || !items) {
       console.log("B");
+      console.log(this.state);
+      console.log(items);
       return this.renderLoading();
     }
 
@@ -419,8 +414,9 @@ class Show extends Base {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.itemId != prevProps.itemId) {
       //console.log("UPDATED GETTING SELECTED");
-      if (this.props.itemId) {
-        this.props.onLoadSelected(this.props.itemId, this.onLoading);
+      if (this.props.itemId && !this.props.selected) {
+        alert("HMMMMM Nothing selected!!!");
+        //this.props.onLoadSelected(this.props.itemId, this.onLoading);
       }
     }
   }

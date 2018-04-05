@@ -327,11 +327,6 @@ class JobIndexSheet extends Sheet.Index {
     return 2;
   }
 
-  getItems() {
-    let jm = Object.values(this.props.jobMap || {});
-    return jm;
-  }
-
   renderHeader() {
     return (
       <div className="flx-row">
@@ -374,6 +369,12 @@ class JobIndexSheet extends Sheet.Index {
         isSelected={isSelected} 
       />
     );
+  }
+
+  render() {
+    console.log("JOBS INDEX RENDER");
+    console.log(this.props.items);
+    return super.render();
   }
 }
 
@@ -589,7 +590,7 @@ class ShowSheet extends Sheet.Show {
     });
   }
 
-  componentDidUpdate(prevProps, prevUpdate) {
+  componentDidUpdate(prevProps, prevState) {
     let pid = prevProps.jobId;
     let cid = this.props.jobId;
 
@@ -765,189 +766,97 @@ class IndexShowSheet extends Sheet.IndexShow {
   }
 }
 
-class CandidatesPage extends Page {
+class JobIndexAndIndexSheet extends Component {
   constructor(props) {
     super(props);
-
-    this.initState({
-      job: props.jobMap[props.itemId], // placeholder until we can fetch the full one
-      fullDetail: false
-    });
-
-    this.onJobSelect = this.jobSelect.bind(this);
-  }
-
-  jobSelect(job) {
-    // nothing to see here
-  }
-
-  getItemId() {
-    return this.props.subItemId;
+    this.onLoadCandidateItems = this.loadCandidateItems.bind(this);
   }
 
   getJobId() {
     return this.props.itemId;
   }
 
-  name() {
-    return "Candidates";
+  getCandidateId() {
+    return this.props.subItemId;
   }
 
-  render_table() {
-    return (
-      <CandidateTable 
-        {...this.props}
-        items={this.getItems()}
-        selected={this.getSelected()}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadItems={this.onLoadItems}
-      />
-    );
+  jobSelect(job) {
+    // nothing to see here
   }
 
-  indexSheet() {
-    //console.log("CANDINDEX");
+  loadCandidateItems() {
+    this.props.candidates.reset();
+
     let jobId = this.getJobId();
-    let candyId = this.getItemId();
+    if (!jobId) {
+      return; // nothing to see here
+    }
 
-    let job = this.props.jobMap ? this.props.jobMap[jobId] : null;
+    let onLoading = this.props.onLoading;
+
+    return this.props.candidates.loadItems({jobId, onLoading});
+  }
+
+  componentDidMount() {
+    this.loadCandidateItems();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.itemId != this.props.itemId) {
+      loadCandidateItems();
+    }
+  }
+
+  render() {
+    let jobId = this.getJobId();
+    let candyId = this.getCandidateId();
 
     return (
       <div className="flx-row flx-1">
         <JobIndexSheet
           {...this.props}
-          jobId={jobId}
-          jobMap={this.props.jobMap}
-          onSelect={this.onJobSelect}
-          selected={job}
+          itemId={jobId}
         />
         <IndexSheet
           {...this.props}
+          items={this.props.candidates.items()}
           itemId={candyId}
-          items={this.getItems()}
+          onLoadItems={this.onLoadCandidateItems}
+          jobs={this.props.items}
+          jobsMap={this.props.itemsMap}
           jobId={jobId}
-          selected={this.getSelected()}
-          jobMap={this.props.jobMap}
-          onAction={this.onAction}
-          onUnaction={this.onUnaction}
-          onSelect={this.onSelect}
-          onUnselect={this.onUnselect}
-          onLoadSelected={this.onLoadSelected}
-          onLoadItems={this.onLoadItems}
-          onAddItem={this.onAddItem}
           className="flx-3"
         />
       </div>
-    );
+    )
   }
 
-  actionSheet(action) {
-    //console.log("ACTION SHEET?: " + action);
+}
 
+class CandidatesPage extends Page {
+  constructor(props) {
+    super(props);
+  }
+
+  name() {
+    return "Candidates";
+  }
+
+  loader() {
+    return this.props.jobs;
+  }
+
+  getIndexSheet() {
+    return JobIndexAndIndexSheet;
+  }
+
+  getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    let jobId = this.getJobId();
-    let candyId = this.getItemId();
-
-    //console.log("JOBID: " + jobId);
-    //console.log("CANDYID: " + candyId);
-
-    return (
-      <ActionSheet
-        {...this.props}
-        itemId={candyId}
-        items={this.getItems()}
-        jobId={jobId}
-        selected={this.getSelected()}
-        jobMap={this.props.jobMap}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
-        onSelect={this.onSelect}
-        onUnselect={this.onUnselect}
-        onLoadSelected={this.onLoadSelected}
-        onAddItem={this.onAddItem}
-      />
-    );
-
+    return ActionSheet;
   }
 
-  loadSelected(itemId, onLoading) {
-    //console.log("CANDIDATES GET ITEM: " + itemId);
-    //alert(itemId);
-
-    let me = this;
-
-    this.getJSON({
-      url: Pyr.URL(CANDIDATES_URL).push(itemId),
-      context: me,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jaXHR) => {
-        //console.log("GOT CANDIDATE");
-        //console.log(data);
-        me.onSelect(data.candidate);
-
-    });
-  }
-
-  loadItems() { // FIXME
-    return this.getCandidates(this.getJobId());
-  }
-
-  getCandidates(jobId) {
-    //console.log("GET CANDIDATES: " + jobId);
-    let url = null;
-
-    if (!jobId) {
-      this.setItems([]);
-    }
-
-    if (jobId) {
-      url = Pyr.URL(JOBS_URL).push(jobId).push(CANDIDATES_URL);
-    }
-    else {
-      url = Pyr.URL(CANDIDATES_URL);
-    }
-
-    //url.set("candidates", 1);
-
-    return this.getJSON({
-      url: url,
-      context: this,
-      onLoading: this.onLoading,
-
-    }).done((data, textStatus, jaXHR) => {
-      this.jobLoad(data.job, data.candidates || data.job.candidates);
-
-    });
-  }
-
-  jobLoad(job, candidates) {
-    this.setItems(candidates);
-    this.setState({
-      job
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-     //console.log("Did Update");
-    //alert(this.props.job);
-    if(this.props.job){
-     //alert(this.props.job.uuid);
-    }
-    let prevId = prevProps.itemId;
-    let nextId = this.props.itemId;
-
-    //console.log("PREV: " + prevId);
-    //console.log("NEXT: " + nextId);
-
-    if (prevId != nextId) {
-      this.setItems(null);
-      this.getCandidates(nextId);
-    }
-  }
 }
 
 function key(item) {

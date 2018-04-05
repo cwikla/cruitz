@@ -366,27 +366,15 @@ class RecruitersPage extends Page {
     return "Recruiters";
   }
 
-  loadItems(onLoading) {
-    return this.props.recruiters.loadItems(onLoading);
-  }
-
-  loadSelected(itemId, onLoading) {
-    let me = this;
-
-    return this.props.recruiters.loadItem(itemId, onLoading).done((data, textStatus, jaXHR) => {
-      me.onSelect(data.recruiter);
-    });
-  }
-
-  getItems() {
-    return this.props.recruiters.items();
+  loader() {
+    return this.props.recruiters;
   }
 
   getIndexSheet() {
     return IndexSheet;
   }
 
-  getActionSheet() {
+  getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

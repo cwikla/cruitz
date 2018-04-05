@@ -13,6 +13,7 @@ import {
   RECRUITERS_URL,
   POSITIONS_URL,
   HEADS_URL,
+  CANDIDATES_URL,
 } from '../const';
 
 class LoaderBase {
@@ -22,7 +23,11 @@ class LoaderBase {
   }
 
   name() {
-    alert("Loader::name needs to be implemented");
+    return this.constructor.name.toLowerCase(); // override if need be
+  }
+
+  singular() {
+    return this.name().slice(0,-1); // override me if need be
   }
 
   items() {
@@ -30,7 +35,12 @@ class LoaderBase {
     return this.props.onGetState(name);
   }
 
-  url() {
+  itemsMap() {
+    let name = this.name() + 'Map';
+    return this.props.onGetState(name);
+  }
+
+  url(props) {
     alert("Loader::url needs to be implemented");
   }
 
@@ -46,14 +56,20 @@ class LoaderBase {
     this.setItems(data[name]);
   }
 
-  loadItems(onLoading) {
-    let url = Pyr.URL(this.url());
+
+  load(props={}) {
+    if (this.items()) {
+      console.log("Items already loaded for " + this.name);
+      return null; // already loaded, use reset
+    }
+
+    let url = Pyr.URL(this.url(props));
 
     return this.network.getJSON({
       type: this.props.method || Pyr.Method.GET,
       url: url,
       context: this,
-      onLoading: onLoading,
+      onLoading: props.onLoading,
 
     }).done((data, textStatus, jqXHR) => {
         console.log("SETTING ITEMS");
@@ -62,15 +78,23 @@ class LoaderBase {
     });
   }
 
-  loadItem(mid, onLoading) {
-    let url = Pyr.URL(this.url());
+  loadItemInner(mid, props={}) {
+    let url = Pyr.URL(this.url(props));
     url.push(mid);
 
     return this.network.getJSON({
       type: Pyr.Method.GET,
       url: url,
       context: this,
-      onLoading: onLoading,
+      onLoading: props.onLoading,
+    });
+  }
+
+  loadItem(mid, props={}) {
+    let itemName = this.singular();
+
+    return this.loadItemInner(mid, props).done((data, textStatus, jaXHR) => {
+      return data[itemName];
     });
   }
 
@@ -82,14 +106,14 @@ class LoaderBase {
     return a.id == b.id;
   }
 
-  addItem(item) {
+  add(item) {
     let newItems = (this.items() || []).slice();
     newItems.push(item);
     
     this.setItems(newItems);
   }
 
-  removeItem(item) {
+  remove(item) {
     let items = this.items() || [];
 
     let pos = items.findIndex((other) => {
@@ -102,7 +126,7 @@ class LoaderBase {
     }
   }
 
-  replaceItem(item) {
+  replace(item) {
     let items = this.items() || [];
 
     let newItems = items.map((other) => {
@@ -114,55 +138,44 @@ class LoaderBase {
     this.setItems(newItems);
   }
 
-  resetItems() {
+  reset() {
     this.setItems(null);
   }
 }
 
 class Jobs extends LoaderBase {
-  name() {
-    return 'jobs';
-  }
-
   url() {
     return JOBS_URL;
   }
 }
 
 class Recruiters extends LoaderBase {
-  name() {
-    return 'recruiters';
-  }
-
   url() {
     return RECRUITERS_URL;
   }
 }
 
-class Positions extends LoaderBase {
-  name() {
-    return 'positions';
+class Candidates extends LoaderBase {
+  url(props) {
+    return Pyr.URL(JOBS_URL).push(props.jobId).push(CANDIDATES_URL);
   }
+}
 
+
+class Positions extends LoaderBase {
   url() {
     return POSITIONS_URL;
   }
 
   setData(data) {
-    let field = 'jobs';
-
     console.log("POSITIONS LOADER");
     console.log(this.props);
-    this.setItems(data[field]);
+    this.setItems(data.jobs);
   }
 
 }
 
 class Heads extends LoaderBase {
-  name() {
-    return 'heads';
-  }
-
   url() {
     return HEADS_URL;
   }
@@ -174,6 +187,7 @@ const Loader = {
   Recruiters,
   Positions,
   Heads,
+  Candidates,
 };
 
 export default Loader;
