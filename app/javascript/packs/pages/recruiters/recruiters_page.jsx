@@ -93,7 +93,7 @@ class RecruiterItem extends Component {
 }
 
 
-class FullRecruiterItem extends Pyr.Network.Component {
+class FullRecruiterItem extends Component {
   constructor(props) {
     super(props);
   
@@ -367,30 +367,20 @@ class RecruitersPage extends Page {
   }
 
   loadItems(onLoading) {
-    this.getJSON({
-      url: this.props.url,
-      context: this,
-      onLoading: onLoading,
-    }).done((data, textStatus, jqXHR) => {
-        this.onSetItems(data.recruiters || []);
-
-    });
+    return this.props.recruiters.loadItems(onLoading);
   }
 
   loadSelected(itemId, onLoading) {
     let me = this;
 
-    this.getJSON({
-      url: Pyr.URL(RECRUITERS_URL).push(itemId),
-      context: me,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jaXHR) => {
-        me.onSelect(data.recruiter);
-
+    return this.props.recruiters.loadItem(itemId, onLoading).done((data, textStatus, jaXHR) => {
+      me.onSelect(data.recruiter);
     });
   }
 
+  getItems() {
+    return this.props.recruiters.items();
+  }
 
   indexSheet() {
     return (

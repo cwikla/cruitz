@@ -17,6 +17,8 @@ const ClassNames = Pyr.ClassNames;
 
 import Container from './container';
 
+import Loader from './loader/loader';
+
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
 import MessagesPage from './messages/messages_page';
@@ -107,7 +109,9 @@ class Dashboard extends Container.Base {
       jobs: [],
       jobMap: {},
       buttonItemCount: {},
-      slide: false
+      slide: false,
+      recruiters: null,
+      recruitersMap: null,
     });
 
     this.lastPage = null;
@@ -119,8 +123,27 @@ class Dashboard extends Container.Base {
     this.onJobUpdate = this.jobUpdate.bind(this);
     this.onJobDelete = this.jobDelete.bind(this);
     this.onJobNew = this.jobNew.bind(this);
+    this.onSetState = this.setState.bind(this);
+    this.onGetState = this.getState.bind(this);
 
     this.onShowSlide = this.showSlide.bind(this);
+
+    this.recruiterLoader = new Loader.Recruiters({
+      onSetState: this.onSetState,
+      onGetState: this.onGetState,
+      onLoading: this.onLoading,
+    });
+
+    this.jobsLoader = new Loader.Jobs({
+      onSetState: this.onSetState,
+      onGetState: this.onGetState,
+      onLoading: this.onLoading,
+    });
+
+  }
+
+  getState(name) {
+    return this.state[name];
   }
 
   getDefaultPage() {
@@ -269,6 +292,7 @@ class Dashboard extends Container.Base {
       onJobDelete: this.onJobDelete,
 
       onSetButtonCount: this.onSetButtonCount,
+      recruiters: this.recruiterLoader,
     };
 
     return Object.assign({}, props, dashboardProps);

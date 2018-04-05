@@ -47,7 +47,7 @@ class User < ApplicationRecord
 
   def after_cached
     self.score_cached(true)
-    self.thread_last_cached(true)
+    #self.thread_last_cached(true)
   end
 
   def self.after_cached_job(job)
@@ -131,13 +131,10 @@ class User < ApplicationRecord
     Message.find(all_for_ids(clear))
   end
 
-  def thread_last_cached(msg, clear=false)
+  def thread_last(msg, clear=false)
     return msg if msg.root_message_id.nil?
 
-    key = "tlast_#{msg.root_message_id}"
-    cache_fetch(key, force: clear) {
-      messages.where("root_message_id = ? or id = ?", msg.root_message_id, msg.root_message_id).order("-id").first
-    }
+    messages.where("root_message_id = ? or id = ?", msg.root_message_id, msg.root_message_id).order("-id").first
   end
 
   def self.is_recruiter
