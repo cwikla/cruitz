@@ -7,8 +7,6 @@ import Pyr, {
 } from '../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
-import ItemLoader from './item_loader';
-
 import {
   SHOW_ACTION
 } from './const';
