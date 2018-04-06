@@ -17,7 +17,6 @@ const ClassNames = Pyr.ClassNames;
 
 import Page from '../page';
 import Sheet from '../sheet';
-import ItemLoader from '../item_loader';
 
 import Job from '../shared/job';
 

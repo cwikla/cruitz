@@ -39,7 +39,7 @@ import {
   ME_URL,
 } from './const';
 
-const DEFAULT_PAGE = RECRUITERS_PAGE;
+const DEFAULT_PAGE = CANDIDATES_PAGE;
 
 const PAGE_MAP = {
   "home" : DashboardPage,

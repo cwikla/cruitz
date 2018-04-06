@@ -101,6 +101,9 @@ class LoaderComponent extends Component {
     stuff['pageItemsCount'] = this.state.pageItemsCount || {};
     stuff.pageItemsCount[name] = items ? items.length : 0;
 
+    console.log("SET ITEMS STUFF");
+    console.log(stuff);
+
     this.setState(stuff);
   }
 
@@ -158,8 +161,8 @@ class LoaderBase {
 
 
   load(props={}) {
-    if (this.items()) {
-      console.log("Items already loaded for " + this.name);
+    if (!props.force && this.items()) {
+      console.log("Items already loaded for " + this.name());
       return null; // already loaded, use reset
     }
 
@@ -172,7 +175,7 @@ class LoaderBase {
       onLoading: props.onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        console.log("SETTING ITEMS");
+        console.log("SETTING ITEMS: " + this.name());
         console.log(data);
         this.setData(data);
     });
@@ -239,6 +242,7 @@ class LoaderBase {
   }
 
   reset() {
+    console.log("RESETTING: " + this.name());
     this.setItems(null);
   }
 }
@@ -258,6 +262,10 @@ class Recruiters extends LoaderBase {
 class Candidates extends LoaderBase {
   url(props) {
     return Pyr.URL(JOBS_URL).push(props.jobId).push(CANDIDATES_URL);
+  }
+
+  setData(data) {
+    this.setItems(data.job.candidates);
   }
 }
 

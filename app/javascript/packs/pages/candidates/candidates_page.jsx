@@ -280,6 +280,13 @@ class IndexSheet extends Sheet.Index {
       />
     );
   }
+
+  render() {
+    console.log("CANDIDATES INDEX");
+    console.log(this.props);
+
+    return super.render();
+  }
 }
 
 class JobItem extends Component {
@@ -779,13 +786,25 @@ class CandidatesInnerPage extends Page {
     return this.props.candidates;
   }
 
-  loadItems(onLoading) {
+  loadItems(onLoading, force=false) {
     let jobId = this.props.jobId;
     if (!jobId) {
+      this.loader().reset();
       return; // nothing to see here
     }
 
-    return this.loader().load({jobId, onLoading});
+    console.log("LOADING CANDIDATES");
+    return this.loader().load({jobId, onLoading, force});
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let pid = prevProps.jobId;
+    let cid = this.props.jobId;
+
+    if (pid != cid) {
+      this.loader().reset();
+      this.loadItems(this.props.onLoading, true);
+    }
   }
 
   getIndexSheet() {
@@ -800,11 +819,17 @@ class CandidatesInnerPage extends Page {
   }
 
   render() {
+    console.log("INNER RENDER");
+    console.log(this.props);
     if (!this.props.jobs) {
       return <Pyr.UI.Loading />
     }
 
-    return this.renderInner(); // skip page stuff
+    return (
+      <div className="flx-col flx-5">
+        { this.renderInner() }
+      </div>
+    );
   }
 }
 
@@ -826,6 +851,9 @@ class JobIndexAndIndexSheet extends Component {
     let jobId = this.getJobId();
     let candyId = this.getCandidateId();
 
+    let firstJob = this.props.items && this.props.items.length > 0 ? this.props.items[0] : null;
+    jobId = jobId ? jobId : (firstJob ? firstJob.id : null);
+
     console.log("JOBINDEXANDINDEX");
     console.log(this.props);
 
@@ -837,8 +865,10 @@ class JobIndexAndIndexSheet extends Component {
         />
         <CandidatesInnerPage 
           {...this.props} 
+          items={null}
+          itemsMap={null}
           itemId={candyId}
-          jobId={jobId}
+          jobId={jobId ? jobId : this.props.items}
           jobItems={this.props.items}
           jobsMap={this.props.itemsMap}
         />

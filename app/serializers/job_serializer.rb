@@ -50,13 +50,6 @@ class JobSerializer < ActiveModel::Serializer
   end
 
   def candidate_counts
-    return {
-      total: 0,
-      accepted: 0,
-      rejected: 0,
-      waiting: 0
-    }
-
    {
       total: object.candidates.count,
       accepted: object.candidates.accepted.count,
@@ -69,18 +62,16 @@ class JobSerializer < ActiveModel::Serializer
     return instance_options[:cand]
   end
 
-  def attributes(*args) # FIXME
+  def attributes(*args)
     stuff = super
     stuff[:company] = CompanySerializer.new(object.user.company)
 
-    if 0
     if instance_options[:candidates]
       stuff[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(object.candidates) 
     end
 
     if instance_options[:submitted_candidates]
       stuff[:candidates] = current_user.submitted_candidates.where(job_id: object.id).live
-    end
     end
 
     stuff 

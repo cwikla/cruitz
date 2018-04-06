@@ -340,10 +340,12 @@ class Index extends Base {
   renderChild(item, isSelected) {
     let url = this.childURL(item, isSelected);
 
+    let ALink = Link; // isSelected ? Pyr.UI.PassThru : Link; FIXME
+
     return (
       <li 
         key={this.key(item)} 
-      ><Link to={url.toString()}>{this.renderItem(item, isSelected)}</Link></li>
+      ><ALink to={url.toString()}>{this.renderItem(item, isSelected)}</ALink></li>
     );
   }
 
