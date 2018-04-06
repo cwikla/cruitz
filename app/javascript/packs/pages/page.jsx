@@ -72,6 +72,14 @@ class Page extends Component {
     return this.loader().loadItem(itemId, {onLoading});
   }
 
+  getItemId() {
+    return this.props.itemId;
+  }
+
+  getSubItemId() {
+    return this.props.subItemId;
+  }
+
   getItems() {
     return this.loader().items();
   }
@@ -191,8 +199,11 @@ class Page extends Component {
     }
 
     let imap = this.getItemsMap();
-    if (this.props.itemId) {
-      return imap[this.props.itemId];
+
+    let itemId = this.getItemId();
+
+    if (itemId) {
+      return imap[itemId];
     }
 
     return items[0];
@@ -208,6 +219,8 @@ class Page extends Component {
 
   pageProps() {
     return({
+      itemId: this.getItemId(),
+      subItemId: this.getSubItemId(),
       items: this.getItems(),
       itemsMap: this.getItemsMap(),
       selected: this.getSelected(),

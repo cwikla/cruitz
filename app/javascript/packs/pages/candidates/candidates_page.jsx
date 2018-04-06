@@ -227,8 +227,20 @@ class IndexSheet extends Sheet.Index {
     return 5;
   }
 
+  getJobId() {
+    return this.props.subItemId;
+  }
+
+  getJobsMap() {
+    return this.props.jobs.itemsMap();
+  }
+
   renderHeader() {
-    let job = this.props.jobId ? this.props.jobsMap[this.props.jobId] : null;
+    let jobId = this.getJobId();
+    let jobsMap = this.getJobsMap();
+    
+
+    let job = jobId ? jobsMap[jobId] : null;
     let title = "Candidates";
   
     if (job) {
@@ -648,8 +660,8 @@ class ShowSheet extends Sheet.Show {
       return null;
     }
 
-    //console.log("RENDER HEADER");
-    //console.log(candidate);
+    console.log("RENDER HEADER");
+    console.log(candidate);
     let stateName = State.toName(candidate.state);
     let sclz = ClassNames("state").push(stateName);
     let clazzes = ClassNames("actions flx-row p-1 flx-start").push(sclz).push("background");
@@ -773,49 +785,31 @@ class IndexShowSheet extends Sheet.IndexShow {
   }
 }
 
-class CandidatesInnerPage extends Page {
+class JobsInnerPage extends Page {
   constructor(props) {
     super(props);
   }
 
   name() {
-    return "CandidatesInner";
+    return "JobsInner";
   }
 
   loader() {
-    return this.props.candidates;
+    return this.props.jobs;
   }
 
-  loadItems(onLoading, force=false) {
-    let jobId = this.props.jobId;
-    if (!jobId) {
-      this.loader().reset();
-      return; // nothing to see here
-    }
-
-    console.log("LOADING CANDIDATES");
-    return this.loader().load({jobId, onLoading, force});
+// switcheroo back
+  getItemId() {
+    return this.props.subItemId;
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    let pid = prevProps.jobId;
-    let cid = this.props.jobId;
-
-    if (pid != cid) {
-      this.loader().reset();
-      this.loadItems(this.props.onLoading, true);
-    }
+  getSubItemId() {
+    return this.props.itemId;
   }
+//
 
   getIndexSheet() {
-    return IndexSheet;
-  }
-
-  getActionSheet(action) {
-    let sheet = Sheet.sheetComponent(action || "Show");
-    let ActionSheet = eval(sheet);
-
-    return ActionSheet;
+    return JobIndexSheet;
   }
 
   render() {
@@ -826,11 +820,11 @@ class CandidatesInnerPage extends Page {
     }
 
     return (
-      <div className="flx-col flx-5">
+      <div className="flx-col flx-1">
         { this.renderInner() }
       </div>
     );
-  }
+   }
 }
 
 
@@ -843,34 +837,29 @@ class JobIndexAndIndexSheet extends Component {
     return this.props.subItemId;
   }
 
-  jobSelect(job) {
-    // nothing to see here
-  }
-
   render() {
     let jobId = this.getJobId();
     let candyId = this.getCandidateId();
 
-    let firstJob = this.props.items && this.props.items.length > 0 ? this.props.items[0] : null;
-    jobId = jobId ? jobId : (firstJob ? firstJob.id : null);
+    let firstCandy = this.props.items && this.props.items.length > 0 ? this.props.items[0] : null;
+    candyId = candyId ? candyId : (firstCandy ? firstCandy.id : null);
 
     console.log("JOBINDEXANDINDEX");
     console.log(this.props);
 
     return (
       <div className="flx-row flx-1">
-        <JobIndexSheet
-          {...this.props}
-          itemId={jobId}
-        />
-        <CandidatesInnerPage 
+        <JobsInnerPage 
           {...this.props} 
           items={null}
           itemsMap={null}
+          itemId={jobId}
+          items={this.props.jobs.items()}
+          itemsMap={this.props.jobs.itemsMap()}
+        />
+        <IndexSheet
+          {...this.props}
           itemId={candyId}
-          jobId={jobId ? jobId : this.props.items}
-          jobItems={this.props.items}
-          jobsMap={this.props.itemsMap}
         />
       </div>
     )
@@ -887,9 +876,75 @@ class CandidatesPage extends Page {
     return "Candidates";
   }
 
-  loader() {
-    return this.props.jobs;
+  // the ol' switcheroo
+  getItemId() {
+    return this.props.subItemId;
   }
+
+  getSubItemId() {
+    return this.props.itemId;
+  }
+  //
+
+  loader() {
+    return this.props.candidates;
+  }
+
+  getAllJobs() {
+    return this.props.jobs.items();
+  }
+
+  getJobId() {
+    let jobId = this.props.itemId;
+
+    let jobs = this.getAllJobs();
+
+    if (!jobId && (jobs && jobs.length > 0)) {
+      jobId = jobs[0].id;
+    }
+    return jobId;
+  }
+
+  getJob() {
+    let jobsMap = this.props.jobs.itemsMap();
+    let jobId = this.getJobId();
+
+    if (!jobsMap || !jobId) {
+      return null;
+    }
+
+    return jobsMap[jobId];
+  }
+
+  pageProps() {
+    let stuff = Object.assign({}, super.pageProps());
+    stuff['job'] = this.getJob();
+    stuff['jobId'] = this.getJobId();
+
+    return stuff;
+  }
+
+  loadItems(onLoading, force=false) {
+    let jobId = this.getJobId();
+    if (!jobId) {
+      this.loader().reset();
+      return; // nothing to see here
+    }
+
+    console.log("LOADING CANDIDATES");
+    return this.loader().load({jobId, onLoading, force});
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let pid = prevProps.itemId; // old job
+    let cid = this.props.itemId; // new job
+
+    if (pid != cid) {
+      this.loader().reset();
+      this.loadItems(this.props.onLoading, true);
+    }
+  }
+
 
   getIndexSheet() {
     return JobIndexAndIndexSheet;
