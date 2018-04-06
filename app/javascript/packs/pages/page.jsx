@@ -145,6 +145,8 @@ class Page extends Component {
 
     let IndexSheet = this.getIndexSheet();
 
+    console.log("INNER SHEET for " + this.name());
+    console.log(this.props);
     return (
       <div className={extraClass}>
         <IndexSheet
@@ -218,6 +220,16 @@ class Page extends Component {
     });
   }
 
+  renderInner() {
+    return (
+      <div className="page-inner flx-1 flx-col">
+        {this.renderHeader()}
+        {this.renderIndexSheet()}
+        {this.renderActionSheet()}
+      </div>
+    );
+  }
+
 
   render() {
     if (this.props.showing == undefined) {
@@ -236,9 +248,7 @@ class Page extends Component {
 
     return (
       <div className={cname}>
-        {this.renderHeader()}
-        {this.renderIndexSheet()}
-        {this.renderActionSheet()}
+        { this.renderInner() }
       </div>
     );
   }

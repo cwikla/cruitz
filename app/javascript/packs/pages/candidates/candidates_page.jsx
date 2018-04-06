@@ -228,7 +228,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderHeader() {
-    let job = this.props.jobId ? this.props.jobMap[this.props.jobId] : null;
+    let job = this.props.jobId ? this.props.jobsMap[this.props.jobId] : null;
     let title = "Candidates";
   
     if (job) {
@@ -766,12 +766,50 @@ class IndexShowSheet extends Sheet.IndexShow {
   }
 }
 
-class JobIndexAndIndexSheet extends Component {
+class CandidatesInnerPage extends Page {
   constructor(props) {
     super(props);
-    this.onLoadCandidateItems = this.loadCandidateItems.bind(this);
   }
 
+  name() {
+    return "CandidatesInner";
+  }
+
+  loader() {
+    return this.props.candidates;
+  }
+
+  loadItems(onLoading) {
+    let jobId = this.props.jobId;
+    if (!jobId) {
+      return; // nothing to see here
+    }
+
+    return this.loader().load({jobId, onLoading});
+  }
+
+  getIndexSheet() {
+    return IndexSheet;
+  }
+
+  getActionSheet(action) {
+    let sheet = Sheet.sheetComponent(action || "Show");
+    let ActionSheet = eval(sheet);
+
+    return ActionSheet;
+  }
+
+  render() {
+    if (!this.props.jobs) {
+      return <Pyr.UI.Loading />
+    }
+
+    return this.renderInner(); // skip page stuff
+  }
+}
+
+
+class JobIndexAndIndexSheet extends Component {
   getJobId() {
     return this.props.itemId;
   }
@@ -784,32 +822,12 @@ class JobIndexAndIndexSheet extends Component {
     // nothing to see here
   }
 
-  loadCandidateItems() {
-    this.props.candidates.reset();
-
-    let jobId = this.getJobId();
-    if (!jobId) {
-      return; // nothing to see here
-    }
-
-    let onLoading = this.props.onLoading;
-
-    return this.props.candidates.loadItems({jobId, onLoading});
-  }
-
-  componentDidMount() {
-    this.loadCandidateItems();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.itemId != this.props.itemId) {
-      loadCandidateItems();
-    }
-  }
-
   render() {
     let jobId = this.getJobId();
     let candyId = this.getCandidateId();
+
+    console.log("JOBINDEXANDINDEX");
+    console.log(this.props);
 
     return (
       <div className="flx-row flx-1">
@@ -817,15 +835,12 @@ class JobIndexAndIndexSheet extends Component {
           {...this.props}
           itemId={jobId}
         />
-        <IndexSheet
-          {...this.props}
-          items={this.props.candidates.items()}
+        <CandidatesInnerPage 
+          {...this.props} 
           itemId={candyId}
-          onLoadItems={this.onLoadCandidateItems}
-          jobs={this.props.items}
-          jobsMap={this.props.itemsMap}
           jobId={jobId}
-          className="flx-3"
+          jobItems={this.props.items}
+          jobsMap={this.props.itemsMap}
         />
       </div>
     )

@@ -156,27 +156,6 @@ class NavBar extends Component {
 
 
 class Base extends Component {
-  constructor(props) {
-    super(props);
-
-    this.initState({
-      loading: false,
-      pageItemsCount: {},
-    });
-
-    this.onLoading = this.setLoading.bind(this);
-    this.onSetItems = this.setItems.bind(this);
-    this.onSetPageItemsCount = this.setPageItemsCount.bind(this);
-    this.onGetPageItemsCount = this.getPageItemsCount.bind(this);
-
-    this.onSetState = this.setState.bind(this);
-    this.onGetState = this.getState.bind(this);
-  }
-
-  getState(name) {
-    return this.state[name];
-  }
-
   sortItems(items) {
     //console.log("SORTING ITEMS");
     if (!items || (items.length == 0)) {
@@ -189,43 +168,6 @@ class Base extends Component {
       return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
     }
     return items;
-  }
-
-  getPageItemsCount(name) {
-    this.state.pageItemsCount[name] || 0;
-  }
-
-  setPageItemsCount(name, count) {
-    let pageItemsCount = Object.assign({}, this.state.pageItemsCount);
-
-    pageItemsCount[name] = count;
-    this.setState({
-      pageItemsCount
-    });
-  }
-
-  setItems(name, items) {
-    let itemMap = null;
-
-    if (items) {
-      console.log("ITEMS ET TO");
-      console.log(items);
-      items = this.sortItems(items);
-      itemMap = items.reduce((m, o) => {m[o.id] = o; return m;}, {});
-    }
-
-    let stuff = {};
-    stuff[name] = items;
-    stuff[name + 'Map'] = itemMap;
-    stuff['pageItemsCount'] = this.state.pageItemsCount || {};
-    stuff.pageItemsCount[name] = items ? items.length : 0;
-
-    this.setState(stuff);
-  }
-
-  setLoading(loading=true) {
-    //alert("SETLOADIN: " + loading);
-    this.setState({loading});
   }
 
   pageToComponent(page) {
@@ -338,7 +280,7 @@ class Base extends Component {
   }
 
   pageProps(page) {
-    let props = {
+    let someProps = {
       location: this.getLocation(),
       action: this.getAction(),
       page: page.toLowerCase(),
@@ -350,15 +292,9 @@ class Base extends Component {
       
       showing: true,
       url: PageURL(page),
-      onSetItems: this.onSetItems,
-      onSetPageItemsCount: this.onSetPageItemsCount,
-      onGetPageItemsCount: this.onGetPageItemsCount,
-
-      onSetState: this.onSetState,
-      onGetState: this.onGetState,
     };
 
-    return Object.assign(props, this.extraProps());
+    return Object.assign({}, this.props, someProps, this.extraProps());
   }
 
   renderMain(sideBar) {
@@ -408,7 +344,7 @@ class Base extends Component {
   }
 
   isReady() {
-    return !this.state.loading && this.context.user;
+    return !this.props.loading && this.context.user;
   }
 
   render() {

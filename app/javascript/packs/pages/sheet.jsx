@@ -139,6 +139,9 @@ class Base extends Component {
     return this.props.items;
   }
 
+  getItemsMap() {
+    return this.props.itemsMap;
+  }
 
   render() {
     //if (this.state.isLoading) {

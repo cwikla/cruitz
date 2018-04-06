@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Pyr, {
+  Component
 } from '../../pyr/pyr';
 
 import Network, {
@@ -15,6 +16,105 @@ import {
   HEADS_URL,
   CANDIDATES_URL,
 } from '../const';
+
+class LoaderComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      loading: false,
+      pageItemsCount: {},
+    });
+
+    this.onLoading = this.setLoading.bind(this);
+    this.onSetItems = this.setItems.bind(this);
+    this.onSetPageItemsCount = this.setPageItemsCount.bind(this);
+    this.onGetPageItemsCount = this.getPageItemsCount.bind(this);
+
+    this.onSetState = this.setState.bind(this);
+    this.onGetState = this.getState.bind(this);
+
+
+    this.loaderProps = {
+      onSetState: this.onSetState,
+      onGetState: this.onGetState,
+      onLoading: this.onLoading,
+      onSetItems: this.onSetItems,
+      onSetPageItemsCount: this.onSetPageItemsCount,
+      pageItemsCount: this.state.pageItemsCount,
+      loading: this.state.loading,
+    };
+  }
+
+  extraProps() {
+    return {};
+  }
+
+  getProps() {
+    return Object.assign({}, this.loaderProps, this.extraProps());
+  }
+
+  getState(name) {
+    return this.state[name];
+  }
+
+  getPageItemsCount(name) {
+    this.state.pageItemsCount[name] || 0;
+  }
+
+  setPageItemsCount(name, count) {
+    let pageItemsCount = Object.assign({}, this.state.pageItemsCount);
+
+    pageItemsCount[name] = count;
+    this.setState({
+      pageItemsCount
+    });
+  }
+
+  sortItems(items) {
+    //console.log("SORTING ITEMS");
+    if (!items || (items.length == 0)) {
+      return items;
+    }
+    if (items[0].id) {
+      return items.sort((x, y) => y.id - x.id);
+    }
+    if (items[0].created_at) {
+      return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
+    }
+    return items;
+  }
+
+  setItems(name, items) {
+    let itemMap = null;
+
+    if (items) {
+      console.log("ITEMS ET TO");
+      console.log(items);
+      items = this.sortItems(items);
+      itemMap = items.reduce((m, o) => {m[o.id] = o; return m;}, {});
+    }
+
+    let stuff = {};
+    stuff[name] = items;
+    stuff[name + 'Map'] = itemMap;
+    stuff['pageItemsCount'] = this.state.pageItemsCount || {};
+    stuff.pageItemsCount[name] = items ? items.length : 0;
+
+    this.setState(stuff);
+  }
+
+
+  setLoading(loading=true) {
+    //alert("SETLOADIN: " + loading);
+    this.setState({loading});
+  }
+
+  render() {
+    alert("LoaderComponent: OVERRIDE ME!");
+  }
+
+}
 
 class LoaderBase {
   constructor(props) {
@@ -183,6 +283,7 @@ class Heads extends LoaderBase {
 }
 
 const Loader = {
+  Component : LoaderComponent,
   Jobs,
   Recruiters,
   Positions,
