@@ -228,12 +228,29 @@ class IndexSheet extends Sheet.Index {
   }
 
   getJobId() {
-    return this.props.subItemId;
+    return this.props.jobId;
   }
 
   getJobsMap() {
     return this.props.jobsMap;
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    let pid = prevProps.jobId;
+    let cid = this.getJobId();
+
+    console.log("DID UPDATE");
+    console.log(pid);
+    console.log(cid);
+
+    if (pid != cid) {
+      if (cid) {
+        this.props.onLoadItems(this.onLoading);
+      }
+    }
+  }
+
+
 
   renderHeader() {
     let jobId = this.getJobId();
@@ -888,7 +905,14 @@ class CandidatesPage extends Page {
   }
 
   getJobId() {
-    return this.props.itemId;
+    let jid = this.props.itemId;
+    let jobs = this.getAllJobs();
+
+    if (!jid) {
+      jid = jobs && jobs.length > 0 ? jobs[0].id : undefined;
+    }
+
+    return jid;
   }
 
   getJob() {
@@ -910,44 +934,17 @@ class CandidatesPage extends Page {
     return stuff;
   }
 
-  loadItems(onLoading, jobId, force=false) {
+  loadItems(onLoading) {
+    let jobId = this.getJobId();
+
     if (!jobId) {
       this.loader().reset();
       return; // nothing to see here
     }
 
     console.log("LOADING CANDIDATES");
-    return this.loader().load({jobId, onLoading, force});
+    return this.loader().load({jobId, onLoading});
   }
-
-  componentDidMount() {
-
-    console.log("COMPONENT DID MOUNT");
-    console.log(this.getItems());
-    let jobId = this.getJobId();
-
-    if (jobId && !this.getItems()) {
-      this.loader().load({jobId, onLoading: this.props.onLoading});
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    let pid = nextProps.itemId; // new job
-    let cid = this.getJobId();
-
-    console.log("DID UPDATE");
-    console.log(pid);
-    console.log(cid);
-    console.log(this.getItems());
-
-    if (pid != cid) {
-      this.loader().reset();
-      if (pid) {
-        this.loadItems(this.props.onLoading, pid, true);
-      }
-    }
-  }
-
 
   getIndexSheet() {
     return JobIndexAndIndexSheet;

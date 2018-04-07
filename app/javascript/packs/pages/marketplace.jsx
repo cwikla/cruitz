@@ -111,6 +111,9 @@ class MarketPlace extends Container.Base {
 
       heads: null,
       headsMap: null,
+
+      messages: null,
+      messagesMap: null,
     });
 
     let loaderProps = {
@@ -121,16 +124,26 @@ class MarketPlace extends Container.Base {
     };
 
 
-
     this.positionsLoader = new Loader.Positions(loaderProps);
     this.headsLoader = new Loader.Heads(loaderProps);
+    this.messagesLoader = new Loader.Messages(loaderProps);
   }
 
   extraProps(page) {
-    return {
-      positions: this.positionsLoader,
-      heads: this.headsLoader,
-    };
+    return Object.assign({}, {
+      loaders: {
+        positions: this.positionsLoader,
+        heads: this.headsLoader,
+      },
+      positions,
+      positionsMap,
+
+      heads,
+      headsMap,
+
+      messages,
+      messagesMap,
+    });
   }
 
 
