@@ -462,7 +462,7 @@ class HeadsPage extends Page {
   }
 
   loader() {
-    return this.props.heads;
+    return this.props.loaders.heads;
   }
 
   getIndexSheet() {

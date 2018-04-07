@@ -487,7 +487,7 @@ class JobsPage extends Page {
   }
 
   loader() {
-    return this.props.jobs;
+    return this.props.loaders.jobs;
   }
 
   getIndexSheet() {

@@ -128,11 +128,26 @@ class LoaderComponent extends Loader.Component {
   }
 
   extraProps() {
-    return {
-      recruiters: this.recruitersLoader,
-      jobs: this.jobsLoader,
-      candidates: this.candidatesLoader,
-    };
+    return Object.assign({}, {
+      loaders: {
+        recruiters: this.recruitersLoader,
+        jobs: this.jobsLoader,
+        candidates: this.candidatesLoader,
+      },
+
+      // need to see if I can make this a dict...
+      jobs: this.state.jobs,
+      jobsMap: this.state.jobsMap,
+      
+      recruiters: this.state.recruiters,
+      recruitersMap: this.state.recruitersMap,
+
+      candidates: this.state.candidates,
+      candidatesMap: this.state.candidatesMap,
+      
+      messages: this.state.messages,
+      messagesMap: this.state.messagesMap,
+    });
   }
 
   render() {

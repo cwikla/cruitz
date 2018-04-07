@@ -450,7 +450,7 @@ class PositionsPage extends Page {
 
 
   loader() {
-    return this.props.positions;
+    return this.props.loaders.positions;
   }
 
   getIndexSheet() {

@@ -232,7 +232,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   getJobsMap() {
-    return this.props.jobs.itemsMap();
+    return this.props.jobsMap;
   }
 
   renderHeader() {
@@ -339,7 +339,7 @@ class JobItem extends Component {
 
 class JobIndexSheet extends Sheet.Index {
   key(item) {
-    return "job-" + CandidatesPage.key(item);
+    return JobsInnerPage.key(item);
   }
 
   size() {
@@ -379,8 +379,6 @@ class JobIndexSheet extends Sheet.Index {
     //console.log("CANDIDATE RENDER ITEM");
     //console.log(item);
     //console.log(isSelected);
-
-    isSelected = this.props.jobId
 
     return (
       <JobItem 
@@ -795,12 +793,11 @@ class JobsInnerPage extends Page {
   }
 
   loader() {
-    return this.props.jobs;
+    return this.props.loaders.jobs;
   }
 
-// switcheroo back
   getItemId() {
-    return this.props.subItemId;
+    return this.props.jobId;
   }
 
   getSubItemId() {
@@ -813,18 +810,18 @@ class JobsInnerPage extends Page {
   }
 
   render() {
-    console.log("INNER RENDER");
+    console.log("JOBS PAGE INNER RENDER");
     console.log(this.props);
-    if (!this.props.jobs) {
-      return <Pyr.UI.Loading />
-    }
 
     return (
-      <div className="flx-col flx-1">
+      <div className="flx-col flx-2">
         { this.renderInner() }
       </div>
     );
    }
+}
+JobsInnerPage.key = (item) => {
+  return ('jobs-inner-' + item.id);
 }
 
 
@@ -851,11 +848,7 @@ class JobIndexAndIndexSheet extends Component {
       <div className="flx-row flx-1">
         <JobsInnerPage 
           {...this.props} 
-          items={null}
-          itemsMap={null}
           itemId={jobId}
-          items={this.props.jobs.items()}
-          itemsMap={this.props.jobs.itemsMap()}
         />
         <IndexSheet
           {...this.props}
@@ -887,26 +880,19 @@ class CandidatesPage extends Page {
   //
 
   loader() {
-    return this.props.candidates;
+    return this.props.loaders.candidates;
   }
 
   getAllJobs() {
-    return this.props.jobs.items();
+    return this.props.jobs;
   }
 
   getJobId() {
-    let jobId = this.props.itemId;
-
-    let jobs = this.getAllJobs();
-
-    if (!jobId && (jobs && jobs.length > 0)) {
-      jobId = jobs[0].id;
-    }
-    return jobId;
+    return this.props.itemId;
   }
 
   getJob() {
-    let jobsMap = this.props.jobs.itemsMap();
+    let jobsMap = this.props.jobsMap;
     let jobId = this.getJobId();
 
     if (!jobsMap || !jobId) {
@@ -924,8 +910,7 @@ class CandidatesPage extends Page {
     return stuff;
   }
 
-  loadItems(onLoading, force=false) {
-    let jobId = this.getJobId();
+  loadItems(onLoading, jobId, force=false) {
     if (!jobId) {
       this.loader().reset();
       return; // nothing to see here
@@ -935,13 +920,31 @@ class CandidatesPage extends Page {
     return this.loader().load({jobId, onLoading, force});
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    let pid = prevProps.itemId; // old job
-    let cid = this.props.itemId; // new job
+  componentDidMount() {
+
+    console.log("COMPONENT DID MOUNT");
+    console.log(this.getItems());
+    let jobId = this.getJobId();
+
+    if (jobId && !this.getItems()) {
+      this.loader().load({jobId, onLoading: this.props.onLoading});
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    let pid = nextProps.itemId; // new job
+    let cid = this.getJobId();
+
+    console.log("DID UPDATE");
+    console.log(pid);
+    console.log(cid);
+    console.log(this.getItems());
 
     if (pid != cid) {
       this.loader().reset();
-      this.loadItems(this.props.onLoading, true);
+      if (pid) {
+        this.loadItems(this.props.onLoading, pid, true);
+      }
     }
   }
 
@@ -959,11 +962,10 @@ class CandidatesPage extends Page {
 
 }
 
-function key(item) {
+
+CandidatesPage.key = (item) => {
   return "cand-" + item.id;
 }
-
-CandidatesPage.key = key;
 
 
 export default CandidatesPage;

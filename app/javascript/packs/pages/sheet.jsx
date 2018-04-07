@@ -51,6 +51,10 @@ class Base extends Component {
     return name;
   }
 
+  key(a) {
+    return (a.toLowerCase() + "-" + a.id);
+  }
+
   close(e) {
     if (e) {
       e.preventDefault();
@@ -99,9 +103,6 @@ class Base extends Component {
     return this.key(a) == this.key(b);
   }
 
-  key(a) {
-    alert("Sheet.Base If you are seeing this you need to implement key");
-  }
 
   renderItem(item, isSelected) {
     alert("Sheet:Base If you are seeing this, you need to implement renderItem!");
@@ -324,6 +325,8 @@ class Index extends Base {
   }
 
   componentDidMount() {
+    console.log("COMPONENT DID MOUNT");
+    console.log(this.getItems());
     if (!this.getItems()) {
       this.props.onLoadItems(this.onLoading);
     }
@@ -366,7 +369,7 @@ class Index extends Base {
     let items = this.getItems();
 
     if (this.state.isLoading || !items) {
-      console.log("A");
+      //console.log("A");
       return this.renderLoading();
     }
 
@@ -381,9 +384,9 @@ class Index extends Base {
     let items = this.getItems();
 
     if (this.state.isLoading || !items) {
-      console.log("B");
-      console.log(this.state);
-      console.log(items);
+      //console.log("B");
+      //console.log(this.state);
+      //console.log(items);
       return this.renderLoading();
     }
 
@@ -427,20 +430,6 @@ class Show extends Base {
   }
 
   renderInner() {
-/*
-    let items = this.getItems();
-
-    if (this.state.isLoading || !items) {
-      console.log("A");
-      return this.renderLoading();
-    }
-
-    if (items.length == 0) {
-      console.log("B");
-      return this.renderNone();
-    }
-*/
-
     if (!this.props.selected) {
       //console.log("C");
       return this.renderNone();

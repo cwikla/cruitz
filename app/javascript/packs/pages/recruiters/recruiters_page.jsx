@@ -367,7 +367,7 @@ class RecruitersPage extends Page {
   }
 
   loader() {
-    return this.props.recruiters;
+    return this.props.loaders.recruiters;
   }
 
   getIndexSheet() {

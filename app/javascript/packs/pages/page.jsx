@@ -63,6 +63,7 @@ class Page extends Component {
   }
 
   loadItems(onLoading) {
+    console.log("LOAD ITEMS FOR " + this.loader().name());
     return this.loader().load({onLoading});
   }
 
@@ -81,11 +82,13 @@ class Page extends Component {
   }
 
   getItems() {
-    return this.loader().items();
+    return this.props[this.loader().name()];
+    //return this.loader().items();
   }
 
   getItemsMap() {
-    return this.loader().itemsMap();
+    return this.props[this.loader().name() + "Map"];
+    //return this.loader().itemsMap();
   }
 
   indexSheet() {
