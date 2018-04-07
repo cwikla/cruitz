@@ -239,13 +239,9 @@ class IndexSheet extends Sheet.Index {
     let pid = prevProps.jobId;
     let cid = this.getJobId();
 
-    console.log("DID UPDATE");
-    console.log(pid);
-    console.log(cid);
-
     if (pid != cid) {
       if (cid) {
-        this.props.onLoadItems(this.onLoading);
+        this.props.onLoadItems(this.onLoading, {force: true});
       }
     }
   }
@@ -934,7 +930,7 @@ class CandidatesPage extends Page {
     return stuff;
   }
 
-  loadItems(onLoading) {
+  loadItems(onLoading, extra={}) {
     let jobId = this.getJobId();
 
     if (!jobId) {
@@ -942,8 +938,7 @@ class CandidatesPage extends Page {
       return; // nothing to see here
     }
 
-    console.log("LOADING CANDIDATES");
-    return this.loader().load({jobId, onLoading});
+    return super.loadItems(onLoading, Object.assign({}, {jobId}, extra));
   }
 
   getIndexSheet() {

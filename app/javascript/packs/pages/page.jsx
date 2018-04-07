@@ -62,9 +62,9 @@ class Page extends Component {
     alert("You need to override Page::loader");
   }
 
-  loadItems(onLoading) {
+  loadItems(onLoading, extra={}) {
     console.log("LOAD ITEMS FOR " + this.loader().name());
-    return this.loader().load({onLoading});
+    return this.loader().load(Object.assign({}, {onLoading}, extra));
   }
 
   loadItem(itemId, onLoading) {
