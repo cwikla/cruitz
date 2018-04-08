@@ -40,9 +40,9 @@ class MessagesController < ApplicationController
     @message.body = message_params[:body].blank? ? nil : message_params[:body]
     
     if @message.save
-      return render json: @message
+      return render json: @message, current_user: current_user
     else
-      return render_create_error json: @message
+      return render_create_error json: @message, current_user: current_user
     end
   end
 
@@ -50,9 +50,9 @@ class MessagesController < ApplicationController
     mid = hid()
     @message = Message.last_for(current_user, mid)
     if @message.update(message_params)
-      return render json: @message
+      return render json: @message, current_user: current_user
     else
-      return render_create_error json: @message
+      return render_create_error json: @message, current_user: current_user
     end
   end
 
@@ -60,7 +60,7 @@ class MessagesController < ApplicationController
   def lsearch
     result = GeoName.search(params[:term]).map(&:name)
     puts "***** RESULT #{result}"
-    render json: result
+    render json: result, current_user: current_user
   end
 
   private

@@ -1,33 +1,11 @@
-class CandidateSerializer < ActiveModel::Serializer
-  attributes :id,
-    :first_name,
-    :last_name,
-    :phone_number,
-    :email,
-    :description,
-    :job_id,
-    :state,
-    :experience,
+class CandidateSerializer < CandidateSmallSerializer
+  attributes :experience,
     :education,
-    :skills
+    :skills,
+    :description
 
   has_one :recruiter
 
-  def first_name
-    object.head.first_name
-  end
-
-  def last_name
-    object.head.last_name
-  end
-
-  def phone_number
-    object.head.phone_number
-  end
-
-  def email
-    object.head.email
-  end
 
   def root_message_id
     return nil # FIXME
