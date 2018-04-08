@@ -153,33 +153,35 @@ class SettingsPage extends Page {
     return EDIT_ACTION;
   }
 
-  loadSelected(unused, onLoading) {
+  getActionSheet(action) {
+    return EditSheet;
+  }
+
+  getSelected() {
+    return this.state.selected;
+  }
+
+  getItems() {
+    return null;
+  }
+
+  getItemsMap() {
+    return null;
+  }
+
+  loadItem(unused, onLoading) {
     this.getJSON({
       url: this.props.url,
       context: this,
       onLoading: onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        this.onSelect(data.setting);
+        this.onSetSelected(data.setting);
 
     });
   }
 
 
-  actionSheet(action) {
-    return (
-      <EditSheet
-        {...this.props}
-        onSelect={this.onSelect}
-        onAddItem={this.onAddItem}
-        onLoadItem={this.onLoadItem}
-
-        selected={this.getSelected()}
-        loading={this.state.loading}
-      />
-    );
-    
-  }
 }
 
 function key(item) {

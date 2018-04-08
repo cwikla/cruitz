@@ -279,7 +279,7 @@ class Group extends BaseComponent {
   }
 }
 
-class Child extends BaseComponent {
+class Child extends Network.Component {
   static contextTypes = {
     name: PropTypes.string,
     model: PropTypes.string,
@@ -610,7 +610,9 @@ class CheckBox extends Child {
 
   change(e) {
     this.setChecked(e.target.checked);
-    this.props.onChange(e);
+    if (this.props.onChange) {
+      this.props.onChange(e);
+    }
   }
 
   modelChecked() {
@@ -1172,12 +1174,14 @@ class AutoComplete extends Child {
     this.initState({
       isLoading: false,
       results: [],
+      value: null,
     });
 
     this.onSearch = this.search.bind(this);
     this.onLoading = this.loading.bind(this);
     this.onFilterBy = this.filterBy.bind(this);
     this.onRenderToken = this.renderToken.bind(this);
+    this.onInputChange = this.inputChange.bind(this);
   }
 
   loading(isLoading) {
@@ -1196,7 +1200,7 @@ class AutoComplete extends Child {
     //console.log(url.toString());
     //console.log("B: *******");
 
-    Network.getJSON({
+    this.getJSON({
       url : url,
       onLoading : this.onLoading,
     }).done((data, textStatus, jqXHR) => {
@@ -1244,6 +1248,13 @@ class AutoComplete extends Child {
     );
   }
 
+  inputChange(text) {
+    console.log("INPUT CHANGE: " + text);
+    this.setState({
+      value: text
+    });
+  }
+
         //filterBy={this.onFilterBy}
   render() {
     let clz = "pyr-auto-complete";
@@ -1252,28 +1263,35 @@ class AutoComplete extends Child {
 
     let lk = this.labelKey();
 
+    let hidden = null;
+    if (!this.props.multiple && this.state.value) {
+      hidden = <input name={this.name()} type="hidden" value={this.state.value} />
+    }
+
     return (
-      <AsyncTypeahead
-        emptyLabel=""
-        ignoreDiacritics
-        useCache={false}
-        caseSensitive={false}
-        onSearch={this.onSearch}
-        isLoading={this.state.isLoading}
-        options={this.state.results}
-        labelKey={lk}
-
-        defaultSelected={this.modelValue() || []}
-        renderToken={this.onRenderToken}
-
-        {...Util.propsMergeClassName(rest, clz)}
-      />
+      <div className="async-typeahead">
+        { hidden }
+        <AsyncTypeahead
+          emptyLabel=""
+          ignoreDiacritics
+          useCache={false}
+          caseSensitive={false}
+          onSearch={this.onSearch}
+          isLoading={this.state.isLoading}
+          options={this.state.results}
+          labelKey={lk}
+          onInputChange={this.onInputChange}
+  
+          defaultSelected={this.modelValue() || []}
+          renderToken={this.onRenderToken}
+  
+          {...Util.propsMergeClassName(rest, clz)}
+        />
+      </div>
     );
 
   }
 }
-
-export default AutoComplete;
 
 const PyrForm = { 
   Form, 

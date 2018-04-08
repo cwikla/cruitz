@@ -372,6 +372,14 @@ class MePage extends Page {
     return "Me";
   }
 
+  getItems() {
+    return null;
+  }
+
+  getItemsMap() {
+    return null;
+  }
+
   showActionSheet() {
     return true;
   }
@@ -387,24 +395,15 @@ class MePage extends Page {
     return EDIT_ACTION;
   }
 
-  loadSelected(unused, onLoading) {
-    this.onSelect(this.user());
+  getSelected() {
+    return this.user();
   }
 
-  actionSheet(action) {
+  getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || EDIT_ACTION);
     let ActionSheet = eval(sheet);
 
-    return (
-      <ActionSheet
-        {...this.props}
-        selected={this.getSelected()}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
-        onLoadItem={this.onLoadItem}
-      />
-    );
-    
+    return ActionSheet;
   }
 }
 

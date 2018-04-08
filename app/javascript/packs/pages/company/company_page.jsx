@@ -190,23 +190,10 @@ class CompanyLinksForm extends Component {
 class EditSheet extends Sheet.Edit {
 
   success(data, textStatus, jqXHR) {
-    let company = data.company;
-
-    this.setCompany(company);
-
     super.success(data, textStatus, jqXHR);
-    //this.setState({
-      //company: company
-    //});
 
     this.setNotice("Company updated");
     this.goBack();
-  }
-
-  unused_renderTitle() {
-    return (
-      <h3 className="mr-auto title flx-row"><span className="mt-auto mb-auto mr-auto">{this.title()}</span> {this.renderButton()}</h3>
-    );
   }
 
   title() {
@@ -281,41 +268,37 @@ class CompanyPage extends Page {
     return true;
   }
 
+  getItems() {
+    return null;
+  }
+
+  getItemsMap() {
+    return null;
+  }
+
   getAction() {
     return EDIT_ACTION;
   }
 
-  loadSelected(unused, onLoading) {
+  getActionSheet() {
+    return EditSheet;
+  }
+
+  getSelected() {
+    return this.state.selected;
+  }
+
+
+  loadItem(unused, onLoading) {
     this.getJSON({
       url: COMPANY_URL,
       onLoading: onLoading
   
     }).done((data, textStatus, jqXHR) => {
-      //console.log("GOT COMPANY");
-      //console.log(data.company);
-
-      this.setCompany(data.company);
+      this.onSetSelected(data.company);
 
     });
   }
-
-  actionSheet(action) {
-    //console.log("ACTION SHEET");
-    //console.log(this.context.user.company);
-
-    return (
-      <EditSheet
-        {...this.props}
-        selected={this.context.user.company}
-        onAction={this.onAction}
-        onUnaction={this.onUnaction}
-        onLoadItem={this.onLoadItem}
-      />
-    );
-
-  }
-
-
 
 }
 

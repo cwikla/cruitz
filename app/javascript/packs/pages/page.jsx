@@ -41,6 +41,15 @@ class Page extends Component {
 
 ///// END
 
+  setSelected(selected) {
+    //console.log("SETTING SELECTED TO");
+    //console.log(selected);
+
+    this.setState({
+      selected
+    });
+  }
+
 
   name() {
     let fullName = this.constructor.name;
@@ -65,7 +74,7 @@ class Page extends Component {
   }
 
   loadItems(onLoading, extra={}) {
-    console.log("LOAD ITEMS FOR " + this.loader().name());
+    //console.log("LOAD ITEMS FOR " + this.loader().name());
     return this.loader().load(Object.assign({}, {onLoading}, extra));
   }
 
@@ -156,8 +165,8 @@ class Page extends Component {
 
     let IndexSheet = this.getIndexSheet();
 
-    console.log("INNER SHEET for " + this.name());
-    console.log(this.props);
+    //console.log("INNER SHEET for " + this.name());
+    //console.log(this.props);
     return (
       <div className={extraClass}>
         <IndexSheet

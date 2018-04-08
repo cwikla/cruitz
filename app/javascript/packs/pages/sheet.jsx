@@ -325,8 +325,6 @@ class Index extends Base {
   }
 
   componentDidMount() {
-    console.log("COMPONENT DID MOUNT");
-    console.log(this.getItems());
     if (!this.getItems()) {
       this.props.onLoadItems(this.onLoading);
     }
