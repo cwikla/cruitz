@@ -15,22 +15,22 @@ function THREAD_ID(message) {
   return "thread-item-" + message.id;
 }
 
+const OtherAvatar = (props) => (
+  <UserAvatar 
+    userId={props.user.id}
+    name={props.user.first_name}
+    small={true}
+  />
+);
+
 class ThreadItem extends Sheet.Item {
-  renderAvatar(message) {
-    return (
-      <UserAvatar 
-        userId={message.from_user.id}
-        name={message.from_user.first_name}
-        small={true}
-      />
-    );
-  }
-
   render() {
-    let message = this.props.message;
+    let message = this.props.message; 
     let job = this.props.job;
+    let candidate = this.props.candidate;
+    let other = this.props.other;
 
-    let mine = message.mine;
+    let mine = this.props.mine;
     let ownerClass = (mine ? "mine" : "yours");
 
     let id = THREAD_ID(message);
@@ -48,7 +48,7 @@ class ThreadItem extends Sheet.Item {
     let rightAvatar = null;
 
     if (!mine) {
-      leftAvatar = !mine ? this.renderAvatar(message) : null;
+      leftAvatar = !mine ? <OtherAvatar user={other} /> : null;
     }
 
     //let rightAvatar = !mine ? this.renderAvatar(message) : null;

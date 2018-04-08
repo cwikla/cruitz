@@ -69,8 +69,9 @@ class Message < ApplicationRecord
 
     key="thids_#{rid}"
     cache_fetch(key, force: clear) {
-      puts "MESSAGE RECACHING #{rid}"
-      Message.where(root_message_id: rid).or(Message.where(id: rid)).order(:id).pluck(:id)
+      #puts "MESSAGE RECACHING #{rid}"
+      #Message.where(root_message_id: rid).or(Message.where(id: rid)).order(:id).pluck(:id)
+      Message.where(root_message_id: rid).or(Message.where(id: rid)).select(:id).order(:id).pluck(:id)
     }
   end
 
@@ -88,6 +89,10 @@ class Message < ApplicationRecord
 
   def self.threads_for_candidate(candidate)
     Message.where(candidate_id: candidate.id).order(:id)
+  end
+
+  def self.threads_for(user)
+    Message.where(root_message_id: nil).where("user_id = ? or from_user_id = ?", user.id, user.id);
   end
 
     private

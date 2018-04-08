@@ -6,21 +6,12 @@ class CandidateSerializer < ActiveModel::Serializer
     :email,
     :description,
     :job_id,
-    :root_message_id,
     :state,
     :experience,
     :education,
     :skills
 
   has_one :recruiter
-
-  def id
-    object.hashid
-  end
-
-  def job_id
-    object.job_id ? object.job.hashid : nil
-  end
 
   def first_name
     object.head.first_name

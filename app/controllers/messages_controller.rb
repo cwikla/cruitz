@@ -1,10 +1,24 @@
 class MessagesController < ApplicationController
   def index
-    puts "MESSAGES"
-    puts current_user.inspect
+    @threads = Message.threads_for(current_user).limit(100) # FIXME
 
-    mjson = current_user.roots[0..10] # FIXME Message.roots(Message.all_for(current_user))
-    render json: mjson
+    render json: @threads, current_user: current_user
+  end
+
+  def show
+    mid = params[:id]
+    @message = Message.find_for(current_user, mid)
+
+    render json: @message, current_user: current_user
+  end
+
+  def thread
+    mid = params[:id]
+    @message = Message.find_for(current_user, mid)
+
+     ReadThreadJob.mark(@message)
+    
+    render json: @message.thread, current_user: current_user
   end
 
   def new
@@ -42,23 +56,6 @@ class MessagesController < ApplicationController
     end
   end
 
-  def show
-    mid = hid()
-    @message = Message.find_for(current_user, mid)
-    @message = nil if (@message.user_id != current_user.id) && (@message.from_user_id != current_user.id)
-    @thread = nil
-
-    if @message
-      @thread = @message.thread()
-    end
-
-    #mjson = MessageSerializer.new(@message)
-    #tjson = ActiveModel::Serializer::CollectionSerializer.new(@thread)
-
-    ReadThreadJob.mark(@message)
-
-    render json: @message, thread: true
-  end
 
   def lsearch
     result = GeoName.search(params[:term]).map(&:name)
@@ -69,6 +66,6 @@ class MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:body)
+    params.require(:message).permit(:body, :id)
   end
 end

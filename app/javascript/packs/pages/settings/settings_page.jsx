@@ -172,7 +172,7 @@ class SettingsPage extends Page {
         {...this.props}
         onSelect={this.onSelect}
         onAddItem={this.onAddItem}
-        onLoadSelected={this.onLoadSelected}
+        onLoadItem={this.onLoadItem}
 
         selected={this.getSelected()}
         loading={this.state.loading}

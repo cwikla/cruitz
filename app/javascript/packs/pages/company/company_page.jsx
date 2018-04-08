@@ -309,7 +309,7 @@ class CompanyPage extends Page {
         selected={this.context.user.company}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
-        onLoadSelected={this.onLoadSelected}
+        onLoadItem={this.onLoadItem}
       />
     );
 

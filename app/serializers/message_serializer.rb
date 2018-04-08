@@ -2,16 +2,17 @@ class MessageSerializer < ActiveModel::Serializer
   attributes :id,
     :body,
     :parent_message_id,
-    :root_message_id,
-    :job_id,
-    :candidate,
-    :user,
-    :from_user,
+    #:root_message_id,
+    #:job_id,
+    #:candidate,
+    #:user_id,
+    #:from_user_id,
     :created_at,
     :read_at,
-    :job
+    #:job
+    :mine
 
-    belongs_to :job
+    #belongs_to :job
 
   def id
     object.hashid
@@ -38,15 +39,13 @@ class MessageSerializer < ActiveModel::Serializer
     return Pyr::Base::Util::String.emojify(object.body)
   end
 
-  def user
-    result = nil
-    u = User.find(object.user_id)
+  def user_hash(uid)
+    u = User.find(uid) # FIXME
     result = { 
       id: u.hashid,
       first_name: u.first_name,
       last_name: u.last_name
     }
-    return result
   end
 
   def from_user
@@ -61,27 +60,44 @@ class MessageSerializer < ActiveModel::Serializer
   end
 
   def candidate
-    result = nil
-    if object.candidate_id
-      candy = Candidate.find_safe(object.candidate_id)
-      if candy
-        head = candy.head
-        result = { 
-          id: candy.id,
-          first_name: head.first_name,
-          last_name: head.last_name
-        }
-      end
-    end
+    candy = Candidate.find(object.candidate_id)
+    head = candy.head
+    result = { 
+      id: candy.id,
+      first_name: head.first_name,
+      last_name: head.last_name,
+       state: candy.state
+     }
     return result
   end
 
+  def job
+    job = Job.find(object.job_id)
+    {
+      id: job.id,
+      title: job.title,
+    }
+  end
+
+  def mine
+    object.from_user_id == instance_options[:current_user].id
+  end
+
+  def other
+    mine ? user_hash(object.user_id) : user_hash(object.from_user_id)
+  end
+
   def attributes(*args)
-    hash = super
-    if instance_options[:thread]
-      hash[:thread] = ActiveModel::Serializer::CollectionSerializer.new(object.thread)
+    phash = super
+
+    if object.root_message_id.nil?
+      phash[:other] = other
+      phash[:candidate] = CandidateSerializer.new(object.candidate)
+      phash[:job] = JobSerializer.new(object.job)
+      phash[:is_root] = true
     end
-    hash
+
+    phash
   end
 
 end

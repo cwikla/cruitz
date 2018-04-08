@@ -21,10 +21,12 @@ class Page extends Component {
     this.initState({
       nextId: null,
       previd: null,
+      selected: null,
     });
 
     this.onLoadItems = this.loadItems.bind(this);
     this.onLoadItem = this.loadItem.bind(this);
+    this.onSetSelected = this.setSelected.bind(this);
   }
 
 /// OVERRIDE THESE IN SUBLCASS
@@ -194,6 +196,8 @@ class Page extends Component {
     return null;
   }
 
+  // override to return this.state.selected to autoload
+
   getSelected() {
     let items = this.getItems();
 
@@ -231,6 +235,7 @@ class Page extends Component {
       prevId: this.getPrev(),
       onLoadItems: this.onLoadItems,
       onLoadItem: this.onLoadItem,
+      onSetSelected: this.onSetSelected,
     });
   }
 

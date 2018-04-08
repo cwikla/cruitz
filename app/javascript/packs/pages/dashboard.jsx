@@ -39,7 +39,7 @@ import {
   ME_URL,
 } from './const';
 
-const DEFAULT_PAGE = CANDIDATES_PAGE;
+const DEFAULT_PAGE = MESSAGES_PAGE;
 
 const PAGE_MAP = {
   "home" : DashboardPage,
@@ -125,6 +125,7 @@ class LoaderComponent extends Loader.Component {
     this.recruitersLoader = new Loader.Recruiters(this.loaderProps);
     this.jobsLoader = new Loader.Jobs(this.loaderProps);
     this.candidatesLoader = new Loader.Candidates(this.loaderProps);
+    this.messagesLoader = new Loader.Messages(this.loaderProps);
   }
 
   extraProps() {
@@ -133,6 +134,7 @@ class LoaderComponent extends Loader.Component {
         recruiters: this.recruitersLoader,
         jobs: this.jobsLoader,
         candidates: this.candidatesLoader,
+        messages: this.messagesLoader,
       },
 
       // need to see if I can make this a dict...

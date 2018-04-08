@@ -401,7 +401,7 @@ class MePage extends Page {
         selected={this.getSelected()}
         onAction={this.onAction}
         onUnaction={this.onUnaction}
-        onLoadSelected={this.onLoadSelected}
+        onLoadItem={this.onLoadItem}
       />
     );
     

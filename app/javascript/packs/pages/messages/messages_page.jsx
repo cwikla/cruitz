@@ -31,10 +31,6 @@ import {
 import Recruiter from '../shared/recruiter';
 import Job from '../shared/job';
 
-import ThreadItem, { 
-  THREAD_ID 
-} from './thread_item';
-
 import MessageThread, { 
   MessageThreadHeader,
   MessageThreadIndexHeader
@@ -50,13 +46,6 @@ function MID(message) {
   return "message-" + message.id;
 }
 
-function getRecruiter(user, message) {
-  if (message.user.id == user.id) {
-    return message.from_user;
-  }
-  return message.user;
-}
-
 class MessageItem extends Sheet.Item {
   render() {
     let message = this.props.message;
@@ -67,7 +56,7 @@ class MessageItem extends Sheet.Item {
     let id = MID(message);
 
     let mine = message.mine;
-    let ownerClass = (mine ? "mine" : "recruiter"); // FIXME
+    let ownerClass = (mine ? "mine" : "other");
 
     let allClass = ClassNames("item message-item flx-row", ownerClass);
 
@@ -88,7 +77,7 @@ class MessageItem extends Sheet.Item {
     }
 
     let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
-    let theRecruiter = getRecruiter(this.user(), message);
+    let other = message.other;
 
     //console.log("THE MESSAGE");
     //console.log(message);
@@ -101,10 +90,10 @@ class MessageItem extends Sheet.Item {
 
     return (
       <div className={allClass} id={id}>
-        <div className="recruiter flx-col">
+        <div className="other flx-col">
           <UserAvatar
             className={"mt-auto mb-auto"}
-            userId={theRecruiter.id}
+            userId={other.id}
             small
           />
         </div>
@@ -158,46 +147,33 @@ class IndexSheet extends Sheet.Index {
 
 class SideBlurb extends Component {
   render() {
-    let isRecruiter = this.user().is_recruiter;
+    let meIsRecruiter = this.user().is_recruiter;
+    let other = this.props.other;
 
-    if (isRecruiter) {
+    if (meIsRecruiter) {
       return (
         <Job.Blurb job={this.props.job} />
       );
     }
 
-    if (!isRecruiter) {
-      return (
-        <Recruiter.Blurb recruiter={getRecruiter(this.user(), this.props.message)}/>
-      );
-    }
+    return (
+      <Recruiter.Blurb recruiter={other} />
+    );
   }
 }
 
 
 class ShowSheet extends Sheet.Show {
-  size() {
-    return 3;
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      thread: null
+    });
   }
 
-  unused_renderHeader(item) {
-    //if (this.state.isLoading || !item) {
-      //return (<Pyr.UI.Loading />);
-    //}
-
-    let message = item;
-    let job = message.job;
-
-    return (
-        <MessageThreadHeader
-          message={message}
-          job={job}
-          onBack={this.onBack}
-          url={Pyr.URL(MESSAGES_URL)}
-          nextId={this.props.nextId}
-          prevId={this.props.prevId}
-        />
-    );
+  size() {
+    return 3;
   }
 
   renderNone() {
@@ -215,6 +191,42 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
+/********
+  setThread(thread) {
+    if (thread) {
+      thread = thread.slice();
+    }
+
+    this.setState({
+      thread
+    });
+  }
+
+  loadThread(itemId) {
+    let url = Pyr.URL(MESSAGES_URL).push(itemId).push('thread');
+
+    this.getJSON({
+      url: url,
+      onLoading: this.onLoading,
+      context: this
+    }).done((data, textStatus, jqXHR) => {
+      this.setThread(data.messages);
+    });
+  }
+
+  componentDidMount() {
+    if (this.props.itemId) {
+      this.loadThread(this.props.itemId);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.itemId != prevProps.itemId) {
+      this.setThread(null);
+      this.loadThread(this.props.itemId);
+    }
+  }
+*/
 
   renderItem(item, isSelected) {
     if (this.state.isLoading || !this.props.items) {
@@ -229,18 +241,21 @@ class ShowSheet extends Sheet.Show {
     //console.log(item);
 
     let message = item;
-    let thread = message.thread;
     let job = message.job;
+    let candidate = message.candidate;
+    let other = message.other;
 
-    let MessageRender = message.candidate ? MessageThread : MessageQA;
+    let ThreadRender = message.candidate ? MessageThread : MessageQA;
 
     return (
      <div className="item flx-1 flx-row">
         <div className="flx-col flx-3 left">
           <div className="job-title">{job.title}</div>
-          <MessageRender
+          <ThreadRender
             message={message}
             job={job}
+            candidate={candidate}
+            other={other}
             onBack={this.onBack}
             url={Pyr.URL(MESSAGES_URL)}
             onSetItems={this.props.onSetItems}
@@ -251,6 +266,8 @@ class ShowSheet extends Sheet.Show {
           <SideBlurb 
             message={message} 
             job={job}
+            candidate={candidate}
+            other={other}
           />
         </div>
       </div>
@@ -285,118 +302,8 @@ class IndexShowSheet extends Sheet.IndexShow {
 ///////////////
 
 class MessagesPage extends Page {
-  constructor(props) {
-    super(props);
-
-    this.initState({
-      fullDetail: true,
-    });
-  }
-
   name() {
     return "Messages";
-  }
-
-  reduceItems(messages) { // throw out all but the last from the thread
-
-    messages = messages || [];
-    let threads = messages.reduce((mmap, msg) => {
-      let threadId = msg.root_message_id || msg.id;
-
-      if (!mmap[threadId] || mmap[threadId].id < msg.id) {
-
-        let job = msg.job;
-        //console.log("MINE: " + msg.from_user_id + ":" + this.user().id);
-        let mine = (msg.from_user.id == this.user().id);
-        let is_root = !msg.root_message_id;
-
-        mmap[threadId] = Object.assign({}, msg, { job, mine, is_root});
-      }
-      return mmap;
-    }, {});
-
-    return Object.values(threads);
-
-  }
-
-  setItemCompare(a, b) {
-    return (a.root_message_id == b.root_message_id);
-  }
-
-  setItemOld(item) {
-    if (!item) {
-      return;
-    }
-    //console.log("SET ITEM: " + item);
-
-    let result = this.reduceItems(item);
-    super.setItem(result[0]);
-  }
-
-  setItems(items) {
-    items = this.reduceItems(items);
-    let count = items.reduce((sum, msg) => {
-      sum = sum + ((msg.mine || msg.read_at) ? 0 :1);
-      return sum;
-    }, 0);
-    this.props.onSetPageItemsCount(MESSAGES_PAGE, count);
-
-    let first = items ? items[0] : null;
-    //console.log("SET FIRST SELECTED");
-    //console.log(first);
-
-    if (first) {
-      this.loadSelected(first.id);
-    }
-
-    //console.log("MMMMM");
-    //console.log(items);
-
-    super.setItems(items);
-  }
-
-  loadSelected(itemId, onLoading) {
-    //console.log("MESSAGES GET ITEM: " + itemId);
-
-    if (!itemId) {
-      return;
-    }
-
-    let me = this;
-
-    this.getJSON({
-      url: Pyr.URL(MESSAGES_URL).push(itemId),
-      context: me,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        //console.log("LOADED SELECTED");
-        //console.log(data.message);
-
-        me.onSelect(data.message);
-
-    });
-  }
-
-  getSelected() {
-    return this.state.selected;
-  }
-
-  loadItems(onLoading) {
-    //console.log("MESSAGES GET ITEMS..." + this.constructor.name);
-    //console.log(MESSAGES_URL);
-
-    let me = this;
-
-    return this.getJSON({
-      url: Pyr.URL(MESSAGES_URL),
-      context: me,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        me.setItems(data.messages);
-
-    });
   }
 
   getNext(item) {
@@ -444,6 +351,10 @@ class MessagesPage extends Page {
       nextId,
       prevId,
     });
+  }
+
+  loader() {
+    return this.props.loaders.messages;
   }
 
   getIndexSheet() {

@@ -84,26 +84,42 @@ class MessageThreadHeader extends Component {
 }
 
 class ThreadList extends Component {
+  getThread() {
+    return this.props.thread;
+  }
+
   render() {
-    if (!this.props.thread || this.props.thread.length < 1) {
+    if (!this.getThread()) {
       return (<Pyr.UI.Loading />);
     }
-  
-    let thid = "thread-" + this.props.message.root_message_id || this.props.message.id;
+
+    let rootMessage = this.props.message;
+    let thid = "thread-" + rootMessage.id;
 
     let skipCount = this.props.skipCount || 0;
-  
+
+    let thread = this.getThread();
+
+    let job = rootMessage.job;
+    let candidate = rootMessage.candidate;
+    let other = rootMessage.other;
+
     return (
       <div id={thid} className="message-thread flx-1">
         {
-          this.props.thread.map((msg, pos) => {
+          thread.map((msg, pos) => {
             if (pos < skipCount) {
               return null;
             }
-            return ( <ThreadItem message={msg}
-                      job={this.props.job}
-                      isSelected={msg.id == this.props.message.id}
-                      key={thid+"-"+msg.id}/>
+            return ( <ThreadItem 
+                      rootMessage={rootMessage}
+                      message={msg}
+                      mine={msg.mine}
+                      job={job}
+                      candidate={candidate}
+                      other={other}
+                      key={thid+"-"+msg.id}
+                    />
             );
           })
         }
@@ -184,8 +200,8 @@ class Content extends Component {
         onScroll={this.props.onScroll}
       >
         <ThreadList
-          thread={this.props.thread}
           message={this.props.message}
+          thread={this.props.thread}
           job={this.props.job}
           skipCount={this.props.skipCount}
         />
@@ -251,41 +267,6 @@ class MessageThread extends Component {
 
   }
 
-  threadExtra(thread) {
-    let all = [];
-    let userId = this.user().id;
-
-    thread.map((item, pos) => {
-      item.is_root = !item.root_message_id;
-      item.mine = (item.from_user.id == userId);
-      item.read_at = new Date(); // got it so pretend it's been read, server is updating
-    });
-
-    return thread;
-  }
-
-  setThread(thread) {
-    this.setState({
-      thread: this.threadExtra(thread),
-    });
-    //this.props.onSetItem(thread);
-  }
-
-  getThread(mid) {
-    let self =  this;
-
-    let url =  Pyr.URL(MESSAGES_URL).push(mid);
-
-    return this.getJSON({
-      url: url,
-      context: self,
-      onLoading: self.onLoading
-    }).done((data, textStatus, jqXHR) => {
-      self.setThread(data.message.thread);
-
-    });
-  }
-
   success(data, textStatus, jqXHR) {
     let thread = this.state.thread || [];
     thread = thread.concat(data.message);
@@ -298,20 +279,52 @@ class MessageThread extends Component {
   }
 
 
-  componentWillMount() {
-    let mid = this.props.message ? this.props.message.id : this.props.messageId;
-
-    if (mid) {
-      this.getThread(mid);
+  setThread(thread) {
+    if (thread) {
+      thread = thread.slice(); // make sure it's writable
     }
+
+    this.setState({
+      thread
+    });
+  }
+
+  getThread() {
+    return this.state.thread;
+  }
+
+  loadThread(mid) {
+    let self =  this;
+
+    let url =  Pyr.URL(MESSAGES_URL).push(mid).push('thread');
+
+    this.setThread(null); 
+
+    return this.getJSON({
+      url: url,
+      context: self,
+      onLoading: self.onLoading
+    }).done((data, textStatus, jqXHR) => {
+      self.setThread(data.messages);
+
+    });
+  }
+
+  componentWillMount() {
+    if (!this.props.message) {
+      return;
+    }
+
+    let mid = this.props.message.id;
+    this.loadThread(mid);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let mid = this.props.message ? this.props.message.id : this.props.messageId;
-    let oid = prevProps.message ? prevProps.message.id : prevProps.messageId;
+    let mid = this.props.message ? this.props.message.id : null;
+    let oid = prevProps.message ? prevProps.message.id : null;
 
     if (mid != oid) {
-      this.getThread(mid);
+      this.loadThread(mid);
     }
   }
 
@@ -325,37 +338,41 @@ class MessageThread extends Component {
     );
   }
 
-  renderContent(message) {
+  renderContent() {
+    let thread = this.getThread();
+    if (!thread) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+
     return (
         <Content
-          ref={(node) => this.content = (node)}
-          message={message}
-          thread={this.state.thread}
-          onScroll={this.props.onScroll}
-          job={this.props.job}
-          skipCount={this.props.skipCount}
-        >
-        </Content>
+          {...this.props}
+          thread={this.getThread()}
+        />
     );
   }
 
-  renderFooter(message, label="Reply") {
+  renderFooter() {
     if (this.props.readOnly) {
       return;
     }
+
+    let label = this.props.label || "Reply";
+
     return (
         <Footer
-          message={message}
+          {...this.props}
+          thread={this.getThread()}
           onSuccess={this.onSuccess}
           label={label}
-          url={this.props.url}
         />
     );
   }
 
   render() {
-    let message = this.state.thread ? this.state.thread[this.state.thread.length-1] : null;
-    if (!message) {
+    if (!this.props.message) {
       return <Pyr.UI.Loading />
     }
 
@@ -363,8 +380,8 @@ class MessageThread extends Component {
       <div 
         className={ClassNames("flx-col flx-1 thread").push(this.props.className)}
       >
-        {this.renderContent(message)}
-        {this.renderFooter(message)}
+        {this.renderContent()}
+        {this.renderFooter()}
       </div>
     );
   }

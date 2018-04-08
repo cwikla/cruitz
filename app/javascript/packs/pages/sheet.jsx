@@ -415,7 +415,9 @@ class Show extends Base {
   componentDidMount() {
     if (!this.props.selected && this.props.itemId) {
       //console.log("GETTING SELECTED");
-      this.props.onLoadSelected(this.props.itemId, this.onLoading);
+      this.props.onLoadItem(this.props.itemId, this.onLoading).done(result => {
+        this.props.onSetSelected(result);
+      });
     }
   }
 
@@ -424,7 +426,7 @@ class Show extends Base {
       //console.log("UPDATED GETTING SELECTED");
       if (this.props.itemId && !this.props.selected) {
         alert("HMMMMM Nothing selected!!!");
-        //this.props.onLoadSelected(this.props.itemId, this.onLoading);
+        //this.props.onLoadItem(this.props.itemId, this.onLoading);
       }
     }
   }
@@ -529,7 +531,7 @@ class Edit extends Form {
   componentDidMount() {
     if (!this.props.selected) {
       //console.log("GETTING SELECTED");
-      this.props.onLoadSelected(this.props.itemId, this.onLoading);
+      this.props.onLoadItem(this.props.itemId, this.onLoading);
     }
   }
 

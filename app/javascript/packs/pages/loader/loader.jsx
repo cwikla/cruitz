@@ -15,6 +15,7 @@ import {
   POSITIONS_URL,
   HEADS_URL,
   CANDIDATES_URL,
+  MESSAGES_URL,
 } from '../const';
 
 class LoaderComponent extends Component {
@@ -290,6 +291,12 @@ class Heads extends LoaderBase {
 
 }
 
+class Messages extends LoaderBase {
+  url() {
+    return MESSAGES_URL;
+  }
+}
+
 const Loader = {
   Component : LoaderComponent,
   Jobs,
@@ -297,6 +304,7 @@ const Loader = {
   Positions,
   Heads,
   Candidates,
+  Messages,
 };
 
 export default Loader;

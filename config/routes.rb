@@ -71,6 +71,7 @@ Rails.application.routes.draw do
 
 
       post 'messages/:id' => 'messages#create'
+      get 'messages/:id/thread' => 'messages#thread'
       resources :messages
    
       post 'positions/search' => 'positions#search' 
