@@ -157,6 +157,8 @@ class LoaderBase {
   setData(data) {
     let name = this.name();
 
+    console.log("SET DATA FOR: " + name);
+    console.log(data);
     this.setItems(data[name]);
   }
 
