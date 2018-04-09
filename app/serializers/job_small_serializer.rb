@@ -8,7 +8,10 @@ class JobSmallSerializer < ActiveModel::Serializer
               :category,
               :salary,
               :salary_high,
-              :salary_doe
+              :salary_doe,
+              :company
+
+  has_one :company
 
   def category
     cat = object.categories.first

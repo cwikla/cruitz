@@ -16,7 +16,7 @@ class JobsController < ApplicationController
     puts "PARAMS"
     puts spar
 
-    all = Job.full_search(spar).limit(50)
+    all = Job.full_search(spar).limit(100)
     #all = []
 
     render json: all, company: true

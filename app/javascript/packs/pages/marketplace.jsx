@@ -77,7 +77,7 @@ class SubNavBar extends Container.NavBar {
   render() {
     console.log("SUB NAV BAR");
     console.log(this.props.page);
-    
+   
     let positionsCount = this.props.pageItemsCount.positions;
     let messagesCount = this.props.pageItemsCount.messages;
     let headsCount = this.props.pageItemsCount.heads;
@@ -102,6 +102,24 @@ class SubNavBar extends Container.NavBar {
 }
 
 class MarketPlace extends Container.Base {
+  getDefaultPage() {
+    return DEFAULT_PAGE;
+  }
+
+  pageToComponent(page) {
+    return super.pageToComponent(page) || PAGE_MAP[page];
+  }
+
+  renderSubNavBar() {
+    return (
+      <SubNavBar user={this.user()} page={this.getPage()} pageItemsCount={this.props.pageItemsCount}/>
+    );
+
+  }
+
+}
+
+class LoaderComponent extends Loader.Component {
   constructor(props) {
     super(props);
 
@@ -129,40 +147,40 @@ class MarketPlace extends Container.Base {
     this.messagesLoader = new Loader.Messages(loaderProps);
   }
 
-  extraProps(page) {
+  extraProps() {
     return Object.assign({}, {
       loaders: {
         positions: this.positionsLoader,
         heads: this.headsLoader,
+        messages: this.messagesLoader,
       },
-      positions,
-      positionsMap,
 
-      heads,
-      headsMap,
+      // need to see if I can make this a dict...
+      positions: this.state.positions,
+      positionsMap: this.state.positionsMap,
 
-      messages,
-      messagesMap,
+      heads: this.state.heads,
+      headsMap: this.state.headsMap,
+
+      messages: this.state.messages,
+      messagesMap: this.state.messagesMap,
     });
   }
 
+  render() {
+    let props = this.getProps();
 
-  getDefaultPage() {
-    return DEFAULT_PAGE;
-  }
-
-  pageToComponent(page) {
-    return super.pageToComponent(page) || PAGE_MAP[page];
-  }
-
-  renderSubNavBar() {
     return (
-      <SubNavBar user={this.user()} page={this.getPage()} pageItemsCount={this.state.pageItemsCount}/>
+      <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE} {...props} >
+        <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+        <Pyr.UI.RouteURL path="/heads/new" page="heads" action="new" />
+        <Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
+        <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
+      </Pyr.UI.RouterProps>
     );
-
   }
-
 }
+
 
 class Hello extends Component {
   render() {
@@ -176,12 +194,7 @@ class Hello extends Component {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE}  >
-        <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
-        <Pyr.UI.RouteURL path="/heads/new" page="heads" action="new" />
-        <Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
-        <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
-      </Pyr.UI.RouterProps>
+      <LoaderComponent />
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 

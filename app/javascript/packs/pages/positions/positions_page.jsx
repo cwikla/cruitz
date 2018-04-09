@@ -107,6 +107,7 @@ class IndexSheet extends Sheet.Index {
 
     if (!items) {
       console.log("POS RENDER LOADING");
+      console.log(this.props);
       return this.renderLoading();
     }
 
@@ -429,25 +430,6 @@ class PositionsPage extends Page {
   name() {
     return "Position";
   }
-
-  setSelected(selected) {
-    //console.log("SELECTED " + JSON.stringify(selected));
-    if (!selected) {
-      //alert("SETTING TO NULL");
-      //console.log("SETTING TO NULL!!!!!!");
-    }
-
-    this.setState({
-      selected
-    });
-  }
-
-  setHead(head) {
-    this.setState({
-      head
-    });
-  }
-
 
   loader() {
     return this.props.loaders.positions;

@@ -22,7 +22,6 @@ class JobSerializer < JobSmallSerializer
 
   def attributes(*args)
     stuff = super
-    stuff[:company] = CompanySerializer.new(object.user.company)
 
     if instance_options[:candidates]
       stuff[:candidates] = ActiveModel::Serializer::CollectionSerializer.new(object.candidates) 
