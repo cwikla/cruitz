@@ -41,7 +41,7 @@ class MessageSerializer < ActiveModel::Serializer
 
   def user_hash(uid)
     u = User.find(uid) # FIXME
-    puts("FOUND USER #{u.id}")
+    #puts("FOUND USER #{u.id}")
     result = { 
       id: u.hashid,
       first_name: u.first_name,
@@ -91,7 +91,7 @@ class MessageSerializer < ActiveModel::Serializer
   def attributes(*args)
     phash = super
 
-    puts "****GOT #{object.candidate}"
+    #puts "****GOT #{object.candidate}"
 
     if object.root_message_id.nil?
       phash[:other] = other
