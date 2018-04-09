@@ -1,5 +1,5 @@
 class PositionsController < ApplicationController
-  LIMIT = 100
+  LIMIT = 50
 
   def index
     all = Job.order("-id").limit(LIMIT)
