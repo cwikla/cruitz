@@ -522,11 +522,11 @@ h3.title {
 }
 
 input[type="text"]::placeholder {
+  color: $med_gray_color;
 }
 
-textarea {
-  &::placeholder {
-  }
+textarea::placeholder {
+  color: $med_gray_color;
 }
 
 label {

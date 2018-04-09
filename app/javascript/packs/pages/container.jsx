@@ -317,8 +317,8 @@ class Base extends Component {
       classes = "col flx-col flx-1 main-page";
     }
 
-  console.log("CONTAINER PROPS");
-  console.log(props);
+  //console.log("CONTAINER PROPS");
+  //console.log(props);
 
     return (
         <main

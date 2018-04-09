@@ -1,11 +1,11 @@
 class JobsController < ApplicationController
   def index
-    render json: current_user.jobs.includes(:user)
+    render json: current_user.jobs.includes(:skills, :locations, :job_locations)
   end
 
   def open
-    all = Job.order("-id").limit(50)
-    render json: all, company: true, submitted_candidates: true
+    all = Job.order("-id").limit(100)
+    render json: all, company: true #, submitted_candidates: true
   end
 
   def search

@@ -272,6 +272,10 @@ class EditSheet extends Sheet.Edit {
   }
 
   renderForm() {
+    if (!this.props.categories) { // wait for cats to show up
+      return <Pyr.UI.Loading />
+    }
+
     return (
       <JobForm
         company={this.user().company}
@@ -446,7 +450,7 @@ class IndexShowSheet extends Sheet.IndexShow {
 
 class NewSheet extends Sheet.New {
   success(data, textStatus, jqXHR) {
-    this.props.onJobCreate(data.job);
+    this.props.onAddItem(data.job);
     super.success(data, textStatus, jqXHR);
     this.context.setNotice("Job Created");
     this.goBack();
@@ -461,6 +465,10 @@ class NewSheet extends Sheet.New {
   }
 
   renderForm() { 
+    if (!this.props.categories) { // wait for cats to show up
+      return <Pyr.UI.Loading />
+    }
+
     return ( 
       <JobForm 
         company={this.user().company}
@@ -499,6 +507,21 @@ class JobsPage extends Page {
     let ActionSheet = eval(sheet);
 
     return ActionSheet;
+  }
+
+  componentDidMount() {
+    this.getJSON({
+      url: Pyr.URL(CATEGORIES_URL),
+      onLoading: this.onLoading
+    }).done((data, textStatus, jqXHR) => {
+      this.setState({
+        categories: data.categories
+      });
+    });
+  }
+
+  pageProps() {
+    return Object.assign({}, { categories: this.state.categories }, super.pageProps() );
   }
 }
 

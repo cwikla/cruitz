@@ -26,6 +26,7 @@ class Page extends Component {
 
     this.onLoadItems = this.loadItems.bind(this);
     this.onLoadItem = this.loadItem.bind(this);
+    this.onAddItem = this.addItem.bind(this);
     this.onSetSelected = this.setSelected.bind(this);
   }
 
@@ -82,6 +83,10 @@ class Page extends Component {
     let me = this;
 
     return this.loader().loadItem(itemId, {onLoading});
+  }
+
+  addItem(item) {
+    this.loader().add(item);
   }
 
   getItemId() {
@@ -244,6 +249,7 @@ class Page extends Component {
       prevId: this.getPrev(),
       onLoadItems: this.onLoadItems,
       onLoadItem: this.onLoadItem,
+      onAddItem: this.onAddItem,
       onSetSelected: this.onSetSelected,
     });
   }
