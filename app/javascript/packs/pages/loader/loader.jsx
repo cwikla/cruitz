@@ -90,8 +90,8 @@ class LoaderComponent extends Component {
     let itemMap = null;
 
     if (items) {
-      console.log("ITEMS ET TO");
-      console.log(items);
+      //console.log("ITEMS ET TO");
+      //console.log(items);
       items = this.sortItems(items);
       itemMap = items.reduce((m, o) => {m[o.id] = o; return m;}, {});
     }
@@ -102,8 +102,8 @@ class LoaderComponent extends Component {
     stuff['pageItemsCount'] = this.state.pageItemsCount || {};
     stuff.pageItemsCount[name] = items ? items.length : 0;
 
-    console.log("SET ITEMS STUFF");
-    console.log(stuff);
+    //console.log("SET ITEMS STUFF");
+    //console.log(stuff);
 
     this.setState(stuff);
   }
@@ -163,7 +163,7 @@ class LoaderBase {
 
   load(props={}) {
     if (!props.force && this.items()) {
-      console.log("Items already loaded for " + this.name());
+      //console.log("Items already loaded for " + this.name());
       return null; // already loaded, use reset
     }
 
@@ -176,8 +176,8 @@ class LoaderBase {
       onLoading: props.onLoading,
 
     }).done((data, textStatus, jqXHR) => {
-        console.log("SETTING ITEMS: " + this.name());
-        console.log(data);
+        //console.log("SETTING ITEMS: " + this.name());
+        //console.log(data);
         this.setData(data);
     });
   }
@@ -243,7 +243,7 @@ class LoaderBase {
   }
 
   reset() {
-    console.log("RESETTING: " + this.name());
+    //console.log("RESETTING: " + this.name());
     this.setItems(null);
   }
 }
@@ -277,8 +277,8 @@ class Positions extends LoaderBase {
   }
 
   setData(data) {
-    console.log("POSITIONS LOADER");
-    console.log(this.props);
+    //console.log("POSITIONS LOADER");
+    //console.log(this.props);
     this.setItems(data.jobs);
   }
 

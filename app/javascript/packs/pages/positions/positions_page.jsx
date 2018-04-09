@@ -85,7 +85,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderItem(item, isSelected) {
-    console.log("RENDER ITEM");
+    //console.log("RENDER ITEM");
     return (
       <Job.Card
         job={item}
@@ -98,7 +98,7 @@ class IndexSheet extends Sheet.Index {
   }
 
   renderChildren(items, isSelected) {
-    console.log("RENDER CHILDREN");
+    //console.log("RENDER CHILDREN");
     return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
   }
 
@@ -106,8 +106,8 @@ class IndexSheet extends Sheet.Index {
     let items = this.getItems();
 
     if (!items) {
-      console.log("POS RENDER LOADING");
-      console.log(this.props);
+      //console.log("POS RENDER LOADING");
+      //console.log(this.props);
       return this.renderLoading();
     }
 
