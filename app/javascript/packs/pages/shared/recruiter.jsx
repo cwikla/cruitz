@@ -16,6 +16,7 @@ import {
   UserAvatar,
   UserScore,
   Stars,
+  getLogo,
 } from '../shared/user';
 
 import {
@@ -25,12 +26,22 @@ import {
 
 class Blurb extends Component {
   render() {
-    let rest = Pyr.Util.propsRemove(this.props, "recruiter");
     let recruiter = this.props.recruiter;
+    let rest = Pyr.Util.propsRemove(this.props, "recruiter");
+
+    let inlineStyle = {
+/*
+      backgroundImage: "url(" + getLogo(recruiter.id) + ")",
+      backgroundColor: "rgba(255,255,255,0.5)"
+*/
+    };
+
+ //   console.log(inlineStyle);
+
 
     return (
-      <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-blurb")} >
-        <div className="icon flx-row flx-start">
+      <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-blurb")} style={inlineStyle}>
+        <div className="icon flx-row flx-start" >
           <Pyr.UI.IconButton name="flag" className="spam"/>
           <Pyr.UI.IconButton name="eye" className="ml-auto"/>
         </div>

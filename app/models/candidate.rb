@@ -50,7 +50,7 @@ class Candidate < ApplicationRecord
       puts "GOT CANDIDATE"
       puts candidate.inspect
 
-      recruiter = head.user
+      recruiter = head.recruiter
     
       msg = nil 
       msg = Message.create!(candidate: candidate, user: candidate.hirer, from_user: recruiter, job: job, body: body) if body

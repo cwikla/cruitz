@@ -2,11 +2,11 @@ class JobsController < ApplicationController
   LIMIT = 25
 
   def index
-    render json: current_user.jobs.includes(:skills, :locations, :job_locations)
+    render json: current_user.jobs.includes(:skills, :locations, :job_locations, :company, :job_skills)
   end
 
   def open
-    all = Job.order("-id").limit(LIMIT)
+    all = Job.order("-id").includes(:company, :locations, :job_locations, :skills, :job_skills).limit(LIMIT)
     render json: all, company: true #, submitted_candidates: true
   end
 
@@ -18,7 +18,7 @@ class JobsController < ApplicationController
     puts "PARAMS"
     puts spar
 
-    all = Job.full_search(spar).limit(LIMIT)
+    all = Job.full_search(spar).includes(:company, :locations, :job_locations, :skills, :job_skills).limit(LIMIT)
     #all = []
 
     render json: all, company: true

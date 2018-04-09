@@ -1224,8 +1224,8 @@ class AutoComplete extends Child {
     //console.log("OPTION");
     //console.log(option);
 
-    console.log("PROPS");
-    console.log(this.props);
+    //console.log("PROPS");
+    //console.log(this.props);
 
     let lk = this.labelKey();
 
@@ -1249,7 +1249,7 @@ class AutoComplete extends Child {
   }
 
   inputChange(text) {
-    console.log("INPUT CHANGE: " + text);
+    //console.log("INPUT CHANGE: " + text);
     this.setState({
       value: text
     });

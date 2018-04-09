@@ -8,11 +8,12 @@ class JobSerializer < JobSmallSerializer
   #belongs_to :company
 
   def candidate_counts
+   counts = object.candidates.group(:state).count
    {
-      total: object.candidates.count,
-      accepted: object.candidates.accepted.count,
-      rejected: object.candidates.rejected.count,
-      waiting: object.candidates.isnew.count
+      total: counts.values.reduce(:+) || 0,
+      accepted: counts[Candidate::ACCEPTED_STATE] || 0,
+      rejected: object[Candidate::REJECTED_STATE] || 0,
+      waiting: object[Candidate::SUBMITTED_STATE] || 0,
     }
   end
 

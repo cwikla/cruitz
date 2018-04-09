@@ -28,6 +28,7 @@ class Page extends Component {
     this.onLoadItem = this.loadItem.bind(this);
     this.onAddItem = this.addItem.bind(this);
     this.onSetSelected = this.setSelected.bind(this);
+    this.onSetItems = this.setItems.bind(this);
   }
 
 /// OVERRIDE THESE IN SUBLCASS
@@ -87,6 +88,10 @@ class Page extends Component {
 
   addItem(item) {
     this.loader().add(item);
+  }
+
+  setItems(items) {
+    this.loader().setItems(items);
   }
 
   getItemId() {
@@ -250,6 +255,7 @@ class Page extends Component {
       onLoadItems: this.onLoadItems,
       onLoadItem: this.onLoadItem,
       onAddItem: this.onAddItem,
+      onSetItems: this.onSetItems,
       onSetSelected: this.onSetSelected,
     });
   }

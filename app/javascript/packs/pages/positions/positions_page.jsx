@@ -74,7 +74,8 @@ class IndexSheet extends Sheet.Index {
     let all = {
       data,
       url: POSITIONS_URL,
-      method: Pyr.Method.POST
+      method: Pyr.Method.POST,
+      force: true
     };
 
     this.props.onLoadItems(this.props.onLoading, all);
@@ -372,16 +373,16 @@ class HeadLoader extends Component {
   }
 
   loadHead(headId) {
-    //console.log("HEAD LOADER");
-    //console.log(headId);
+    console.log("HEAD LOADER");
+    console.log(headId);
 
     this.getJSON({
       url: Pyr.URL(HEADS_URL).push(headId),
       onLoading: this.props.onLoading
 
     }).done((data, textStatus, jqXHR) => {
-      //console.log("GOT HEAD");
-      //console.log(data);
+      console.log("GOT HEAD");
+      console.log(data);
       this.onSetHead(data.head);
 
     });
@@ -389,7 +390,7 @@ class HeadLoader extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.headId!= this.props.headId) {
-      //console.log("PAGE GOT NEW ID: " + nextProps.headId);
+      console.log("PAGE GOT NEW ID: " + nextProps.headId);
       this.setState({
         head: null
       });
@@ -408,10 +409,10 @@ class HeadLoader extends Component {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    //console.log("ACTION SHEET");
-    //console.log(sheet);
-    //console.log(this.props);
-    //console.log(this.state.head);
+    console.log("ACTION SHEET");
+    console.log(sheet);
+    console.log(this.props);
+    console.log(this.state.head);
 
     return (
       <ActionSheet
@@ -439,11 +440,24 @@ class PositionsPage extends Page {
     return IndexSheet;
   }
 
+  getHeadId() {
+    return this.props.subItemId;
+  }
+
+  pageProps() {
+    let stuff = super.pageProps();
+    return Object.assign({}, stuff, { headId: this.getHeadId() });
+  }
+
   getActionSheet(action) {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    return ActionSheet;
+    console.log("ACTION");
+    console.log(action);
+    console.log(ActionSheet);
+
+    return HeadLoader; // ActionSheet;
   }
 }
 
@@ -458,6 +472,7 @@ class SearchForm extends Component {
     this.onGetTarget = this.getTarget.bind(this);
     this.onRenderAge = this.renderAge.bind(this);
     this.onSuccess = this.success.bind(this);
+    this.onPreSubmit = this.preSubmit.bind(this);
   }
 
   getTarget() {
@@ -470,7 +485,13 @@ class SearchForm extends Component {
   }
 
   success(data, textStatus, jqXHR) {
+    //console.log("SUCCESSS");
+    //console.log(data);
     this.props.onSetItems(data.jobs || []);
+  }
+
+  preSubmit() {
+    this.props.onSetItems(null);
   }
 
   render() {
@@ -480,7 +501,7 @@ class SearchForm extends Component {
           url={Pyr.URL(POSITIONS_URL).push("search")}
           method={Pyr.Method.POST}
           ref={(node) =>{ this.form = node; }}
-          onPreSubmit={this.props.onPreSubmit}
+          onPreSubmit={this.onPreSubmit}
           onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.onSuccess}
           onError={this.props.onError}

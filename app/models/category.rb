@@ -14,7 +14,8 @@ class Category < ApplicationRecord
   end
 
   def self.categories(clear = false)
-    self.find(categories_ids(clear))
+    Category.all
+    #self.find(categories_ids(clear))
   end
 
   def self.get_category_by_name(names)

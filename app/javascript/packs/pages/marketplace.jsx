@@ -75,8 +75,8 @@ class NavBar extends Component {
 
 class SubNavBar extends Container.NavBar {
   render() {
-    console.log("SUB NAV BAR");
-    console.log(this.props.page);
+    //console.log("SUB NAV BAR");
+    //console.log(this.props.page);
    
     let positionsCount = this.props.pageItemsCount.positions;
     let messagesCount = this.props.pageItemsCount.messages;
