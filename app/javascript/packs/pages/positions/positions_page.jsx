@@ -373,24 +373,16 @@ class HeadLoader extends Component {
   }
 
   loadHead(headId) {
-    console.log("HEAD LOADER");
-    console.log(headId);
-
-    this.getJSON({
-      url: Pyr.URL(HEADS_URL).push(headId),
-      onLoading: this.props.onLoading
-
-    }).done((data, textStatus, jqXHR) => {
-      console.log("GOT HEAD");
-      console.log(data);
-      this.onSetHead(data.head);
-
+    this.props.loaders.heads.loadItem(headId).done(head => {
+      //console.log("LOAD HEAD");
+      //console.log(head);
+      this.onSetHead(head);
     });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.headId!= this.props.headId) {
-      console.log("PAGE GOT NEW ID: " + nextProps.headId);
+      //console.log("PAGE GOT NEW ID: " + nextProps.headId);
       this.setState({
         head: null
       });
@@ -409,10 +401,10 @@ class HeadLoader extends Component {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    console.log("ACTION SHEET");
-    console.log(sheet);
-    console.log(this.props);
-    console.log(this.state.head);
+    //console.log("ACTION SHEET");
+    //console.log(sheet);
+    //console.log(this.props);
+    //console.log(this.state.head);
 
     return (
       <ActionSheet
@@ -453,9 +445,9 @@ class PositionsPage extends Page {
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
-    console.log("ACTION");
-    console.log(action);
-    console.log(ActionSheet);
+    //console.log("ACTION");
+    //console.log(action);
+    //console.log(ActionSheet);
 
     return HeadLoader; // ActionSheet;
   }

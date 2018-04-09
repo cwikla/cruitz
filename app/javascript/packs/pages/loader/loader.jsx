@@ -200,7 +200,7 @@ class LoaderBase {
   loadItem(mid, props={}) {
     let itemName = this.singular();
 
-    return this.loadItemInner(mid, props).done((data, textStatus, jaXHR) => {
+    return this.loadItemInner(mid, props).then((data, textStatus, jaXHR) => {
       return data[itemName];
     });
   }
