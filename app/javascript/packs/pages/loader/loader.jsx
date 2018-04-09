@@ -127,6 +127,7 @@ class LoaderBase {
   }
 
   name() {
+    alert("You need to override name - minification fucks this up.");
     return this.constructor.name.toLowerCase(); // override if need be
   }
 
@@ -157,8 +158,8 @@ class LoaderBase {
   setData(data) {
     let name = this.name();
 
-    console.log("SET DATA FOR: " + name);
-    console.log(data);
+    //console.log("SET DATA FOR: " + name);
+    //console.log(data);
     this.setItems(data[name]);
   }
 
@@ -251,18 +252,30 @@ class LoaderBase {
 }
 
 class Jobs extends LoaderBase {
+  name() {
+    return "jobs";
+  }
+
   url() {
     return JOBS_URL;
   }
 }
 
 class Recruiters extends LoaderBase {
+  name() {
+    return "recruiters";
+  }
+
   url() {
     return RECRUITERS_URL;
   }
 }
 
 class Candidates extends LoaderBase {
+  name() {
+    return "candidates";
+  }
+
   url(props) {
     return Pyr.URL(JOBS_URL).push(props.jobId).push(CANDIDATES_URL);
   }
@@ -274,6 +287,10 @@ class Candidates extends LoaderBase {
 
 
 class Positions extends LoaderBase {
+  name() {
+    return "positions";
+  }
+
   url() {
     return POSITIONS_URL;
   }
@@ -287,6 +304,10 @@ class Positions extends LoaderBase {
 }
 
 class Heads extends LoaderBase {
+  name() {
+    return "heads";
+  }
+
   url() {
     return HEADS_URL;
   }
@@ -294,6 +315,10 @@ class Heads extends LoaderBase {
 }
 
 class Messages extends LoaderBase {
+  name() {
+    return "messages";
+  }
+
   url() {
     return MESSAGES_URL;
   }

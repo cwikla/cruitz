@@ -381,9 +381,9 @@ class Index extends Base {
   renderInner(props={}) {
     let items = this.getItems();
 
-    console.log("RENDER INNER");
-    console.log(this.state);
-    console.log(items);
+   // console.log("RENDER INNER");
+    //console.log(this.state);
+    //console.log(items);
 
     if (this.state.isLoading || !items) {
       //console.log("B");
