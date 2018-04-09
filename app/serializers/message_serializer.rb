@@ -18,14 +18,6 @@ class MessageSerializer < ActiveModel::Serializer
     object.hashid
   end
 
-  def parent_message_id
-    object.parent_message_id ? object.parent_message.hashid : nil
-  end
-
-  def root_message_id
-    object.root_message_id ? object.root_message.hashid : nil
-  end
-
   def created_at
     object.created_at.in_time_zone.iso8601 if object.created_at
   end
