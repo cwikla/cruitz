@@ -621,11 +621,16 @@ label {
 
 .recruiter-blurb, %recruiter-blurb {
   font-size: 0.9rem;
-
-  padding: 0.75rem;
-  border: 1px solid $border_color;
-  b-border-radius: 10px;
+  border: 1px solid black;
   background-color: white;
+
+  .rec-blurb-inner {
+  }
+
+  .rec-blurb-inner > div{
+    margin: 0.5rem;
+    padding: 1rem;
+  }
 
   .icon .fa {
     font-size: 1.25rem;
@@ -979,6 +984,10 @@ label {
   }
 }
 
+.fifty {
+  background-color: rgba(255, 255, 255, 0.85);
+  margin: -1rem;
+}
 
 
 
