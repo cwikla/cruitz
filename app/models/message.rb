@@ -18,8 +18,8 @@ class Message < ApplicationRecord
 
   def after_cached
     puts "AFTER MESSAGE CACHED MESSAGE => #{self.id}"
-    self.thread_ids_cached(true)
-    self.thread_last_cached(true)
+    #self.thread_ids_cached(true)
+    #self.thread_last_cached(true)
 
     #Message.new(id: self.parent_message_id).after_cached if self.parent_message_id
     Message.new(id: self.root_message_id).after_cached if self.root_message_id
@@ -38,17 +38,15 @@ class Message < ApplicationRecord
     )
   end
 
-  def thread_last_cached(clear=false)
-    return self if self.root_message_id.nil?
-
-    key = "tlast_#{self.root_message_id}"
-    cache_fetch(key, force: clear) {
-      Message.where("root_message_id = ? or id = ?", self.root_message_id, self.root_message_id).order("-id").first
-    }
+  def thread_last_id
+    rid = self.root_message_id ? self.root_message_id : self.id 
+    tl = self.class.where(root_message_id: rid).select("id").order("-id").first
+    tl ? tl.id : nil
   end
 
   def thread_last
-    thread_last_cached
+    tid = thread_last_id
+    tid ? self.class.find(tid) : nil
   end
 
   def self.find_for(user, mid)
@@ -64,23 +62,20 @@ class Message < ApplicationRecord
     return message.thread_last
   end
 
-  def thread_ids_cached(clear=false)
+# cache these
+  def thread_ids
     rid = self.root_message_id ? self.root_message_id : self.id
 
-    key="thids_#{rid}"
-    cache_fetch(key, force: clear) {
-      #puts "MESSAGE RECACHING #{rid}"
-      #Message.where(root_message_id: rid).or(Message.where(id: rid)).order(:id).pluck(:id)
-      Message.where(root_message_id: rid).or(Message.where(id: rid)).select(:id).order(:id).pluck(:id)
-    }
+    Message.where(root_message_id: rid).or(Message.where(id: rid)).select(:id).order(:id).pluck(:id)
   end
 
   def thread(clear=false)
-    Message.find_safe(thread_ids_cached(clear))
+    rid = self.root_message_id ? self.root_message_id : self.id
+    Message.where(root_message_id: rid).or(Message.where(id: rid)).order(:id)
   end
 
   def thread_count
-    thread_ids_cached.count
+    thread_ids.count
   end
 
   def good(uid)

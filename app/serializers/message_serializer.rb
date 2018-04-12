@@ -86,10 +86,14 @@ class MessageSerializer < ActiveModel::Serializer
     #puts "****GOT #{object.candidate}"
 
     if object.root_message_id.nil?
+      
       phash[:other] = UserSerializer.new(other)
       phash[:candidate] = object.candidate ? CandidateSmallSerializer.new(object.candidate) : {}
       phash[:job] = JobSmallSerializer.new(object.job)
       phash[:is_root] = true
+
+      tl = object.thread_last
+      phash[:last_message] = tl ? MessageSerializer.new(tl, **instance_options) : nil
     end
 
     phash
