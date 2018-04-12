@@ -77,7 +77,7 @@ class MessageSerializer < ActiveModel::Serializer
   end
 
   def other
-    mine ? user_hash(object.user_id) : user_hash(object.from_user_id)
+    mine ? object.user : object.from_user # user_hash(object.user_id) : user_hash(object.from_user_id)
   end
 
   def attributes(*args)
@@ -86,7 +86,7 @@ class MessageSerializer < ActiveModel::Serializer
     #puts "****GOT #{object.candidate}"
 
     if object.root_message_id.nil?
-      phash[:other] = other
+      phash[:other] = UserSerializer.new(other)
       phash[:candidate] = object.candidate ? CandidateSmallSerializer.new(object.candidate) : {}
       phash[:job] = JobSmallSerializer.new(object.job)
       phash[:is_root] = true

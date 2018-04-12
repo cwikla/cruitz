@@ -104,7 +104,7 @@ class Blurb extends Component {
     let recruiter = this.props.recruiter;
     let rest = Pyr.Util.propsRemove(this.props, "recruiter");
 
-    let company = recruiter.company;
+    let company = recruiter.company
 
     let reviews = this.props.reviews;
     let count = reviews ? reviews.length : 0;
