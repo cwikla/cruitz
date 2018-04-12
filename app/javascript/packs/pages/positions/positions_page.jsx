@@ -474,7 +474,12 @@ class SearchForm extends Component {
 
   render() {
     return (
-      <div className="position-search">
+      <div className="position-search side-search">
+        <div className="search-header">
+          <div className="flx-row">
+            <div className="mr-auto">Search</div>
+          </div>
+        </div>
         <Pyr.Form.Form
           url={Pyr.URL(POSITIONS_URL).push("search")}
           method={Pyr.Method.POST}
@@ -485,6 +490,7 @@ class SearchForm extends Component {
           onError={this.props.onError}
           object={{}}
           model="search"
+          className="search-inner"
         >
           <Pyr.Form.Group name="key_words">
             <Pyr.Form.Label>Keywords</Pyr.Form.Label>

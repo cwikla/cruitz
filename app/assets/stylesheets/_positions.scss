@@ -149,13 +149,6 @@
     .chooser {
       margin-left: 2rem;
 
-      .position-search {
-        min-width: 15rem;
-        padding: 1rem;
-        background-color: white;
-        border: solid $border_color 1px;
-      }
-
       .heads {
         background-color: $alt_background_color;
         margin-left: 1rem;
@@ -199,12 +192,6 @@
   }
 
   .sheet.index {
-    .position-search {
-      padding: 1rem;
-      background-color: white;
-      border: solid $border_color 1px;
-    }
-  
     .inner {
       li {
         margin: 1rem;

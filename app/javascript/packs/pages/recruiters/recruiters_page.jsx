@@ -524,8 +524,16 @@ class SearchForm extends Component {
   }
 
   render() {
+    let newUrl = Pyr.URL(RECRUITERS_URL).push(NEW_ACTION);
+
     return (
-      <div className="recruiter-search">
+      <div className="recruiter-search side-search">
+        <div className="search-header">
+          <div className="flx-row">
+            <div className="mr-auto">Search</div>
+              <Link to={newUrl.toString()}><Pyr.UI.IconButton name="plus" className="ml-auto">Invite Recruiter</Pyr.UI.IconButton></Link>
+          </div>
+        </div>
         <Pyr.Form.Form
           url={Pyr.URL(RECRUITERS_URL).push("search")}
           method={Pyr.Method.POST}
@@ -536,6 +544,7 @@ class SearchForm extends Component {
           onError={this.props.onError}
           object={{}}
           model="search"
+          className="search-inner"
         >
           <Pyr.Form.Group name="key_words">
             <Pyr.Form.Label>Keywords</Pyr.Form.Label>

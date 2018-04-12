@@ -1011,5 +1011,19 @@ label {
   background-color: rgba(255, 255, 255, 0.85);
 }
 
+.side-search {
+  background-color: white;
+  border: solid $border_color 1px;
+
+  .search-header {
+    @extend %header;
+  }
+
+  .search-inner {
+    padding: 1rem;
+  }
+}
+
+
 
 
