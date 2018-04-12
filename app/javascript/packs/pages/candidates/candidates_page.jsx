@@ -599,7 +599,7 @@ class ShowSheet extends Sheet.Show {
       return;
     }
 
-    let url = Pyr.URL(JOBS_URL).push(jobId);
+    let url = Pyr.URL(JOBS_URL).push(jobId).set("candidates", "1");
 
     this.setState({
       job: null
