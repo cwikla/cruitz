@@ -12,11 +12,8 @@ import Sheet from '../sheet';
 import MessageThread from '../messages/message_thread';
 import Recruiter from '../shared/recruiter';
 
-import {
-  UserAvatar,
-  UserScore,
-  Stars,
-} from '../shared/user';
+import Avatar, {
+} from '../shared/avatar';
 
 import State from '../shared/state';
 
@@ -115,7 +112,7 @@ class CandidateItem extends Component {
           </div>
         </div>
         <div className="flx-col flx-1 recruiter">
-          <UserAvatar
+          <Avatar.Avatar
             className={"flx-1"}
             userId={recruiter.id}
             name={recruiter.first_name}
@@ -307,8 +304,8 @@ class IndexSheet extends Sheet.Index {
   }
 
   render() {
-    console.log("CANDIDATES INDEX");
-    console.log(this.props);
+    //console.log("CANDIDATES INDEX");
+    //console.log(this.props);
 
     return super.render();
   }
@@ -402,8 +399,8 @@ class JobIndexSheet extends Sheet.Index {
   }
 
   render() {
-    console.log("JOBS INDEX RENDER");
-    console.log(this.props.items);
+    //console.log("JOBS INDEX RENDER");
+    //console.log(this.props.items);
     return super.render();
   }
 }
@@ -671,8 +668,8 @@ class ShowSheet extends Sheet.Show {
       return null;
     }
 
-    console.log("RENDER HEADER");
-    console.log(candidate);
+    //console.log("RENDER HEADER");
+    //console.log(candidate);
     let stateName = State.toName(candidate.state);
     let sclz = ClassNames("state").push(stateName);
     let clazzes = ClassNames("actions flx-row p-1 flx-start").push(sclz).push("background");
@@ -681,7 +678,7 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <div className={clazzes}>
-        <UserScore className={ClassNames("flx-align-content-start").push(sclz)}>{score}</UserScore>
+        <Avatar.Score className={ClassNames("flx-align-content-start").push(sclz)}>{score}</Avatar.Score>
         <div className={ClassNames("status ml-auto mr-auto mt-auto mb-auto").push(sclz)}>{stateName}</div>
         { this.renderButtons(candidate.state) }
       </div>

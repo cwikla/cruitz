@@ -11,8 +11,7 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 
-import { 
-} from '../shared/user';
+import Avatar from '../shared/avatar';
 
 import {
   USERS_URL,
@@ -36,7 +35,7 @@ class RegistrationCard extends Component {
     return (
       <div className={ClassNames("card").push(allClass)}>
         <div className="view overlay hm-white-slight">
-          <img src={getLogo(id)} className="img-fluid" alt="" />
+          <img src={Avatar.getLogo(id)} className="img-fluid" alt="" />
           <a>
               <div className="mask"></div>
           </a>

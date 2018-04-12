@@ -43,5 +43,19 @@ export const EDIT_ACTION = 'edit';
 export const DELETE_ACTION = 'delete';
 export const INDEX_SHOW_ACTION = 'indexshow';
 
+export const RANGES = {
+  0 : 'Recent',
+  1 : '1 week',
+  2 : '2 weeks',
+  3 : '3 weeks',
+  4 : '1 month',
+  5 : '2 month',
+  6 : '3 month',
+  7 : '4 month',
+  8 : '5 month',
+  9 : '6 month',
+  10 : 'All Time'
+};
+
 
 //===

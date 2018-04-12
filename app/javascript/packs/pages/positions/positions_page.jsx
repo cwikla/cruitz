@@ -25,9 +25,7 @@ import HeadIndexSheet, {
   CandidateComponent 
 } from './head';
 
-import { 
-  getLogo 
-} from '../shared/user';
+import Avatar from '../shared/avatar';
 
 import {
   POSITIONS_URL,
@@ -39,22 +37,10 @@ import {
   HEADS_URL,
 
   NEW_ACTION,
-  SHOW_ACTION
-} from '../const';
+  SHOW_ACTION,
 
-const RANGES = {
-  0 : 'Recent',
-  1 : '1 week',
-  2 : '2 weeks',
-  3 : '3 weeks',
-  4 : '1 month',
-  5 : '2 month',
-  6 : '3 month',
-  7 : '4 month',
-  8 : '5 month',
-  9 : '6 month',
-  10 : 'All Time'
-};
+  RANGES,
+} from '../const';
 
 class IndexSheet extends Sheet.Index {
   constructor(props) {

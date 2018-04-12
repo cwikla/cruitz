@@ -24,9 +24,7 @@ import {
 import Page from '../page';
 import Sheet from '../sheet';
 
-import {
-  UserAvatar
-} from '../shared/user';
+import Avatar from '../shared/avatar';
 
 import Recruiter from '../shared/recruiter';
 import Job from '../shared/job';
@@ -91,7 +89,7 @@ class MessageItem extends Sheet.Item {
     return (
       <div className={allClass} id={id}>
         <div className="other flx-col">
-          <UserAvatar
+          <Avatar.Avatar
             className={"mt-auto mb-auto"}
             userId={other.id}
             small

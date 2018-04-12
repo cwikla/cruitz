@@ -33,7 +33,7 @@ class Stars extends Component {
     }
 
     return (
-      <Pyr.UI.Icon name="star-half" key={"star"+pos} className="star"/>
+      <Pyr.UI.Icon name="star-half" key={"star"+pos} className={Pyr.ClassNames("star")}/>
     );
   }
   render() {
@@ -41,9 +41,9 @@ class Stars extends Component {
     let rating = Math.floor(this.props.rating);
 
     return (
-      <div className="rating">
+      <div className={Pyr.ClassNames("rating").push(this.props.className)}>
         { Pyr.Util.times(rating, (i) => {
-              return (<Pyr.UI.Icon name="star" key={"star"+i} className="star"/>);
+              return (<Pyr.UI.Icon name="star" key={"star"+i} className={Pyr.ClassNames("star")}/>);
           })
         }
         {
@@ -54,7 +54,7 @@ class Stars extends Component {
   }
 }
 
-const UserLabel = (props) => (
+const Label = (props) => (
   <div
     className="nav-item"
     id="user"
@@ -62,25 +62,28 @@ const UserLabel = (props) => (
   ><Pyr.UI.Icon name="user" className="fa-fw" /><Pyr.UI.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
 
-const UserAvatar = (props) => (
-  <div className={Pyr.ClassNames("flx-col user-avatar justify-content-center").push(props.small ? "small" : "").push(props.className)}>
-    <div className="align-self-center"><img src={getAvatar(props.userId)}/></div>
+const Image = (props) => (
+  <div className={Pyr.ClassNames("flx-col avatar user-avatar justify-content-center").push(props.small ? "small" : "").push(props.className)}>
+    <div className="align-self-center"><img src={props.url ? props.url : getAvatar(props.id)}/></div>
     { props.name ? (<div className="align-self-center">{props.name}</div> ) : null }
   </div>
 );
 
-const UserScore = (props) => (
+const Score = (props) => (
   <div className={Pyr.ClassNames("user-score justify-content-center flx-col-stretch").push(props.className)}>
     <div className="align-self-center">{ Pyr.Util.firstKid(props.children) }</div>
   </div>
 );
 
 
-export {
-  UserLabel,
-  UserAvatar,
-  UserScore,
+const Avatar = {
+  Label,
+  Avatar: Image,
+  Score,
   Stars,
+
   getLogo,
   getAvatar
 }
+
+export default Avatar;

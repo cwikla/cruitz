@@ -13,12 +13,6 @@ import Page from '../page';
 import Sheet from '../sheet';
 
 import {
-  UserAvatar,
-  UserScore,
-  Stars,
-} from '../shared/user';
-
-import {
   MESSAGES_URL,
 } from '../const';
 
@@ -34,7 +28,7 @@ class Card extends Component {
     let logo = company.logo;
 
     let id = "item-" + item.id;
-    let allClass = ClassNames("job-card flx-col");
+    let allClass = ClassNames("card-item job-card flx-col");
 
     if (this.props.selected) {
        allClass.push("selected");
@@ -66,7 +60,7 @@ class Card extends Component {
 
     return (
       <div className={allClass}>
-        <div className="category flx-row">
+        <div className="menu category flx-row">
           <span className="flx-1">{ category }</span>
 
           <div className="dropdown">
@@ -81,18 +75,20 @@ class Card extends Component {
             </div>
           </div>
         </div>
-        <div className="company flx-row">
-          <Pyr.UI.Image src={url} className="mr-auto" />
-          <div className="flx-1 mr-auto mt-auto mb-auto">{ companyName }</div>
-        </div>
-        <div className="job">
-          { title }
-        </div>
-        <div className="location">
-          { locations }
-        </div>
-        <div className="age">
-          <Pyr.UI.MagicFuzzyDate short date={item.created_at}/>
+        <div className="card-inner">
+          <div className="company flx-row">
+            <Pyr.UI.Image src={url} className="mr-auto" />
+            <div className="flx-1 mr-auto mt-auto mb-auto">{ companyName }</div>
+          </div>
+          <div className="job">
+            { title }
+          </div>
+          <div className="location">
+            { locations }
+          </div>
+          <div className="age">
+            <Pyr.UI.MagicFuzzyDate short date={item.created_at}/>
+          </div>
         </div>
         <div className="more flx-row mt-auto">
           <span className="ml-auto">More...</span>

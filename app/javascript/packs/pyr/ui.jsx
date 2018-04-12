@@ -8,6 +8,8 @@ import {
 } from 'react-transition-group';
 
 import BaseComponent from './base';
+const Component = BaseComponent;
+
 import Util from './util';
 import Scroll from './scroll'
 import PieChart from './pie_chart';
@@ -31,13 +33,13 @@ const SHOW_TIME = 1500;
 const ESCAPE_KEY = 27;
 
 
-class Empty extends BaseComponent {
+class Empty extends Component {
   render() {
     return null;
   }
 }
 
-class ChildSelector extends BaseComponent {
+class ChildSelector extends Component {
 
   render() {
     let val = this.props.page;
@@ -66,7 +68,7 @@ const DIV = (props) => (
   </div>
 );
 
-class RouterReceiver extends BaseComponent {
+class RouterReceiver extends Component {
   static contextTypes = RouterContextTypes;
 
   constructor(props) {
@@ -80,7 +82,7 @@ class RouterReceiver extends BaseComponent {
   }
 }
 
-class RouterProvider extends BaseComponent {
+class RouterProvider extends Component {
   static childContextTypes = {
     location: PropTypes.object,
     history: PropTypes.object,
@@ -98,7 +100,7 @@ class RouterProvider extends BaseComponent {
   }
 }
 
-class RouteURL extends BaseComponent {
+class RouteURL extends Component {
   getFields(path) {
     matches = Util.matchAll(this.props.path, /:[a-zA-Z]*/) || [];
 
@@ -166,7 +168,7 @@ class RouteURL extends BaseComponent {
   }
 }
 
-class DefaultRoute extends BaseComponent {
+class DefaultRoute extends Component {
   constructor(props) {
     super(props);
     this.onDefaultRender = this.defaultRender.bind(this);
@@ -242,7 +244,7 @@ class DefaultRoute extends BaseComponent {
   }
 }
 
-class Hello extends BaseComponent {
+class Hello extends Component {
   render() {
     return (
       <div>HELLLO</div>
@@ -250,7 +252,7 @@ class Hello extends BaseComponent {
   }
 }
 
-class RouterProps extends BaseComponent {
+class RouterProps extends Component {
   render() {
     let kids = Util.childrenWithProps(this.props.children, this.props);
 
@@ -289,7 +291,7 @@ const IconButton = (props) => (
   ><Icon name={props.name}/> {props.children}</label>
 );
 
-class FlatButton extends BaseComponent {
+class FlatButton extends Component {
   render() {
     let classes = ClassNames("btn-flat pyr-btn-flat");
     if (this.props.selected) {
@@ -317,7 +319,7 @@ class BackButton extends RouterReceiver {
   }
 }
 
-class ImageFile extends BaseComponent {
+class ImageFile extends Component {
   constructor(props) {
     super(props);
 
@@ -435,7 +437,7 @@ const ButtonLabel = (props) => (
   <label {...Util.propsMergeClassName(props, "btn-primary")}>{props.children}</label>
 );
 
-class Collapse extends BaseComponent {
+class Collapse extends Component {
   constructor(props) {
     super(props);
 
@@ -482,7 +484,7 @@ class Collapse extends BaseComponent {
   }
 }
 
-class MagicDate extends BaseComponent {
+class MagicDate extends Component {
   constructor(props) {
     super(props);
     this.onUpdateMe = this.updateMe.bind(this);
@@ -552,7 +554,7 @@ const NoticeContextTypes = {
   notice: PropTypes.node
 };
 
-class CSSAnimation extends BaseComponent {
+class CSSAnimation extends Component {
   constructor(props) {
     super(props)
     this.initState({
@@ -666,7 +668,7 @@ const Slide = (props) => (
     </CSSAnimation>
 );
 
-class NoticeProvider extends BaseComponent {
+class NoticeProvider extends Component {
   static childContextTypes = {
     setNotice: PropTypes.func,
     notice: PropTypes.node
@@ -705,7 +707,7 @@ class NoticeProvider extends BaseComponent {
   }
 }
 
-class NoticeReceiver extends BaseComponent {
+class NoticeReceiver extends Component {
   static contextTypes = NoticeContextTypes;
 
   constructor(props) {
@@ -804,7 +806,7 @@ class NoticeReceiver extends BaseComponent {
   }
 }
 
-class Modal extends BaseComponent {
+class Modal extends Component {
   constructor(...args) {
     super(...args);
 
@@ -890,7 +892,7 @@ class Modal extends BaseComponent {
   }
 }
 
-class NavBar extends BaseComponent {
+class NavBar extends Component {
   renderHeaderLeft() {
     return null;
   }
@@ -919,7 +921,7 @@ class NavBar extends BaseComponent {
 }
 
 
-class FullScreen extends BaseComponent {
+class FullScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -971,6 +973,30 @@ class FullScreen extends BaseComponent {
   }
 }
 
+class BackgroundImage extends Component {
+  render() {
+    let inlineStyle = {
+      backgroundImage: "url(" + (this.props.url.toString()) + ")",
+      backgroundRepeat: "no-repeat",
+      backgroundAttachment: "local",
+      backgroundPosition: "center",
+      backgroundSize: "contain",
+    };
+
+    return (
+      <div style={inlineStyle} className={this.props.className}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+const Fifty = (props) => (
+  <div className={ClassNames("fifty").push(props.className)}>
+    { props.children }
+  </div>
+);
+
 const PassThru = (props) => (
   props.children
 );
@@ -1015,6 +1041,9 @@ const UI = {
 
   Scroll,
   PieChart,
+
+  BackgroundImage,
+  Fifty,
 };
 
 export default UI;

@@ -7,16 +7,15 @@ import Pyr, {
 const ClassNames = Pyr.ClassNames;
 
 import Sheet from '../sheet';
-import {
-  UserAvatar 
-} from '../shared/user';
+import Avatar, {
+} from '../shared/avatar';
 
 function THREAD_ID(message) {
   return "thread-item-" + message.id;
 }
 
 const OtherAvatar = (props) => (
-  <UserAvatar 
+  <Avatar.Avatar 
     userId={props.user.id}
     name={props.user.first_name}
     small={true}

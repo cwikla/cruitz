@@ -20,9 +20,7 @@ import Sheet from '../sheet';
 
 import Job from '../shared/job';
 
-import { 
-  getLogo 
-} from '../shared/user';
+import Avatar from '../shared/avatar';
 
 import {
   JOBS_URL,
@@ -63,7 +61,7 @@ class JobCard extends Component {
     return (
       <div className={ClassNames("card").push(allClass)}>
         <div className="view overlay hm-white-slight">
-          <img src={getLogo(id)} className="img-fluid" alt="" />
+          <img src={Avatar.getLogo(id)} className="img-fluid" alt="" />
           <a>
               <div className="mask"></div>
           </a>
@@ -410,7 +408,7 @@ class ShowSheet extends Sheet.Show {
 
   renderItem(job, isSelected) {
     return (
-      <div className="flx-row">
+      <div className="flx-row flx-1">
         <div className="flx-col flx-3 left">
           <Job.View job={job} />
         </div>

@@ -18,10 +18,6 @@ const ClassNames = Pyr.ClassNames;
 import Page from '../page';
 import Sheet from '../sheet';
 
-import { 
-  getLogo 
-} from '../shared/user';
-
 import HeadDetails from './head_details';
 
 import {

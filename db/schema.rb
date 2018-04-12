@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180404011906) do
+ActiveRecord::Schema.define(version: 20180411222020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,8 @@ ActiveRecord::Schema.define(version: 20180404011906) do
     t.string "url"
     t.string "location"
     t.integer "pyr_upload_id"
+    t.integer "location_id"
+    t.index ["location_id"], name: "index_companies_on_location_id"
     t.index ["name"], name: "index_companies_on_name"
     t.index ["pyr_upload_id"], name: "index_companies_on_pyr_upload_id"
     t.index ["user_id"], name: "index_companies_on_user_id"

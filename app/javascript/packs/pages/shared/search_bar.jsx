@@ -13,15 +13,11 @@ import Page from '../page';
 import Sheet from '../sheet';
 
 import {
-  UserAvatar,
-  UserScore,
-  Stars,
-} from '../shared/user';
-
-import {
   MESSAGES_URL,
 } from '../const';
 
+import Avatar, {
+} from './avatar';
 
 
 class SearchBar extends Component {
@@ -36,7 +32,7 @@ class SearchBar extends Component {
           <Pyr.UI.IconButton name="eye" className="ml-auto"/>
         </div>
 
-        <UserAvatar
+        <Avatar.Avatar
           userId={search.id}
           name={search.first_name}
         />

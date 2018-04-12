@@ -365,14 +365,14 @@ label {
   border-radius: 50%;
 }
 
-.user-avatar {
-  padding-left: 1rem;
-  padding-right: 1rem;
+.avatar {
   font-size: 0.8rem;
   img {
     width: #{$avatar_width}rem;
     height: #{$avatar_width}rem;
-    border-radius: 50%;
+    border-color: white;
+    border-width: 1px;
+    border-radius: 5px;
   }
 
   &.small {
@@ -621,7 +621,7 @@ label {
 
 .recruiter-blurb, %recruiter-blurb {
   font-size: 0.9rem;
-  border: 1px solid black;
+  border: 1px solid $border_color;
   background-color: white;
 
   .rec-blurb-inner {
@@ -648,12 +648,6 @@ label {
   .blurb {
     padding-top: 1.5rem;
   }
-}
-
-.recruiter-header {
-  font-size: 1.25rem;
-  padding: 1.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .page-nav-bar {
@@ -839,7 +833,7 @@ label {
   }
 }
 
-.job-card {
+.card-item {
   width: 20rem;
   height: 20rem;
   
@@ -868,8 +862,13 @@ label {
     padding-left: 1.2rem;
     padding-right: 1.2rem;
   }
-  
-  .category {
+
+  .card-inner {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .menu {
     padding-top: 1rem;
     padding-bottom: 1rem;
     border-bottom: solid $border_color 1px;
@@ -889,7 +888,16 @@ label {
       }
     }
   }
-        
+
+  .more {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+    color: white;
+  }
+
+}
+
+.job-card {
   .position {
     max-height: 3rem;
     text-align: left;
@@ -905,9 +913,6 @@ label {
   }
   
   .company {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  
     max-height: 7rem;
   
     div {
@@ -922,12 +927,30 @@ label {
     }
   }
   
-  .more {
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
-    color: white;
+}
+
+.recruiter-card {
+  .logo {
+    img {
+      height: 1.5rem;
+      max-height: 1.5rem;
+    }
   }
-  
+
+  .card-inner {
+    line-height: 1.5rem;
+  }
+
+  .name {
+    font-size: 1.25rem;
+    font-weight: $font_weight_bold;
+    color: $primary_color;
+  }
+
+  .company {
+    font-size: 0.9rem;
+  }
+
 }
 
 .state-bubble {
@@ -986,7 +1009,6 @@ label {
 
 .fifty {
   background-color: rgba(255, 255, 255, 0.85);
-  margin: -1rem;
 }
 
 

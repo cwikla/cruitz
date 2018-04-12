@@ -1,25 +1,15 @@
 
 .page.recruiters {
   .sheet.index {
-    .header {
-      border-bottom: 1px solid $border_color;
+    .recruiter-search {
+      padding: 1rem;
+      background-color: white;
+      border: solid $border_color 1px;
     }
-  
-    .recruiter-item {
-  
-      .summary {
-        text-overflow: ellipses;
-      }
-  
-      .user-avatar {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        font-size: 0.8rem;
-        img {
-          width: #{$avatar_width}rem;
-          height: #{$avatar_width}rem;
-          border-radius: 50%;
-        }
+
+    .inner {
+      li {
+        margin: 1rem;
       }
     }
   }
@@ -43,7 +33,7 @@
     }
   
   
-    .user-avatar {
+    .user-avatar-unused {
       padding-left: 1rem;
       padding-right: 1rem;
       font-size: 0.8rem;
@@ -98,15 +88,12 @@
     }
   
     .recruiter-header {
-      color: white;
-      background-color: $secondary_navbar_background_color;
-  
-      .title {
-        padding: 3rem;
-        font-size: 3rem;
-        line-height: 3rem;
-        text-align: center;
+      & > div {
+        padding: 1rem;
       }
+
+      color: white;
+      background-color: rgba($secondary_navbar_background_color, 0.5);
     }
   
     .recruiter-footer {

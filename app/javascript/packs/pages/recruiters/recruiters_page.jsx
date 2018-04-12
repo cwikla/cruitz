@@ -16,19 +16,25 @@ const Grid = Pyr.Grid;
 
 import Page from '../page';
 import Sheet from '../sheet';
-import {
-  UserAvatar,
-  UserScore,
-  Stars
-} from '../shared/user';
+import Avatar, {
+} from '../shared/avatar';
+
+import Recruiter, {
+} from '../shared/recruiter';
 
 import {
   RECRUITERS_URL,
   INVITES_URL,
+  COMPANIES_URL,
+  CATEGORIES_URL,
+  LOCATIONS_URL,
+  SKILLS_URL,
 
   SHOW_ACTION,
   INDEX_ACTION,
-  NEW_ACTION
+  NEW_ACTION,
+
+  RANGES,
 } from '../const';
 
 class ReviewItem extends Component {
@@ -37,7 +43,7 @@ class ReviewItem extends Component {
 
     return (
       <div key={review.id} className="review">
-        <div><Stars rating={review.score} /></div>
+        <div><Avatar.Stars rating={review.score} /></div>
         <div><Pyr.UI.MagicDate date={review.created_at} /></div>
         <div>{review.from_user.first_name}</div>
         <div>{review.description}</div>
@@ -46,52 +52,80 @@ class ReviewItem extends Component {
   }
 }
 
-class RecruiterItem extends Component {
+class RecruiterItemUnused extends Component {
 
   render() {
     let recruiter = this.props.recruiter;
 
     let id = "recruiter-" + recruiter.id;
-    let allClass = ClassNames("item recruiter-item flx-row");
+    let allClass = ClassNames("item recruiter-item flx-row section");
 
     if (this.props.selected) {
        allClass.push("selected");
     }
 
-    let fullName = recruiter.first_name + " " + recruiter.last_name;
-    let phoneNumber = recruiter.phone_number || "No Phone";
-    let email = recruiter.email || "No Email";
-    let description = recruiter.description || "No Description";
+    let company = recruiter.company;
+
+    let description = recruiter.description || "";
+    let companyName = company ? company.name : "Anonymous";
+    let createdAt = recruiter.created_at;
+    let fullName = recruiter.full_name;
+    let category = "None";
+    let logo = company.logo;
+
+    let url = recruiter.logo ? recruiter.logo.url : (logo ? logo.url : null);
+
 
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="recruiter col-2 d-flex">
-          <UserAvatar
-            className={"flx-1"}
+        <Pyr.UI.BackgroundImage url={logo.url} className="flx-col flx-1">
+        <Pyr.UI.Fifty className="flx-row flx-1">
+        <div className="recruiter flx-col">
+          <Avatar.Avatar
             userId={recruiter.id}
-            name={recruiter.first_name}
-            small
+            url={url}
+            className="flx-1"
           />
-          <Stars rating={recruiter.score} />
-        </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="item-content">
+        </div>
+        <div className="item-content flx-col">
           <div className="info">
-            <div>{recruiter.first_name}</div>
-            <div>FakeCompany Placeholder</div>
-            <div>Description goes here</div>
+            <div>{fullName}</div>
+            <Avatar.Stars rating={recruiter.score} />
+            <div>{companyName}</div>
+            <div>{description}</div>
           </div>
           <div className="stats">
             <div>22 successful placements</div>
             <div>Last Active: 3/3/2017</div>
-            <div>27 Reviews</div>
+            <div>{this.props.reviews.length} Reviews</div>
           </div>
-        </Pyr.Grid.Column>
+        </div>
+        </Pyr.UI.Fifty>
+        </Pyr.UI.BackgroundImage>
       </div>
     );
   }
 
 }
 
+
+class Reviews extends Component {
+  render() {
+    if (!this.props.reviews) {
+      return <Pyr.UI.Loading />
+    }
+
+    if (this.props.reviews.length == 0) {
+      return <div>No reviews. Why no leave one?</div>
+    }
+
+    return this.props.reviews.map((review) => {
+      return (
+        <ReviewItem key={review.id} review={review} />
+      );
+    });
+  }
+}
 
 class FullRecruiterItem extends Component {
   constructor(props) {
@@ -128,25 +162,13 @@ class FullRecruiterItem extends Component {
     this.getReviews();
   }
 
-  renderReviews() {
-    if (!this.state.reviews || this.state.reviews.length == 0) {
-      return null;
-    }
-
-    return this.state.reviews.map((review) => {
-      return (
-        <ReviewItem key={review.id} review={review} />
-      );
-    });
-  }
-
   render() {
     return (
-      <div>
-        <RecruiterItem recruiter={this.props.recruiter} />
+      <div className="flx-1 flx-col">
+        <Recruiter.Header recruiter={this.props.recruiter} reviews={this.state.reviews}/>
   
-        <div className="reviews">
-          {this.renderReviews()}
+        <div className="reviews flx-1 scroll">
+          <Reviews recruiter={this.props.recruiter} reviews={this.state.reviews} />
         </div>
       </div>
     );
@@ -305,8 +327,95 @@ class NewSheet extends Sheet.New {
   }
 }
 
-
 class IndexSheet extends Sheet.Index {
+  constructor(props) {
+    super(props);
+
+    this.onItemSearch = this.itemSearch.bind(this);
+  }
+
+  itemSearch(name) {
+    this.props[name];
+    let data = {
+      search: {
+        companies: [ this.props.item.company.id ]
+      }
+    };
+
+    let all = {
+      data,
+      url: RECRUITERS_URL,
+      method: Pyr.Method.POST,
+      force: true
+    };
+
+    this.props.onLoadItems(this.props.onLoading, all);
+  }
+
+  key(recruiter) {
+    return RecruitersPage.key(recruiter);
+  }
+
+  renderItem(item, isSelected) {
+    //console.log("RENDER ITEM");
+    return (
+      <Recruiter.Card
+        recruiter={item}
+        isSelected={isSelected}
+        onLoading={this.props.onLoading}
+        onLoadItems={this.props.onLoadItems}
+        className="item"
+      />
+    );
+  }
+
+  renderChildren(items, isSelected) {
+    //console.log("RENDER CHILDREN");
+    return super.renderChildren(items, isSelected, {className: "flx flx-row flx-wrap"});
+  }
+
+  renderInnerNoScroll() {
+    let items = this.getItems();
+
+    if (!items) {
+      //console.log("POS RENDER LOADING");
+      //console.log(this.props);
+      return this.renderLoading();
+    }
+
+    if (items.length == 0) {
+      return this.renderNone();
+    }
+
+    return super.renderInnerNoScroll();
+  }
+
+  renderInner() {
+
+    let leftClasses = "col col-3 flx-col scroll";
+    let rightClasses = "col flx-col scroll";
+
+    return (
+      <div className="row">
+        <div className={leftClasses}>
+          <RecruitersPage.SearchForm
+            onSetItems={this.props.onSetItems}
+            onPreSubmit={this.props.onPreSubmit}
+            onPostSubmit={this.props.onPostSubmit}
+            onError={this.props.onError}
+          />
+        </div>
+        <div className={rightClasses}>
+          <div className="flx-col flx-1">
+            { this.renderInnerNoScroll() }
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+class IndexSheetOld extends Sheet.Index {
   constructor(props) {
     super(props);
 
@@ -351,7 +460,7 @@ class IndexSheet extends Sheet.Index {
 
 }
 
-class ShowSheet extends Sheet.ShowFull {
+class ShowSheet extends Sheet.Show {
   key(a) {
     return RecruitersPage.key(a)
   }
@@ -385,5 +494,93 @@ function key(item) {
   return "rec-" + item.id;
 }
 RecruitersPage.key = key;
+
+class SearchForm extends Component {
+  constructor(props) {
+    super(props);
+    this.onGetTarget = this.getTarget.bind(this);
+    this.onRenderAge = this.renderAge.bind(this);
+    this.onSuccess = this.success.bind(this);
+    this.onPreSubmit = this.preSubmit.bind(this);
+  }
+
+  getTarget() {
+    return this.form;
+  }
+
+  renderAge(value) {
+    value = Math.floor(value);
+    return RANGES[value];
+  }
+
+  success(data, textStatus, jqXHR) {
+    //console.log("SUCCESSS");
+    //console.log(data);
+    this.props.onSetItems(data.jobs || []);
+  }
+
+  preSubmit() {
+    this.props.onSetItems(null);
+  }
+
+  render() {
+    return (
+      <div className="recruiter-search">
+        <Pyr.Form.Form
+          url={Pyr.URL(RECRUITERS_URL).push("search")}
+          method={Pyr.Method.POST}
+          ref={(node) =>{ this.form = node; }}
+          onPreSubmit={this.onPreSubmit}
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.onSuccess}
+          onError={this.props.onError}
+          object={{}}
+          model="search"
+        >
+          <Pyr.Form.Group name="key_words">
+            <Pyr.Form.Label>Keywords</Pyr.Form.Label>
+            <Pyr.Form.TextField />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="companies">
+            <Pyr.Form.Label>Companies</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={COMPANIES_URL} multiple valueByID bpSize="small"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="categories">
+            <Pyr.Form.Label>Categories</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={CATEGORIES_URL} multiple valueByID bpSize="small"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="locations">
+            <Pyr.Form.Label>Locations</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID bpSize="small"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="skills">
+            <Pyr.Form.Label>Skills</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple bpSize="small"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="age">
+            <Pyr.Form.Label>Posting Age</Pyr.Form.Label>
+            <Pyr.Form.Range
+              minValue={0}
+              maxValue={10}
+              step={1}
+              formatLabel={this.renderAge}
+            />
+          </Pyr.Form.Group>
+        </Pyr.Form.Form>
+        <div className="form-footer">
+          <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>Filter</Pyr.Form.SubmitButton>
+        </div>
+      </div>
+    );
+  }
+}
+
+RecruitersPage.SearchForm = SearchForm;
+
 
 export default RecruitersPage;
