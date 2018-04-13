@@ -46,8 +46,9 @@ function MID(message) {
 
 class MessageItem extends Sheet.Item {
   render() {
-    let rootMessage = this.props.message;
-    let message = rootMessage.last_message ? rootMessage.last_message : rootMessage;
+    let rootMessage = this.props.rootMessage;
+    let message = this.props.message;
+
     console.log(this.props.message);
     console.log(message);
 
@@ -124,7 +125,15 @@ class IndexSheet extends Sheet.Index {
 
 
   renderItem(message, isSelected) {
-    return ( <MessageItem message={message} job={message.job} isSelected={isSelected}/> );
+    let rootMessage = message;
+    let lastMessage = rootMessage.last_message ? rootMessage.last_message : rootMessage;
+
+    return ( <MessageItem 
+      rootMessage={rootMessage}
+      message={lastMessage} 
+      job={message.job} 
+      isSelected={isSelected}/> 
+    );
   }
 
   renderHeader() {
@@ -262,6 +271,7 @@ class ShowSheet extends Sheet.Show {
             url={Pyr.URL(MESSAGES_URL)}
             onSetItems={this.props.onSetItems}
             onAddItem={this.props.onAddItem}
+            onSetLast={this.props.onSetLast}
           />
         </div>
         <div className="flx-1 blurb right">
@@ -304,6 +314,12 @@ class IndexShowSheet extends Sheet.IndexShow {
 ///////////////
 
 class MessagesPage extends Page {
+  constructor(props) {
+    super(props); 
+
+    this.onSetLast = this.setLast.bind(this);
+  }
+
   name() {
     return "Messages";
   }
@@ -359,6 +375,12 @@ class MessagesPage extends Page {
     return this.props.loaders.messages;
   }
 
+  setLast(item, last) {
+    let newItem = Object.assign({}, item, {last_message: last, count: (item.count+1)});
+    this.loader().replace(newItem);
+  }
+
+
   getIndexSheet() {
     return IndexShowSheet;
   }
@@ -368,6 +390,10 @@ class MessagesPage extends Page {
     let ActionSheet = eval(sheet);
 
     return ActionSheet;
+  }
+
+  pageProps() {
+    return Object.assign({}, super.pageProps(), {onSetLast: this.onSetLast});
   }
 
 }

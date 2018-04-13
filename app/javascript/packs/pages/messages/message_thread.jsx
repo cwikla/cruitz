@@ -274,6 +274,7 @@ class MessageThread extends Component {
     //console.log("THREAD LENGTH: " + thread.length);
 
     this.setThread(thread);
+    this.props.onSetLast(this.props.message, data.message);
 
     //this.props.onSetItems(thread);
   }
