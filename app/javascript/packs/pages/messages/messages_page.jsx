@@ -49,8 +49,8 @@ class MessageItem extends Sheet.Item {
     let rootMessage = this.props.rootMessage;
     let message = this.props.message;
 
-    console.log(this.props.message);
-    console.log(message);
+    //console.log(this.props.message);
+    //console.log(message);
 
     let other = rootMessage.other;
     let count = rootMessage.count;

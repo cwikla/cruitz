@@ -109,8 +109,8 @@ class Blurb extends Component {
     let company = job.company || {};
     let logo = company.logo;
 
-    console.log("BLURB");
-    console.log(company);
+    //console.log("BLURB");
+    //console.log(company);
 
     let locations = null;
     if (job.locations) {
