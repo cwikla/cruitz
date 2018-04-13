@@ -235,23 +235,55 @@ class Page extends Component {
     return items[0];
   }
 
-  getNext() {
-    return this.state.nextId;
+  getNext(item) {
+    if (item == null) {
+      return null;
+    }
+
+    let allItems = this.getItems();
+
+    if (!allItems || (allItems.length == 1)) {
+      return null;
+    }
+
+    for(let i=0;i<allItems.length-1;i++) {
+      if (allItems[i].id == item.id) {
+        return allItems[i+1].id;
+      }
+    }
+    return null;
   }
 
-  getPrev() {
-    return this.state.prevId;
+  getPrevious(item) {
+    if (item == null) {
+      return null;
+    }
+
+    let allItems = this.getItems();
+
+    if (!allItems || (allItems.length == 1)) {
+      return null;
+    }
+
+    for(let i=1;i<allItems.length;i++) {
+      if (allItems[i].id == item.id) {
+        return allItems[i-1].id;
+      }
+    }
+    return null;
   }
 
   pageProps() {
+    let selected = this.getSelected();
+
     return({
       itemId: this.getItemId(),
       subItemId: this.getSubItemId(),
       items: this.getItems(),
       itemsMap: this.getItemsMap(),
-      selected: this.getSelected(),
-      nextId: this.getNext(),
-      prevId: this.getPrev(),
+      selected: selected,
+      nextId: this.getNext(selected),
+      prevId: this.getPrevious(selected),
       onLoadItems: this.onLoadItems,
       onLoadItem: this.onLoadItem,
       onAddItem: this.onAddItem,

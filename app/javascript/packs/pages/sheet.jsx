@@ -405,6 +405,46 @@ class Index extends Base {
 
 }
 
+class Previous extends Component {
+  render() {
+    if (!this.props.prevId) {
+      return (
+        <Pyr.UI.IconButton name="chevron-left" className="disabled" />
+      );
+    }
+
+    let link = Pyr.URL(this.props.url).push(this.props.prevId);
+
+    return (
+      <Link to={link.toString()} ><Pyr.UI.IconButton name="chevron-left" /></Link>
+    );
+  }
+}
+
+class Next extends Component {
+  render() {
+    if (!this.props.nextId) {
+      return (
+        <Pyr.UI.IconButton name="chevron-right" className="disabled" />
+      );
+    }
+
+    let link = Pyr.URL(this.props.url).push(this.props.nextId);
+
+    return (
+      <Link to={link.toString()} ><Pyr.UI.IconButton name="chevron-right" /></Link>
+    );
+  }
+}
+
+const ShowHeader = (props) => (
+  <div className={ClassNames("flx-row", props.className)}>
+    <div className="mr-auto flx-1">{props.title}</div>
+    <div className="next-prev"><Previous prevId={props.prevId} url={props.url}/> <Next nextId={props.nextId} url={props.url}/></div>
+  </div>
+);
+
+
 class Show extends Base {
   name() {
     return "Show";
@@ -558,6 +598,7 @@ const Sheet = {
   Index,
   Show,
   ShowFull,
+  ShowHeader,
   IndexShow,
   New, 
   Edit,

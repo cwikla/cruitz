@@ -303,10 +303,9 @@ $pfs_height: 10rem;
     color: $navbar_background_color;
   }
   &.disabled {
-    color: rgba(255,255,255,0.2);
-
+    color: $med_gray_color;
     &:hover {
-      color: rgba(255,255,255,0.2);
+      color: $med_gray_color;
     }
   }
   &.selected {

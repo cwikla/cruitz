@@ -18,18 +18,29 @@
     margin-right: 1rem;
 
     .item {
+      .other {
+        .avatar {
+          padding: 0.5rem;
+        }
+      }
+
       .title, .created-at {
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
 
       .title {
-        text-overflow: ellipsis;
+        .message-header {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        overflow: hidden;
       }
 
       .summary {
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 0.25rem;
+        font-size: 0.9rem;
       }
 
       &.new {

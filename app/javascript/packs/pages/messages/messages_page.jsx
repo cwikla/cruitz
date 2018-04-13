@@ -30,7 +30,6 @@ import Recruiter from '../shared/recruiter';
 import Job from '../shared/job';
 
 import MessageThread, { 
-  MessageThreadHeader,
   MessageThreadIndexHeader
 } from './message_thread';
 
@@ -62,7 +61,7 @@ class MessageItem extends Sheet.Item {
     let mine = message.mine;
     let ownerClass = (mine ? "mine" : "other");
 
-    let allClass = ClassNames("item message-item flx-row", ownerClass);
+    let allClass = ClassNames("item message-item flx-col", ownerClass);
 
     if (!mine && !message.read_at) {
       allClass.push("unread");
@@ -85,7 +84,7 @@ class MessageItem extends Sheet.Item {
     //console.log("THE MESSAGE");
     //console.log(message);
 
-    let summary = Pyr.Util.summarize(message.body, 400);
+    let summary = Pyr.Util.summarize(message.body, 155);
     summary = summary || "";
     if (summary.length == 0) {
       summary = "(No message)";
@@ -93,20 +92,22 @@ class MessageItem extends Sheet.Item {
 
     return (
       <div className={allClass} id={id}>
-        <div className="other flx-col">
+        <div className="other flx-row">
           <Avatar.Avatar
-            className={"mt-auto mb-auto"}
+            className={"mb-auto"}
             userId={other.id}
             small
           />
+          <div className="flx-col flx-1">
+            <div className="ml-auto">
+              <Pyr.UI.MagicDate date={message.created_at} short/>
+            </div>
+            <div className="flx-row flx-1"><Header className="title flx-row mr-auto" message={message} job={job} isNew={!message.read_at}/><div className="ml-auto">({count})</div></div>
+          </div>
         </div>
         <div className="flx-col flx-1">
-          <div className="ml-auto">
-              <Pyr.UI.MagicDate date={message.created_at} short/>
-          </div>
-          <Header className="title flx-row" message={message} job={job} isNew={!message.read_at}/>
-          <div className="summary mt-auto flx-1">
-            {summary} <span className="thread-count">({count})</span>
+          <div className="summary mr-auto flx-1">
+            {summary}
           </div>
         </div>
       </div>
@@ -173,7 +174,6 @@ class SideBlurb extends Component {
   }
 }
 
-
 class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
@@ -202,43 +202,6 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
-/********
-  setThread(thread) {
-    if (thread) {
-      thread = thread.slice();
-    }
-
-    this.setState({
-      thread
-    });
-  }
-
-  loadThread(itemId) {
-    let url = Pyr.URL(MESSAGES_URL).push(itemId).push('thread');
-
-    this.getJSON({
-      url: url,
-      onLoading: this.onLoading,
-      context: this
-    }).done((data, textStatus, jqXHR) => {
-      this.setThread(data.messages);
-    });
-  }
-
-  componentDidMount() {
-    if (this.props.itemId) {
-      this.loadThread(this.props.itemId);
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.itemId != prevProps.itemId) {
-      this.setThread(null);
-      this.loadThread(this.props.itemId);
-    }
-  }
-*/
-
   renderItem(item, isSelected) {
     if (this.state.isLoading || !this.props.items) {
       return (<Pyr.UI.Loading />);
@@ -261,7 +224,7 @@ class ShowSheet extends Sheet.Show {
     return (
      <div className="item flx-1 flx-row">
         <div className="flx-col flx-3 left">
-          <div className="job-title">{job.title}</div>
+          <Sheet.ShowHeader className="job-title" title={job.title} nextId={this.props.nextId} prevId={this.props.prevId} url={MESSAGES_URL}/>
           <ThreadRender
             message={message}
             job={job}
@@ -322,53 +285,6 @@ class MessagesPage extends Page {
 
   name() {
     return "Messages";
-  }
-
-  getNext(item) {
-    let allItems = this.getItems();
-
-    if ((item == null) || !allItems || (allItems.length == 1)) {
-      return null;
-    }
-
-    for(let i=0;i<allItems.length-1;i++) {
-      if (allItems[i].id == item.id) {
-        return allItems[i+1].id;
-      }
-    }
-    return null;
-  }
-
-  getPrevious(item) {
-    let allItems = this.getItems();
-
-    if ((item == null) || !allItems || (allItems.length == 1)) {
-      return null;
-    }
-
-    for(let i=1;i<allItems.length;i++) {
-      if (allItems[i].id == item.id) {
-        return allItems[i-1].id;
-      }
-    }
-    return null;
-  }
-
-  setSelected(selected) {
-    //console.log("SET SELECTED!");
-
-    if (selected) {
-      selected.read_at = new Date();
-    }
-    super.setSelected(selected);
-
-    let nextId = this.getNext(selected);
-    let prevId = this.getPrevious(selected);
-
-    this.setState({
-      nextId,
-      prevId,
-    });
   }
 
   loader() {
