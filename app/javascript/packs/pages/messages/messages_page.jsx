@@ -46,8 +46,13 @@ function MID(message) {
 
 class MessageItem extends Sheet.Item {
   render() {
-    let message = this.props.message;
-    //console.log(JSON.stringify(message));
+    let rootMessage = this.props.message;
+    let message = rootMessage.last_message ? rootMessage.last_message : rootMessage;
+    console.log(this.props.message);
+    console.log(message);
+
+    let other = rootMessage.other;
+    let count = rootMessage.count;
 
     let job = this.props.job;
 
@@ -74,8 +79,7 @@ class MessageItem extends Sheet.Item {
       allClass.push("selected");
     }
 
-    let Header = message.candidate ? MessageThreadIndexHeader : MessageQAHeader;
-    let other = message.other;
+    let Header = rootMessage.candidate ? MessageThreadIndexHeader : MessageQAHeader;
 
     //console.log("THE MESSAGE");
     //console.log(message);
@@ -101,7 +105,7 @@ class MessageItem extends Sheet.Item {
           </div>
           <Header className="title flx-row" message={message} job={job} isNew={!message.read_at}/>
           <div className="summary mt-auto flx-1">
-            { summary }
+            {summary} <span className="thread-count">({count})</span>
           </div>
         </div>
       </div>

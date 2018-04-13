@@ -1,7 +1,7 @@
 class MessageSerializer < ActiveModel::Serializer
   attributes :id,
     :body,
-    :parent_message_id,
+    #:parent_message_id,
     #:root_message_id,
     #:job_id,
     #:candidate,
@@ -93,7 +93,8 @@ class MessageSerializer < ActiveModel::Serializer
       phash[:is_root] = true
 
       tl = object.thread_last
-      phash[:last_message] = tl ? MessageSerializer.new(tl, **instance_options) : nil
+      phash[:last_message] = (tl.id != object.id) ? MessageSerializer.new(tl, **instance_options) : nil
+      phash[:count] = object.thread_count
     end
 
     phash

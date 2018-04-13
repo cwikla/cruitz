@@ -28,11 +28,13 @@ class Message < ApplicationRecord
   def reply_from(from_user)
     to_user_id = (from_user.id == self.user_id ? self.from_user_id : self.user_id)
 
+    pid = self.thread_last_id
+
     Message.new(
       root_message_id: self.root_message_id || self.id,
       job_id: self.job_id,
       candidate_id: self.candidate_id,
-      parent_message_id: self.id,
+      parent_message_id: pid,
       user_id: to_user_id,
       from_user_id: from_user.id
     )
@@ -41,12 +43,12 @@ class Message < ApplicationRecord
   def thread_last_id
     rid = self.root_message_id ? self.root_message_id : self.id 
     tl = self.class.where(root_message_id: rid).select("id").order("-id").first
-    tl ? tl.id : nil
+    tl ? tl.id : rid
   end
 
   def thread_last
     tid = thread_last_id
-    tid ? self.class.find(tid) : nil
+    tid != self.root_message_id ? self.class.find(tid) : self 
   end
 
   def self.find_for(user, mid)
