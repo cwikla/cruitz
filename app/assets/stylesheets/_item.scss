@@ -79,6 +79,8 @@
   .item {
     border-bottom: 1px solid rgba(gray, 0.4);
     background-color: white;
+    overflow: hidden;
+    text-overflow: ellipses;
 
     &:hover {
       b-background-color: rgba($light_gray_color, 0.5);
