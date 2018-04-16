@@ -225,7 +225,7 @@ class Form extends Base {
 
   renderTitle() {
     return (
-      <div className="flx-row title">
+      <div className="title">
         <h3 className="mr-auto mb-auto mt-auto">{this.title()}</h3>
         <div className="ml-auto">{this.renderButton()}</div>
       </div>

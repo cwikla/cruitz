@@ -25,7 +25,9 @@
       }
 
       .title, .created-at {
+        color: black;
         font-size: 1rem;
+        font-weight: $font_weight_normal;
       }
 
       .title {
@@ -43,8 +45,9 @@
         font-size: 0.9rem;
       }
 
-      &.new {
+      &.unread {
         .title {
+          color: $primary_color;
           font-weight: $font_weight_bold;
         }
       }

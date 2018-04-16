@@ -4,6 +4,7 @@ html, body {
 
   font-family: -apple-system, system-ui, "Open Sans",Roboto, Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: $font_weight_normal;
+  font-size: $font_size;
 }
 
 #all {
@@ -452,8 +453,11 @@ label {
   border: 1px solid $border_color;
 }
 
-h3.title {
-  color: $primary_color;
+.sheet {
+  .title > h3 {
+    color: $primary_color;
+    padding-bottom: 1rem;
+  }
 }
 
 .section {
@@ -471,11 +475,6 @@ h3.title {
 }
 
 .sheet {
-  .title {
-    color: $primary_color;
-    padding-bottom: 1rem;
-  }
-
   .form {
     padding: 5rem;
   }
@@ -760,6 +759,10 @@ label {
 
   &.selected {
     background-color: rgba($primary_light_color, 0.05);
+  }
+
+  &:hover {
+    background-color: rgba($primary_light_color, 0.15);
   }
 
   .title, .created-at {

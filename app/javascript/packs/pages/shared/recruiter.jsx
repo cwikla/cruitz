@@ -69,7 +69,7 @@ class Card extends Component {
             />
             <Avatar.Stars rating={3.7} className="mt-auto mb-auto"/>
 
-            <div className="dropdown ml-auto">
+            <div className="dropdown ml-auto flx-me-start">
               <Pyr.UI.Icon name="bars" className="dropdown-toggle" id="recCardFilterMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
               <div className="dropdown-menu" aria-labelledby="recCardFilterMenuButton">
                 <label className="dropdown-header">Filter with same</label>

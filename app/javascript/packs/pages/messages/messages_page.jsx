@@ -28,6 +28,7 @@ import Avatar from '../shared/avatar';
 
 import Recruiter from '../shared/recruiter';
 import Job from '../shared/job';
+import State from '../shared/state';
 
 import MessageThread, { 
   MessageThreadIndexHeader
@@ -63,17 +64,17 @@ class MessageItem extends Sheet.Item {
 
     let allClass = ClassNames("item message-item flx-col", ownerClass);
 
-    if (!mine && !message.read_at) {
+    let unread = !mine && !message.read_at;
+
+    if (unread) {
       allClass.push("unread");
     }
 
-    if (!message.read_at) {
-      allClass.push("new");
+/*
+    if (rootMessage.candidate) {
+      allClass.push(State.toClassName(rootMessage.candidate.state));
     }
-
-    if (message.candidate) {
-      allClass.push(message.candidate.state);
-    }
+*/
 
     if (this.props.isSelected) {
       allClass.push("selected");
@@ -102,7 +103,7 @@ class MessageItem extends Sheet.Item {
             <div className="ml-auto">
               <Pyr.UI.MagicDate date={message.created_at} short/>
             </div>
-            <div className="flx-row flx-1"><Header className="title flx-row mr-auto" message={message} job={job} isNew={!message.read_at}/><div className="ml-auto">({count})</div></div>
+            <div className="flx-row flx-1"><Header className="title flx-row mr-auto" message={message} job={job} isNew={unread}/><div className="ml-auto">({count})</div></div>
           </div>
         </div>
         <div className="flx-col flx-1">
