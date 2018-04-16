@@ -46,53 +46,13 @@ function methodToName(method) {
   }
 }
 
-class JobCard extends Component {
-  render() {
-    let job = this.props.job;
-
-    let id = "job-" + job.id;
-    let allClass = ClassNames("item job-item");
-
-    if (this.props.isSelected) {
-       allClass.push("selected");
-    }
-    let description = job.description || "No Description";
-
-    return (
-      <div className={ClassNames("card").push(allClass)}>
-        <div className="view overlay hm-white-slight">
-          <img src={Avatar.getLogo(id)} className="img-fluid" alt="" />
-          <a>
-              <div className="mask"></div>
-          </a>
-        </div>
-        <div className="card-body">
-            <a className="activator"><i className="fa fa-share-alt"></i></a>
-            <h4 className="card-title">Card title</h4>
-            <hr/>
-            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" className="black-text d-flex flex-row-reverse">
-                <h5 className="waves-effect p-2">Read more <i className="fa fa-chevron-right"></i></h5>
-            </a>
-        </div>
-      </div>
-    );
-  }
-}
-
 class JobItem extends Component {
 
   render() {
-    if (this.props.card) {
-      return (
-        <JobCard {...this.props}/>
-      );
-    }
-
     let job = this.props.job;
     
     let id = "job-" + job.id;
-    let allClass = ClassNames("item job-item flx-row");
+    let allClass = ClassNames("item job-item flx-col");
     
     if (this.props.isSelected) {
        allClass.push("selected");
@@ -102,16 +62,14 @@ class JobItem extends Component {
     
     return (
       <div className={allClass} id={id}>
-        <Pyr.Grid.Column className="job col-6">
-          <div>{job.id}:{job.title}</div>
-          <div>Created: <Pyr.UI.MagicDate date={job.created_at}/></div>
-        </Pyr.Grid.Column>
-        <Pyr.Grid.Column className="item-content">
-          <div>Total: {job.candidate_counts.total}</div>
-          <div>Accepted: {job.candidate_counts.accepted}</div>
-          <div>New: {job.candidate_counts.waiting}</div>
-          <div>Rejected: {job.candidate_counts.rejected}</div>
-        </Pyr.Grid.Column>
+        <div className="created-at ml-auto"><Pyr.UI.MagicDate date={job.created_at} short/></div>
+        <div className="title mr-auto">{job.title}</div>
+        <div className="item-content flx-col ml-auto flx-1">
+          <div className="total">{job.candidate_counts.total} Candidates</div>
+          <div className="new">{job.candidate_counts.waiting} New</div>
+          <div className="accepted">{job.candidate_counts.accepted} Accepted</div>
+          <div className="rejected">{job.candidate_counts.rejected} Rejected</div>
+        </div>
       </div>
     );
   }
@@ -324,29 +282,8 @@ class IndexSheet extends Sheet.Index {
       <JobItem 
         job={job} 
         isSelected={isSelected}
-        card={this.props.card}
       />
     );
-  }
-
-  renderChildrenCard(items, selected) {
-    return (
-      <div className="d-flex flx-wrap" key="job-stuff">
-        { items.map( (item, pos) => {
-            let key="job-item-"+item.id;
-            let isSelected = this.same(item, selected);
-            return (<div key={key} className="spacer">{this.renderItem(item, isSelected)}</div>);
-          })
-        }
-      </div>
-    );
-  }
-
-  renderChildren(items, isSelected) {
-    if (this.props.card) {
-      return this.renderChildrenCard(items, isSelected);
-    }
-    return super.renderChildren(items, isSelected);
   }
 
   renderSearch() {
