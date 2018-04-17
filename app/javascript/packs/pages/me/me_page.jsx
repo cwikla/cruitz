@@ -348,9 +348,6 @@ class EditSheet extends Sheet.Edit {
           ref={(node) => this.me_form = node}
           onSuccess={this.onSuccess}
         />
-        <div className="me-info p-1 d-flex flx-end">
-          <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out"/>Logout</Pyr.UI.PrimaryButton>
-        </div>
       </div>
     );
   }
@@ -364,6 +361,17 @@ class EditSheet extends Sheet.Edit {
 
   title() {
     return "My Profile";
+  }
+
+  render() {
+    return (
+      <div>
+        { super.render() }
+        <div className="me-info p-1 d-flex flx-end">
+          <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out"/>Logout</Pyr.UI.PrimaryButton>
+        </div>
+      </div>
+    );
   }
 }
 

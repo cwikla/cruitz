@@ -210,7 +210,9 @@ class Form extends Base {
     let isDisabled = this.props.isLoading;
 
     return (
-      <Pyr.Form.SubmitButton className="ml-auto" target={this.onGetTarget} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
+      <div>
+        <Pyr.Form.SubmitButton className="mr-auto" target={this.onGetTarget} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
+      </div>
     );
   }
 
@@ -227,7 +229,6 @@ class Form extends Base {
     return (
       <div className="title">
         <h3 className="mr-auto mb-auto mt-auto">{this.title()}</h3>
-        <div className="ml-auto">{this.renderButton()}</div>
       </div>
     );
   }
@@ -242,8 +243,9 @@ class Form extends Base {
     return (
       <AComponent className={clz}>
         { this.renderTitle() }
-        <div className="form-content mb-auto flx-col">
+        <div className="form-content mb-auto flx-col flx-1">
           { this.renderForm() }
+          { this.renderButton() }
         </div>
       </AComponent>
     );

@@ -212,34 +212,31 @@ $pfs_height: 10rem;
 
 .pyr-file-selector {
   border: 1px solid $border_color;
+  padding: 0;
 
   .guts {
   }
 
   .thing {
-    padding-left: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-right: 0.5rem;
+    padding: 0.5rem;
 
     border-color: 1px solid $border_color;
     background-color: $alt_background_color;
 
-    width: $pfs_width;
-    height: $pfs_height;
+    //width: $pfs_width;
+    //height: $pfs_height;
 
     img {
       max-width: 100%;
       max-height: 100%;
       height: auto;
-
       margin: auto;
     }
   }
 
   .pyr-drop-target {
-    width: $pfs_width;
-    height: $pfs_height;
+    //width: $pfs_width;
+    //height: $pfs_height;
 
     .drop-site {
       border: 1px solid $border_color;
