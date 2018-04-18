@@ -18,6 +18,101 @@ import {
   RECRUITERS_URL,
 } from '../const';
 
+
+const ReviewItem = (props) => (
+  <div key={props.review.id} className="review">
+    <div><Avatar.Stars rating={props.review.score} /></div>
+    <div><Pyr.UI.MagicDate date={props.review.created_at} /></div>
+    <div>{props.review.from_user.first_name}</div>
+    <div>{props.review.description}</div>
+  </div>
+);
+
+class ReviewList extends Component {
+  render() {
+    if (!this.props.reviews) {
+      return <Pyr.UI.Loading />
+    }
+
+    if (this.props.reviews.length == 0) {
+      return <div>No reviews. Why no leave one?</div>
+    }
+
+    return this.props.reviews.map((review) => {
+      return (
+        <ReviewItem key={review.id} review={review} />
+      );
+    });
+  }
+}
+
+class Reviews extends Component {
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      reviews: []
+    };
+  }
+
+  setReviews(reviews) {
+    this.setState({
+      reviews
+    });
+  }
+
+  getReviews() {
+    let url = Pyr.URL(RECRUITERS_URL).push(this.props.recruiter.id).set("reviews", "1");
+
+    console.log("REVIEWS URL");
+    console.log(url);
+
+    this.getJSON({
+      url: url,
+
+    }).done((data, textStatus, jqXHR) => {
+      this.setReviews(data.recruiter.reviews);
+
+    });
+  }
+
+  componentWillMount() {
+    super.componentWillMount();
+    this.getReviews();
+  }
+
+  render() {
+    return (
+      <div className="flx-1 flx-col">
+        <Recruiter.Header recruiter={this.props.recruiter} reviews={this.state.reviews}/>
+  
+        <div className="reviews flx-1 scroll">
+          <ReviewList recruiter={this.props.recruiter} reviews={this.state.reviews} />
+        </div>
+      </div>
+    );
+  }
+}
+
+class ReviewsModal extends Pyr.UI.Modal {
+  valid() {
+    return true;
+  }
+
+  title() {
+    return "Reviews for ...";
+  }
+
+  renderInner() {
+    return (
+      <div className="recruiter-reviews-modal">
+        <Reviews recruiter={this.props.recruiter} />
+      </div>
+    );
+  }
+}
+
+
 const SPAM_REASONS = [
   "Bad candidates",
   "Inappropriate message",
@@ -163,6 +258,7 @@ class Blurb extends Component {
   constructor(props) {
     super(props);
     this.onShowSpam = this.showSpam.bind(this);
+    this.onShowReviews = this.showReviews.bind(this);
   }
 
   showSpam(e) {
@@ -171,6 +267,14 @@ class Blurb extends Component {
     }
 
     this.spam.open();
+  }
+
+  showReviews(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.reviews.open();
   }
 
   render() {
@@ -188,19 +292,19 @@ class Blurb extends Component {
 
     let description = recruiter.description || "";
 
-
     let url = recruiter.logo ? recruiter.logo.url : (logo ? logo.url : null);
 
     return (
       <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-blurb ")} >
         <SpamModal recruiter={recruiter} company={company} ref={node => this.spam = node}/>
+        <ReviewsModal recruiter={recruiter} company={company} ref={node => this.reviews = node}/>
         <Pyr.UI.BackgroundImage className="fifty" url={Avatar.getLogo(recruiter.id)}>
           <Pyr.UI.Fifty>
             <div className="rec-blurb-inner">
               <div>
                 <div className="icon flx-row flx-start" >
                   <Pyr.UI.IconButton name="flag" className="spam" onClick={this.onShowSpam}/>
-                  <Pyr.UI.IconButton name="eye" className="ml-auto"/>
+                  <Pyr.UI.IconButton name="eye" className="reviews ml-auto" onClick={this.onShowReviews}/>
                 </div>
     
                 <Avatar.Avatar
@@ -265,6 +369,7 @@ const Recruiter = {
   Blurb,
   Header,
   Card,
+  Reviews,
 }
 
 export default Recruiter;
