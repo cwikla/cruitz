@@ -92,6 +92,10 @@ class PasswordModal extends Pyr.UI.Modal {
     );
   }
 
+  title() {
+    return "Change Password";
+  }
+
   renderInner() {
     let AField = this.state.visible ? Pyr.Form.TextField : Pyr.Form.PasswordField;
     let disabled = !this.valid();
@@ -103,10 +107,6 @@ class PasswordModal extends Pyr.UI.Modal {
 
     return (
       <div className="password-modal">
-        <div className="flx-0" >
-          <h3 className="title">Change Password</h3>
-        </div>
-
         <Pyr.Form.Form
           model="User"
           object={this.props.me}

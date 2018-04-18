@@ -77,26 +77,23 @@ class JobItem extends Component {
 
 }
 
+const JobCategories = (props) => (
+  <Pyr.UI.PassThru>
+  { 
+    (props.categories || []).map( (item, pos) => {
+      return (
+        <Pyr.Form.Option value={item.id} key={"cat_"+item.id}>{item.name}</Pyr.Form.Option>
+      );
+    })
+  }
+  </Pyr.UI.PassThru>
+);
+
 class JobForm extends Component {
   constructor(props) {
     super(props);
 
     this.onGetTarget = this.getTarget.bind(this);
-  }
-
-  renderCategories() {
-    let cats = this.props.categories;
-
-    if (!cats) {
-      return null;
-    }
-
-    return cats.map( (item, pos) => {
-      return (
-        <Pyr.Form.Option value={item.id} key={"cat_"+item.id}>{item.name}</Pyr.Form.Option>
-      );
-    })
-
   }
 
   renderCompany() {
@@ -161,7 +158,7 @@ class JobForm extends Component {
           <Pyr.Form.Group name="category">
             <Pyr.Form.Label>Category</Pyr.Form.Label>
             <Pyr.Form.Select>
-              { this.renderCategories() }
+              <JobCategories categories={this.props.categories} />
             </Pyr.Form.Select>
           </Pyr.Form.Group>
       

@@ -815,12 +815,13 @@ class Modal extends Component {
     });
 
     this.onClose = this.close.bind(this);
+    this.onOpen = this.open.bind(this);
     this.onKeyPress = this.keyPress.bind(this);
     this.onNoProp = this.noProp.bind(this);
   }
 
   isOpen() {
-    return this.props.open || false;
+    return this.props.open || this.state.open || false;
     //return this.state.open;
   }
 
@@ -864,6 +865,18 @@ class Modal extends Component {
     }
   }
 
+  title() {
+    return "";
+  }
+
+  renderTitle() {
+    return (
+      <div className="title mr-auto" >
+        <h3 className="">{this.title()}</h3>
+      </div>
+    );
+  }
+
   renderInner() {
   }
 
@@ -878,10 +891,13 @@ class Modal extends Component {
         ref={(node) => this.me = node }
         onClick={this.onClose}
       >
-          <div className="modal-border flx-col"
+          <div className="modal-border flx-col flx-1"
               onClick={this.noProp}
           >
-            <div className="ml-auto"> <IconButton name="close" className="close ml-auto" onClick={this.onClose}/></div>
+            <div className="flx-row">
+              { this.renderTitle() }
+              <IconButton name="close" className="close ml-auto" onClick={this.onClose}/>
+            </div>
             <div className="modal-inner flx-col"
             >
               { this.renderInner() }

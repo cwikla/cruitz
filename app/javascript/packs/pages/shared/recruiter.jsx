@@ -14,9 +14,69 @@ import Sheet from '../sheet';
 
 import Avatar from '../shared/avatar';
 
-import {
-  MESSAGES_URL,
+import { 
+  RECRUITERS_URL,
 } from '../const';
+
+const SPAM_REASONS = [
+  "Bad candidates",
+  "Inappropriate message",
+  "Not a recruiter",
+  "Generally Annoying",
+];
+
+const SpamReasons = (props) => (
+    <div className="spam-reasons flx-1">
+      <Pyr.Form.Group name="spam">
+        <Pyr.Form.Select>
+          { SPAM_REASONS.map( (item, pos) => {
+              return (
+                <Pyr.Form.Option value={pos} key={"spam_"+pos}>{item}</Pyr.Form.Option>
+              );
+            })
+          }
+        </Pyr.Form.Select>
+      </Pyr.Form.Group>
+    </div>
+);
+
+class SpamModal extends Pyr.UI.Modal {
+  valid() {
+    return true;
+  }
+
+  title() {
+    return "Mark Recruiter as Spammy";
+  }
+
+  renderInner() {
+    let url = Pyr.URL(RECRUITERS_URL).push(this.props.recruiter.id).push("spam");
+
+    return (
+      <div className="recruiter-spam-modal">
+        <div className="message">Looks like you think {this.props.recruiter.first_name} is sending you
+        terrible candidates.  By marking them as <span className="warning">spam</span> you will no
+        longer receive candidates from them. We'll also take this into account when ranking other
+        recruiters from their company {this.props.company.name}.</div>
+        <div>
+          <Pyr.Form.Form
+            url={url}
+            model="Spam"
+            object={{}}
+            className="mr-auto"
+            ref={(node) => { this.form = node }}
+          >
+            <div className="flx-row">
+              <SpamReasons />
+              <div className="flx-row flx-1 ml-auto"><Pyr.Form.SubmitButton className="ml-auto">Mark as Spam!</Pyr.Form.SubmitButton></div>
+            </div>
+          </Pyr.Form.Form>
+        </div>
+      </div>
+    );
+  }
+}
+
 
 
 class Card extends Component {
@@ -100,6 +160,19 @@ class Card extends Component {
 ///// HERE
 
 class Blurb extends Component {
+  constructor(props) {
+    super(props);
+    this.onShowSpam = this.showSpam.bind(this);
+  }
+
+  showSpam(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.spam.open();
+  }
+
   render() {
     let recruiter = this.props.recruiter;
     let rest = Pyr.Util.propsRemove(this.props, "recruiter");
@@ -120,12 +193,13 @@ class Blurb extends Component {
 
     return (
       <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-blurb ")} >
+        <SpamModal recruiter={recruiter} company={company} ref={node => this.spam = node}/>
         <Pyr.UI.BackgroundImage className="fifty" url={Avatar.getLogo(recruiter.id)}>
           <Pyr.UI.Fifty>
             <div className="rec-blurb-inner">
               <div>
                 <div className="icon flx-row flx-start" >
-                  <Pyr.UI.IconButton name="flag" className="spam"/>
+                  <Pyr.UI.IconButton name="flag" className="spam" onClick={this.onShowSpam}/>
                   <Pyr.UI.IconButton name="eye" className="ml-auto"/>
                 </div>
     
