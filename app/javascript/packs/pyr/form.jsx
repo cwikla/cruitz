@@ -1061,7 +1061,7 @@ class FileSelector extends Child {
   render() {
     let clz = Util.ClassNames("form-control pyr-file-selector");
 
-    let rest = this.cleanProps(this.props, ["imageOnly", "multiple", "files"]);
+    let rest = this.cleanProps(this.props, ["imageOnly", "multiple", "files", "uploads"]);
 
     return(
       <div id={this.htmlID()}
