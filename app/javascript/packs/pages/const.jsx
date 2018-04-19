@@ -25,6 +25,8 @@ export const COMPANY_URL = "/company";
 export const COMPANIES_URL = "/companies";
 export const POSITIONS_URL = "/positions";
 export const HEADS_URL = "/heads";
+export const SPAMS_URL = "/spams";
+export const SPAM_REASONS_URL = "/spam_reasons";
 
 export const ME_URL = "/me";
 export const CATEGORIES_URL = "/categories";

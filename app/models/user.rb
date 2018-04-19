@@ -16,6 +16,9 @@ class User < ApplicationRecord
   has_many :candidate_jobs, through: :candidates, source: :job, class_name: "Job"
   has_many :recruiters, -> { group(:id) }, through: :candidate_heads, class_name: "User"
 
+  has_many :spams
+  has_many :spam_reports, foreign_key: :recruiter_id, class_name: "Spam"
+
   has_many :messages
   has_many :message_roots, -> { where("root_message_id is null") }, class_name: "Message"
 

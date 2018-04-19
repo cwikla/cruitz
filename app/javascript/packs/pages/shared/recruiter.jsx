@@ -16,6 +16,8 @@ import Avatar from '../shared/avatar';
 
 import { 
   RECRUITERS_URL,
+  SPAMS_URL,
+  SPAM_REASONS_URL,
 } from '../const';
 
 
@@ -64,9 +66,6 @@ class Reviews extends Component {
   getReviews() {
     let url = Pyr.URL(RECRUITERS_URL).push(this.props.recruiter.id).set("reviews", "1");
 
-    console.log("REVIEWS URL");
-    console.log(url);
-
     this.getJSON({
       url: url,
 
@@ -113,44 +112,83 @@ class ReviewsModal extends Pyr.UI.Modal {
 }
 
 
-const SPAM_REASONS = [
-  "Bad candidates",
-  "Inappropriate message",
-  "Not a recruiter",
-  "Generally Annoying",
-];
+class SpamReasons extends Component {
+  constructor(props) {
+    super(props);
 
-const SpamReasons = (props) => (
-    <div className="spam-reasons flx-1">
-      <Pyr.Form.Group name="spam">
-        <Pyr.Form.Select>
-          { SPAM_REASONS.map( (item, pos) => {
-              return (
-                <Pyr.Form.Option value={pos} key={"spam_"+pos}>{item}</Pyr.Form.Option>
-              );
-            })
-          }
-        </Pyr.Form.Select>
-      </Pyr.Form.Group>
-    </div>
-);
+    this.initState({
+      reasons: null
+    });
+  }
 
-class SpamModal extends Pyr.UI.Modal {
+  getReasons() {
+    if (this.state.reasons) {
+      return;
+    }
+
+    let url = Pyr.URL(SPAM_REASONS_URL);
+
+    this.getJSON({
+      url
+    }).done((data, textStatus, jqXHR) => {
+      this.setState({
+        reasons: data.spam_reasons
+      });
+    });
+  }
+
+  componentDidMount() {
+    this.getReasons();
+  }
+
+  render() {
+    return (
+      <div className="spam-reasons flx-1">
+        <Pyr.Form.Group name="reason">
+          <Pyr.Form.Select>
+            { (this.state.reasons || []).map( (item, pos) => {
+                return (
+                  <Pyr.Form.Option value={item.id} key={"spam_"+item.id}>{item.title}</Pyr.Form.Option>
+                );
+              })
+            }
+          </Pyr.Form.Select>
+        </Pyr.Form.Group>
+      </div>
+    );
+  }
+}
+
+class SpamModalInner extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onGetTarget = this.getTarget.bind(this);
+    this.onSuccess = this.success.bind(this);
+  }
+
   valid() {
     return true;
   }
 
-  title() {
-    return "Mark Recruiter as Spammy";
+  success() {
+    this.context.setNotice(this.props.recruiter.full_name + " marked for spam!");
+    if (this.props.onSuccess) {
+      this.props.onSuccess();
+    }
   }
 
-  renderInner() {
-    let url = Pyr.URL(RECRUITERS_URL).push(this.props.recruiter.id).push("spam");
+  getTarget() {
+    return this.form;
+  }
+
+  render() {
+    let url = Pyr.URL(SPAMS_URL).push(this.props.recruiter.id);
 
     return (
       <div className="recruiter-spam-modal">
-        <div className="message">Looks like you think {this.props.recruiter.first_name} is sending you
-        terrible candidates.  By marking them as <span className="warning">spam</span> you will no
+        <div className="message">It looks like you think {this.props.recruiter.first_name} is sending you
+        terrible candidates.  Sorry about that, with help we will do better. By marking them as <span className="warning">spam</span> you will no
         longer receive candidates from them. We'll also take this into account when ranking other
         recruiters from their company {this.props.company.name}.</div>
         <div>
@@ -160,14 +198,38 @@ class SpamModal extends Pyr.UI.Modal {
             object={{}}
             className="mr-auto"
             ref={(node) => { this.form = node }}
+            onSuccess={this.onSuccess}
           >
             <div className="flx-row">
               <SpamReasons />
-              <div className="flx-row flx-1 ml-auto"><Pyr.Form.SubmitButton className="ml-auto">Mark as Spam!</Pyr.Form.SubmitButton></div>
+              <div className="flx-row flx-1 ml-auto"><Pyr.Form.SubmitButton className="ml-auto" target={this.onGetTarget}>Mark as Spam!</Pyr.Form.SubmitButton></div>
             </div>
           </Pyr.Form.Form>
         </div>
       </div>
+    );
+  }
+}
+
+
+class SpamModal extends Pyr.UI.Modal {
+  constructor(props) {
+    super(props);
+
+    this.onSuccess = this.success.bind(this);
+  }
+
+  success() {
+    this.onClose();
+  }
+
+  title() {
+    return "Mark recruiter as spammy";
+  }
+
+  renderInner() {
+    return (
+      <SpamModalInner {...this.props} onSuccess={this.onSuccess}/>
     );
   }
 }

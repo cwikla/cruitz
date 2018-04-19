@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180411222020) do
+ActiveRecord::Schema.define(version: 20180418233644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -391,6 +391,28 @@ ActiveRecord::Schema.define(version: 20180411222020) do
     t.datetime "deleted_at"
     t.string "name", null: false
     t.index ["name"], name: "index_skills_on_name", unique: true
+  end
+
+  create_table "spam_reasons", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "title", null: false
+  end
+
+  create_table "spams", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "user_id", null: false
+    t.integer "recruiter_id", null: false
+    t.integer "reason_id", null: false
+    t.integer "candidate_id"
+    t.integer "message_id"
+    t.index ["candidate_id"], name: "index_spams_on_candidate_id"
+    t.index ["message_id"], name: "index_spams_on_message_id"
+    t.index ["recruiter_id"], name: "index_spams_on_recruiter_id"
+    t.index ["user_id", "recruiter_id"], name: "index_spams_on_user_id_and_recruiter_id", unique: true
   end
 
   create_table "universities", force: :cascade do |t|

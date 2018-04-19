@@ -98,7 +98,7 @@ class NavSearch extends Component {
           object={{search: null}}
           url={url}
           className="search-form"
-          onSuccess={(data) => { this.context.setNotice("Unimplemented"); } }
+          onSuccess={(data) => { this.context.setNotice("Hello Unimplemented"); } }
           reset
         >
           <Pyr.Form.Group name="search">

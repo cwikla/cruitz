@@ -28,6 +28,7 @@ end
 
 Rails.application.routes.draw do
 
+  resources :spam_reasons
   scope :api, defaults: { format: :json } do
     scope :v1 do
       get 'recruiters' => 'users#recruiters'
@@ -77,6 +78,10 @@ Rails.application.routes.draw do
       post 'positions/search' => 'positions#search' 
       get 'positions/:id/candidates' => 'positions#candidates'
       resources :positions
+
+      post 'spams/:id' => 'spams#create'
+
+      resources :spam_reasons
     end
   end
 

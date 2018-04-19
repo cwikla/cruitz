@@ -119,7 +119,7 @@ class EditSheet extends Sheet.Edit {
   success(data, textStatus, jqXHR) {
     super.success(data, textStatus, jqXHR);
 
-    this.setNotice("Settings saved");
+    this.context.setNotice("Settings saved");
     this.goBack();
   }
 
