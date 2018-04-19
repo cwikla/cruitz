@@ -199,6 +199,7 @@ class SpamModalInner extends Component {
             className="mr-auto"
             ref={(node) => { this.form = node }}
             onSuccess={this.onSuccess}
+            onError={this.props.onError}
           >
             <div className="flx-row">
               <SpamReasons />
@@ -213,23 +214,13 @@ class SpamModalInner extends Component {
 
 
 class SpamModal extends Pyr.UI.Modal {
-  constructor(props) {
-    super(props);
-
-    this.onSuccess = this.success.bind(this);
-  }
-
-  success() {
-    this.onClose();
-  }
-
   title() {
     return "Mark recruiter as spammy";
   }
 
   renderInner() {
     return (
-      <SpamModalInner {...this.props} onSuccess={this.onSuccess}/>
+      <SpamModalInner {...this.props} onSuccess={this.onClose} onError={this.onClose}/>
     );
   }
 }

@@ -5,7 +5,7 @@ class CreateSpams < ActiveRecord::Migration[5.1]
       t.timestamp :deleted_at
       t.integer :user_id, null: false
       t.integer :recruiter_id, null: false
-      t.integer :reason_id, null: false
+      t.integer :spam_reason_id, null: false
       t.integer :candidate_id
       t.integer :message_id
     end

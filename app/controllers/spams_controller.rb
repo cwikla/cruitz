@@ -6,11 +6,8 @@ class SpamsController < ApplicationController
   def create
     sp = spams_params
 
-    rec = User.is_recruiter.find(params[:id])
-
-    reason = SpamReason.find(sp[:reason])
-
-    render json: current_user.spams.create!(recruiter: rec, reason: reason)
+    val = Spam.make(current_user, params[:id], sp[:reason])
+    render json: val
   end
 
   def spams_params

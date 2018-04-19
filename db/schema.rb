@@ -406,7 +406,7 @@ ActiveRecord::Schema.define(version: 20180418233644) do
     t.datetime "deleted_at"
     t.integer "user_id", null: false
     t.integer "recruiter_id", null: false
-    t.integer "reason_id", null: false
+    t.integer "spam_reason_id", null: false
     t.integer "candidate_id"
     t.integer "message_id"
     t.index ["candidate_id"], name: "index_spams_on_candidate_id"
