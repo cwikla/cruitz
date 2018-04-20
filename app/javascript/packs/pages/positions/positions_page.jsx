@@ -258,12 +258,12 @@ class ShowSheet extends Sheet.ShowFull {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(prevProps, prevState) {
     let pid = this.props.selected ? this.props.selected.id : null;
-    let nid = nextProps.selected ? nextProps.selected.id : null;
+    let lid = prevProps.selected ? prevProps.selected.id : null;
 
-    if (pid != nid) {
-      this.loadCandidates(nextProps.selected);
+    if (pid != lid) {
+      this.loadCandidates(this.props.selected);
     }
   }
 
@@ -366,13 +366,15 @@ class HeadLoader extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.headId!= this.props.headId) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.headId!= this.props.headId) {
       //console.log("PAGE GOT NEW ID: " + nextProps.headId);
       this.setState({
         head: null
       });
-      this.loadHead(nextProps.headId);
+      if (this.props.headId) {
+        this.loadHead(this.props.headId);
+      }
     }
   }
 
