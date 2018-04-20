@@ -891,15 +891,14 @@ class Modal extends Component {
         ref={(node) => this.me = node }
         onClick={this.onClose}
       >
-          <div className="modal-border flx-col flx-1"
+          <div className="pyr-app-modal-content"
               onClick={this.noProp}
           >
-            <div className="flx-row">
+            <div className="pyr-app-modal-header flx-row">
               { this.renderTitle() }
               <IconButton name="close" className="close ml-auto" onClick={this.onClose}/>
             </div>
-            <div className="modal-inner flx-col"
-            >
+            <div className="pyr-app-modal-inner" >
               { this.renderInner() }
             </div>
           </div>

@@ -82,10 +82,9 @@ class Reviews extends Component {
 
   render() {
     return (
-      <div className="flx-1 flx-col">
+      <div className="reviews flx-1 flx-col">
         <Recruiter.Header recruiter={this.props.recruiter} reviews={this.state.reviews}/>
-  
-        <div className="reviews flx-1 scroll">
+        <div className="flx-1 flx-col scroll">
           <ReviewList recruiter={this.props.recruiter} reviews={this.state.reviews} />
         </div>
       </div>
