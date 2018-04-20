@@ -284,7 +284,7 @@ class EditSheet extends Sheet.Edit {
     this.onLogout = this.logout.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       open: true
     });

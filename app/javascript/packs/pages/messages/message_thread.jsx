@@ -311,7 +311,7 @@ class MessageThread extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.message) {
       return;
     }

@@ -163,7 +163,7 @@ class NetworkComponent extends BaseComponent {
     this.network.reset();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.network.reset();
   }
 

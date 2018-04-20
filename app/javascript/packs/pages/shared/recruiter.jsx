@@ -75,8 +75,8 @@ class Reviews extends Component {
     });
   }
 
-  componentWillMount() {
-    super.componentWillMount();
+  componentDidMount() {
+    super.componentDidMount();
     this.getReviews();
   }
 

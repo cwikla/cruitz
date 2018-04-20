@@ -626,10 +626,9 @@ class ShowSheet extends Sheet.Show {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     //console.log("WILL MOUNT");
     //console.log(this.props);
-    super.componentWillMount();
     this.getJob(this.props.jobId);
   }
 

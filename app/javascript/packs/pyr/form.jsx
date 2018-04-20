@@ -423,7 +423,7 @@ class TextField extends Child {
     return this.state.value;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let value = this.props.value || this.modelValue() || "";
     this.setState({
       value
@@ -556,7 +556,7 @@ class TextArea extends Child {
     this.onTextChange = this.textChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       value: (this.props.value || this.modelValue() || "")
     });
@@ -595,7 +595,7 @@ class CheckBox extends Child {
     this.onChange = this.change.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       checked: (this.props.checked || this.modelChecked() || false)
     });
@@ -662,7 +662,7 @@ class DropTarget extends BaseComponent {
     this.onClick = this.click.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       dragging: false,
       valid: true,
@@ -856,7 +856,7 @@ class FileSelector extends Child {
     return uploads || [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       files: [],
       fileUploads: {},
@@ -1120,7 +1120,7 @@ class Range extends Child {
     this.setValue(value);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let value = this.props.value || this.modelValue() || this.minValue();
     this.setValue(value);
   }

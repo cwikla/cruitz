@@ -156,7 +156,7 @@ class NewSheet extends Sheet.New {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getTemplate();
   }
 
