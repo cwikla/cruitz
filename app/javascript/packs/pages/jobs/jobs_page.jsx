@@ -77,6 +77,13 @@ class JobItem extends Component {
 
 }
 
+const JobFile = (props) => (
+  <Pyr.Form.Group name="files">
+    <Pyr.Form.Label>Attachments</Pyr.Form.Label>
+    <Pyr.Form.FileSelector multiple/>
+  </Pyr.Form.Group>
+);
+
 const JobCategories = (props) => (
   <Pyr.UI.PassThru>
   { 
@@ -154,6 +161,8 @@ class JobForm extends Component {
             <Pyr.Form.Label>Title</Pyr.Form.Label>
             <Pyr.Form.TextField placeholder= "Enter job title"/>
           </Pyr.Form.Group>
+
+          <JobFile props={this.props} />
 
           <Pyr.Form.Group name="category">
             <Pyr.Form.Label>Category</Pyr.Form.Label>

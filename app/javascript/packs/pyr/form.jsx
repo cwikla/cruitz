@@ -952,14 +952,14 @@ class FileSelector extends Child {
 
       me.setFileUpload(file, null);
 
-      Attachment.S3Put(file).done((upload) => {
+      this.S3Put(file).done((upload) => {
         //console.log("S3PUT RESULT");
         //console.log(upload);
 
         me.setFileUpload(file, upload);
 
       }).fail((jqXHR, textStatus, errorThrown) => {
-        Network.ajaxError(jqXHR, textStatus, errorThrown);
+        this.ajaxError(jqXHR, textStatus, errorThrown);
 
       });
     });

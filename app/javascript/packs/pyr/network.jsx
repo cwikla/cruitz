@@ -9,6 +9,8 @@ const DELETE = 'DELETE';
 const PATCH  = 'PATCH';
 const PUT = 'PUT';
 
+const UPLOAD_URL = "/uploads/make";
+
 // const PUT removed to catch them all
 
 const Method = {
@@ -153,6 +155,47 @@ class NetworkComponent extends BaseComponent {
 
   getJSON(stuff) {
     return this.network.getJSON(stuff);
+  }
+
+  getSignedURL(file) {
+    return this.getJSON({
+      url : Util.URL(UPLOAD_URL),
+      method: Network.Method.POST,
+      data : { upload: { name : file.name } },
+    });
+  }
+
+  S3Put(file) {
+    console.log("S3");
+    console.log(file);
+  
+    return this.getSignedURL(file).then((info, textStatus, jqXHR) => {
+      let fileName = file.name;
+      let ftype = file.type;
+      let flength = file.size;
+  
+      console.log("************ INFO");
+      console.log(info);
+  
+      let s3Info = info.upload;
+  
+      return this.getJSON({
+        type: Network.Method.PUT,
+        url: s3Info['signed_url'],
+        data: file,
+        dataType: null,
+        contentType: ftype,
+        mimeType: ftype,
+        processData: false,
+        cache: false,
+      }).then((result, textStatus, jqXHR) => {
+        console.log("S3PUT RETURNING");
+        console.log(s3Info);
+  
+        return s3Info; // FROM getSignedURL
+  
+      });
+    });
   }
 
   ajaxError(jqXHR, textStatus, errorThrown) {
