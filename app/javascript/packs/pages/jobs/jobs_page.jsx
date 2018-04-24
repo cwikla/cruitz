@@ -80,7 +80,7 @@ class JobItem extends Component {
 const JobFile = (props) => (
   <Pyr.Form.Group name="files">
     <Pyr.Form.Label>Attachments</Pyr.Form.Label>
-    <Pyr.Form.FileSelector multiple/>
+    <Pyr.Form.FileSelector multiple row wrap showFileName/>
   </Pyr.Form.Group>
 );
 

@@ -647,7 +647,7 @@ class DropTarget extends BaseComponent {
     super(props);
 
     this.initState({
-      dragging: false,
+      dragging: 0,
       valid: true,
     });
 
@@ -723,17 +723,50 @@ class DropTarget extends BaseComponent {
     return valid;
   }
 
+  removeDupes(files) {
+    let current = this.props.files || [];
+    files = files || [];
+
+    //console.log("DEDUPE");
+    //console.log(files);
+    //console.log(current);
+
+    let results = [];
+    for(var f of files) {
+      let found = false;
+      for(var old of current) {
+        //console.log("***");
+        //console.log(f);
+        //console.log(old);
+        if (f.name == old.name) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        results.push(f);
+      }
+    }
+
+    return results;
+  }
+
   dragging(dragging, e) {
+    //console.log("DRAGGING");
+    //console.log(dragging);
+
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
 
     let files = this.eventFiles(e);
+
+
     let valid = this.isValid(files);
 
     this.setState({
-      dragging,
+      dragging: this.state.dragging + (dragging ? 1 : -1),
       valid,
     });
 
@@ -749,7 +782,7 @@ class DropTarget extends BaseComponent {
   dragEnd(e) {
     //console.log("DRAG END");
     this.setState({
-      dragging : false,
+      dragging : 0,
       valid: true,
     });
   }
@@ -757,7 +790,7 @@ class DropTarget extends BaseComponent {
   sendBackFiles(files) {
     // just to be clear
     this.setState({
-      dragging: false,
+      dragging: 0,
       valid: true
     });
 
@@ -778,10 +811,12 @@ class DropTarget extends BaseComponent {
     }
 
     let files = this.eventFiles(e);
+    files = this.removeDupes(files);
     this.sendBackFiles(files);
   }
 
   change(e) {
+    //console.log("ON CHANGE");
     if (!e.target.value) {
       return;
     }
@@ -806,7 +841,7 @@ class DropTarget extends BaseComponent {
   }
 
   render() {
-    let clz = Util.ClassNames("pyr-drop-target thing", (this.state.dragging ? "dragging" : null));
+    let clz = Util.ClassNames("pyr-drop-target thing", (this.state.dragging > 0 ? "dragging" : null));
 
     if (!this.state.valid) {
       clz.push("invalid");
@@ -1011,14 +1046,14 @@ class FileSelector extends Child {
 
 
     return (
-      <div className="flx-col drop-site drop-site-size">
+      <div className="flx-col drop-site drop-site-size default thing">
         <UI.IconButton name="upload" />
-        Click or Drag to Select File
+        <div className="file-name">Click or Drag to Select File</div>
       </div>
     );
   }
 
-  renderUploads() {
+  renderUploads(showFileName) {
     let all = this.allUploads() || [];
 
     //console.log("RENDER UPLOADS");
@@ -1030,12 +1065,13 @@ class FileSelector extends Child {
       return (
         <div key={upload.id + "-img"} className="upload thing">
           <UI.ImageFile url={upload.url} contentType={upload.content_type} />
+          <div className="file-name">{showFileName ? upload.file_name : ""}</div>
         </div>
       );
     });
   }
 
-  renderFiles() {
+  renderFiles(showFileName) {
     //console.log("RENDER FILES");
     //console.log(this.state.files);
 
@@ -1052,7 +1088,8 @@ class FileSelector extends Child {
       }
       return (
         <div key={this.fhash(file)+"-file"} className="file thing">
-          <UI.ImageFile file={file} className="red"/>
+          <UI.ImageFile file={file} />
+          <div className="file-name">{showFileName ? file.name: ""}</div>
         </div>
       );
     });
@@ -1061,7 +1098,15 @@ class FileSelector extends Child {
   render() {
     let clz = Util.ClassNames("form-control pyr-file-selector");
 
-    let rest = this.cleanProps(this.props, ["imageOnly", "multiple", "files", "uploads"]);
+    let rest = this.cleanProps(this.props, ["imageOnly", "multiple", "files", "uploads", "row", "wrap", "showFileName"]);
+
+    let gutsClz = Util.ClassNames("guts");
+    if (this.props.row) {
+      gutsClz.push("flx-row");
+    }
+    if (this.props.wrap) {
+      gutsClz.push("flx-wrap");
+    }
 
     return(
       <div id={this.htmlID()}
@@ -1073,12 +1118,13 @@ class FileSelector extends Child {
           multiple={this.props.multiple}
           onAddFiles={this.onAddFiles}
           className=""
+          files={this.state.files}
         >
-          { this.renderDefault() }
-        <div className="guts">
-          { this.renderUploads() }
-          { this.renderFiles() }
-        </div>
+          <div className={gutsClz}>
+            { this.renderDefault() }
+            { this.renderUploads(this.props.showFileName) }
+            { this.renderFiles(this.props.showFileName) }
+          </div>
         </DropTarget>
       </div>
     );

@@ -1,3 +1,6 @@
+
+$thing_size: 5;
+
 .page.jobs {
 
   .company-name {
@@ -27,10 +30,30 @@
       .skill {
         width: 25rem;
       }
-    }
 
-    #skill-list {
-      flex-flow: row wrap;
+      .thing {
+        .file-name {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipses;
+          max-width: #{$thing_size}rem;
+          font-size: 0.8rem;
+        }
+
+        i.fa {
+          font-size: #{$thing_size - 2}rem;
+          padding: 1rem;
+        }
+
+        img.pyr-image-file {
+          max-width: #{$thing_size}rem;
+          height: auto;
+        }
+      }
+
+      #skill-list {
+        flex-flow: row wrap;
+      }
     }
   }
 

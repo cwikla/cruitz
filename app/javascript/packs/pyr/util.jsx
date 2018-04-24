@@ -216,6 +216,10 @@ class ClassNamesObj  {
   }
   
   push(...args) {
+    if (!args) {
+      return this;
+    }
+
     for(let val of args) {
       this.innerPush(val);
     }
@@ -235,6 +239,10 @@ class ClassNamesObj  {
   }
 
   innerPush(val) {
+    if (!val) {
+      return this;
+    }
+
     if (typeof val == 'string') {
       val = val.split(" ");
     }
