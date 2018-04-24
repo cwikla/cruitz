@@ -8,6 +8,9 @@ class Candidate < ApplicationRecord
   has_many :states, class_name: "CandidateState"
   has_many :messages
 
+  has_many :candidate_uploads
+  has_many :uploads, through: :candidate_uploads
+
   SUBMITTED_STATE = 0
   ACCEPTED_STATE = 100
   REJECTED_STATE = -100

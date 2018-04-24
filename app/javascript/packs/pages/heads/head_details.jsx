@@ -123,7 +123,7 @@ class SocialLinks extends Component {
 
 class Skills extends Component {
   render() {
-    let skills = ["C++", "C", "Quality Insurance", "Cool Skill", "Skill Me"];
+    let skills = ["C++", "C", "Quality Insurance", "Cool Skill", "Skill Me", "FIXME"];
     if (!skills || skills.length == 0) {
       return null;
     }

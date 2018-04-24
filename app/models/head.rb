@@ -4,6 +4,9 @@ class Head < ApplicationRecord
   has_many :jobs, through: :candidates
   has_many :experiences
 
+  has_many :head_uploads
+  has_many :uploads, through: :head_uploads
+
   cache_notify :user
 
   def self.after_cached_candidate(candidate)

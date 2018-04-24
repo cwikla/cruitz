@@ -16,6 +16,10 @@ class Job < ApplicationRecord
 
   has_one :company, through: :user
 
+  has_many :job_uploads
+  has_many :uploads, through: :job_uploads
+
+
   JOB_FULL_TIME = 0
   JOB_PART_TIME = 1
   JOB_CONTRACTOR = 2

@@ -37,6 +37,7 @@ $thing_size: 5;
           overflow: hidden;
           text-overflow: ellipses;
           max-width: #{$thing_size}rem;
+          max-height: #{$thing_size}rem;
           font-size: 0.8rem;
         }
 
@@ -47,6 +48,7 @@ $thing_size: 5;
 
         img.pyr-image-file {
           max-width: #{$thing_size}rem;
+          max-height: #{$thing_size}rem;
           height: auto;
         }
       }

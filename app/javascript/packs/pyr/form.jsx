@@ -19,6 +19,10 @@ import {
 
 import InputRange from 'react-input-range';
 
+function fhash(file) {
+  return (file.name + file.lastModified.toString());
+}
+
 class Form extends Network.Component {
   static childContextTypes = {
     model: PropTypes.string,
@@ -734,11 +738,12 @@ class DropTarget extends BaseComponent {
     let results = [];
     for(var f of files) {
       let found = false;
+      let fh = fhash(f);
       for(var old of current) {
         //console.log("***");
         //console.log(f);
         //console.log(old);
-        if (f.name == old.name) {
+        if (fh == fhash(old)) {
           found = true;
           break;
         }
@@ -879,6 +884,7 @@ class FileSelector extends Child {
     });
 
     this.onAddFiles = this.addFiles.bind(this);
+    this.onRemoveFile = this.removeFile.bind(this);
   }
 
   inUploads() {
@@ -924,12 +930,8 @@ class FileSelector extends Child {
     return all;
   }
 
-  fhash(file) {
-    return (file.name + file.lastModified.toString());
-  }
-
   setFileUpload(file, upload) {
-    let fh = this.fhash(file);
+    let fh = fhash(file);
 
     let mini = {};
     mini[fh] = upload;
@@ -943,7 +945,36 @@ class FileSelector extends Child {
   }
 
   getFileUpload(file) {
-    return this.state.fileUploads[this.fhash(file)];
+    return this.state.fileUploads[fhash(file)];
+  }
+
+  removeFile(e, inFile) {
+    alert("REMOVE FILE");
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    return;
+
+    if (!inFile) {
+      return;
+    }
+
+    let inHash = fhash(inFile);
+
+    let files = this.state.files;
+
+    let all = [];
+    for(var f of files) {
+      if (fhash(f) != inHash) {
+        all.push(f);
+      }
+    }
+
+    this.setState({
+      files: all
+    });
   }
 
   addFiles(newFiles) {
@@ -1063,7 +1094,7 @@ class FileSelector extends Child {
       //console.log("RENDERING UPLOAD");
       //console.log(upload);
       return (
-        <div key={upload.id + "-img"} className="upload thing">
+        <div key={upload.id + "-img"} className="upload thing" onClick={ e => this.onRemoveFile(e, upload) }>
           <UI.ImageFile url={upload.url} contentType={upload.content_type} />
           <div className="file-name">{showFileName ? upload.file_name : ""}</div>
         </div>
@@ -1087,7 +1118,7 @@ class FileSelector extends Child {
         return null; // already in uploads
       }
       return (
-        <div key={this.fhash(file)+"-file"} className="file thing">
+        <div key={fhash(file)+"-file"} className="file thing" onClick={ e => this.onRemoveFile(e, file) }>
           <UI.ImageFile file={file} />
           <div className="file-name">{showFileName ? file.name: ""}</div>
         </div>
