@@ -33,23 +33,17 @@ $thing_size: 5;
 
       .thing {
         .file-name {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipses;
           max-width: #{$thing_size}rem;
           max-height: #{$thing_size}rem;
-          font-size: 0.8rem;
         }
 
-        i.fa {
+        .bob.i.fa {
           font-size: #{$thing_size - 2}rem;
-          padding: 1rem;
         }
 
         img.pyr-image-file {
           max-width: #{$thing_size}rem;
           max-height: #{$thing_size}rem;
-          height: auto;
         }
       }
 

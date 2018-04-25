@@ -193,27 +193,59 @@ input[type=text] {
   margin-bottom: 1rem;
 }
 
-$pfs_width: 10rem;
-$pfs_height: 10rem;
+$pfs_default_size: 10rem;
 
 .pyr-file-selector {
-  border: 1px solid $border_color;
-  padding: 0;
-
-  .guts {
-  }
+  padding: 0.5rem;
 
   .thing {
-    &.file {
-      img {
-        opacity: 0.5;
+    padding: 1.0rem;
+    border: 1px solid transparent;
+
+    .file-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipses;
+      max-width: #{$pfs_default_size}rem;
+      max-height: #{$pfs_default_size}rem;
+      font-size: 0.8rem;
+    }
+
+    i.fa {
+      font-size: 3rem;
+      padding: 1rem;
+
+      &.fa-close {
+        color: transparent;
+        font-size: 1rem;
+        padding: 0.25rem; 
       }
     }
 
-    padding: 0.5rem;
+    &:hover {
+      img {
+        opacity: 0.5;
+      }
 
-    border-color: 1px solid $border_color;
-    background-color: $alt_background_color;
+      i.fa {
+        &.fa-close {
+          color: $border_color;
+        }
+      }
+    }
+
+    &:hover {
+      .remove {
+        color: $border_color;
+      }
+    }
+
+    &.multiple:hover {
+      border: 1px solid $border_color;
+      img {
+        opacity: 0.25;
+      }
+    }
 
     //width: $pfs_width;
     //height: $pfs_height;
@@ -223,6 +255,17 @@ $pfs_height: 10rem;
       max-height: 100%;
       height: auto;
       margin: auto;
+    }
+  }
+
+  .guts {
+    .horizontal {
+      display: flex;
+      flex-flow: row wrap;
+
+      .thing {
+        margin-left: 0.5rem;
+      }
     }
   }
 
