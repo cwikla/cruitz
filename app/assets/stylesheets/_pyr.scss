@@ -199,7 +199,9 @@ $pfs_default_size: 10rem;
   padding: 0.5rem;
 
   .thing {
-    padding: 1.0rem;
+    padding: 0.5rem;
+    padding-top: 0;
+
     border: 1px solid transparent;
 
     .file-name {
@@ -218,7 +220,8 @@ $pfs_default_size: 10rem;
       &.fa-close {
         color: transparent;
         font-size: 1rem;
-        padding: 0.25rem; 
+        padding: 0;
+        padding-bottom: 0.5rem;
       }
     }
 
@@ -275,7 +278,8 @@ $pfs_default_size: 10rem;
 
     .drop-site {
       border: 1px solid $border_color;
-
+      padding-top: 1rem;
+      padding-bottom: 1rem;
     }
 
     &.dragging {
