@@ -185,7 +185,7 @@ input[type=text] {
   i {
     padding-right: 0.5rem;
     font-size: 1rem;
-    color: transparent;
+    color: $border_color;
   }
 
   &:hover {
@@ -269,7 +269,7 @@ $pfs_default_size: 10rem;
 
       i.fa {
         &.fa-close {
-          color: $border_color;
+          color: $secondary_color;
         }
       }
     }
