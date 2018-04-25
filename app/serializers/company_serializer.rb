@@ -3,9 +3,10 @@ class CompanySerializer < ActiveModel::Serializer
             :url,
             :name,
             :description,
-            :location,
             :created_at,
             :logo
+
+  has_many :locations
 
   #belongs_to :user
   #belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id

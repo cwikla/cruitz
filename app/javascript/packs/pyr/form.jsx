@@ -1277,8 +1277,8 @@ class AutoComplete extends Child {
   }
 
   search(query) {
-    //console.log("A: *******");
-    //console.log(this.props.url);
+    console.log("A: *******");
+    console.log(this.props.url);
     let url = Util.URL(this.props.url).push("auto").set("q", query);
     //console.log(url);
     //console.log(url.parser.href);
@@ -1289,8 +1289,8 @@ class AutoComplete extends Child {
       url : url,
       onLoading : this.onLoading,
     }).done((data, textStatus, jqXHR) => {
-      //console.log("RESULTS");
-      //console.log(data.results);
+      console.log("RESULTS");
+      console.log(data.results);
       this.setState({
         results: data.results
       });
@@ -1306,8 +1306,8 @@ class AutoComplete extends Child {
   }
 
   renderToken(option, onRemove) {
-    //console.log("OPTION");
-    //console.log(option);
+    console.log("OPTION");
+    console.log(option);
 
     //console.log("PROPS");
     //console.log(this.props);
@@ -1320,7 +1320,7 @@ class AutoComplete extends Child {
     let clazz = Util.ClassNames(this.props.bpSize);
 
     return (
-      <span className="token" key={"skb-" + this.safeName() + option.id}>
+      <span className="auto-token" key={"skb-" + this.safeName() + option.id}>
         <Hidden 
           name={name}
           value={value}
@@ -1353,6 +1353,11 @@ class AutoComplete extends Child {
       hidden = <input name={this.name()} type="hidden" value={this.state.value} />
     }
 
+    let defValue = this.modelValue() || [];
+    if (!Array.isArray(defValue)) {
+      defValue = [ defValue ];
+    }
+
     return (
       <div className="async-typeahead">
         { hidden }
@@ -1367,7 +1372,7 @@ class AutoComplete extends Child {
           labelKey={lk}
           onInputChange={this.onInputChange}
   
-          defaultSelected={this.modelValue() || []}
+          defaultSelected={defValue}
           renderToken={this.onRenderToken}
   
           {...Util.propsMergeClassName(rest, clz)}

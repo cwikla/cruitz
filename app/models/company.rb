@@ -8,7 +8,9 @@ class Company < ApplicationRecord
 
   belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
 
-  belongs_to :location, class_name: "GeoName"
+  has_many :company_locations
+  has_many :locations, through: :company_locations
+
 
   def self.after_cached_user(user)
     c = Company.new(:id => user.company_id)

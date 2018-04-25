@@ -7,6 +7,9 @@ class Head < ApplicationRecord
   has_many :head_uploads
   has_many :uploads, through: :head_uploads
 
+  has_many :head_locations
+  has_many :locations, through: :head_locations
+
   cache_notify :user
 
   def self.after_cached_candidate(candidate)

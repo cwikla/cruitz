@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180418233644) do
+ActiveRecord::Schema.define(version: 20180425221639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,13 +112,21 @@ ActiveRecord::Schema.define(version: 20180418233644) do
     t.text "description"
     t.integer "user_id", null: false
     t.string "url"
-    t.string "location"
     t.integer "pyr_upload_id"
     t.integer "location_id"
     t.index ["location_id"], name: "index_companies_on_location_id"
     t.index ["name"], name: "index_companies_on_name"
     t.index ["pyr_upload_id"], name: "index_companies_on_pyr_upload_id"
     t.index ["user_id"], name: "index_companies_on_user_id"
+  end
+
+  create_table "company_locations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "company_id", null: false
+    t.integer "location_id", null: false
+    t.index ["company_id", "location_id"], name: "index_company_locations_on_company_id_and_location_id"
   end
 
   create_table "experiences", force: :cascade do |t|
@@ -133,6 +141,15 @@ ActiveRecord::Schema.define(version: 20180418233644) do
     t.integer "year_end"
     t.text "description"
     t.index ["head_id"], name: "index_experiences_on_head_id"
+  end
+
+  create_table "head_locations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "head_id", null: false
+    t.integer "location_id", null: false
+    t.index ["head_id", "location_id"], name: "index_head_locations_on_head_id_and_location_id"
   end
 
   create_table "heads", id: :serial, force: :cascade do |t|
