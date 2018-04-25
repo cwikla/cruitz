@@ -19,7 +19,7 @@ import {
 
 import InputRange from 'react-input-range';
 
-function fhash(file) {
+function file_hash(file) {
   return (file.name + file.lastModified.toString());
 }
 
@@ -738,12 +738,12 @@ class DropTarget extends BaseComponent {
     let results = [];
     for(var f of files) {
       let found = false;
-      let fh = fhash(f);
+      let fh = file_hash(f);
       for(var old of current) {
         //console.log("***");
         //console.log(f);
         //console.log(old);
-        if (fh == fhash(old)) {
+        if (fh == file_hash(old)) {
           found = true;
           break;
         }
@@ -884,7 +884,7 @@ class FileSelector extends Child {
     });
 
     this.onAddFiles = this.addFiles.bind(this);
-    this.onRemoveFile = this.removeFile.bind(this);
+    this.onRemoveUpload = this.removeUpload.bind(this);
   }
 
   inUploads() {
@@ -901,13 +901,12 @@ class FileSelector extends Child {
     this.setState({
       files: [],
       fileUploads: {},
-      incomingUploads: (this.props.uploads || []),
+      incomingUploads: this.inUploads(),
     });
   }
 
   allUploads() {
-    let all = []; // FIXME
-    let uploads = this.inUploads();
+    let all = [];
 
     all = all.concat(this.state.incomingUploads);
 
@@ -931,7 +930,7 @@ class FileSelector extends Child {
   }
 
   setFileUpload(file, upload) {
-    let fh = fhash(file);
+    let fh = file_hash(file);
 
     let mini = {};
     mini[fh] = upload;
@@ -945,35 +944,42 @@ class FileSelector extends Child {
   }
 
   getFileUpload(file) {
-    return this.state.fileUploads[fhash(file)];
+    return this.state.fileUploads[file_hash(file)];
   }
 
-  removeFile(e, inFile) {
-    alert("REMOVE FILE");
+  removeUpload(e, inUpload) {
+    //alert("REMOVE UPLOAD");
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
 
-    return;
+    let currentFiles = this.state.files;
 
-    if (!inFile) {
-      return;
+    let newFiles = [];
+    let newFilesUploads = {};
+
+    for(let file of currentFiles) {
+      let upload = this.getFileUpload(file);
+      if (upload.id != inUpload.id) {
+        newFiles.push(file);
+        newFilesUploads[file_hash(file)] = upload;
+      }
     }
 
-    let inHash = fhash(inFile);
+    let currentIncomingUploads = this.state.incomingUploads || [];
+    let newIncomingUploads = [];
 
-    let files = this.state.files;
-
-    let all = [];
-    for(var f of files) {
-      if (fhash(f) != inHash) {
-        all.push(f);
+    for(let upload of currentIncomingUploads) {
+      if (upload.id != inUpload.id) {
+        newIncomingUploads.push(upload);
       }
     }
 
     this.setState({
-      files: all
+      files: newFiles,
+      fileUploads: newFilesUploads,
+      incomingUploads: newIncomingUploads,
     });
   }
 
@@ -1094,7 +1100,7 @@ class FileSelector extends Child {
       //console.log("RENDERING UPLOAD");
       //console.log(upload);
       return (
-        <div key={upload.id + "-img"} className="upload thing" onClick={ e => this.onRemoveFile(e, upload) }>
+        <div key={upload.id + "-img"} className="upload thing" onClick={ e => this.onRemoveUpload(e, upload) }>
           <UI.ImageFile url={upload.url} contentType={upload.content_type} />
           <div className="file-name">{showFileName ? upload.file_name : ""}</div>
         </div>
@@ -1118,7 +1124,7 @@ class FileSelector extends Child {
         return null; // already in uploads
       }
       return (
-        <div key={fhash(file)+"-file"} className="file thing" onClick={ e => this.onRemoveFile(e, file) }>
+        <div key={file_hash(file)+"-file"} className="file thing" >
           <UI.ImageFile file={file} />
           <div className="file-name">{showFileName ? file.name: ""}</div>
         </div>

@@ -204,6 +204,12 @@ $pfs_height: 10rem;
   }
 
   .thing {
+    &.file {
+      img {
+        opacity: 0.5;
+      }
+    }
+
     padding: 0.5rem;
 
     border-color: 1px solid $border_color;
