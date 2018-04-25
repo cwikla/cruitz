@@ -6,13 +6,13 @@ import Util from './util';
 import Network from './network';
 
 function isImageType(f) {
-  console.log("CHECKING ISIMAGETYPE");
-  console.log(f);
+  //console.log("CHECKING ISIMAGETYPE");
+  //console.log(f);
 
   f = f.type || f.content_type || f;
 
-  console.log("A");
-  console.log(f);
+  //console.log("A");
+  //console.log(f);
 
   let re = /^image\/(.*)/;
   return f.match(re) != null;

@@ -166,16 +166,16 @@ class NetworkComponent extends BaseComponent {
   }
 
   S3Put(file) {
-    console.log("S3");
-    console.log(file);
+    //console.log("S3");
+    //console.log(file);
   
     return this.getSignedURL(file).then((info, textStatus, jqXHR) => {
       let fileName = file.name;
       let ftype = file.type;
       let flength = file.size;
   
-      console.log("************ INFO");
-      console.log(info);
+      //console.log("************ INFO");
+      //console.log(info);
   
       let s3Info = info.upload;
   
@@ -189,8 +189,8 @@ class NetworkComponent extends BaseComponent {
         processData: false,
         cache: false,
       }).then((result, textStatus, jqXHR) => {
-        console.log("S3PUT RETURNING");
-        console.log(s3Info);
+        //console.log("S3PUT RETURNING");
+        //console.log(s3Info);
   
         return s3Info; // FROM getSignedURL
   
