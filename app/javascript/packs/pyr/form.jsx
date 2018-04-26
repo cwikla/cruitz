@@ -1306,8 +1306,8 @@ class AutoComplete extends Child {
   }
 
   renderToken(option, onRemove) {
-    console.log("OPTION");
-    console.log(option);
+    //console.log("OPTION");
+    //console.log(option);
 
     //console.log("PROPS");
     //console.log(this.props);

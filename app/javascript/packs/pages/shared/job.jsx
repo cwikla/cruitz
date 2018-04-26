@@ -16,7 +16,6 @@ import {
   MESSAGES_URL,
 } from '../const';
 
-
 class Card extends Component {
   render() {
     let item = this.props.job;
@@ -24,7 +23,7 @@ class Card extends Component {
       return null;
     }
 
-    let company = item.company || {};
+    let company = this.getCompany(item.company || {});
     let logo = company.logo;
 
     let id = "item-" + item.id;
@@ -106,7 +105,7 @@ class Blurb extends Component {
       return null;
     }
 
-    let company = job.company || {};
+    let company = this.getCompany(job.company || {});
     let logo = company.logo;
 
     //console.log("BLURB");
@@ -164,7 +163,7 @@ class Header extends Component {
       return null;
     }
 
-    let company = job.company || {};
+    let company = this.getCompany(job.company || {});
     let logo = company.logo;
 
     let locations = null;

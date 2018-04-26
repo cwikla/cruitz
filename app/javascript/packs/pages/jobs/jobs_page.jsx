@@ -363,8 +363,8 @@ class ShowSheet extends Sheet.Show {
   }
 
   render() {
-    console.log("JOBS SHOW SHEET");
-    console.log(this.props);
+    //console.log("JOBS SHOW SHEET");
+    //console.log(this.props);
     return super.render();
   }
 

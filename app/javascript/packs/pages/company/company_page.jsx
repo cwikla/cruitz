@@ -192,6 +192,7 @@ class EditSheet extends Sheet.Edit {
   success(data, textStatus, jqXHR) {
     super.success(data, textStatus, jqXHR);
 
+    this.setCompany(data.company);
     this.setNotice("Company updated");
     this.goBack();
   }

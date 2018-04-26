@@ -19,6 +19,7 @@ const UserContextTypes = {
   user: PropTypes.object,
   setUser: PropTypes.func,
   setCompany: PropTypes.func,
+  getCompany: PropTypes.func,
 };
 
 class UserProvider extends Network.Component {
@@ -26,6 +27,7 @@ class UserProvider extends Network.Component {
     user: PropTypes.object,
     setUser: PropTypes.func,
     setCompany: PropTypes.func,
+    getCompany: PropTypes.func,
   };
 
   getChildContext() {
@@ -33,6 +35,7 @@ class UserProvider extends Network.Component {
       user: this.state.user,
       setUser: this.onSetUser,
       setCompany: this.onSetCompany,
+      getCompany: this.onGetCompany,
     }
   }
 
@@ -45,6 +48,8 @@ class UserProvider extends Network.Component {
 
     this.onSetCompany = this.setCompany.bind(this);
     this.onSetUser = this.setUser.bind(this);
+
+    this.onGetCompany = this.getCompany.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +76,20 @@ class UserProvider extends Network.Component {
     let user = Object.assign({}, this.state.user);
     user.company = Object.assign({}, company);
     this.setUser(user);
+  }
+
+  getCompany(company) {
+    if (!company) {
+      return null;
+    }
+
+    if (this.state.user && this.state.user.company) {
+      if (company.id == this.state.user.company.id) {
+        return  this.state.user.company;
+      }
+    }
+
+    return company;
   }
 
   getSelf(url) {
@@ -111,6 +130,10 @@ class PyrComponent extends Network.Component {
 
   setUser(user) {
     this.context.setUser(user);
+  }
+
+  getCompany(company) {
+    return this.context.getCompany(company);
   }
 
   goBack() {
