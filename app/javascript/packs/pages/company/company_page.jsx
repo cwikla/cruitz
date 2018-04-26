@@ -48,7 +48,7 @@ class CompanyHeaderForm extends Component {
             </Pyr.Form.Group>
  
            <Pyr.Form.Group name="locations">
-             <Pyr.Form.Label>Location</Pyr.Form.Label>
+             <Pyr.Form.Label>Location(s)</Pyr.Form.Label>
              <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple valueByID labelKey="full_name"  />
            </Pyr.Form.Group>
 

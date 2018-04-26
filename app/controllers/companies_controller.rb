@@ -11,23 +11,30 @@ class CompaniesController < ApplicationController
   def mine_update
     cp = company_params
 
-    if cp[:logo] # should refactor this out
-      upload = Upload.find(cp[:logo])
-      if upload.user_id == current_user.id  # make sure it's owned 
-        puts "CMPY UPDATE"
-        puts upload.inspect
-        cp[:logo] = upload
-        puts cp.inspect
-      end
-    end
+    loc_ids = cp.delete(:locations)
+    logo_id = cp.delete(:logo)
 
     @company = current_user.company || current_user.build_company
-    if @company.update(cp)
-      puts "#{@company.inspect}"
-      result = render json: @company
-      puts result
-      return result
-    else
+
+    logo = nil
+    logo = Upload.find_safe(logo_id)
+    cp[:logo] = logo
+    
+    locations = []
+    locations = GeoName.find(loc_ids) if loc_ids
+    cp[:locations] = locations
+
+    begin
+      Company.transaction(requires_new: true) do
+        @company.update!(cp)
+      end
+
+      return render json: @company
+
+    rescue => e
+      puts "E: #{e.inspect}"
+      puts "ERROR: #{@company.errors.inspect}"
+
       return render_create_error json: @company
     end
   end
@@ -55,7 +62,7 @@ class CompaniesController < ApplicationController
 
     # FIXME
 
-    params.require(:company).permit(:name, :url, :description, :location, :logo)
+    params.require(:company).permit(:name, :url, :description, :logo, locations: [])
   end
 
 

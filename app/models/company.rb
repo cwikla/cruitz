@@ -6,7 +6,7 @@ class Company < ApplicationRecord
 
   validates :name, presence: true, allow_nil: true
 
-  belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
+  belongs_to :logo, class_name: "Upload", foreign_key: :upload_id
 
   has_many :company_locations
   has_many :locations, through: :company_locations

@@ -7,11 +7,10 @@ class UserSerializer < ActiveModel::Serializer
     :created_at,
     :updated_at,
     :is_recruiter,
-    :logo,
     :company
 
   has_one :company
-  belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
+  belongs_to :logo, class_name: "Upload" , foreign_key: :upload_id
 
   def id
     object.hashid

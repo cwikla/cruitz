@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180425221639) do
+ActiveRecord::Schema.define(version: 20180426004119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(version: 20180425221639) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.integer "candidate_id", null: false
-    t.integer "pyr_upload_id", null: false
-    t.index ["candidate_id", "pyr_upload_id"], name: "index_candidate_uploads_on_candidate_id_and_pyr_upload_id"
+    t.integer "upload_id", null: false
+    t.index ["candidate_id", "upload_id"], name: "index_candidate_uploads_on_candidate_id_and_upload_id"
   end
 
   create_table "candidates", id: :serial, force: :cascade do |t|
@@ -112,11 +112,11 @@ ActiveRecord::Schema.define(version: 20180425221639) do
     t.text "description"
     t.integer "user_id", null: false
     t.string "url"
-    t.integer "pyr_upload_id"
+    t.integer "upload_id"
     t.integer "location_id"
     t.index ["location_id"], name: "index_companies_on_location_id"
     t.index ["name"], name: "index_companies_on_name"
-    t.index ["pyr_upload_id"], name: "index_companies_on_pyr_upload_id"
+    t.index ["upload_id"], name: "index_companies_on_upload_id"
     t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
@@ -217,8 +217,8 @@ ActiveRecord::Schema.define(version: 20180425221639) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.integer "job_id", null: false
-    t.integer "pyr_upload_id", null: false
-    t.index ["job_id", "pyr_upload_id"], name: "index_job_uploads_on_job_id_and_pyr_upload_id"
+    t.integer "upload_id", null: false
+    t.index ["job_id", "upload_id"], name: "index_job_uploads_on_job_id_and_upload_id"
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|
@@ -475,7 +475,7 @@ ActiveRecord::Schema.define(version: 20180425221639) do
     t.string "last_name"
     t.string "jti", null: false
     t.boolean "first_time", default: true, null: false
-    t.integer "pyr_upload_id"
+    t.integer "upload_id"
     t.boolean "is_recruiter", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["digits_user_id", "deleted_at"], name: "index_users_on_digits_user_id_and_deleted_at", unique: true
@@ -484,10 +484,10 @@ ActiveRecord::Schema.define(version: 20180425221639) do
     t.index ["facebook_id"], name: "index_users_on_facebook_id", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["last_name", "first_name"], name: "index_users_on_last_name_and_first_name"
-    t.index ["pyr_upload_id"], name: "index_users_on_pyr_upload_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["twitter_id"], name: "index_users_on_twitter_id"
     t.index ["unconfirmed_email"], name: "index_users_on_unconfirmed_email"
+    t.index ["upload_id"], name: "index_users_on_upload_id"
     t.index ["username"], name: "index_users_on_username", unique: true
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end

@@ -50,7 +50,7 @@ class JobsController < ApplicationController
 
     @job = current_user.jobs.build(jparms)
     begin
-      Job.transaction(:requires_new => true) do
+      Job.transaction(requires_new: true) do
         @job.save!
 
         do_parts(@job)

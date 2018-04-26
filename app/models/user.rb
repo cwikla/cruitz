@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   #make_authorized_by(:email)
 
-  belongs_to :logo, class_name: "Upload" , foreign_key: :pyr_upload_id
+  belongs_to :logo, class_name: "Upload", foreign_key: :upload_id
 
   has_many :jobs
 
