@@ -29,6 +29,7 @@ class Page extends Component {
     this.onAddItem = this.addItem.bind(this);
     this.onSetSelected = this.setSelected.bind(this);
     this.onSetItems = this.setItems.bind(this);
+    this.onReplaceItem = this.replaceItem.bind(this);
   }
 
 /// OVERRIDE THESE IN SUBLCASS
@@ -110,6 +111,10 @@ class Page extends Component {
   getItemsMap() {
     return this.props[this.loader().name() + "Map"];
     //return this.loader().itemsMap();
+  }
+
+  replaceItem(item) {
+    this.loader().replace(item);
   }
 
   indexSheet() {
@@ -289,6 +294,7 @@ class Page extends Component {
       onAddItem: this.onAddItem,
       onSetItems: this.onSetItems,
       onSetSelected: this.onSetSelected,
+      onReplaceItem: this.onReplaceItem,
     });
   }
 

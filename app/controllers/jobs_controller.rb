@@ -2,7 +2,7 @@ class JobsController < ApplicationController
   LIMIT = Rails.env.development?  ? 25 : 100
 
   def index
-    render json: current_user.jobs.includes(:skills, :locations, :job_locations, :company, :job_skills).limit(LIMIT)
+    render json: current_user.jobs.order("-id").includes(:skills, :locations, :job_locations, :company, :job_skills).limit(LIMIT)
   end
 
   def open
@@ -47,6 +47,7 @@ class JobsController < ApplicationController
     skill_names = jparms.delete(:skills)
     cat_id = jparms.delete(:category)
     loc_ids = jparms.delete(:locations)
+    file_ids = jparms.delete(:uploads)
 
     @job = current_user.jobs.build(jparms)
     begin
@@ -76,6 +77,7 @@ class JobsController < ApplicationController
     skill_names = jparms.delete(:skills)
     cat_id = jparms.delete(:category)
     loc_ids = jparms.delete(:locations)
+    file_ids = jparms.delete(:uploads)
 
     begin
       Job.transaction(:requires_new => true) do
@@ -119,34 +121,44 @@ class JobsController < ApplicationController
     skill_names = jparms.delete(:skills)
     cat_id = jparms.delete(:category)
     loc_ids = jparms.delete(:locations)
+    file_ids = jparms.delete(:uploads)
 
     # NEED TO DEDUPE
+
+    # THIS WAS DONE BECAUSE I KEPT GETTING CLASS ASSOCIATIONMISMATCH errors
 
     skills = []
     skills = Skill.get_skill(*skill_names) if !skill_names.blank?
 
-    puts "SKILLS"
-    puts skills
+    js = []
+    skills.each do |skill|
+      js << JobSkill.find_or_create_unique(job_id: job.id, skill: skill)
+    end
 
-    job.skills = skills
+    job.job_skills = js
 
-    puts "CAT"
-    puts "CAT IDS #{cat_id.inspect}"
+    jcs = []
+    if cat_id
+      jcs << JobCategory.find_or_create_unique(job_id: job.id, category_id: cat_id)
+    end
 
-    cat = nil
-    cat = Category.find(cat_id)
-    job.categories = [ cat ] if cat
+    job.job_categories = jcs
 
-    puts "LOC_IDS"
-    puts loc_ids
+    jlocs = []
+    loc_ids.each do |l|
+      jlocs << JobLocation.find_or_create_unique(job_id: job.id, location_id: l)
+    end
 
-    locations = []
-    locations = GeoName.find(loc_ids) if loc_ids
+    job.job_locations = jlocs
 
-    puts "LOCATIONS"
-    puts locations.inspect
+    # FIXME PERMISSIONS
+    job_uploads = []
+    file_ids.each do |fid|
+      upload = Upload.find(fid) # need to get the real id, not uuid
+      job_uploads << JobUpload.find_or_create_unique(job_id: job.id, upload_id: upload.id) if upload
+    end
 
-    job.locations = locations
+    job.job_uploads = job_uploads
   end
 
   def position_params
@@ -154,7 +166,7 @@ class JobsController < ApplicationController
   end
 
   def job_params
-    jp = params.require(:job).permit(:title, :description, :time_commit, :category, :salary, :salary_doe, locations: [], skills: [])
+    jp = params.require(:job).permit(:title, :description, :time_commit, :category, :salary, :salary_doe, locations: [], skills: [], uploads: [])
     if !jp[:salary].blank?
       val = jp[:salary]
       val = val.sub(",", "")

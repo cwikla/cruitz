@@ -186,8 +186,8 @@ class DefaultRoute extends Component {
     //console.log(routeProps);
     //console.log(location);
     
-    let action = null;
     let params = routeProps.match.params;
+    let action = params.action;
     
     let pid = params.pid;
     
@@ -209,17 +209,17 @@ class DefaultRoute extends Component {
       page: params.page,
       action: action,
       itemId: pid,
-      subPage: params.sub,
-      subItemId: params.subid,
+      //subPage: params.sub,
+      //subItemId: params.subid,
       searchParams: Object.assign({}, searchParams, this.props.searchParams || {}),
     };
    
     if (!sendProps.page && dashboard) {
       let dest = Util.URL(dashboard).toString().toLowerCase();
-      //console.log("************ REDIRECT TO");
-      //console.log(dest);
-      //console.log(dest.toString());
-      //console.log("+++++++++++");
+      console.log("************ REDIRECT TO");
+      console.log(dest);
+      console.log(dest.toString());
+      console.log("+++++++++++");
       return (
         <Redirect to={dest} />
       );
@@ -233,7 +233,7 @@ class DefaultRoute extends Component {
   }
 
   render() {
-    let url = "/:page?/:pid?/:sub?/:subid?";
+    let url = "/:page?/:pid?/:action?"; // /:subid?";
 
     return (
       <Route

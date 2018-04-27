@@ -1,6 +1,6 @@
 class CandidatesController < ApplicationController
   def index
-    render json: current_user.candidates
+    render json: current_user.candidates.order("-id")
   end
 
   def show

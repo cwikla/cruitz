@@ -157,11 +157,8 @@ class LoaderComponent extends Loader.Component {
 
     return (
         <Pyr.UI.RouterProps component={Dashboard} dashboard={DEFAULT_PAGE} {...props}>
-          <Pyr.UI.RouteURL path="/messages/:pid?" page="messages" action="index" />
-          <Pyr.UI.RouteURL path="/jobs/new" page="jobs" action="new" />
           <Pyr.UI.RouteURL path="/jobs/:pid/candidates/:subid" page="candidates" action="show" />
           <Pyr.UI.RouteURL path="/jobs/:pid/candidates" page="candidates" action="index" />
-          <Pyr.UI.RouteURL path="/jobs/:pid?" page="jobs" action="index" />
         </Pyr.UI.RouterProps>
     );
   }

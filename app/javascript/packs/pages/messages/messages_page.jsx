@@ -303,6 +303,10 @@ class MessagesPage extends Page {
   }
 
   getActionSheet(action) {
+    if ((action || "show").toLowerCase() == "show") {
+      return IndexShowSheet;
+    }
+
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

@@ -78,7 +78,7 @@ class JobItem extends Component {
 }
 
 const JobFile = (props) => (
-  <Pyr.Form.Group name="files">
+  <Pyr.Form.Group name="uploads">
     <Pyr.Form.Label>Attachments</Pyr.Form.Label>
     <Pyr.Form.FileSelector multiple row wrap showFileName/>
   </Pyr.Form.Group>
@@ -128,16 +128,17 @@ class JobForm extends Component {
   render() {
     let key = "job-form";
     let url = Pyr.URL(JOBS_URL);
+    let uploads = null;
 
     if (this.props.selected){
       url = url.push(this.props.selected.id);
       key = key + "-" + this.props.selected.id;
+      uploads = this.props.selected.uploads;
     }
 
     let method = this.props.method || Pyr.Method.POST;
 
     //alert("Render FOrm Job " + this.props.selected.id);
-
 
     return (
       <div className="form-parent section">
@@ -162,7 +163,10 @@ class JobForm extends Component {
             <Pyr.Form.TextField placeholder= "Enter job title"/>
           </Pyr.Form.Group>
 
-          <JobFile props={this.props} />
+          <Pyr.Form.Group name="uploads">
+            <Pyr.Form.Label>Attachments</Pyr.Form.Label>
+            <Pyr.Form.FileSelector multiple row wrap showFileName uploads={uploads}/>
+          </Pyr.Form.Group>
 
           <Pyr.Form.Group name="category">
             <Pyr.Form.Label>Category</Pyr.Form.Label>
@@ -219,7 +223,7 @@ class JobForm extends Component {
 
 class EditSheet extends Sheet.Edit {
   success(data, textStatus, jqXHR) {
-    this.props.onJobUpdate(data.job);
+    this.props.onReplaceItem(data.job); 
     super.success(data, textStatus, jqXHR);
     this.context.setNotice("Job Saved");
     this.goBack();
@@ -444,6 +448,10 @@ class JobsPage extends Page {
   }
 
   getActionSheet(action) {
+    if ((action || "show").toLowerCase() == "show") {
+      return IndexShowSheet;
+    }
+
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

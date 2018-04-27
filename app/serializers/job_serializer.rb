@@ -4,6 +4,7 @@ class JobSerializer < JobSmallSerializer
   #has_many :candidates, serializer: CandidateSerializer, if: :should_cand?
   has_many :locations
   has_many :skills
+  has_many :uploads
 
   #belongs_to :company
 
