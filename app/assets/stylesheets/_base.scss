@@ -669,7 +669,7 @@ label {
 
 .job-blurb, %job-blurb {
   box-shadow: 1px 1px 5px 0px $gray_color;
-  margin-bottom: 2rem;
+  unused-margin-bottom: 2rem;
 
   & > div {
     padding: 1rem;
@@ -1005,6 +1005,14 @@ label {
 }
 .o-auto {
   overflow: auto;
+}
+
+.skill {
+  border: 1px solid $secondary_color;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 5px;
+  color: $secondary_color;
 }
 
 

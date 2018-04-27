@@ -2,6 +2,10 @@
 import React, {
 } from 'react';
 
+import {
+  Link,
+} from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 import Pyr, {
@@ -13,6 +17,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 
 import {
+  JOBS_URL,
   MESSAGES_URL,
 } from '../const';
 
@@ -157,6 +162,18 @@ class Blurb extends Component {
 }
 
 class Header extends Component {
+  renderEdit() {
+    if (!this.props.edit) {
+      return null;
+    }
+
+    let url = Pyr.URL(JOBS_URL).push(this.props.job.id).push("edit");
+
+    return (
+      <Link to={url.toString()}><div className="edit ml-auto"><Pyr.UI.IconButton name="edit"/></div></Link>
+    );
+  }
+
   render() {
     let job = this.props.job;
     if (!job) {
@@ -203,7 +220,8 @@ class Header extends Component {
           <div className="locations">{ locations }</div>
 
           <div className="flx-row mt-auto">
-            <div className="salary-range">$120,000 - $160,000</div>
+            <div className="salary-range mr-auto">$120,000 - $160,000</div>
+            { this.renderEdit() }
           </div>
         </div>
       </div>

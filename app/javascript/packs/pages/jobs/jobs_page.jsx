@@ -353,7 +353,7 @@ class ShowSheet extends Sheet.Show {
     return (
       <div className="flx-row flx-1">
         <div className="flx-col flx-3 left">
-          <Job.View job={job} />
+          <Job.View job={job} edit/>
         </div>
         <div className="flx-col flx-1 right">
           <Job.Stats job={job} />
