@@ -6,6 +6,9 @@ class CandidateSmallSerializer < ActiveModel::Serializer
     :email,
     :job_id,
     :state
+    
+
+  has_one :recruiter
 
   def first_name
     object.head.first_name

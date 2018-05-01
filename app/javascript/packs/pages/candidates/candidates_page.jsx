@@ -84,7 +84,7 @@ class CandidateItem extends Component {
        allClass.push("selected");
     }
 
-    allClass.push("state").push(stateName).push("hover");
+    allClass.push("state").push(stateName);
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -92,7 +92,6 @@ class CandidateItem extends Component {
     let description = candidate.description || "No Description";
     let position = "Sr. Software Engineer";
     let company = "Google";
-    let yearsExp = "4 years exp";
 
     return (
       <div className={allClass} id={id}>
@@ -102,13 +101,10 @@ class CandidateItem extends Component {
         <div className="flx-row flx-3 item-content">
           <div className="flx-col flx-1">
             <div className="name">{fullName}</div>
-            <div className="position">{position}</div>
-            <div className="company">{company}</div>
           </div>
           <div className="flx-col flx-1">
             <div className="email">{email}</div>
             <div className="phoneNumber">{phoneNumber}</div>
-            <div className="years">{yearsExp}</div>
           </div>
         </div>
         <div className="flx-col flx-1 recruiter">
@@ -289,10 +285,11 @@ class IndexSheet extends Sheet.Index {
     return items;
   }
 
-
+/*
   childURL(item, isSelected) {
     return Pyr.URL(JOBS_URL).push(item.job_id).push(CANDIDATES_URL).push(item.id);
   }
+*/
 
   renderItem(item, isSelected) {
     return (
@@ -599,7 +596,12 @@ class ShowSheet extends Sheet.Show {
       return;
     }
 
-    let url = Pyr.URL(JOBS_URL).push(jobId).set("candidates", "1");
+    if (this.props.jobsMap) {
+      this.setJob(this.props.jobsMap[jobId]);
+      return;
+    }
+
+    let url = Pyr.URL(JOBS_URL).push(jobId); //.set("candidates", "1");
 
     this.setState({
       job: null
@@ -618,9 +620,15 @@ class ShowSheet extends Sheet.Show {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let pid = prevProps.jobId;
-    let cid = this.props.jobId;
+    let pid = prevProps.selected ? prevProps.selected.job_id : null;
+    let cid = this.props.selected ? this.props.selected.job_id : null;
 
+    console.log("DID UPDATE");
+    console.log(this.props.selected);
+    console.log(pid);
+    console.log(cid);
+
+    super.componentDidUpdate(prevProps, prevState);
     if (pid != cid) {
       this.getJob(cid);
     }
@@ -629,7 +637,9 @@ class ShowSheet extends Sheet.Show {
   componentDidMount() {
     //console.log("WILL MOUNT");
     //console.log(this.props);
-    this.getJob(this.props.jobId);
+    if (this.props.selected) {
+      this.getJob(this.props.selected.job_id);
+    }
   }
 
   key(item) {
@@ -878,6 +888,7 @@ class CandidatesPage extends Page {
     return "Candidates";
   }
 
+/*
   // the ol' switcheroo
   getItemId() {
     return this.props.subItemId;
@@ -887,11 +898,13 @@ class CandidatesPage extends Page {
     return this.props.itemId;
   }
   //
+*/
 
   loader() {
     return this.props.loaders.candidates;
   }
 
+/*
   getAllJobs() {
     return this.props.jobs;
   }
@@ -926,7 +939,7 @@ class CandidatesPage extends Page {
     return stuff;
   }
 
-  loadItems(onLoading, extra={}) {
+  unused_loadItems(onLoading, extra={}) {
     let jobId = this.getJobId();
 
     if (!jobId) {
@@ -936,12 +949,18 @@ class CandidatesPage extends Page {
 
     return super.loadItems(onLoading, Object.assign({}, {jobId}, extra));
   }
+*/
 
   getIndexSheet() {
-    return JobIndexAndIndexSheet;
+    //return JobIndexAndIndexSheet;
+    return IndexShowSheet;
   }
 
   getActionSheet(action) {
+    if ((action || "show").toLowerCase() == "show") {
+      return IndexShowSheet;
+    }
+
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 

@@ -277,10 +277,11 @@ class Candidates extends LoaderBase {
   }
 
   url(props) {
-    return Pyr.URL(JOBS_URL).push(props.jobId).push(CANDIDATES_URL);
+    //return Pyr.URL(JOBS_URL).push(props.jobId).push(CANDIDATES_URL);
+    return CANDIDATES_URL;
   }
 
-  setData(data) {
+  unused_setData(data) {
     this.setItems(data.job.candidates);
   }
 }

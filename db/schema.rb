@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180426004119) do
+ActiveRecord::Schema.define(version: 20180501014228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20180426004119) do
     t.decimal "commission", precision: 5, scale: 2, null: false
     t.index ["head_id"], name: "index_candidates_on_head_id"
     t.index ["job_id", "accepted_at"], name: "index_candidates_on_job_id_and_accepted_at"
+    t.index ["job_id", "head_id"], name: "index_candidates_on_job_id_and_head_id", unique: true
     t.index ["job_id", "rejected_at"], name: "index_candidates_on_job_id_and_rejected_at"
     t.index ["job_id"], name: "index_candidates_on_job_id"
   end
@@ -190,8 +191,7 @@ ActiveRecord::Schema.define(version: 20180426004119) do
     t.datetime "deleted_at"
     t.integer "job_id"
     t.integer "category_id"
-    t.index ["category_id", "job_id"], name: "index_job_categories_on_category_id_and_job_id"
-    t.index ["job_id", "category_id"], name: "index_job_categories_on_job_id_and_category_id"
+    t.index ["job_id", "category_id"], name: "index_job_categories_on_job_id_and_category_id", unique: true
   end
 
   create_table "job_locations", force: :cascade do |t|
@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(version: 20180426004119) do
     t.datetime "deleted_at"
     t.integer "job_id", null: false
     t.integer "location_id", null: false
-    t.index ["job_id", "location_id"], name: "index_job_locations_on_job_id_and_location_id"
+    t.index ["job_id", "location_id"], name: "index_job_locations_on_job_id_and_location_id", unique: true
   end
 
   create_table "job_skills", force: :cascade do |t|
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(version: 20180426004119) do
     t.datetime "deleted_at"
     t.integer "job_id", null: false
     t.integer "upload_id", null: false
-    t.index ["job_id", "upload_id"], name: "index_job_uploads_on_job_id_and_upload_id"
+    t.index ["job_id", "upload_id"], name: "index_job_uploads_on_job_id_and_upload_id", unique: true
   end
 
   create_table "jobs", id: :serial, force: :cascade do |t|
