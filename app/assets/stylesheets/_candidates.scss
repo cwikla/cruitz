@@ -83,6 +83,10 @@
   }
   
   .sheet.index {
+    .section {
+      padding: 0;
+    }
+
     margin-right: 1rem;
 
     .job-item {

@@ -1,8 +1,12 @@
 class CandidatesController < ApplicationController
-  LIMIT = Rails.env.production? ? 100 : 10
+  LIMIT = 10000 # Rails.env.production? ? 100 : 10
 
   def index
     render json: current_user.candidates.order("-candidates.id").limit(LIMIT) #, each_serializer: CandidateSmallSerializer
+  end
+
+  def jobs
+    render Job.where(id: u.candidates.select(:job_id).map(&:job_id).uniq), each_serializer: JobSerializer
   end
 
   def show

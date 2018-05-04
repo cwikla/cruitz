@@ -41,6 +41,7 @@ class User < ApplicationRecord
   after_create :on_after_create
 
   scope :is_recruiter, -> { where(is_recruiter: true) }
+  scope :not_recruiter, -> { where(is_recruiter: false) }
 
   validates :first_name, presence: true
   validates :last_name, presence: true

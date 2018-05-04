@@ -532,7 +532,7 @@ class Select extends Child {
 class Option extends Child {
   render() {
     return(
-      <option {...Util.propsMergeClassName(this.props, "form-control")}>{this.props.children}</option>
+      <option {...Util.propsMergeClassName(this.props, "hmmm-form-control")}>{this.props.children}</option>
     );
   }
 }

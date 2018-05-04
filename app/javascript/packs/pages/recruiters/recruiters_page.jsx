@@ -277,51 +277,6 @@ class IndexSheet extends Sheet.Index {
   }
 }
 
-class IndexSheetOld extends Sheet.Index {
-  constructor(props) {
-    super(props);
-
-    this.onAddRecruiter = this.addRecruiter.bind(this);
-  }
-
-  addRecruiter(e) {
-    if (e) {
-      e.preventDefault();
-    }
-
-    alert("FIXME");
-
-  }
-
-  key(a) {
-    return RecruitersPage.key(a)
-  }
-
-  renderHeader() {
-    return (
-      <div className="recruiters-index-header">
-          <div className="recruiter-new p-1 d-flex flx-end">
-              <Link to="/recruiters/new"><Pyr.UI.PrimaryButton><Pyr.UI.Icon name="plus"/> Invite Recruiter</Pyr.UI.PrimaryButton></Link>
-          </div>
-      </div>
-    );
-  }
-
-
-  renderItem(item, isSelected) {
-    return ( <RecruiterItem recruiter={item} isSelected={isSelected} /> );
-  }
-
-  renderNone() {
-    return (
-      <div className="render-none ml-auto mr-auto">
-        <h3 className="">There are no recruiters to look at here!</h3>
-      </div>
-    );
-  }
-
-}
-
 class ShowSheet extends Sheet.Show {
   key(a) {
     return RecruitersPage.key(a)

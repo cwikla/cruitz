@@ -1,8 +1,8 @@
 class JobsController < ApplicationController
-  LIMIT = Rails.env.development?  ? 25 : 100
+  LIMIT = 100000 # Rails.env.development?  ? 25 : 100
 
   def index
-    render json: current_user.jobs.order("-id").includes(:skills, :locations, :job_locations, :company, :job_skills).limit(LIMIT)
+    render json: current_user.jobs.order("-id").includes(:skills, :locations, :job_locations, :company, :job_skills) #.limit(LIMIT)
   end
 
   def open

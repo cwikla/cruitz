@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       get 'recruiters' => 'users#recruiters'
       get 'recruiters/:id' => 'users#recruiter'
       get 'candidates/:id/thread' => 'candidates#thread'
+      get 'candidates/jobs' => 'candidates#jobs'
 
       resources :users, only: [:index, :create, :show, :update, :destroy]
 

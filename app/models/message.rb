@@ -17,7 +17,7 @@ class Message < ApplicationRecord
   validates :candidate, presence: true
 
   def after_cached
-    puts "AFTER MESSAGE CACHED MESSAGE => #{self.id}"
+    #puts "AFTER MESSAGE CACHED MESSAGE => #{self.id}"
     #self.thread_ids_cached(true)
     #self.thread_last_cached(true)
 

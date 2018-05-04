@@ -20,7 +20,14 @@ import State from '../shared/state';
 import {
   MESSAGES_URL,
   JOBS_URL,
-  CANDIDATES_URL
+  COMPANIES_URL,
+
+  CATEGORIES_URL,
+  SKILLS_URL,
+  LOCATIONS_URL,
+  CANDIDATES_URL,
+
+  RANGES
 } from '../const';
 
 class CandidateHeader extends Component {
@@ -78,13 +85,18 @@ class CandidateItem extends Component {
     let stateName = State.toClassName(candidate.state);
 
     let id = "candidate-" + candidate.id;
-    let allClass = ClassNames("item candidate-item flx-row");
+    let allClass = ClassNames("item candidate-item flx-col");
 
     if (this.props.isSelected) {
        allClass.push("selected");
     }
 
     allClass.push("state").push(stateName);
+
+    let job = this.props.jobsMap[candidate.job_id];
+    let jobTitle = job ? job.title : "No Title";
+
+    console.log(job);
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -95,25 +107,28 @@ class CandidateItem extends Component {
 
     return (
       <div className={allClass} id={id}>
-        <div className="flx-1 flx-align-center">
-          { State.toName(candidate.state) }
-        </div>
-        <div className="flx-row flx-3 item-content">
-          <div className="flx-col flx-1">
-            <div className="name">{fullName}</div>
+        <div className="title">{jobTitle}</div>
+        <div className="flx-row">
+          <div className="flx-1 flx-align-center">
+            { State.toName(candidate.state) }
           </div>
-          <div className="flx-col flx-1">
-            <div className="email">{email}</div>
-            <div className="phoneNumber">{phoneNumber}</div>
+          <div className="flx-row flx-3 item-content">
+            <div className="flx-col flx-1">
+              <div className="name">{fullName}</div>
+            </div>
+            <div className="flx-col flx-1">
+              <div className="email">{email}</div>
+              <div className="phoneNumber">{phoneNumber}</div>
+            </div>
           </div>
-        </div>
-        <div className="flx-col flx-1 recruiter">
-          <Avatar.Avatar
-            className={"flx-1"}
-            userId={recruiter.id}
-            name={recruiter.first_name}
-            small
-          />
+          <div className="flx-col flx-1 recruiter">
+            <Avatar.Avatar
+              className={"flx-1"}
+              userId={recruiter.id}
+              name={recruiter.first_name}
+              small
+            />
+          </div>
         </div>
       </div>
     );
@@ -211,6 +226,35 @@ class EditSheet extends Sheet.Edit {
   }
 }
 
+class JobSelect extends Component {
+  renderJobs() {
+    return this.props.jobs.map(item => {
+      if (item.total == 0) {
+        return null;
+      }
+      return (
+        <Pyr.Form.Option value={item.id} key={"job-search-" + item.id}>{item.title}</Pyr.Form.Option>
+      );
+    });
+  }
+
+  render() {
+    return (
+      <Pyr.Form.Form
+        object={{}}
+        model="Fake"
+        className={this.props.className}
+      >
+        <Pyr.Form.Group name="jobs">
+          <Pyr.Form.Select className="" >
+            { this.renderJobs() }
+          </Pyr.Form.Select>
+        </Pyr.Form.Group>
+      </Pyr.Form.Form>
+    );
+  }
+}
+
 class IndexSheet extends Sheet.Index {
   key(item) {
     return CandidatesPage.key(item);
@@ -239,9 +283,7 @@ class IndexSheet extends Sheet.Index {
     }
   }
 
-
-
-  renderHeader() {
+  unused_renderHeader() {
     let jobId = this.getJobId();
     let jobsMap = this.getJobsMap();
     
@@ -294,18 +336,46 @@ class IndexSheet extends Sheet.Index {
   renderItem(item, isSelected) {
     return (
       <CandidateItem 
+        {...this.props}
         candidate={item} 
         isSelected={isSelected} 
       />
     );
   }
 
+  renderInner() {
+
+    let leftClasses = "col flx-col scroll flx-1 section";
+    let rightClasses = "col col-3 flx-col";
+
+    return (
+      <div className="flx-row">
+        <div className={leftClasses}>
+          <div className="header"><div className="flx-row">Candidates for <JobSelect {...this.props} className="flx-1"/></div></div>
+          <div className="flx-col flx-1 scroll">
+            { this.renderInnerNoScroll() }
+          </div>
+        </div>
+        <div className={rightClasses}>
+          <CandidatesPage.SearchForm
+            {...this.props}
+          />
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    //console.log("CANDIDATES INDEX");
-    //console.log(this.props);
+    if (!this.props.jobsMap) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
 
     return super.render();
   }
+
+
 }
 
 class JobItem extends Component {
@@ -888,6 +958,12 @@ class CandidatesPage extends Page {
     return "Candidates";
   }
 
+  componentDidMount() {
+    if (!this.props.jobs) {
+      this.props.loaders.jobs.load({force: true});
+    }
+  }
+
 /*
   // the ol' switcheroo
   getItemId() {
@@ -953,18 +1029,31 @@ class CandidatesPage extends Page {
 
   getIndexSheet() {
     //return JobIndexAndIndexSheet;
-    return IndexShowSheet;
+    //return IndexShowSheet;
+    return IndexSheet;
   }
 
   getActionSheet(action) {
+/*
     if ((action || "show").toLowerCase() == "show") {
       return IndexShowSheet;
     }
+*/
 
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
 
     return ActionSheet;
+  }
+
+  render() {
+    if (!this.props.jobs) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+
+    return super.render();
   }
 
 }
@@ -973,6 +1062,110 @@ class CandidatesPage extends Page {
 CandidatesPage.key = (item) => {
   return "cand-" + item.id;
 }
+
+
+class SearchForm extends Component {
+  constructor(props) {
+    super(props);
+    this.onGetTarget = this.getTarget.bind(this);
+    this.onRenderAge = this.renderAge.bind(this);
+    this.onSuccess = this.success.bind(this);
+    this.onPreSubmit = this.preSubmit.bind(this);
+  }
+
+  getTarget() {
+    return this.form;
+  }
+
+  renderAge(value) {
+    value = Math.floor(value);
+    return RANGES[value];
+  }
+
+  success(data, textStatus, jqXHR) {
+    //console.log("SUCCESSS");
+    //console.log(data);
+    this.props.onSetItems(data.jobs || []);
+  }
+
+  preSubmit() {
+    this.props.onSetItems(null);
+  }
+
+  renderJobs() {
+    return this.props.jobs.map(item => {
+      if (item.total == 0) {
+        return null;
+      }
+
+      return (
+        <Pyr.Form.Option value={item.id} key={"job-search-" + item.id}>{item.title}</Pyr.Form.Option>
+      );
+    });
+  }
+
+  render() {
+    return (
+      <div className="position-search side-search">
+        <div className="search-header">
+          <div className="flx-row">
+            <div className="mr-auto">Filter</div>
+          </div>
+        </div>
+        <Pyr.Form.Form
+          url={Pyr.URL(CANDIDATES_URL).push("search")}
+          method={Pyr.Method.POST}
+          ref={(node) =>{ this.form = node; }}
+          onPreSubmit={this.onPreSubmit}
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.onSuccess}
+          onError={this.props.onError}
+          object={{}}
+          model="search"
+          className="search-inner"
+        >
+
+          <Pyr.Form.Group name="jobs">
+            <Pyr.Form.Label>Jobs</Pyr.Form.Label>
+            <Pyr.Form.Select className="" multiple>
+              { this.renderJobs() }
+            </Pyr.Form.Select>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="key_words">
+            <Pyr.Form.Label>Keywords</Pyr.Form.Label>
+            <Pyr.Form.TextField />
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="companies">
+            <Pyr.Form.Label>Companies</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={COMPANIES_URL} multiple valueByID bpSize="small"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="categories">
+            <Pyr.Form.Label>Categories</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={CATEGORIES_URL} multiple valueByID bpSize="small"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="locations">
+            <Pyr.Form.Label>Locations</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID bpSize="small"/>
+          </Pyr.Form.Group>
+
+          <Pyr.Form.Group name="skills">
+            <Pyr.Form.Label>Skills</Pyr.Form.Label>
+            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple bpSize="small"/>
+          </Pyr.Form.Group>
+        </Pyr.Form.Form>
+        <div className="form-footer">
+          <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>Filter</Pyr.Form.SubmitButton>
+        </div>
+      </div>
+    );
+  }
+}
+
+CandidatesPage.SearchForm = SearchForm;
 
 
 export default CandidatesPage;

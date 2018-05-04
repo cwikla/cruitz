@@ -170,6 +170,10 @@ class LoaderBase {
       return null; // already loaded, use reset
     }
 
+    if (this.items()) {
+      this.setItems(null);
+    }
+
     let url = Pyr.URL(this.url(props));
 
     return this.network.getJSON({
