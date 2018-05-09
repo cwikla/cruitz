@@ -11,6 +11,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 import MessageThread from '../messages/message_thread';
 import Recruiter from '../shared/recruiter';
+import Loader from '../loader/loader';
 
 import Avatar, {
 } from '../shared/avatar';
@@ -96,7 +97,7 @@ class CandidateItem extends Component {
     let job = this.props.jobsMap[candidate.job_id];
     let jobTitle = job ? job.title : "No Title";
 
-    console.log(job);
+    //console.log(job);
 
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
@@ -256,12 +257,45 @@ class JobSelect extends Component {
 }
 
 class IndexSheet extends Sheet.Index {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      filteredItems: null,
+      filteredItemsMap: null,
+    });
+
+    this.onSetFilteredItems = this.setFilteredItems.bind(this);
+  }
+
   key(item) {
     return CandidatesPage.key(item);
   }
 
   size() {
     return 5;
+  }
+
+  setFilteredItems(items) {
+    let itemsMap = null;
+
+    if (items) {
+      items = this.sortItems(items);
+      itemsMap = items.reduce((m, o) => {m[o.id] = o; return m;}, {});
+    }
+
+    this.setState({
+      filteredItems: items,
+      filteredItemsMap: itemsMap,
+    });
+  }
+
+  getItems() {
+    return this.state.filteredItems ? this.state.filteredItems : super.getItems();
+  }
+
+  getItemsMap() {
+    return this.state.filteredItemsMap ? this.state.filteredItemsMap : super.getItemsMap();
   }
 
   getJobId() {
@@ -272,11 +306,17 @@ class IndexSheet extends Sheet.Index {
     return this.props.jobsMap;
   }
 
+  componentDidMount() {
+    this.setFilteredItems(null);
+    super.componentDidMount();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     let pid = prevProps.jobId;
     let cid = this.getJobId();
 
     if (pid != cid) {
+      this.setFilteredItems(null);
       if (cid) {
         this.props.onLoadItems(this.onLoading, {force: true});
       }
@@ -343,6 +383,15 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
+/*
+        <div className={rightClasses}>
+          <CandidatesPage.SearchForm
+            {...this.props}
+            onSetItems={this.onSetFilteredItems}
+          />
+        </div>
+*/
+
   renderInner() {
 
     let leftClasses = "col flx-col scroll flx-1 section";
@@ -355,11 +404,6 @@ class IndexSheet extends Sheet.Index {
           <div className="flx-col flx-1 scroll">
             { this.renderInnerNoScroll() }
           </div>
-        </div>
-        <div className={rightClasses}>
-          <CandidatesPage.SearchForm
-            {...this.props}
-          />
         </div>
       </div>
     );
@@ -504,7 +548,7 @@ class RecruiterMessage extends Component {
 
 const ExperienceItem = (props) => (
   <div className="item">
-    <div className="title">{props.item.title} @ {props.item.organization}</div>
+    <div className="title">{props.item.title} @ {props.item.place}</div>
     <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
     <div className="description">{props.item.description}</div>
   </div>
@@ -512,16 +556,19 @@ const ExperienceItem = (props) => (
 
 class Experience extends Component {
   render() {
-    if (!this.props.experience || this.props.experience.length == 0) {
+    //console.log("EXPS");
+    //console.log(this.props.experiences);
+
+    if (!this.props.experiences || this.props.experiences.length == 0) {
       return null;
     }
 
-    let experience = this.props.experience;
+    let experiences = this.props.experiences;
 
     return (
       <div id="experience" className="cv-section experience">
       {
-        experience.map( (item, pos) => {
+        experiences.map( (item, pos) => {
           return (<ExperienceItem item={item} key={"exp"+pos}/>);
         })
       }
@@ -532,23 +579,23 @@ class Experience extends Component {
 
 const EducationItem = (props) => (
   <div className="item">
-    <div className="degree">{props.item.degree} @ {props.item.school}</div>
+    <div className="degree">{props.item.title} @ {props.item.place}</div>
     <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
   </div>
 );
 
 class Education extends Component {
   render() {
-    if (!this.props.education || this.props.education.length == 0) {
+    if (!this.props.educations || this.props.educations.length == 0) {
       return null;
     }
 
-    let education = this.props.education;
+    let educations = this.props.educations;
 
     return (
       <div id="education" className="cv-section education">
       {
-        education.map( (item, pos) => {
+        educations.map( (item, pos) => {
           return (<EducationItem item={item} key={"ed"+pos}/>);
         })
       }
@@ -592,6 +639,10 @@ class CandidateCVItem extends Component {
 
     let id = "cv-" + candidate.id;
 
+    //console.log("CVITEM");
+    //console.log(candidate);
+    //console.log(candidate.works);
+
     return (
       <div className={allClass} id={id}>
         <CandidateHeader 
@@ -600,9 +651,9 @@ class CandidateCVItem extends Component {
           onSetItem={this.props.onSetItem}
         />
         <Pyr.UI.Label className="cv-label">Experience</Pyr.UI.Label>
-        <Experience experience={candidate.experience} />
+        <Experience experiences={candidate.works} />
         <Pyr.UI.Label className="cv-label">Education</Pyr.UI.Label>
-        <Education education={candidate.education} />
+        <Education educations={candidate.educations} />
         <Pyr.UI.Label className="cv-label">Skills</Pyr.UI.Label>
         <Skills skills={candidate.skills} />
         <Pyr.UI.Label className="cv-label">Files</Pyr.UI.Label>
@@ -693,10 +744,10 @@ class ShowSheet extends Sheet.Show {
     let pid = prevProps.selected ? prevProps.selected.job_id : null;
     let cid = this.props.selected ? this.props.selected.job_id : null;
 
-    console.log("DID UPDATE");
-    console.log(this.props.selected);
-    console.log(pid);
-    console.log(cid);
+    //console.log("DID UPDATE");
+    //console.log(this.props.selected);
+    //console.log(pid);
+    //console.log(cid);
 
     super.componentDidUpdate(prevProps, prevState);
     if (pid != cid) {
@@ -899,8 +950,8 @@ class JobsInnerPage extends Page {
   }
 
   render() {
-    console.log("JOBS PAGE INNER RENDER");
-    console.log(this.props);
+    //console.log("JOBS PAGE INNER RENDER");
+    //console.log(this.props);
 
     return (
       <div className="flx-col flx-2">
@@ -930,8 +981,8 @@ class JobIndexAndIndexSheet extends Component {
     let firstCandy = this.props.items && this.props.items.length > 0 ? this.props.items[0] : null;
     candyId = candyId ? candyId : (firstCandy ? firstCandy.id : null);
 
-    console.log("JOBINDEXANDINDEX");
-    console.log(this.props);
+    //console.log("JOBINDEXANDINDEX");
+    //console.log(this.props);
 
     return (
       <div className="flx-row flx-1">
@@ -949,6 +1000,12 @@ class JobIndexAndIndexSheet extends Component {
 
 }
 
+class SearchLoader extends Loader.Candidates {
+  url(props) {
+    return Pyr.URL(CANDIDATES.URL).push("search");
+  }
+}
+
 class CandidatesPage extends Page {
   constructor(props) {
     super(props);
@@ -964,81 +1021,16 @@ class CandidatesPage extends Page {
     }
   }
 
-/*
-  // the ol' switcheroo
-  getItemId() {
-    return this.props.subItemId;
-  }
-
-  getSubItemId() {
-    return this.props.itemId;
-  }
-  //
-*/
-
-  loader() {
-    return this.props.loaders.candidates;
-  }
-
-/*
-  getAllJobs() {
-    return this.props.jobs;
-  }
-
-  getJobId() {
-    let jid = this.props.itemId;
-    let jobs = this.getAllJobs();
-
-    if (!jid) {
-      jid = jobs && jobs.length > 0 ? jobs[0].id : undefined;
-    }
-
-    return jid;
-  }
-
-  getJob() {
-    let jobsMap = this.props.jobsMap;
-    let jobId = this.getJobId();
-
-    if (!jobsMap || !jobId) {
-      return null;
-    }
-
-    return jobsMap[jobId];
-  }
-
-  pageProps() {
-    let stuff = Object.assign({}, super.pageProps());
-    stuff['job'] = this.getJob();
-    stuff['jobId'] = this.getJobId();
-
-    return stuff;
-  }
-
-  unused_loadItems(onLoading, extra={}) {
-    let jobId = this.getJobId();
-
-    if (!jobId) {
-      this.loader().reset();
-      return; // nothing to see here
-    }
-
-    return super.loadItems(onLoading, Object.assign({}, {jobId}, extra));
-  }
-*/
-
   getIndexSheet() {
     //return JobIndexAndIndexSheet;
-    //return IndexShowSheet;
-    return IndexSheet;
+    return IndexShowSheet;
+    //return IndexSheet;
   }
 
   getActionSheet(action) {
-/*
     if ((action || "show").toLowerCase() == "show") {
       return IndexShowSheet;
     }
-*/
 
     let sheet = Sheet.sheetComponent(action || "Show");
     let ActionSheet = eval(sheet);
@@ -1085,23 +1077,11 @@ class SearchForm extends Component {
   success(data, textStatus, jqXHR) {
     //console.log("SUCCESSS");
     //console.log(data);
-    this.props.onSetItems(data.jobs || []);
+    this.props.onSetItems(data.candidates || []);
   }
 
   preSubmit() {
     this.props.onSetItems(null);
-  }
-
-  renderJobs() {
-    return this.props.jobs.map(item => {
-      if (item.total == 0) {
-        return null;
-      }
-
-      return (
-        <Pyr.Form.Option value={item.id} key={"job-search-" + item.id}>{item.title}</Pyr.Form.Option>
-      );
-    });
   }
 
   render() {
@@ -1124,13 +1104,6 @@ class SearchForm extends Component {
           model="search"
           className="search-inner"
         >
-
-          <Pyr.Form.Group name="jobs">
-            <Pyr.Form.Label>Jobs</Pyr.Form.Label>
-            <Pyr.Form.Select className="" multiple>
-              { this.renderJobs() }
-            </Pyr.Form.Select>
-          </Pyr.Form.Group>
 
           <Pyr.Form.Group name="key_words">
             <Pyr.Form.Label>Keywords</Pyr.Form.Label>

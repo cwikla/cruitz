@@ -2,7 +2,11 @@ class Head < ApplicationRecord
   belongs_to :recruiter, :class_name => "User", foreign_key: :user_id
   has_many :candidates
   has_many :jobs, through: :candidates
+
   has_many :experiences
+
+  has_many :educations, -> { where(exp_type: Experience::EXP_TYPE_SCHOOL) }, class_name: "Experience"
+  has_many :works, -> { where(exp_type: Experience::EXP_TYPE_COMPANY) }, class_name: "Experience"
 
   has_many :head_uploads
   has_many :uploads, through: :head_uploads
@@ -23,4 +27,5 @@ class Head < ApplicationRecord
   def to_s
     "#{self.first_name} #{self.last_name}"
   end
+
 end

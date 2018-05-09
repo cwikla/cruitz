@@ -216,10 +216,10 @@ class DefaultRoute extends Component {
    
     if (!sendProps.page && dashboard) {
       let dest = Util.URL(dashboard).toString().toLowerCase();
-      console.log("************ REDIRECT TO");
-      console.log(dest);
-      console.log(dest.toString());
-      console.log("+++++++++++");
+      //console.log("************ REDIRECT TO");
+      //console.log(dest);
+      //console.log(dest.toString());
+      //console.log("+++++++++++");
       return (
         <Redirect to={dest} />
       );

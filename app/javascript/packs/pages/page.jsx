@@ -55,13 +55,8 @@ class Page extends Component {
 
 
   name() {
-    let fullName = this.constructor.name;
-    let pos = fullName.search("Page");
-    if (pos == -1) {
-      alert("page.jsx: You need to define a name cuz you didn't name your subclass *Page");
-    }
-    let name = fullName.substring(0, pos);
-    return name;
+    alert("You need to override name!");
+    return null;
   }
 
   setRoute(item) {
@@ -73,7 +68,8 @@ class Page extends Component {
   }
 
   loader() {
-    alert("You need to override Page::loader");
+    return this.props.loaders[this.name().toLowerCase()];
+    //alert("You need to override Page::loader");
   }
 
   loadItems(onLoading, extra={}) {

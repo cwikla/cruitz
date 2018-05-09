@@ -134,12 +134,14 @@ class LoaderComponent extends Loader.Component {
       messagesMap: null,
     });
 
+/*
     let loaderProps = {
       onSetState: this.onSetState,
       onGetState: this.onGetState,
       onLoading: this.onLoading,
       onSetItems: this.onSetItems,
     };
+*/
 
 
     this.positionsLoader = new Loader.Positions(loaderProps);
