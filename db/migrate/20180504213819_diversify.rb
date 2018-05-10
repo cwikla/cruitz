@@ -5,7 +5,7 @@ class Diversify < ActiveRecord::Migration[5.1]
     execute("commit;"); # hack to avoid memory
  
     count  = 0
-    Candidate.find_each do |c|
+    Candidate.find_each(batch_size: 100) do |c|
       job = c.job
       cur_user = job.user
       company = cur_user.company
