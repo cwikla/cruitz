@@ -1,7 +1,9 @@
 class Diversify < ActiveRecord::Migration[5.1]
   def up
     user_ids = Job.select(:user_id).map(&:user_id).uniq
-    
+   
+    execute("commit;"); // hack to avoid memory
+ 
     count  = 0
     Candidate.find_each do |c|
       job = c.job
@@ -29,6 +31,8 @@ class Diversify < ActiveRecord::Migration[5.1]
       count = count + 1
       puts count
     end
+
+    execute("start transaction");
   end
 
   def down
