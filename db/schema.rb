@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180504213819) do
+ActiveRecord::Schema.define(version: 20180510005413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,16 @@ ActiveRecord::Schema.define(version: 20180504213819) do
     t.index ["head_id"], name: "index_experiences_on_head_id"
   end
 
+  create_table "head_links", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "head_id", null: false
+    t.integer "link_id", null: false
+    t.index ["head_id"], name: "index_head_links_on_head_id"
+    t.index ["link_id"], name: "index_head_links_on_link_id"
+  end
+
   create_table "head_locations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -151,6 +161,26 @@ ActiveRecord::Schema.define(version: 20180504213819) do
     t.integer "head_id", null: false
     t.integer "location_id", null: false
     t.index ["head_id", "location_id"], name: "index_head_locations_on_head_id_and_location_id"
+  end
+
+  create_table "head_skills", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "head_id", null: false
+    t.integer "skill_id", null: false
+    t.index ["head_id"], name: "index_head_skills_on_head_id"
+    t.index ["skill_id"], name: "index_head_skills_on_skill_id"
+  end
+
+  create_table "head_uploads", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.integer "head_id", null: false
+    t.integer "upload_id", null: false
+    t.index ["head_id"], name: "index_head_uploads_on_head_id"
+    t.index ["upload_id"], name: "index_head_uploads_on_upload_id"
   end
 
   create_table "heads", id: :serial, force: :cascade do |t|
@@ -238,6 +268,15 @@ ActiveRecord::Schema.define(version: 20180504213819) do
     t.boolean "salary_doe", default: false
     t.index ["user_id"], name: "index_jobs_on_user_id"
     t.index ["uuid"], name: "index_jobs_on_uuid", unique: true
+  end
+
+  create_table "links", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.text "url", null: false
+    t.integer "ltype", default: 0, null: false
+    t.string "description"
   end
 
   create_table "messages", force: :cascade do |t|

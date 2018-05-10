@@ -14,10 +14,29 @@ class Head < ApplicationRecord
   has_many :head_locations
   has_many :locations, through: :head_locations
 
+  has_many :head_links
+  has_many :links, through: :head_links
+
+  has_many :head_skills
+  has_many :skills, through: :head_skills
+
   cache_notify :user
+ 
+  validates :first_name, presence: true 
+  validates :last_name, presence: true
+  validates :phone_number, presence: true,  format: { with: /(\d{3}-)?\d{3}-\d{4}/ }
+  #validates :email #hmmm, presence: true
+
+  validates :email, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/ }
+
+  before_save :pre_save
 
   def self.after_cached_candidate(candidate)
     h = Head.new(:id => candidate.head_id)
+  end
+
+  def pre_save
+    self.email = self.email.downcase if self.email
   end
 
   def full_name

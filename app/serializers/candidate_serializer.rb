@@ -1,8 +1,10 @@
 class CandidateSerializer < CandidateSmallSerializer
-  attributes :skills,
-    :educations,
+  attributes :educations,
     :description,
-    :works
+    :works,
+    :links,
+    :skills,
+    :uploads
 
   has_one :recruiter
 
@@ -27,6 +29,14 @@ class CandidateSerializer < CandidateSmallSerializer
   end
 
   def skills
-    []
+    object.head.skills
+  end
+
+  def links
+    object.head.links
+  end
+
+  def uploads
+    object.head.uploads
   end
 end

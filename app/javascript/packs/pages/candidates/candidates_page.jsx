@@ -31,6 +31,51 @@ import {
   RANGES
 } from '../const';
 
+const LINK_WEB = 0;
+const LINK_IN = 1;
+const LINK_GITHUB = 2;
+const LINK_DRIBBLE = 3;
+const LINK_QUORA = 4;
+const LINK_FACEBOOK = 5;
+const LINK_TWITTER = 6;
+const LINK_ANGELIST = 7;
+
+const LINK_TO = {
+  [LINK_WEB] : "link",
+  [LINK_IN] : "linkedin-in",
+  [LINK_GITHUB] : "github",
+  [LINK_DRIBBLE] : "dribble",
+  [LINK_QUORA] : "quora",
+  [LINK_FACEBOOK] : "facebook-f",
+  [LINK_TWITTER] : "twitter",
+  [LINK_ANGELIST] : "angellist",
+};
+
+
+const LinkFont = (props) => (
+  <a href={props.link.url}><Pyr.UI.Icon name={LINK_TO[props.link.ltype] ? LINK_TO[props.link.ltype] : "link"} /></a>
+);
+
+class Links extends Component {
+  render() {
+    if (!this.props.links) {
+      return null;
+    }
+
+    let links = this.props.links;
+
+    return (
+      <div id="links" className="cv-section links flx-row">
+        {
+          links.map( (item, pos) => {
+            return (<div className="link flx-0 flx-nowrap" key={"lnk"+pos}><LinkFont link={item} /></div>);
+          })
+        }
+      </div>
+    );
+  }
+}
+
 class CandidateHeader extends Component {
   render() {
     if (!this.props.candidate) {
@@ -43,7 +88,7 @@ class CandidateHeader extends Component {
     //let id ="candidate-header" + this.props.candidate.id;
 
     let fullName = candidate.first_name + " " + candidate.last_name;
-    let phoneNumber = Pyr.Util.scramble(candidate.phone_number || "No Phone");
+    let phoneNumber = candidate.phone_number || "No Phone";
     let email = candidate.email || "No Email";
     let description = candidate.description || "No Description";
     let company = candidate.company || "No Company";
@@ -68,10 +113,7 @@ class CandidateHeader extends Component {
           <div className="cost mr-auto flx-1">{salary}</div>
         </div>
         <div className="social-links flx-row-stretch">
-          <Pyr.UI.Icon name="linkedin-square" className="social"/>
-          <Pyr.UI.Icon name="github" className="social"/>
-          <Pyr.UI.Icon name="dribbble" className="social"/>
-          <Pyr.UI.Icon name="quora" className="social"/>
+          <Links links={candidate.links} />
         </div>
       </div>
     );
@@ -394,8 +436,8 @@ class IndexSheet extends Sheet.Index {
 
   renderInner() {
 
-    let leftClasses = "col flx-col scroll flx-1 section";
-    let rightClasses = "col col-3 flx-col";
+    let leftClasses = "scroll flx-1 flx-col inner";
+    let rightClasses = "flx-col";
 
     return (
       <div className="flx-row">
@@ -624,6 +666,26 @@ class Skills extends Component {
   }
 }
 
+class Uploads extends Component {
+  render() {
+    if (!this.props.uploads || this.props.uploads.length == 0) {
+      return null;
+    }
+
+    let uploads = this.props.uploads;
+
+    return (
+      <div id="files" className="cv-section files flx-row">
+        {
+          uploads.map( (item, pos) => {
+            return (<div className="file flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Image src="item.url" />}</div>);
+          })
+        }
+      </div>
+    );
+  }
+}
+
 
 class CandidateCVItem extends Component {
   render() {
@@ -657,6 +719,7 @@ class CandidateCVItem extends Component {
         <Pyr.UI.Label className="cv-label">Skills</Pyr.UI.Label>
         <Skills skills={candidate.skills} />
         <Pyr.UI.Label className="cv-label">Files</Pyr.UI.Label>
+        <Uploads uploads={candidate.uploads} />
       </div>
     );
   }
