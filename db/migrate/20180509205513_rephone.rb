@@ -8,7 +8,7 @@ class Rephone < ActiveRecord::Migration[5.1]
   end
 
   def up
-    Head.find_each do |h|
+    Head.find_each(batch_size: 100) do |h|
       h.email = h.email.split.join('')
       h.email.gsub!(/@cwikla.com/, '@cruitz.org')
       h.email.gsub!(/@cruitz.com/, '@cruitz.org')

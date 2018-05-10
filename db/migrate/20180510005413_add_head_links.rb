@@ -1,6 +1,6 @@
 class AddHeadLinks < ActiveRecord::Migration[5.1]
   def up
-    Head.find_each do |head|
+    Head.find_each(batch_size: 100) do |head|
       puts head.full_name
       head.links = []
       urls = Link::rando_fakes(head.full_name)

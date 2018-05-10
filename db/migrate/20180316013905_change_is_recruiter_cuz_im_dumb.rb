@@ -5,7 +5,7 @@ class ChangeIsRecruiterCuzImDumb < ActiveRecord::Migration[5.1]
 
     User.reset_column_information
 
-    User.find_each do |u|
+    User.find_each(batch_size: 100) do |u|
       u.is_recruiter = !(u.old_is_recruiter == 0)
       u.save
     end
@@ -19,7 +19,7 @@ class ChangeIsRecruiterCuzImDumb < ActiveRecord::Migration[5.1]
 
     User.reset_column_information
 
-    User.find_each do |u|
+    User.find_each(batch_size: 100) do |u|
       u.is_recruiter = u.old_is_recruiter ? 1 : 0
       u.save
     end
