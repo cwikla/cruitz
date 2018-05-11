@@ -8,18 +8,6 @@ class CandidateSerializer < CandidateSmallSerializer
 
   has_one :recruiter
 
-  def root_message_id
-    return nil # FIXME
-
-    m = Message.threads_for_candidate(object).first
-    m ? m.hashid : nil
-  end
-
-  def description
-    m = Message.threads_for_candidate(object).first
-    m ? m.body : ""
-  end
-
   def educations
     object.head.educations
   end
@@ -33,10 +21,10 @@ class CandidateSerializer < CandidateSmallSerializer
   end
 
   def links
-    object.head.links
+    object.unlocked? ? object.head.links : object.head.links.map{ |x| Link.new(ltype: x.ltype, id: x.id) }
   end
 
   def uploads
-    object.head.uploads
+    object.unlocked? ? object.head.uploads : object.head.uploads.map{ |x| Upload.new(x.id) }
   end
 end

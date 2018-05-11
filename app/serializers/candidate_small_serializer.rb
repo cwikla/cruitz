@@ -5,24 +5,28 @@ class CandidateSmallSerializer < ActiveModel::Serializer
     :phone_number,
     :email,
     :job_id,
-    :state
-    
+    :state,
+    :unlocked_at
 
   has_one :recruiter
 
   def first_name
-    object.head.first_name
+    object.unlocked? ? object.head.first_name : nil
   end
 
   def last_name
-    object.head.last_name
+    object.unlocked? ? object.head.last_name : nil
   end
 
   def phone_number
-    object.head.phone_number
+    object.unlocked? ? object.head.phone_number : nil
   end
 
   def email
-    object.head.email
+    object.unlocked? ? object.head.email : nil
+  end
+
+  def unlocked_at
+    object.unlocked_at.in_time_zone.iso8601 if object.unlocked_at
   end
 end

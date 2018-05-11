@@ -29,6 +29,11 @@ const NEXT_STATES = {
   "-5000": [],
 };
 
+function states() {
+  let all = Object.keys(ID_TO_STATE).map(x => parseInt(x));
+  return all.sort();
+}
+
 
 function toName(sid) {
   if (sid in ID_TO_STATE) {
@@ -67,6 +72,7 @@ const Bubble = (props) => (
 );
 
 const State = {
+  states,
   toName,
   toAction,
   toClassName,

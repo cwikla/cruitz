@@ -473,7 +473,7 @@ label {
   overflow: auto;
 }
 
-.blurry-text {
+.blurry-text, %blurry-text {
   color: transparent;
   text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.20);
 }

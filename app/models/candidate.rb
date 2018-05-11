@@ -35,9 +35,22 @@ class Candidate < ApplicationRecord
   validates :head_id, presence: true
   validates :commission, presence: true
 
+  before_save :pre_save
+
+  def pre_save
+    if self.state > SUBMITTED_STATE
+      self.unlocked_at ||= Time.zone.now
+    end
+  end
+
   def to_s
     "#{job.id} => #{job.title} => #{head}"
   end
+
+  def unlocked?
+    !unlocked_at.nil?
+  end
+
 
   def self.submit(head, job, commission, body=nil)
 

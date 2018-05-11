@@ -58,25 +58,45 @@ const LinkFont = (props) => (
   <a href={props.link.url}><Pyr.UI.Icon name={LINK_TO[props.link.ltype] ? LINK_TO[props.link.ltype] : "link"} /></a>
 );
 
+const LinkLock = (props) => (
+  <Pyr.UI.Icon name={LINK_TO[props.link.ltype] ? LINK_TO[props.link.ltype] : "link"} className="locked"/>
+);
+
 class Links extends Component {
   render() {
-    if (!this.props.links) {
+    if (!this.props.candidate) {
       return null;
     }
 
-    let links = this.props.links;
+    let candidate = this.props.candidate;
+
+    let links = candidate.links;
+    if (!links) {
+      return null;
+    }
+
+    let locked = !candidate.unlocked_at;
+
+    let LinkComp = locked ? LinkLock : LinkFont;
 
     return (
       <div id="links" className="cv-section links flx-row">
         {
           links.map( (item, pos) => {
-            return (<div className="link flx-0 flx-nowrap" key={"lnk"+pos}><LinkFont link={item} /></div>);
+            return (<div className="link flx-0 flx-nowrap" key={"lnk"+pos}><LinkComp link={item} /></div>);
           })
         }
       </div>
     );
   }
 }
+
+const Lock = (props) => (
+  <div className="flx-col locked">
+    { /* Nice try! There isn't any candidate information here!  */ }
+    <Pyr.UI.Icon name="lock" />
+  </div>
+);
 
 class CandidateHeader extends Component {
   render() {
@@ -87,35 +107,42 @@ class CandidateHeader extends Component {
     let candidate = this.props.candidate;
     let job = this.props.job;
 
-    //let id ="candidate-header" + this.props.candidate.id;
-
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
     let email = candidate.email || "No Email";
-    let description = candidate.description || "No Description";
-    let company = candidate.company || "No Company";
     let salary = candidate.salary || "No Salary";
 
-    let clazzes = ClassNames("candidate-header flx-col flx-noshrink");
-    if (candidate.state < 100) {
-      //clazzes.push("blurry-text");
+    let company = candidate.company || "No Company";
+    let description = candidate.description || "No Description";
+
+    if (!candidate.unlocked_at) {
+      fullName = Pyr.Util.scramble("George Smith");
+      phoneNumber = Pyr.Util.scramble("415-555-1212");
+      email = Pyr.Util.scramble("georgith@george.com");
+      salary = Pyr.Util.scramble("60,000");
     }
+
+    let clazzes = ClassNames("candidate-header flx-col flx-noshrink");
+    let extra = ClassNames(!candidate.unlocked_at ? "locked" : "");
+
+    let ALock = candidate.unlocked_at ? Pyr.UI.Empty : Lock;
 
     return (
       <div className={clazzes} >
         <div className="flx-row flx-1">
-          <div className="name mr-auto">{fullName}</div>
+          <div className={ClassNames(extra).push("name mr-auto")}>{fullName}</div>
+          <div className={ClassNames(extra).push("lock ml-auto")}><ALock /></div>
         </div>
-        <div className="flx-row flx-1">
-          <div className="phone-number mr-auto flx-1">{phoneNumber}</div>
-          <div className="email mr-auto flx-1">{email}</div>
+        <div className="flx-row flx-1 info">
+          <div className={ClassNames(extra).push("phone-number mr-auto flx-1")}>{phoneNumber}</div>
+          <div className={ClassNames(extra).push("email mr-auto flx-1")}>{email}</div>
         </div>
-        <div className="flx-row flx-1">
-          <div className="employer mr-auto flx-1">{company}</div>
-          <div className="cost mr-auto flx-1">{salary}</div>
+        <div className="flx-row flx-1 info">
+          <div className={ClassNames(extra).push("employer mr-auto flx-1")}>{company}</div>
+          <div className={ClassNames(extra).push("salary mr-auto flx-1")}>{salary}</div>
         </div>
-        <div className="social-links flx-row-stretch">
-          <Links links={candidate.links} />
+        <div className="flx-row-stretch info social-links">
+          <Links candidate={candidate} />
         </div>
       </div>
     );
@@ -296,6 +323,7 @@ class JobSelect extends Component {
     return (
       <Select 
         {...this.props} 
+        {...Pyr.Util.propsMergeClassName(this.props, "job-select")}
         options={options} 
         value={value}
         isClearable={false}
@@ -585,11 +613,20 @@ class CandidateCVItem extends Component {
 class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
-    this.initState({
-      job: null,
-      showMessages: true
-    });
+    this.onButtonPresses = {};
+    this.buttonBinds();
+  }
 
+  buttonBinds() {
+    let states = State.states();
+    let bps = {};
+
+    for(let i=0; i<states.length; i++) {
+      let ns = states[i];
+      bps[ns] = this.candidateStateChange.bind(this, ns);
+    }
+
+    this.onButtonPresses = bps;
   }
 
   candidateStateUpdate(state) {
@@ -612,7 +649,7 @@ class ShowSheet extends Sheet.Show {
   }
 
   candidateStateChange(sid, e) {
-    //console.log("F");
+    //console.log("candidateStateChange");
     //console.log(sid);
     //console.log("E");
     //console.log(e);
@@ -620,66 +657,30 @@ class ShowSheet extends Sheet.Show {
   }
 
   setCandidate(candidate) {
+    this.props.loaders.candidates.replace(candidate);
     //console.log(candidate);
-    this.props.onAddItem(candidate);
-    this.props.onSelect(candidate);
   }
 
-  setJob(job) {
-    this.setState({
-      job
-    });
-  }
+  unused_componentDidUpdate(prevProps, prevState) {
+    let pid = prevProps.selected ? prevProps.selected.id : null;
+    let cid = this.props.selected ? this.props.selected.id : null;
 
-  getJob(jobId) {
-    //console.log("CANDY GET JOB ID: " + jobId);
-    if (!jobId) {
-      return;
+    if (pid != cid) { // redo button presses
+      this.buttonBinds(this.props.selected.state);
     }
-
-    if (this.props.jobsMap) {
-      this.setJob(this.props.jobsMap[jobId]);
-      return;
+    else 
+    if (cid && (cid.state != pid.state)) {
+      this.buttonBinds(this.props.selected.state);
     }
-
-    let url = Pyr.URL(JOBS_URL).push(jobId); //.set("candidates", "1");
-
-    this.setState({
-      job: null
-    });
-
-    this.getJSON({
-      url: url,
-      context: this,
-
-    }).done((data, textStatus, jaXHR) => {
-      this.setJob(data.job);
-      //console.log("GOT THE JOB");
-      //console.log(data);
-
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    let pid = prevProps.selected ? prevProps.selected.job_id : null;
-    let cid = this.props.selected ? this.props.selected.job_id : null;
-
-    //console.log("DID UPDATE");
-    //console.log(this.props.selected);
-    //console.log(pid);
-    //console.log(cid);
 
     super.componentDidUpdate(prevProps, prevState);
-    if (pid != cid) {
-      this.getJob(cid);
-    }
   }
 
-  componentDidMount() {
-    //console.log("WILL MOUNT");
-    //console.log(this.props);
-    if (this.props.selected) {
-      this.getJob(this.props.selected.job_id);
+  unused_componentDidMount() {
+    let candidate = this.props.selected;
+
+    if (candidate) {
+      this.buttonBinds(candidate.state);
     }
   }
 
@@ -693,19 +694,14 @@ class ShowSheet extends Sheet.Show {
     let name = State.toName(curState);
 
     return (
-      <div className="">
+      <div className="state-change">
       {
         nexts.map( (state, pos) => {
           let nextName = State.toName(state);
           let action = State.toAction(state);
-  
-          if (pos == 0) {
-            return (
-              <Pyr.UI.PrimaryButton key={state} className={"ml-auto "+ nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.UI.PrimaryButton>
-            );
-          }
-          return ( 
-            <Pyr.UI.Button key={state} className={nextName} onClick={self.candidateStateChange.bind(self, state)}>{action}</Pyr.UI.Button>
+
+          return (
+            <Pyr.UI.PrimaryButton key={state} className={"ml-auto "+ nextName} onClick={this.onButtonPresses[state]}>{action}</Pyr.UI.PrimaryButton>
           );
         })
       }
@@ -770,7 +766,7 @@ class ShowSheet extends Sheet.Show {
         <div className="flx-row">
           <div className="flx-col left flx-5">
             { this.statusTop(candidate) }
-            <div className="flx-col flx-2 section">
+            <div className="flx-col flx-2 cv">
               <Pyr.UI.Scroll>
                 <CandidateCVItem 
                   candidate={candidate} 

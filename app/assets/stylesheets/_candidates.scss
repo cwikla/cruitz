@@ -11,7 +11,7 @@
 
     &.sheet {
       .user-score {
-        margin-left: 2rem;
+        margin-left: 1rem;
         font-size: 3rem;
       }
 
@@ -26,30 +26,28 @@
         margin-bottom: 0;
 
         .candidate-header {
-          font-size: 1.25rem;
-          padding-bottom: 1rem;
+          font-size: 1rem;
 
-          &> div {
-            margin-top: 0.5rem;
-          }
-
-          .social-links {
-            margin-top: 1rem;
-          }
-
-          .social {
-            font-size: 2rem;
-          }
-
-          .name {
-            margin-bottom: 0.5rem;
-            font-size: 2rem;
+          .name, .lock {
+            font-size: 1.5rem;
+            line-height: 2rem;
             color: $primary_color;
+
+            &.locked {
+              color: $med_gray_color;
+              @extend %blurry-text;
+            }
           }
 
-          .skill {
-          }
+          .info {
+            font-size: 1rem;
+            line-height: 1.5rem;
 
+            .locked {
+              color: $med_gray_color;
+              @extend %blurry-text;
+            }
+          }
         }
 
         .item {
@@ -82,6 +80,10 @@
   }
   
   .sheet.index {
+    .job-select {
+      font-size: 0.8rem;
+    }
+
     .section {
       padding: 0;
     }
@@ -116,6 +118,15 @@
   }
   
   .recruiter-message {
+  }
+  
+  .cv {
+    padding: 1rem;
+    background-color: $alt_background_color;
+
+    .scroll {
+      background-color: white;
+    }
   }
   
   .cv-label {

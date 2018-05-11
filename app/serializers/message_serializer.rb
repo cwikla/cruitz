@@ -23,7 +23,11 @@ class MessageSerializer < ActiveModel::Serializer
   end
 
   def updated_at
-    object.updated_at.in_time_zone.iso8601 if object.created_at
+    object.updated_at.in_time_zone.iso8601 if object.updated_at
+  end
+
+  def read_at
+    object.read_at.in_time_zone.iso8601 if object.read_at
   end
 
 

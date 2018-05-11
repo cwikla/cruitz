@@ -184,7 +184,7 @@ function PURL(a) {
 }
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyz";
-const IGNORE = "_-+@/{}[]()";
+const IGNORE = "_-+@/{}[]() ,'.";
 const NUMBERS = "0123456789";
 
 function getRandomInt(min, max) {
@@ -193,6 +193,8 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+const BLOCK = '\u2588';
+
 function scramble(a) {
   let s = "";
   for(var x of a) {
@@ -200,10 +202,10 @@ function scramble(a) {
       s = s + x;
     }
     else if (NUMBERS.includes(x)) {
-      s = s + '6';
+      s = s + BLOCK; //NUMBERS[getRandomInt(0, NUMBERS.length-1)];
     }
     else {
-      s = s + LETTERS[getRandomInt(0, LETTERS.length-1)];
+      s = s + BLOCK; //LETTERS[getRandomInt(0, LETTERS.length-1)];
     }
   }
   return s;
