@@ -140,6 +140,10 @@ class PyrComponent extends Network.Component {
     return this.context.history.goBack();
   }
 
+  goTo(url) {
+    this.context.history.push(url.toString());
+  }
+
   setNotice(notice) {
     this.context.setNotice(notice);
   }

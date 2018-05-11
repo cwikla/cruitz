@@ -80,6 +80,10 @@ class RouterReceiver extends Component {
   goBack() {
     this.context.history.goBack();
   }
+
+  goUrl(url) {
+    this.context.history.push(url.toString());
+  }
 }
 
 class RouterProvider extends Component {

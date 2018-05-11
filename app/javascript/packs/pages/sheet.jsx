@@ -144,6 +144,12 @@ class Base extends Component {
     return this.props.itemsMap;
   }
 
+  route(url) {
+    console.log("ROUTE");
+    console.log(this.context);
+    this.context.router.history.push(url.toString());
+  }
+
   render() {
     //if (this.state.isLoading) {
       //return (<Pyr.UI.Loading />);

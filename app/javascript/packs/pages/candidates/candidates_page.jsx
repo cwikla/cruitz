@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
 
 import Pyr, {
   Component
@@ -17,6 +18,7 @@ import Avatar, {
 } from '../shared/avatar';
 
 import State from '../shared/state';
+
 
 import {
   MESSAGES_URL,
@@ -270,30 +272,36 @@ class EditSheet extends Sheet.Edit {
 }
 
 class JobSelect extends Component {
-  renderJobs() {
-    return this.props.jobs.map(item => {
-      if (item.total == 0) {
-        return null;
-      }
-      return (
-        <Pyr.Form.Option value={item.id} key={"job-search-" + item.id}>{item.title}</Pyr.Form.Option>
-      );
-    });
+  constructor(props) {
+    super(props);
+    this.onChange = this.change.bind(this);
+  }
+
+  change(item, e) {
+    if (item) {
+      this.props.onSelect(item.value);
+    }
   }
 
   render() {
+    let options = {};
+    options = this.props.jobs.map(item => {
+      return (
+        { value: item.id, label: item.title }
+      );
+    });
+
+    let value = this.props.job ? { value: this.props.job.id, label: this.props.job.title } : null;
+
     return (
-      <Pyr.Form.Form
-        object={{}}
-        model="Fake"
-        className={this.props.className}
-      >
-        <Pyr.Form.Group name="jobs">
-          <Pyr.Form.Select className="" >
-            { this.renderJobs() }
-          </Pyr.Form.Select>
-        </Pyr.Form.Group>
-      </Pyr.Form.Form>
+      <Select 
+        {...this.props} 
+        options={options} 
+        value={value}
+        isClearable={false}
+        isSearchable={false}
+        onChange={this.onChange}
+      />
     );
   }
 }
@@ -302,12 +310,7 @@ class IndexSheet extends Sheet.Index {
   constructor(props) {
     super(props);
 
-    this.initState({
-      filteredItems: null,
-      filteredItemsMap: null,
-    });
-
-    this.onSetFilteredItems = this.setFilteredItems.bind(this);
+    this.onJobIdSelect = this.jobIdSelect.bind(this);
   }
 
   key(item) {
@@ -318,86 +321,26 @@ class IndexSheet extends Sheet.Index {
     return 5;
   }
 
-  setFilteredItems(items) {
-    let itemsMap = null;
-
-    if (items) {
-      items = this.sortItems(items);
-      itemsMap = items.reduce((m, o) => {m[o.id] = o; return m;}, {});
+  getJobId() {
+    if (this.props.jobId) {
+      return this.props.jobId;
     }
 
-    this.setState({
-      filteredItems: items,
-      filteredItemsMap: itemsMap,
-    });
-  }
+    if (this.props.jobs && this.props.jobs.length) {
+      return this.props.jobs[0].id;
+    }
 
-  getItems() {
-    return this.state.filteredItems ? this.state.filteredItems : super.getItems();
-  }
-
-  getItemsMap() {
-    return this.state.filteredItemsMap ? this.state.filteredItemsMap : super.getItemsMap();
-  }
-
-  getJobId() {
-    return this.props.jobId;
+    return null;
   }
 
   getJobsMap() {
     return this.props.jobsMap;
   }
 
-  componentDidMount() {
-    this.setFilteredItems(null);
-    super.componentDidMount();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    let pid = prevProps.jobId;
-    let cid = this.getJobId();
-
-    if (pid != cid) {
-      this.setFilteredItems(null);
-      if (cid) {
-        this.props.onLoadItems(this.onLoading, {force: true});
-      }
-    }
-  }
-
-  unused_renderHeader() {
-    let jobId = this.getJobId();
-    let jobsMap = this.getJobsMap();
-    
-
-    let job = jobId ? jobsMap[jobId] : null;
-    let title = "Candidates";
-  
-    if (job) {
-      title = title + " for " + job.title;
-    }
-
-    return (
-      <div className="flx-row">
-        <div className="mr-auto">{ title } </div>
-        <div className="dropdown ml-auto">
-          <Pyr.UI.IconButton name="sort" className="dropdown-toggle" id="candySortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="candySortMenuButton">
-            <label className="dropdown-header">Sort</label>
-            <div className="dropdown-divider"></div>
-            <label className="dropdown-item" >Date</label>
-            <label className="dropdown-item" >State</label>
-            <label className="dropdown-item" >Position</label>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-
   renderNone() {
     return (
       <div className="empty flx-3 flx-col-stretch">
+        { this.renderHeader() }
         <div className="flx-1 flx-row-stretch flx-align-center ml-auto mr-auto">
           <Pyr.UI.Icon name="user-times"/> No candidates have been submitted for this job.
         </div>
@@ -405,17 +348,21 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-  sortItems(items) {
+  unused_sortItems(items) {
     return items;
   }
 
-/*
   childURL(item, isSelected) {
-    return Pyr.URL(JOBS_URL).push(item.job_id).push(CANDIDATES_URL).push(item.id);
+    return Pyr.URL(CANDIDATES_URL).push(item.job_id).push(item.id);
   }
-*/
+
+  renderChild(item, isSelected) {
+
+    return super.renderChild(item, isSelected);
+  }
 
   renderItem(item, isSelected) {
+
     return (
       <CandidateItem 
         {...this.props}
@@ -425,24 +372,27 @@ class IndexSheet extends Sheet.Index {
     );
   }
 
-/*
-        <div className={rightClasses}>
-          <CandidatesPage.SearchForm
-            {...this.props}
-            onSetItems={this.onSetFilteredItems}
-          />
-        </div>
-*/
+  jobIdSelect(jobId) {
+    let url = Pyr.URL(CANDIDATES_URL).push(jobId);
+    this.goTo(url);
+  }
 
   renderInner() {
-
     let leftClasses = "scroll flx-1 flx-col inner";
     let rightClasses = "flx-col";
 
+    let jobId = this.getJobId();
+    let jobsMap = this.getJobsMap();
+    let job = jobId ? jobsMap[jobId] : null;
+
+
     return (
-      <div className="flx-row">
+      <div className="flx-row flx-1">
         <div className={leftClasses}>
-          <div className="header"><div className="flx-row">Candidates for <JobSelect {...this.props} className="flx-1"/></div></div>
+          <div className="header flx-col">
+            <div className="flx-row">Candidates</div>
+            <div className="flx-row"><JobSelect {...this.props} job={job} className="flx-1" onSelect={this.onJobIdSelect}/></div>
+          </div>
           <div className="flx-col flx-1 scroll">
             { this.renderInnerNoScroll() }
           </div>
@@ -462,100 +412,6 @@ class IndexSheet extends Sheet.Index {
   }
 
 
-}
-
-class JobItem extends Component {
-
-  render() {
-    let job = this.props.job;
-
-    let id = "job-" + job.id;
-    let allClass = ClassNames("item job-item flx-col");
-
-    if (this.props.isSelected) {
-       allClass.push("selected");
-    }
-
-    let description = job.description || "No Description";
-
-    return (
-      <div className={allClass} id={id}>
-        <div className="flx-row">
-          <div className="ml-auto created-at"><Pyr.UI.MagicDate date={job.created_at} mini/></div>
-        </div>
-        <div className="flx-row">
-          <div className="flx-1 title">{job.title}</div>
-        </div>
-        <div className="flx-row item-content">
-          <div className="flx-row">
-            <div className="state total">({job.candidate_counts.total})</div>
-            <div className="state accepted">({job.candidate_counts.accepted})</div>
-            <div className="state new">({job.candidate_counts.waiting})</div>
-            <div className="state rejected">({job.candidate_counts.rejected})</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-
-class JobIndexSheet extends Sheet.Index {
-  key(item) {
-    return JobsInnerPage.key(item);
-  }
-
-  size() {
-    return 2;
-  }
-
-  renderHeader() {
-    return (
-      <div className="flx-row">
-        <div className="mr-auto">Jobs</div>
-        <div className="dropdown ml-auto">
-          <Pyr.UI.IconButton name="sort" className="dropdown-toggle" id="jobSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-          <div className="dropdown-menu" aria-labelledby="jobSortMenuButton">
-            <label className="dropdown-header">Sort</label>
-            <div className="dropdown-divider"></div>
-            <label className="dropdown-item" >Date</label>
-            <label className="dropdown-item" >Unread</label>
-            <label className="dropdown-item" >Position</label>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  sortItems(items) {
-    return items;
-  }
-
-  childURL(item, isSelected) {
-    //console.log("CHILD URL");
-    //console.log(item);
-
-    return Pyr.URL(JOBS_URL).push(item.id).push(CANDIDATES_URL);
-  }
-
-  renderItem(item, isSelected) {
-    //console.log("CANDIDATE RENDER ITEM");
-    //console.log(item);
-    //console.log(isSelected);
-
-    return (
-      <JobItem 
-        job={item} 
-        isSelected={isSelected} 
-      />
-    );
-  }
-
-  render() {
-    //console.log("JOBS INDEX RENDER");
-    //console.log(this.props.items);
-    return super.render();
-  }
 }
 
 class RecruiterMessage extends Component {
@@ -913,6 +769,18 @@ class ShowSheet extends Sheet.Show {
     );
   
   }
+
+  renderInner() {
+    if (!this.props.items) {
+      //console.log("C");
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+
+    return super.renderInner();
+  }
+
 }
 
 class New extends Sheet.Base {
@@ -986,92 +854,32 @@ class IndexShowSheet extends Sheet.IndexShow {
   }
 }
 
-class JobsInnerPage extends Page {
-  constructor(props) {
-    super(props);
-  }
 
-  name() {
-    return "JobsInner";
-  }
+class CandidatesPage extends Page {
+  getItems() {
+    let all = super.getItems();
 
-  loader() {
-    return this.props.loaders.jobs;
+    let jobId = this.getJobId();
+    if (!jobId) {
+      return  all ? [] : null;
+    }
+
+    let items = all.reduce((arr, o) => {
+      if (o.job_id == jobId) {
+        arr.push(o);
+      }
+      return arr;
+    }, []);
+
+    return all ? items : null;
   }
 
   getItemId() {
-    return this.props.jobId;
-  }
-
-  getSubItemId() {
-    return this.props.itemId;
-  }
-//
-
-  getIndexSheet() {
-    return JobIndexSheet;
-  }
-
-  render() {
-    //console.log("JOBS PAGE INNER RENDER");
-    //console.log(this.props);
-
-    return (
-      <div className="flx-col flx-2">
-        { this.renderInner() }
-      </div>
-    );
-   }
-}
-JobsInnerPage.key = (item) => {
-  return ('jobs-inner-' + item.id);
-}
-
-
-class JobIndexAndIndexSheet extends Component {
-  getJobId() {
-    return this.props.itemId;
-  }
-
-  getCandidateId() {
     return this.props.subItemId;
   }
 
-  render() {
-    let jobId = this.getJobId();
-    let candyId = this.getCandidateId();
-
-    let firstCandy = this.props.items && this.props.items.length > 0 ? this.props.items[0] : null;
-    candyId = candyId ? candyId : (firstCandy ? firstCandy.id : null);
-
-    //console.log("JOBINDEXANDINDEX");
-    //console.log(this.props);
-
-    return (
-      <div className="flx-row flx-1">
-        <JobsInnerPage 
-          {...this.props} 
-          itemId={jobId}
-        />
-        <IndexSheet
-          {...this.props}
-          itemId={candyId}
-        />
-      </div>
-    )
-  }
-
-}
-
-class SearchLoader extends Loader.Candidates {
-  url(props) {
-    return Pyr.URL(CANDIDATES.URL).push("search");
-  }
-}
-
-class CandidatesPage extends Page {
-  constructor(props) {
-    super(props);
+  getJobId() {
+    return this.props.itemId;
   }
 
   name() {
@@ -1085,7 +893,6 @@ class CandidatesPage extends Page {
   }
 
   getIndexSheet() {
-    //return JobIndexAndIndexSheet;
     return IndexShowSheet;
     //return IndexSheet;
   }
@@ -1099,6 +906,11 @@ class CandidatesPage extends Page {
     let ActionSheet = eval(sheet);
 
     return ActionSheet;
+  }
+
+  pageProps() {
+    let pp = super.pageProps();
+    return Object.assign({}, pp, { jobId: this.getJobId() });
   }
 
   render() {

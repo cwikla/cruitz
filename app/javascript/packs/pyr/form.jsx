@@ -12,9 +12,6 @@ import Attachment from './attachment';
 import {
   Typeahead,
   AsyncTypeahead,
-  Menu,
-  MenuItem,
-  menuItemContainer,
 } from 'react-bootstrap-typeahead';
 
 import InputRange from 'react-input-range';

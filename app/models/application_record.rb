@@ -38,4 +38,12 @@ class ApplicationRecord < ActiveRecord::Base
     where("lower(name) like ?", "%" + name.downcase + "%")
   end
 
+  # HMMMMM - was having memory issues on Heroku, this seems to have fixed it
+  # I really only use this for migration stuff, so should be groovy
+  def self.find_each(**options) 
+    stuff = (options || {}).dup
+    stuff[:batch_size] ||= 100
+    super(stuff)
+  end
+
 end
