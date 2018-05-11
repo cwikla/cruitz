@@ -138,7 +138,6 @@ class CandidateHeader extends Component {
           <div className={ClassNames(extra).push("email mr-auto flx-1")}>{email}</div>
         </div>
         <div className="flx-row flx-1 info">
-          <div className={ClassNames(extra).push("employer mr-auto flx-1")}>{company}</div>
           <div className={ClassNames(extra).push("salary mr-auto flx-1")}>{salary}</div>
         </div>
         <div className="flx-row-stretch info social-links">
@@ -538,10 +537,10 @@ class Skills extends Component {
     let skills = this.props.skills;
 
     return (
-      <div id="skills" className="cv-section skills flx-row">
+      <div id="skills" className="cv-section skills flx-row flx-wrap">
         {
           skills.map( (item, pos) => {
-            return (<div className="skill flx-0 flx-nowrap" key={"sk"+pos}>{item}</div>);
+            return (<div className="skill flx-0 flx-nowrap" key={"sk"+item.id}>{item.name}</div>);
           })
         }
       </div>

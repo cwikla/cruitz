@@ -12,7 +12,8 @@ class Skill < ApplicationRecord
 
   def self.get_skill(*names)
     names.map { |x|
-      Skill.find_or_create_unique(:name => x.downcase)
+      x = x.strip.downcase
+      Skill.find_or_create_unique(:name => x)
     }
   end
 

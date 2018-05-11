@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180511021122) do
+ActiveRecord::Schema.define(version: 20180511232404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,7 @@ ActiveRecord::Schema.define(version: 20180511021122) do
     t.datetime "deleted_at"
     t.integer "head_id", null: false
     t.integer "skill_id", null: false
+    t.index ["head_id", "skill_id"], name: "index_head_skills_on_head_id_and_skill_id", unique: true
     t.index ["head_id"], name: "index_head_skills_on_head_id"
     t.index ["skill_id"], name: "index_head_skills_on_skill_id"
   end

@@ -47,4 +47,8 @@ class Head < ApplicationRecord
     "#{self.first_name} #{self.last_name}"
   end
 
+  def add_skill(skill)
+    return HeadSkill.find_or_create_unique(head: self, skill: skill)
+  end
+
 end
