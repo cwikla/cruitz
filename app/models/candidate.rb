@@ -11,6 +11,8 @@ class Candidate < ApplicationRecord
   has_many :candidate_uploads
   has_many :uploads, through: :candidate_uploads
 
+  has_one :description, class_name: 'Message'
+
   SUBMITTED_STATE = 0
   ACCEPTED_STATE = 100
   REJECTED_STATE = -100
@@ -54,9 +56,14 @@ class Candidate < ApplicationRecord
       puts candidate.inspect
 
       recruiter = head.recruiter
+
+      body ||= "New candidate #{head.full_name}"
     
       msg = nil 
       msg = Message.create!(candidate: candidate, user: candidate.hirer, from_user: recruiter, job: job, body: body) if body
+
+      candidate.description = msg
+      candidate.save!
     
       #CandidateState.create!(candidate: candidate, 
         #state: candidate.state,

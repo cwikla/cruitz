@@ -15,6 +15,7 @@ class Message < ApplicationRecord
   validates :from_user_id, presence: true
   validates :job_id, presence: true
   validates :candidate, presence: true
+  validates :body, presence: true
 
   def after_cached
     #puts "AFTER MESSAGE CACHED MESSAGE => #{self.id}"

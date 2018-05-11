@@ -317,10 +317,6 @@ class IndexSheet extends Sheet.Index {
     return CandidatesPage.key(item);
   }
 
-  size() {
-    return 5;
-  }
-
   getJobId() {
     if (this.props.jobId) {
       return this.props.jobId;
@@ -390,7 +386,6 @@ class IndexSheet extends Sheet.Index {
       <div className="flx-row flx-1">
         <div className={leftClasses}>
           <div className="header flx-col">
-            <div className="flx-row">Candidates</div>
             <div className="flx-row"><JobSelect {...this.props} job={job} className="flx-1" onSelect={this.onJobIdSelect}/></div>
           </div>
           <div className="flx-col flx-1 scroll">
@@ -458,7 +453,9 @@ class Experience extends Component {
     //console.log(this.props.experiences);
 
     if (!this.props.experiences || this.props.experiences.length == 0) {
-      return null;
+      return (
+        <div className="none">No Experience</div>
+      );
     }
 
     let experiences = this.props.experiences;
@@ -505,7 +502,9 @@ class Education extends Component {
 class Skills extends Component {
   render() {
     if (!this.props.skills || this.props.skills.length == 0) {
-      return null;
+      return (
+        <div className="none">No Skills</div>
+      );
     }
 
     let skills = this.props.skills;
@@ -525,7 +524,9 @@ class Skills extends Component {
 class Uploads extends Component {
   render() {
     if (!this.props.uploads || this.props.uploads.length == 0) {
-      return null;
+      return (
+        <div className="none">No Files</div>
+      );
     }
 
     let uploads = this.props.uploads;
@@ -712,7 +713,7 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
-  renderHeader(candidate) {
+  statusTop(candidate) {
     if (!candidate) {
       return null;
     }
@@ -734,41 +735,59 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
-  renderItem(candidate, isSelected) {
-    let recruiter = candidate.recruiter;
-
-    //console.log("RECRUITER ITEM CANDIDATE");
-    //console.log(candidate);
-
-    if (!this.state.job) {
-      //console.log("NO JOB");
-      return ( <Pyr.UI.Loading /> );
+  renderHeader() {
+    let job = this.props.job;
+    if (!job) {
+      return null;
     }
 
-    let sclass = State.toClassName(candidate.state);
-
-    let clazzes = ClassNames("flx-row item flx-1");
-    clazzes.push(this.state.showMessages ? "" : "hide");
+    let url = Pyr.URL(CANDIDATES_URL).push(job.id);
+    let title = "Candidates for " + job.title;
 
     return (
-      <div className={clazzes}>
-        <div className="flx-col flx-3 section left">
-          <Pyr.UI.Scroll>
-            <CandidateCVItem 
-              candidate={candidate} 
-              isSelected={isSelected} 
-              job={this.state.job}
-            />
-          </Pyr.UI.Scroll>
- 
-        </div>
-        <div className="flx-col flx-1 right">
-          <Recruiter.Blurb recruiter={recruiter}/>
-        </div>
-      </div>
+      <Sheet.ShowHeader className="candidate-title" title={title} nextId={this.props.nextId} prevId={this.props.prevId} url={url} />
     );
-  
   }
+
+  renderItem(item, isSelected) {
+    if (this.state.isLoading || !this.props.items) {
+      return (<Pyr.UI.Loading />);
+    }
+
+    if (!item) {
+        return null;
+    }
+
+    //console.log("MESSAGE JOB");
+    //console.log(item);
+
+    let candidate = item;
+    let job = this.props.job;
+    let recruiter = candidate.recruiter;
+
+
+    return (
+        <div className="flx-row">
+          <div className="flx-col left flx-5">
+            { this.statusTop(candidate) }
+            <div className="flx-col flx-2 section">
+              <Pyr.UI.Scroll>
+                <CandidateCVItem 
+                  candidate={candidate} 
+                  isSelected={isSelected} 
+                  job={this.state.job}
+                />
+              </Pyr.UI.Scroll>
+ 
+            </div>
+          </div>
+          <div className="flx-col right flx-2">
+            <Recruiter.Blurb recruiter={recruiter}/>
+          </div>
+        </div>
+    );
+  }
+
 
   renderInner() {
     if (!this.props.items) {
@@ -882,6 +901,14 @@ class CandidatesPage extends Page {
     return this.props.itemId;
   }
 
+  getJob() {
+    let jid = this.getJobId();
+    if (jid) {
+      return this.props.jobsMap[jid];
+    }
+    return null;
+  }
+
   name() {
     return "Candidates";
   }
@@ -910,7 +937,7 @@ class CandidatesPage extends Page {
 
   pageProps() {
     let pp = super.pageProps();
-    return Object.assign({}, pp, { jobId: this.getJobId() });
+    return Object.assign({}, pp, { jobId: this.getJobId(), job: this.getJob() });
   }
 
   render() {

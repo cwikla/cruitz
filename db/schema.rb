@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180510005413) do
+ActiveRecord::Schema.define(version: 20180511021122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 20180510005413) do
     t.datetime "rejected_at"
     t.integer "state", default: 0, null: false
     t.decimal "commission", precision: 5, scale: 2, null: false
+    t.integer "description_id"
+    t.index ["description_id"], name: "index_candidates_on_description_id"
     t.index ["head_id"], name: "index_candidates_on_head_id"
     t.index ["job_id", "accepted_at"], name: "index_candidates_on_job_id_and_accepted_at"
     t.index ["job_id", "head_id"], name: "index_candidates_on_job_id_and_head_id", unique: true
