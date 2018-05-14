@@ -4,7 +4,8 @@ class CandidateSerializer < CandidateSmallSerializer
     :works,
     :links,
     :skills,
-    :uploads
+    :uploads,
+    :score
 
   has_one :recruiter
 
@@ -26,5 +27,9 @@ class CandidateSerializer < CandidateSmallSerializer
 
   def uploads
     object.unlocked? ? object.head.uploads : object.head.uploads.map{ |x| Upload.new(x.id) }
+  end
+
+  def score
+    88
   end
 end

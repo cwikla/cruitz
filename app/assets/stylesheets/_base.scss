@@ -500,6 +500,9 @@ label {
     &.background {
       background-color: rgba($new_color, 0.05);
     }
+    &.border-bottom {
+      border-bottom: 1px solid $new_color;
+    }
     &.hover:hover {
       background-color: rgba($new_color, 0.20);
     }
@@ -509,6 +512,9 @@ label {
     color: $passed_color;
     &.background {
       background-color: rgba($passed_color, 0.05);
+    }
+    &.border-bottom {
+      border-bottom: 1px solid $passed_color;
     }
     &.hover:hover {
       background-color: rgba($passed_color, 0.20);
@@ -520,6 +526,9 @@ label {
     &.background {
       background-color: rgba($spam_color, 0.05);
     }
+    &.border-bottom {
+      border-bottom: 1px solid $spam_color;
+    }
     &.hover:hover {
       background-color: rgba($spam_color, 0.20);
     }
@@ -529,6 +538,9 @@ label {
     color: $accepted_color;
     &.background {
       background-color: rgba($accepted_color, 0.05);
+    }
+    &.border-bottom {
+      border-bottom: 1px solid $accepted_color;
     }
     &.hover:hover {
       background-color: rgba($accepted_color, 0.20);
@@ -540,6 +552,9 @@ label {
     &.background {
       background-color: rgba($vetting_color, 0.05);
     }
+    &.border-bottom {
+      border-bottom: 1px solid $vetting_color;
+    }
     &.hover:hover {
       background-color: rgba($vetting_color, 0.20);
     }
@@ -549,6 +564,9 @@ label {
     color: $on_site_color;
     &.background {
       background-color: rgba($on_site_color, 0.05);
+    }
+    &.border-bottom {
+      border-bottom: 1px solid $on_site_color;
     }
     &.hover:hover {
       background-color: rgba($on_site_color, 0.20);
@@ -560,6 +578,9 @@ label {
     &.background {
       background-color: rgba($background_checks_color, 0.05);
     }
+    &.border-bottom {
+      border-bottom: 1px solid $background_checks_color;
+    }
     &.hover:hover {
       background-color: rgba($background_checks_color, 0.20);
     }
@@ -570,10 +591,80 @@ label {
     &.background {
       background-color: rgba($hired_color, 0.05);
     }
+    &.border-bottom {
+      border-bottom: 1px solid $hired_color;
+    }
     &.hover:hover {
       background-color: rgba($hired_color, 0.20);
     }
   }
+}
+
+.state-button {
+  &.new {
+    color: white !important;
+    background-color: rgba($new_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($new_color, 1.0) !important;
+    }
+  }
+
+  &.passed {
+    color: white !important;
+    background-color: rgba($passed_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($passed_color, 1.0) !important;
+    }
+  }
+
+  &.spam {
+    color: white !important;
+    background-color: rgba($spam_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($spam_color, 1.0) !important;
+    }
+  }
+
+  &.accepted {
+    color: white !important;
+    background-color: rgba($accepted_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($accepted_color, 1.0) !important;
+    }
+  }
+
+  &.vetting {
+    color: white !important;
+    background-color: rgba($vetting_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($vetting_color, 1.0) !important;
+    }
+  }
+
+  &.on-site {
+    color: white !important;
+    background-color: rgba($on_site_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($on_site_color, 1.0) !important;
+    }
+  }
+
+  &.background-checks {
+    color: white !important;
+    background-color: rgba($background_checks_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($background_checks_color, 1.0) !important;
+    }
+  }
+
+  &.hired {
+    color: white !important;
+    background-color: rgba($hired_color, 0.8) !important;
+    &:hover {
+      background-color: rgba($hired_color, 1.0) !important;
+    }
+  }
+
 }
 
 .recruiter-blurb, %recruiter-blurb {

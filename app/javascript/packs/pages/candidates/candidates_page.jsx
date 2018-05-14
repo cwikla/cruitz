@@ -92,7 +92,7 @@ class Links extends Component {
 }
 
 const Lock = (props) => (
-  <div className="flx-col locked">
+  <div className="flx-col">
     { /* Nice try! There isn't any candidate information here!  */ }
     <Pyr.UI.Icon name="lock" />
   </div>
@@ -131,7 +131,6 @@ class CandidateHeader extends Component {
       <div className={clazzes} >
         <div className="flx-row flx-1">
           <div className={ClassNames(extra).push("name mr-auto")}>{fullName}</div>
-          <div className={ClassNames(extra).push("lock ml-auto")}><ALock /></div>
         </div>
         <div className="flx-row flx-1 info">
           <div className={ClassNames(extra).push("phone-number mr-auto flx-1")}>{phoneNumber}</div>
@@ -143,6 +142,7 @@ class CandidateHeader extends Component {
         <div className="flx-row-stretch info social-links">
           <Links candidate={candidate} />
         </div>
+        <div className={ClassNames(extra).push("lock ml-auto mr-auto mt-auto mb-auto")}><ALock /></div>
       </div>
     );
   }
@@ -552,7 +552,7 @@ class Uploads extends Component {
   render() {
     if (!this.props.uploads || this.props.uploads.length == 0) {
       return (
-        <div className="none">No Files</div>
+        <div className="none">None</div>
       );
     }
 
@@ -602,12 +602,20 @@ class CandidateCVItem extends Component {
         <Education educations={candidate.educations} />
         <Pyr.UI.Label className="cv-label">Skills</Pyr.UI.Label>
         <Skills skills={candidate.skills} />
-        <Pyr.UI.Label className="cv-label">Files</Pyr.UI.Label>
+        <Pyr.UI.Label className="cv-label">Attachments</Pyr.UI.Label>
         <Uploads uploads={candidate.uploads} />
       </div>
     );
   }
 }
+
+const StateButton = (props) =>  (
+   <Pyr.UI.PrimaryButton 
+    key={"state-button-" + props.state}
+    className={ClassNames(props.className, "state-button").push(State.toName(props.state))} 
+    onClick={props.onClick}
+  >{props.children}</Pyr.UI.PrimaryButton>
+);
 
 class ShowSheet extends Sheet.Show {
   constructor(props) {
@@ -660,47 +668,22 @@ class ShowSheet extends Sheet.Show {
     //console.log(candidate);
   }
 
-  unused_componentDidUpdate(prevProps, prevState) {
-    let pid = prevProps.selected ? prevProps.selected.id : null;
-    let cid = this.props.selected ? this.props.selected.id : null;
-
-    if (pid != cid) { // redo button presses
-      this.buttonBinds(this.props.selected.state);
-    }
-    else 
-    if (cid && (cid.state != pid.state)) {
-      this.buttonBinds(this.props.selected.state);
-    }
-
-    super.componentDidUpdate(prevProps, prevState);
-  }
-
-  unused_componentDidMount() {
-    let candidate = this.props.selected;
-
-    if (candidate) {
-      this.buttonBinds(candidate.state);
-    }
-  }
-
   key(item) {
     return CandidatesPage.key(item);
   }
 
   renderButtons(curState) {
-    let self = this;
     let nexts = State.nexts(curState);
-    let name = State.toName(curState);
 
     return (
       <div className="state-change">
       {
         nexts.map( (state, pos) => {
-          let nextName = State.toName(state);
+          let name = State.toName(state);
           let action = State.toAction(state);
 
           return (
-            <Pyr.UI.PrimaryButton key={state} className={"ml-auto "+ nextName} onClick={this.onButtonPresses[state]}>{action}</Pyr.UI.PrimaryButton>
+            <StateButton key={"sb-" + name} state={state} onClick={this.onButtonPresses[state]}>{action}</StateButton>
           );
         })
       }
@@ -717,9 +700,9 @@ class ShowSheet extends Sheet.Show {
     //console.log(candidate);
     let stateName = State.toName(candidate.state);
     let sclz = ClassNames("state").push(stateName);
-    let clazzes = ClassNames("actions flx-row p-1 flx-start").push(sclz).push("background");
+    let clazzes = ClassNames("actions flx-row p-1 flx-start").push(sclz).push("border-bottom");
 
-    let score = "88";
+    let score = candidate.score;
 
     return (
       <div className={clazzes}>
