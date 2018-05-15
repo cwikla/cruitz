@@ -567,7 +567,11 @@ class Uploads extends Component {
                 <div className="file flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Icon name="lock" /></div>
               );
             }
-            return (<div className="file flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Image src={item.url} /></div>);
+            return (
+              <div className="file flx-0 flx-nowrap" key={"fi-"+pos}>
+                <a href={item.url} download target="_blank"><Pyr.UI.ImageFile url={item.url} contentType={item.content_type}/></a>
+              </div>
+            );
           })
         }
       </div>
