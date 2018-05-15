@@ -59,6 +59,10 @@
               @extend %blurry-text;
             }
           }
+          .link {
+            font-size: 1.5rem;
+            line-height: 2rem;
+          }
         }
 
         .item {
@@ -80,6 +84,19 @@
             .title {
               font-size: 1.15rem;
               font-weight: 500;
+            }
+          }
+        }
+
+        .uploads {
+          .file {
+            img {
+              height: 5rem;
+              max-height: 5rem;
+            }
+
+            i {
+              font-size: 3rem;
             }
           }
         }

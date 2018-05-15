@@ -26,7 +26,14 @@ class CandidateSerializer < CandidateSmallSerializer
   end
 
   def uploads
-    object.unlocked? ? object.head.uploads : object.head.uploads.map{ |x| Upload.new(x.id) }
+    return ActiveModel::Serializer::CollectionSerializer.new(object.head.uploads) if object.unlocked? 
+
+    ups = object.head.uploads.map{ |x| 
+      { id: nil, content_type: x.content_type }
+     }
+
+    return ups
+
   end
 
   def score

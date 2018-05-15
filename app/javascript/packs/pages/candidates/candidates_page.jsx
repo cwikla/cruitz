@@ -559,10 +559,15 @@ class Uploads extends Component {
     let uploads = this.props.uploads;
 
     return (
-      <div id="files" className="cv-section files flx-row">
+      <div id="uploads" className="cv-section uploads flx-row">
         {
           uploads.map( (item, pos) => {
-            return (<div className="file flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Image src="item.url" />}</div>);
+            if (!item.url) {
+              return (
+                <div className="file flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Icon name="lock" /></div>
+              );
+            }
+            return (<div className="file flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Image src={item.url} /></div>);
           })
         }
       </div>
