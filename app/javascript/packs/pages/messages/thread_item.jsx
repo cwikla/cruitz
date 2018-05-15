@@ -24,6 +24,9 @@ const OtherAvatar = (props) => (
 
 class ThreadItem extends Sheet.Item {
   render() {
+    console.log("THREAD ITEM");
+    console.log(this.props);
+
     let message = this.props.message; 
     let job = this.props.job;
     let candidate = this.props.candidate;

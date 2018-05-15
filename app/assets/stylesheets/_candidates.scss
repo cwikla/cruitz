@@ -59,7 +59,7 @@
               @extend %blurry-text;
             }
           }
-          .link {
+          .web-link {
             font-size: 1.5rem;
             line-height: 2rem;
           }
@@ -146,8 +146,35 @@
   }
   
   .recruiter-message {
+    max-height: 20rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+
+    .title {
+      font-weight: $font_weight_bold;
+      border-bottom: 1px solid $border_color;
+      margin-bottom: 0.5rem;
+    }
+
+    .message {
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+
+    .more {
+      color: white;
+    }
+
+    &:hover {
+      box-shadow: 2px 2px 5px 0px $gray_color;
+
+      .more {
+        color: $secondary_color;
+      }
+    }
   }
-  
+
+
   .cv {
     padding: 1rem;
     background-color: $alt_background_color;

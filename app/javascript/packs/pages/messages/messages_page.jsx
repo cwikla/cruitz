@@ -230,7 +230,6 @@ class ShowSheet extends Sheet.Show {
             message={message}
             job={job}
             candidate={candidate}
-            other={other}
             onBack={this.onBack}
             url={Pyr.URL(MESSAGES_URL)}
             onSetItems={this.props.onSetItems}

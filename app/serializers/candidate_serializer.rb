@@ -5,9 +5,10 @@ class CandidateSerializer < CandidateSmallSerializer
     :links,
     :skills,
     :uploads,
-    :score
+    :score,
+    :recruiter
 
-  has_one :recruiter
+  #has_one :recruiter
 
   def educations
     object.head.educations

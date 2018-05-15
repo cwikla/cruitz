@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
+import {
+  Link,
+} from 'react-router-dom';
+
 import Pyr, {
   Component
 } from '../../pyr/pyr';
@@ -33,36 +37,36 @@ import {
   RANGES
 } from '../const';
 
-const LINK_WEB = 0;
-const LINK_IN = 1;
-const LINK_GITHUB = 2;
-const LINK_DRIBBLE = 3;
-const LINK_QUORA = 4;
-const LINK_FACEBOOK = 5;
-const LINK_TWITTER = 6;
-const LINK_ANGELIST = 7;
+const WEB_LINK_WEB = 0;
+const WEB_LINK_IN = 1;
+const WEB_LINK_GITHUB = 2;
+const WEB_LINK_DRIBBLE = 3;
+const WEB_LINK_QUORA = 4;
+const WEB_LINK_FACEBOOK = 5;
+const WEB_LINK_TWITTER = 6;
+const WEB_LINK_ANGELIST = 7;
 
-const LINK_TO = {
-  [LINK_WEB] : "link",
-  [LINK_IN] : "linkedin-in",
-  [LINK_GITHUB] : "github",
-  [LINK_DRIBBLE] : "dribble",
-  [LINK_QUORA] : "quora",
-  [LINK_FACEBOOK] : "facebook-f",
-  [LINK_TWITTER] : "twitter",
-  [LINK_ANGELIST] : "angellist",
+const WEB_LINK_TO = {
+  [WEB_LINK_WEB] : "link",
+  [WEB_LINK_IN] : "linkedin-in",
+  [WEB_LINK_GITHUB] : "github",
+  [WEB_LINK_DRIBBLE] : "dribble",
+  [WEB_LINK_QUORA] : "quora",
+  [WEB_LINK_FACEBOOK] : "facebook-f",
+  [WEB_LINK_TWITTER] : "twitter",
+  [WEB_LINK_ANGELIST] : "angellist",
 };
 
 
-const LinkFont = (props) => (
-  <a href={props.link.url}><Pyr.UI.Icon name={LINK_TO[props.link.ltype] ? LINK_TO[props.link.ltype] : "link"} /></a>
+const WebLinkFont = (props) => (
+  <a href={props.webLink.url}><Pyr.UI.Icon name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} /></a>
 );
 
-const LinkLock = (props) => (
-  <Pyr.UI.Icon name={LINK_TO[props.link.ltype] ? LINK_TO[props.link.ltype] : "link"} className="locked"/>
+const WebLinkLock = (props) => (
+  <Pyr.UI.Icon name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} className="locked"/>
 );
 
-class Links extends Component {
+class WebLinks extends Component {
   render() {
     if (!this.props.candidate) {
       return null;
@@ -70,20 +74,20 @@ class Links extends Component {
 
     let candidate = this.props.candidate;
 
-    let links = candidate.links;
-    if (!links) {
+    let webLinks = candidate.links;
+    if (!webLinks) {
       return null;
     }
 
     let locked = !candidate.unlocked_at;
 
-    let LinkComp = locked ? LinkLock : LinkFont;
+    let WebLinkComp = locked ? WebLinkLock : WebLinkFont;
 
     return (
-      <div id="links" className="cv-section links flx-row">
+      <div id="web-links" className="cv-section web-links flx-row">
         {
-          links.map( (item, pos) => {
-            return (<div className="link flx-0 flx-nowrap" key={"lnk"+pos}><LinkComp link={item} /></div>);
+          webLinks.map( (item, pos) => {
+            return (<div className="web-link flx-0 flx-nowrap" key={"web-lnk"+item.id}><WebLinkComp webLink={item} /></div>);
           })
         }
       </div>
@@ -140,7 +144,7 @@ class CandidateHeader extends Component {
           <div className={ClassNames(extra).push("salary mr-auto flx-1")}>{salary}</div>
         </div>
         <div className="flx-row-stretch info social-links">
-          <Links candidate={candidate} />
+          <WebLinks candidate={candidate} />
         </div>
         <div className={ClassNames(extra).push("lock ml-auto mr-auto mt-auto mb-auto")}><ALock /></div>
       </div>
@@ -439,28 +443,27 @@ class IndexSheet extends Sheet.Index {
 class RecruiterMessage extends Component {
   render() {
     let candidate = this.props.candidate;
-    if (!candidate.root_message_id) {
-      return ( <Pyr.UI.Label>No messages</Pyr.UI.Label>);
+    if (!candidate.description) {
+      return ( 
+        null
+      );
     }
 
     //console.log("message id");
     //console.log(this.props.candidate);
 
-    if (!this.props.job) {
-      return <Pyr.UI.Loading />
-    }
+    let clazzes = ClassNames("recruiter-message flx-col section").push(this.props.className);
 
-    let clazzes = ClassNames("recruiter-message").push(this.props.className);
+    let url = Pyr.URL(MESSAGES_URL).push(candidate.description.id);
 
     return (
-      <MessageThread 
-        readOnly={this.props.candidate.state < 100}
+      <div 
         className={clazzes}
-        messageId={this.props.candidate.root_message_id}
-        job={this.props.job}
-        url={Pyr.URL(MESSAGES_URL)}
-        onSetItem={this.props.onSetItem}
-      />
+      >
+        <div className="title">Note from recruiter</div>
+        <Pyr.UI.Scroll><div className="message">{candidate.description.body}</div></Pyr.UI.Scroll>
+        <div className="ml-auto"><Link to={url.toString()}><span className="more ml-auto">More...</span></Link></div>
+      </div>
     );
   }
 
@@ -770,6 +773,7 @@ class ShowSheet extends Sheet.Show {
           </div>
           <div className="flx-col right flx-2">
             <Recruiter.Blurb recruiter={recruiter}/>
+            <RecruiterMessage candidate={candidate} job={job} recruiter={recruiter} />
           </div>
         </div>
     );
