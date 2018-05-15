@@ -59,7 +59,7 @@ const WEB_LINK_TO = {
 
 
 const WebLinkFont = (props) => (
-  <a href={props.webLink.url}><Pyr.UI.Icon name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} /></a>
+  <a href={props.webLink.url} target="_cruitz"><Pyr.UI.Icon name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} /></a>
 );
 
 const WebLinkLock = (props) => (
