@@ -124,12 +124,21 @@
 
     .item {
       @extend %state;
-    }
+
+      &.candidate-item {
+        height: 5rem;
+        max-width: 20rem;
+        overflow: none;
+
+        & > div {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
   
-    .candidate-item {
-      .recruiter {
-        border-left: 1px solid $border_color;
-        border-right: 0;
+        .recruiter {
+          border-left: 1px solid $border_color;
+          border-right: 0;
+        }
       }
     }
 

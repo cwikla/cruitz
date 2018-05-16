@@ -171,12 +171,12 @@ class CandidateItem extends Component {
       allClass.push("locked");
     }
 
-    console.log("CANDIDATE");
-    console.log(candidate);
+    //console.log("CANDIDATE");
+    //console.log(candidate);
 
     return (
       <div key={id} className={allClass}>
-        <div>{candidate.first_name}</div>
+        <div>{candidate.first_name} {candidate.last_name}</div>
         <div>{candidate.summary.title} @ {candidate.summary.place}</div>
       </div>
     );
@@ -184,64 +184,6 @@ class CandidateItem extends Component {
   }
 }
 
-
-class CandidateItemOld extends Component {
-
-  render() {
-    let candidate = this.props.candidate;
-    let recruiter = candidate.recruiter;
-    let stateName = State.toClassName(candidate.state);
-
-    let id = "candidate-" + candidate.id;
-    let allClass = ClassNames("item candidate-item flx-col");
-
-    if (this.props.isSelected) {
-       allClass.push("selected");
-    }
-
-    allClass.push("state").push(stateName);
-
-    let job = this.props.jobsMap[candidate.job_id];
-    let jobTitle = job ? job.title : "No Title";
-
-    //console.log(job);
-
-    let fullName = candidate.first_name + " " + candidate.last_name;
-    let phoneNumber = candidate.phone_number || "No Phone";
-    let email = candidate.email || "No Email";
-    let description = candidate.description || "No Description";
-    let position = "Sr. Software Engineer";
-    let company = "Google";
-
-    return (
-      <div className={allClass} id={id}>
-        <div className="title">{jobTitle}</div>
-        <div className="flx-row">
-          <div className="flx-1 flx-align-center">
-            { State.toName(candidate.state) }
-          </div>
-          <div className="flx-row flx-3 item-content">
-            <div className="flx-col flx-1">
-              <div className="name">{fullName}</div>
-            </div>
-            <div className="flx-col flx-1">
-              <div className="email">{email}</div>
-              <div className="phoneNumber">{phoneNumber}</div>
-            </div>
-          </div>
-          <div className="flx-col flx-1 recruiter">
-            <Avatar.Avatar
-              className={"flx-1"}
-              userId={recruiter.id}
-              name={recruiter.first_name}
-              small
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
 
 class CandidateForm extends Component {
 
@@ -695,7 +637,7 @@ class ShowSheet extends Sheet.Show {
       //contentType:"application/json; charset=utf-8",
 
     }).done((data, textStatus, jaXHR) => {
-      this.setCandidate(candidate);
+      this.setCandidate(data.candidate);
 
     });
   }
