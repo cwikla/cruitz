@@ -195,36 +195,11 @@ label {
 }
 
 
-.text-primary {
-  color: $primary_color !important;
-}
-
-.trans-25 {
-  background-color: rgba($primary_color, 0.25);
-}
-
-.trans-50 {
-  background-color: rgba($primary_color, 0.45);
-}
-
-.trans-75 {
-  background-color: rgba($primary_color, 0.75);
-}
-
-.width-100 {
-  width: 100%;
-}
-
-.height-100 {
-  height: 100%;
-}
-
 .devise-info {
   margin-left: auto;
   margin-right: auto;
   padding-top: 7rem;
 }
-
 
 .navbar {
   border-radius: 0;

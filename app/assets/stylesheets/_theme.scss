@@ -12,6 +12,7 @@
  *
  */
 
+/*
 $font_size: 16px;
 
 $font_weight_light: 300;
@@ -58,14 +59,6 @@ $navbar_hover_color: $hover_color;
 $navbar_border_color: $white_color;
 $secondary_navbar_background_color: rgba($navbar_background_color, 0.8);
 
-$sidebar_color: $gray_color;
-$sidebar_background_color: $white_color; //rgba(#9c7361, 1.0);
-$sidebar_header_background_color: $primary_color;
-$sidebar_header_color: $primary_color;
-$sidebar_hover_color: $primary_color;
-$sidebar_hover_background_color: $light_gray_color;
-$sidebar_font_size: 0.85rem;
-
 $border_color: $med_gray_color;
 $background_color: white;
 $alt_background_color: rgba($navbar_background_color, 0.010);
@@ -73,23 +66,5 @@ $alt_background_color: rgba($navbar_background_color, 0.010);
 
 $main_title_background_color: $primary_dark_color;
 
-$avatar_width: 6;
-$avatar_small_width: $avatar_width / 2;
+*/
 
-$sep_color: $med_gray_color;
-
-$green_color: rgba(#7abe80, 1.0);
-$red_color: rgba(#bf2b2b, 1.0);
-
-$new_color: $primary_color;
-$accepted_color: $green_color;
-$passed_color: $gray_color;
-$vetting_color: $green_color;
-$on_site_color: $green_color;
-$background_checks_color:  $green_color;
-$hired_color: $highlight_color;
-$recalled_color: $red_color;
-$cancelled_color: $red_color;
-$spam_color: $red_color;
-
-$unselected_button_color: rgba($navbar_background_color, 0.6);
