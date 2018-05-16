@@ -75,7 +75,24 @@
     }
 
     .candidate-mini {
-      background-color: $light_gray_color;
+      padding: 1rem;
+
+      &.new {
+        background-color: $light_gray_color;
+      }
+
+      .more {
+        color: white;
+      }
+
+      &:hover {
+        box-shadow: 2px 2px 5px 0px $gray_color;
+
+        .more {
+          color: $secondary_color;
+        }
+      }
+
     }
 
     .col, .row {

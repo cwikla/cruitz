@@ -205,16 +205,37 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderCandidateMini(candidate) {
-    if (!candidate || candidate.unlocked_at) {
+    if (!candidate) {
       return null;
     }
 
     let url = Pyr.URL(CANDIDATES_URL).push(candidate.job_id).push(candidate.id);
 
+    if (!candidate.unlocked_at) {
+      return (
+        <div className="section flx-col candidate-mini new">
+          <div>You have a new candidate: {candidate.summary.title} @ {candidate.summary.place}</div>
+          <div>You can respond to this recruiter and see more about this candidate <Link to={url.toString()}>here</Link>.</div>
+        </div>
+      );
+    }
+
+    let stateName = State.toName(candidate.state);
+
     return (
-      <div className="section flx-col candidate-mini">
-        <div>You have a new candidate: {candidate.summary.title} @ {candidate.summary.place}</div>
-        <div>You can respond to this recruiter and see more about this candidate <Link to={url.toString()}>here</Link>.</div>
+      <div className={ClassNames("section flx-col candidate-mini")} >
+        <Link to={url.toString()}>
+          <div className="flx-row">
+            <div className="mr-auto">{candidate.first_name} {candidate.last_name}</div>
+            <div className={ClassNames("ml-auto").push(State.toClassName(candidate.state))}>{stateName}</div>
+          </div>
+          <div className="flx-row">
+            <div className="mr-auto">{candidate.summary.title} @ {candidate.summary.place}</div>
+          </div>
+          <div className={ClassNames("more flx-row")}>
+            <span className="ml-auto">More...</span>
+          </div>
+        </Link>
       </div>
     );
   }
