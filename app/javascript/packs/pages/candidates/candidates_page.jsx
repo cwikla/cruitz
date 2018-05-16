@@ -902,6 +902,10 @@ class CandidatesPage extends Page {
   getItems() {
     let all = super.getItems();
 
+    if (!all) {
+      return null;
+    }
+
     let jobId = this.getJobId();
     if (!jobId) {
       return  all ? [] : null;

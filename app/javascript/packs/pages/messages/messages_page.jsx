@@ -16,6 +16,7 @@ const Grid = Pyr.Grid;
 import {
   MESSAGES_URL,
   JOBS_URL,
+  CANDIDATES_URL,
 
   MESSAGES_PAGE,
 
@@ -203,6 +204,21 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
+  renderCandidateMini(candidate) {
+    if (!candidate || candidate.unlocked_at) {
+      return null;
+    }
+
+    let url = Pyr.URL(CANDIDATES_URL).push(candidate.job_id).push(candidate.id);
+
+    return (
+      <div className="section flx-col candidate-mini">
+        <div>You have a new candidate: {candidate.summary.title} @ {candidate.summary.place}</div>
+        <div>You can respond to this recruiter and see more about this candidate <Link to={url.toString()}>here</Link>.</div>
+      </div>
+    );
+  }
+
   renderItem(item, isSelected) {
     if (this.state.isLoading || !this.props.items) {
       return (<Pyr.UI.Loading />);
@@ -224,8 +240,9 @@ class ShowSheet extends Sheet.Show {
 
     return (
      <div className="item flx-1 flx-row">
-        <div className="flx-col flx-3 left">
+        <div className="flx-col flx-3">
           <Sheet.ShowHeader className="job-title" title={job.title} nextId={this.props.nextId} prevId={this.props.prevId} url={MESSAGES_URL}/>
+          { this.renderCandidateMini(candidate) }
           <ThreadRender
             message={message}
             job={job}

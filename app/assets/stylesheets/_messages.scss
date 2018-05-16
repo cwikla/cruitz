@@ -74,6 +74,10 @@
       @extend %header;
     }
 
+    .candidate-mini {
+      background-color: $light_gray_color;
+    }
+
     .col, .row {
       margin-left: 0;
       margin-right: 0;
