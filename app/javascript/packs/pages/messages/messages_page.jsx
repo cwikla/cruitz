@@ -39,8 +39,6 @@ import MessageQA, {
   MessageQAHeader 
 } from './message_qa';
 
-import NavBar from './messages_nav';
-
 function MID(message) {
   return "message-" + message.id;
 }
@@ -49,9 +47,7 @@ class MessageItem extends Sheet.Item {
   render() {
     let rootMessage = this.props.rootMessage;
     let message = this.props.message;
-
-    //console.log(this.props.message);
-    //console.log(message);
+    let candidate = this.props.candidate;
 
     let other = rootMessage.other;
     let count = rootMessage.count;
@@ -71,17 +67,11 @@ class MessageItem extends Sheet.Item {
       allClass.push("unread");
     }
 
-/*
-    if (rootMessage.candidate) {
-      allClass.push(State.toClassName(rootMessage.candidate.state));
-    }
-*/
-
     if (this.props.isSelected) {
       allClass.push("selected");
     }
 
-    let Header = rootMessage.candidate ? MessageThreadIndexHeader : MessageQAHeader;
+    let Header = candidate ? MessageThreadIndexHeader : MessageQAHeader;
 
     //console.log("THE MESSAGE");
     //console.log(message);
@@ -126,6 +116,30 @@ class IndexSheet extends Sheet.Index {
     return items.sort((x, y) => (y.root_msg_id || y.msg_id) - (x.root_msg_id || y.msg_id));
   }
 
+  getCandidate(msg) {
+    if (!msg) {
+      return null;
+    }
+
+    if (this.props.candidatesMap) {
+      return this.props.candidatesMap[msg.candidate.id]; // override with livelier version
+    }
+
+    return msg.candidate;
+  }
+
+  getJob(msg) {
+    if (!msg) {
+      return null;
+    }
+
+    if (this.props.jobsMap) {
+      return this.props.jobsMap[msg.job.id]; // override with livelier version
+    }
+
+    return msg.job;
+  }
+
 
   renderItem(message, isSelected) {
     let rootMessage = message;
@@ -134,7 +148,8 @@ class IndexSheet extends Sheet.Index {
     return ( <MessageItem 
       rootMessage={rootMessage}
       message={lastMessage} 
-      job={message.job} 
+      candidate={this.getCandidate(rootMessage)}
+      job={this.getJob(rootMessage)}
       isSelected={isSelected}/> 
     );
   }
@@ -187,6 +202,30 @@ class ShowSheet extends Sheet.Show {
 
   size() {
     return 3;
+  }
+
+  getCandidate(msg) {
+    if (!msg) {
+      return null;
+    }
+
+    if (this.props.candidatesMap) {
+      return this.props.candidatesMap[msg.candidate.id]; // override with livelier version
+    }
+
+    return msg.candidate;
+  }
+
+  getJob(msg) {
+    if (!msg) {
+      return null;
+    }
+
+    if (this.props.jobsMap) {
+      return this.props.jobsMap[msg.job.id]; // override with livelier version
+    }
+
+    return msg.job;
   }
 
   renderNone() {
@@ -253,11 +292,11 @@ class ShowSheet extends Sheet.Show {
     //console.log(item);
 
     let message = item;
-    let job = message.job;
-    let candidate = message.candidate;
+    let candidate = this.getCandidate(message);
+    let job = this.getJob(message);
     let other = message.other;
 
-    let ThreadRender = message.candidate ? MessageThread : MessageQA;
+    let ThreadRender = candidate ? MessageThread : MessageQA;
 
     return (
      <div className="item flx-1 flx-row">
@@ -362,6 +401,5 @@ function key(item) {
 }
 
 MessagesPage.key = key;
-//MessagesPage.NavBar = NavBar;
 
 export default MessagesPage;

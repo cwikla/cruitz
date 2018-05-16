@@ -94,14 +94,14 @@ class ThreadList extends Component {
     }
 
     let rootMessage = this.props.message;
+    let candidate = this.props.candidate;
+    let job = this.props.job;
     let thid = "thread-" + rootMessage.id;
 
     let skipCount = this.props.skipCount || 0;
 
     let thread = this.getThread();
 
-    let job = rootMessage.job;
-    let candidate = rootMessage.candidate;
     let other = rootMessage.other;
 
     return (

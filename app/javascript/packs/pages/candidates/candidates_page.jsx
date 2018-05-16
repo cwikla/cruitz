@@ -695,7 +695,7 @@ class ShowSheet extends Sheet.Show {
       //contentType:"application/json; charset=utf-8",
 
     }).done((data, textStatus, jaXHR) => {
-      this.setCandidate(data.candidate);
+      this.setCandidate(candidate);
 
     });
   }
