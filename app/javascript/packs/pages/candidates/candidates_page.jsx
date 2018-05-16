@@ -167,6 +167,39 @@ class CandidateItem extends Component {
     }
 
     allClass.push("state").push(stateName);
+    if (!candidate.unlocked_at) {
+      allClass.push("locked");
+    }
+
+    console.log("CANDIDATE");
+    console.log(candidate);
+
+    return (
+      <div key={id} className={allClass}>
+        <div>{candidate.first_name}</div>
+        <div>{candidate.summary.title} @ {candidate.summary.place}</div>
+      </div>
+    );
+
+  }
+}
+
+
+class CandidateItemOld extends Component {
+
+  render() {
+    let candidate = this.props.candidate;
+    let recruiter = candidate.recruiter;
+    let stateName = State.toClassName(candidate.state);
+
+    let id = "candidate-" + candidate.id;
+    let allClass = ClassNames("item candidate-item flx-col");
+
+    if (this.props.isSelected) {
+       allClass.push("selected");
+    }
+
+    allClass.push("state").push(stateName);
 
     let job = this.props.jobsMap[candidate.job_id];
     let jobTitle = job ? job.title : "No Title";

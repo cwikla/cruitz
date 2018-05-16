@@ -6,7 +6,8 @@ class CandidateSmallSerializer < ActiveModel::Serializer
     :email,
     :job_id,
     :state,
-    :unlocked_at
+    :unlocked_at,
+    :summary
 
   has_one :recruiter
 
@@ -29,4 +30,10 @@ class CandidateSmallSerializer < ActiveModel::Serializer
   def unlocked_at
     object.unlocked_at.in_time_zone.iso8601 if object.unlocked_at
   end
+
+  def summary
+    t = object.head.works.order("-id").first || object.head.educations.order("-id").first
+    t ? ExperienceSerializer.new(t) : nil
+  end
+
 end
