@@ -11,7 +11,7 @@ class Candidate < ApplicationRecord
   has_many :candidate_uploads
   has_many :uploads, through: :candidate_uploads
 
-  has_one :description, class_name: 'Message'
+  belongs_to :description, class_name: 'Message'
 
   SUBMITTED_STATE = 0
   ACCEPTED_STATE = 100

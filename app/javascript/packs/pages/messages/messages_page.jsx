@@ -235,6 +235,7 @@ class ShowSheet extends Sheet.Show {
             onSetItems={this.props.onSetItems}
             onAddItem={this.props.onAddItem}
             onSetLast={this.props.onSetLast}
+            readOnly={!candidate.unlocked_at}
           />
         </div>
         <div className="flx-1 blurb right">

@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   LIMIT = 50
   def index
-    @threads = Message.threads_for(current_user).limit(LIMIT) # FIXME
+    @threads = Message.threads_for(current_user)
 
     render json: @threads, current_user: current_user
   end
