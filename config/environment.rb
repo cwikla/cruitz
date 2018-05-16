@@ -1,9 +1,9 @@
 # Load the Rails application.
 require_relative 'application'
 
-APP_NAME = "CRUITZ"
+APP_NAME = "cruitz"
 TAG_LINE = "Sourcing the World"
-COMPANY_NAME = "CRUITZ"
+COMPANY_NAME = "cruitz"
 
 HOSTNAME = ENV["HOSTNAME"] || "cruitz.com"
 EMAIL_DOMAIN = "cruitz.com"
