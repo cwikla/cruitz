@@ -1,7 +1,7 @@
 # Load the Rails application.
 require_relative 'application'
 
-APP_NAME = "cruitz"
+APP_NAME = "CRUITZ"
 TAG_LINE = "Sourcing the World"
 COMPANY_NAME = "cruitz"
 
