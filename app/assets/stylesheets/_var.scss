@@ -49,16 +49,18 @@ $sep_color: $med_gray_color;
 
 $green_color: rgba(#7abe80, 1.0);
 $red_color: rgba(#bf2b2b, 1.0);
+$orange_color: rgba(#ffa500, 1.0);
+$teal_color: rgba(#73C6B6, 1.0);
 
 $new_color: $primary_color;
-$accepted_color: $green_color;
+$unlocked_color: $green_color;
 $passed_color: $gray_color;
-$vetting_color: $green_color;
+$offer_color: $teal_color;
 $on_site_color: $green_color;
 $background_checks_color:  $green_color;
 $hired_color: $highlight_color;
 $recalled_color: $red_color;
-$cancelled_color: $red_color;
+$cancelled_color: $gray_color;
 $spam_color: $red_color;
 
 $unselected_button_color: rgba($navbar_background_color, 0.6);

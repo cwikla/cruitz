@@ -12,9 +12,9 @@ class JobSerializer < JobSmallSerializer
    counts = object.candidates.group(:state).count
    {
       total: counts.values.reduce(:+) || 0,
-      accepted: counts[Candidate::ACCEPTED_STATE] || 0,
-      rejected: object[Candidate::REJECTED_STATE] || 0,
-      waiting: object[Candidate::SUBMITTED_STATE] || 0,
+      new: counts[Candidate::STATE_NEW] || 0,
+      unlocked: object[Candidate::STATE_UNLOCKED] || 0,
+      rejected: object[Candidate::STATE_REJECTED] || 0,
     }
   end
 

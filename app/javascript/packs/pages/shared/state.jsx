@@ -6,27 +6,40 @@ import ReactDOM from 'react-dom';
 
 import Pyr from '../../pyr/pyr';
 
+const STATE_NEW = 0;
+const STATE_UNLOCKED = 100;
+const STATE_ENGAGED = 200;
+const STATE_OFFER = 300;
+const STATE_HIRED = 1000;
 
-const ACCEPTED_STATE = 100;
-const REJECTED_STATE = -100;
+const STATE_REJECTED = -100;
+const STATE_SPAM = -666;
+const STATE_RECALLED = -1000;
+const STATE_CANCELED = -5000;
 
 const ID_TO_STATE = {
-  0: { name: "New", action: "New"},
-  100 : {name: "Accepted", action: "Accept"},
-  "-100" : {name: "Passed", action: "Pass"},
-  1000 : {name: "Hired", action: "Hire"},
-  "-666" : {name: "SPAM",action: "SPAM"},
-  "-1000" : {name: "Recalled", action: "Recall"},
-  "-5000" : {name: "Cancelled", action: "Cancel"},
+  [STATE_NEW]: { name: "New", action: "New"},
+  [STATE_UNLOCKED] : {name: "Unlocked", action: "Unlock"},
+  [STATE_ENGAGED] : {name: "Engaged", action: "Engage"},
+  [STATE_OFFER] : {name: "Offer", action: "Offer"},
+  [STATE_HIRED] : {name: "Hired", action: "Hire"},
+
+  [STATE_REJECTED] : {name: "Rejected", action: "Reject"},
+  [STATE_SPAM] : {name: "SPAM",action: "SPAM"},
+  [STATE_RECALLED] : {name: "Recalled", action: "Recall"},
+  [STATE_CANCELED] : {name: "Cancelled", action: "Cancel"},
 };
 
 const NEXT_STATES = {
-  0: [100, -100],
-  100: [1000, -100],
-  "-100": [100],
-  1000: [-1000],
-  "-666": [100],
-  "-5000": [],
+  [STATE_NEW]: [STATE_UNLOCKED, STATE_REJECTED],
+  [STATE_UNLOCKED]: [STATE_OFFER, STATE_REJECTED],
+  [STATE_OFFER]: [STATE_HIRED, STATE_REJECTED],
+  [STATE_HIRED]: [STATE_REJECTED],
+
+  [STATE_REJECTED]: [STATE_NEW],
+  [STATE_SPAM]: [],
+  [STATE_RECALLED]: [],
+  [STATE_CANCELED]: [],
 };
 
 function states() {

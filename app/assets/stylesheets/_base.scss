@@ -508,55 +508,29 @@ label {
     }
   }
 
-  &.accepted {
-    color: $accepted_color;
+  &.unlocked {
+    color: $unlocked_color;
     &.background {
-      background-color: rgba($accepted_color, 0.05);
+      background-color: rgba($unlocked_color, 0.05);
     }
     &.border-bottom {
-      border-bottom: 1px solid $accepted_color;
+      border-bottom: 1px solid $unlocked_color;
     }
     &.hover:hover {
-      background-color: rgba($accepted_color, 0.20);
+      background-color: rgba($unlocked_color, 0.20);
     }
   }
 
-  &.vetting {
-    color: $vetting_color;
+  &.offer {
+    color: $offer_color;
     &.background {
-      background-color: rgba($vetting_color, 0.05);
+      background-color: rgba($offer_color, 0.05);
     }
     &.border-bottom {
-      border-bottom: 1px solid $vetting_color;
+      border-bottom: 1px solid $offer_color;
     }
     &.hover:hover {
-      background-color: rgba($vetting_color, 0.20);
-    }
-  }
-
-  &.on-site {
-    color: $on_site_color;
-    &.background {
-      background-color: rgba($on_site_color, 0.05);
-    }
-    &.border-bottom {
-      border-bottom: 1px solid $on_site_color;
-    }
-    &.hover:hover {
-      background-color: rgba($on_site_color, 0.20);
-    }
-  }
-
-  &.background-checks {
-    color: $background_checks_color;
-    &.background {
-      background-color: rgba($background_checks_color, 0.05);
-    }
-    &.border-bottom {
-      border-bottom: 1px solid $background_checks_color;
-    }
-    &.hover:hover {
-      background-color: rgba($background_checks_color, 0.20);
+      background-color: rgba($offer_color, 0.20);
     }
   }
 
@@ -599,19 +573,19 @@ label {
     }
   }
 
-  &.accepted {
+  &.unlocked {
     color: white !important;
-    background-color: rgba($accepted_color, 0.8) !important;
+    background-color: rgba($unlocked_color, 0.8) !important;
     &:hover {
-      background-color: rgba($accepted_color, 1.0) !important;
+      background-color: rgba($unlocked_color, 1.0) !important;
     }
   }
 
-  &.vetting {
+  &.offer {
     color: white !important;
-    background-color: rgba($vetting_color, 0.8) !important;
+    background-color: rgba($offer_color, 0.8) !important;
     &:hover {
-      background-color: rgba($vetting_color, 1.0) !important;
+      background-color: rgba($offer_color, 1.0) !important;
     }
   }
 
@@ -1001,7 +975,7 @@ label {
     padding-left: 0.5rem;
   }
 
-  .accepted {
+  .unlocked {
     color: green;
     padding-left: 0.5rem;
   }

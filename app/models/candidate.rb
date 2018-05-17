@@ -13,23 +13,30 @@ class Candidate < ApplicationRecord
 
   belongs_to :description, class_name: 'Message'
 
-  SUBMITTED_STATE = 0
-  ACCEPTED_STATE = 100
-  REJECTED_STATE = -100
-  PRECALL_STATE = 200
-  ONSITE_STATE = 300
-  CHECKS_STATE = 400
-  HIRE_STATE = 1000
-  SPAM_STATE = -666
-  RECALL_STATE = -1000
-  CANCEL_STATE = -5000
+  STATE_NEW = 0
+  STATE_UNLOCKED = 100
+  STATE_ENGAGED = 200
+  STATE_OFFER = 300
+  STATE_HIRED = 1000
+
+  STATE_REJECTED = -100
+  STATE_SPAM = -666
+  STATE_RECALLED = -1000
+  STATE_CANCELED = -5000
 
   #cache_notify :user # FIXME
 
-  scope :isnew, -> { where(state: SUBMITTED_STATE) }
-  scope :accepted, -> {  where(state: ACCEPTED_STATE) }
-  scope :rejected, -> {  where(state: REJECTED_STATE) }
-  scope :live, -> { where("state >= ? and state <= ?", SUBMITTED_STATE, HIRE_STATE) }
+  scope :isnew, -> { where(state: STATE_NEW) }
+  scope :unlocked, -> {  where(state: STATE_UNLOCKED) }
+  scope :engaged, -> { where(state: STATE_ENGAGED) }
+  scope :hired, -> { where(state: STATE_HIRED) }
+
+  scope :live, -> { where("state >= ? and state <= ?", STATE_NEW, STATE_HIRED) }
+
+  scope :rejected, -> {  where(state: STATE_REJECTED) }
+  scope :spam, -> { where(state: STATE_SPAM) }
+  scope :recalled, -> { where(state: STATE_RECALLED) }
+  scope :canceled, -> { where(state, STATE_CANCELED) }
 
   validates :job_id, presence: true
   validates :head_id, presence: true
@@ -38,7 +45,7 @@ class Candidate < ApplicationRecord
   before_save :pre_save
 
   def pre_save
-    if self.state > SUBMITTED_STATE
+    if self.state > STATE_NEW
       self.unlocked_at ||= Time.zone.now
     end
   end
@@ -55,7 +62,7 @@ class Candidate < ApplicationRecord
   def self.submit(head, job, commission, body=nil)
 
     candidate = nil
-    state = SUBMITTED_STATE
+    state = STATE_NEW
 
     puts "SUBMIT"
 
@@ -87,40 +94,36 @@ class Candidate < ApplicationRecord
     return candidate
   end
 
-  def accept(body=nil)
-    setState(self.hirer, ACCEPTED_STATE, body)
+  def unlock(body=nil)
+    setState(self.hirer, STATE_UNLOCKED, body)
+  end
+
+  def engage(body=nil)
+    setState(self.hirer, STATE_ENGAGED, body)
   end
 
   def reject(body=nil)
-    setState(self.hirer, REJECTED_STATE, body)
+    setState(self.hirer, STATE_REJECTED, body)
   end
 
   def spam(body=nil)
-    setState(self.hirer, SPAM_STATE, body)
+    setState(self.hirer, STATE_SPAM, body)
   end
 
-  def precall(body=nil)
-    setState(self.hirer, PRECALL_STATE, body)
-  end
-
-  def onsite(body=nil)
-    setState(self.hirer, ONSITE_STATE, body)
-  end
-
-  def checks(body=nil)
-    setState(self.hirer, CHECKS_STATE, body)
+  def offer(salary, body=nil)
+    setState(self.hirer, STATE_OFFER, body)
   end
 
   def hire(salary, body=nil) # FIXME
-    setState(self.hirer, HIRE_STATE, body)
+    setState(self.hirer, STATE_HIRED, body)
   end
 
   def recall(body=nil)
-    setState(self.hirer, RECALL_STATE, body)
+    setState(self.hirer, STATE_RECALLED, body)
   end
 
   def cancel(body=nil)
-    setState(self.recruiter, CANCEL_STATE, body)
+    setState(self.recruiter, STATE_CANCELED, body)
   end
 
   private
@@ -128,8 +131,9 @@ class Candidate < ApplicationRecord
   def setState(actor, state, body=nil)
     Candidate.transaction do
       self.state = state
-      self.save
+      self.unlocked_at = Time.zone.now if state > STATE_NEW
 
+      self.save!
 
       msg = nil
       if body
