@@ -732,7 +732,7 @@ class ShowSheet extends Sheet.Show {
 
 
     return (
-        <div className="flx-row">
+        <div className="flx-row flx-1">
           <div className="flx-col left flx-5">
             { this.statusTop(candidate) }
             <div className="flx-col flx-2 cv">
