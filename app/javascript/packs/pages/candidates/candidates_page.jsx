@@ -40,7 +40,7 @@ import {
 const WEB_LINK_WEB = 0;
 const WEB_LINK_IN = 1;
 const WEB_LINK_GITHUB = 2;
-const WEB_LINK_DRIBBLE = 3;
+const WEB_LINK_DRIBBBLE = 3;
 const WEB_LINK_QUORA = 4;
 const WEB_LINK_FACEBOOK = 5;
 const WEB_LINK_TWITTER = 6;
@@ -48,9 +48,9 @@ const WEB_LINK_ANGELIST = 7;
 
 const WEB_LINK_TO = {
   [WEB_LINK_WEB] : "link",
-  [WEB_LINK_IN] : "linkedin-in",
+  [WEB_LINK_IN] : "linkedin",
   [WEB_LINK_GITHUB] : "github",
-  [WEB_LINK_DRIBBLE] : "dribble",
+  [WEB_LINK_DRIBBBLE] : "dribbble",
   [WEB_LINK_QUORA] : "quora",
   [WEB_LINK_FACEBOOK] : "facebook-f",
   [WEB_LINK_TWITTER] : "twitter",
@@ -693,9 +693,9 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <div className={clazzes}>
-        <Avatar.Score className={ClassNames("flx-align-content-start").push(sclz)}>{score}</Avatar.Score>
-        <div className={ClassNames("status ml-auto mr-auto mt-auto mb-auto").push(sclz)}>{stateName}</div>
-        { this.renderButtons(candidate.state) }
+        <Avatar.Score className={ClassNames("flx-align-content-start mr-auto").push(sclz)}>{score}</Avatar.Score>
+        <State.Bar state={candidate.state} className="ml-auto mr-auto"/>
+        <div className="ml-auto">{ this.renderButtons(candidate.state) }</div>
       </div>
     );
   }

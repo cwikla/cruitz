@@ -615,6 +615,51 @@ label {
 
 }
 
+.state-bubble {
+  text-align: center;
+  vertical-align: middle;
+  color: $med_gray_color;
+  i {
+    font-size: 2.5rem;
+  }
+
+  &.two {
+    border-radius: 50%;
+    border: solid $border_color 1px;
+    width: 5rem;
+   height: 5rem;
+  }
+}
+
+.state-bar {
+  .line {
+    padding: 0;
+    margin: 0;
+
+    overflow: 0;
+  }
+  hr {
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    height: 0.5rem;
+    color: $red_color;
+    background-color: $red_color;
+  }
+
+  .nibble {
+    padding: 0;
+    border: none;
+
+    height: 0.5rem;
+    width: 1rem;
+
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
+
 .recruiter-blurb, %recruiter-blurb {
   font-size: 0.9rem;
   border: 1px solid $border_color;
@@ -943,13 +988,6 @@ label {
 
 }
 
-.state-bubble {
-  text-align: center;
-  vertical-align: middle;
-  border-radius: 50%;
-  border: solid $border_color 1px;
-}
-
 .stats, %stats {
 
   .header {
@@ -1041,8 +1079,29 @@ label {
   color: $secondary_color;
 }
 
-
-
-
-
-
+i {
+  &.fa-facebook-f {
+    color: $fb-color;
+  }
+  &.fa-facebook {
+    color: $fb-color;
+  }
+  &.fa-github {
+    color: $git-color;
+  }
+  &.fa-dribbble {
+    color: $drib-color;
+  }
+  &.fa-twitter {
+    color: $tw-color;
+  }
+  &.fa-linkedin {
+    color: $li-color;
+  }
+  &.fa-angellist {
+    color: black;
+  }
+  &.fa-quora {
+    color: $quora-color;
+  }
+}

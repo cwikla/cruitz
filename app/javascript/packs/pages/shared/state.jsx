@@ -4,7 +4,11 @@ import React, {
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import Pyr from '../../pyr/pyr';
+import Pyr, {
+  Component
+} from '../../pyr/pyr';
+const ClassNames = Pyr.ClassNames;
+
 
 const STATE_NEW = 0;
 const STATE_UNLOCKED = 100;
@@ -78,10 +82,41 @@ function nexts(sid) {
   return NEXT_STATES[sid];
 }
 
-const Bubble = (props) => (
-  <div className="state-bubble state background">
-    { toName(props.state)[0] }
+const Bubble1 = (props) => (
+  <div className="state-bubble flx-col">
+    <Pyr.UI.Icon name="check-circle" className={(props.state <= props.current) ? toClassName(props.state) : ""} />
+    <div className={(props.state <= props.current) ? toClassName(props.state) : ""}>{ toName(props.state) }</div>
   </div>
+);
+
+const Bubble2 = (props) => (
+  <div className={ClassNames("state-bubble two flx-col").push(toClassName(props.state)).push("background")}>
+    <div className="mt-auto mb-auto ml-auto mr-auto">{ toName(props.state) }</div>
+  </div>
+);
+
+const Bubble = Bubble1;
+
+const Nibble = (props) => (
+  <div className={ClassNames("nibble").push((props.state <= props.current) ? toClassName(props.state) : "")} />
+);
+
+
+const Bar = (props) => (
+      <div className={ClassNames("flx-col state-bar").push(props.className)}>
+        <div className="flx-row circles">
+          <Bubble state={STATE_NEW} current={props.state}/>
+
+          <Nibble state={STATE_UNLOCKED} current={props.state} />
+          <Bubble state={STATE_UNLOCKED} current={props.state}/>
+
+          <Nibble state={STATE_OFFER} current={props.state} />
+          <Bubble state={STATE_OFFER} current={props.state}/>
+
+          <Nibble state={STATE_HIRED} current={props.state} />
+          <Bubble state={STATE_HIRED} current={props.state}/>
+        </div>
+      </div>
 );
 
 const State = {
@@ -92,6 +127,7 @@ const State = {
   nextIsValid,
   nexts,
   Bubble,
+  Bar,
 };
 
 export default State;

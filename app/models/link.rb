@@ -2,7 +2,7 @@ class Link < ApplicationRecord
   LINK_WEB = 0
   LINK_IN = 1
   LINK_GITHUB = 2
-  LINK_DRIBBLE = 3
+  LINK_DRIBBBLE = 3
   LINK_QUORA = 4
   LINK_FACEBOOK = 5
   LINK_TWITTER = 6
@@ -12,7 +12,7 @@ class Link < ApplicationRecord
     [LINK_WEB, nil],
     [LINK_IN, 'linkedin.com/in'],
     [LINK_GITHUB, 'github.com'],
-    [LINK_DRIBBLE, 'dribble.com'],
+    [LINK_DRIBBBLE, 'dribbble.com'],
     [LINK_QUORA, 'quora.com'],
     [LINK_FACEBOOK, 'facebook.com',],
     [LINK_TWITTER, 'twitter.com'],

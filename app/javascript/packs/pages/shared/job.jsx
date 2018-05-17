@@ -13,9 +13,6 @@ import Pyr, {
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
-import Page from '../page';
-import Sheet from '../sheet';
-
 import {
   JOBS_URL,
   MESSAGES_URL,
