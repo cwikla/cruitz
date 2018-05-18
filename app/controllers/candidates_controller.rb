@@ -1,7 +1,7 @@
 class CandidatesController < ApplicationController
 
   def index
-    render json: current_user.candidates.order("-candidates.id").limit(10)
+    render json: current_user.candidates.order("-candidates.id") #.limit(10)
   end
 
   def jobs
