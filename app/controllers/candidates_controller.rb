@@ -45,7 +45,7 @@ class CandidatesController < ApplicationController
   def update
     cid = hid()
     @candidate = current_user.candidates.find(cid)
-    if @candidate.update(candidates_params)
+    if @candidate.setState(candidates_params[:state], current_user)
       return render json: @candidate
     else
       return render_create_error json: @candidate

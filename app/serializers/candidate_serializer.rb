@@ -8,7 +8,13 @@ class CandidateSerializer < CandidateSmallSerializer
     :score,
     :recruiter
 
+  has_many :candidate_states
+
   #has_one :recruiter
+
+  def candidate_states_unused
+    object.candidate_states.order(:id)
+  end
 
   def educations
     object.head.educations

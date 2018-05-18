@@ -86,7 +86,7 @@ source "http://pyr:akbash42@gems.cwikla.com" do
   #gem 'pyr_geo', :path => "../pyr/pyr_geo"
   gem 'jpyr', "~> 4.0.0"
   #gem 'jpyr', :path => "../pyr/jpyr"
-  gem 'pyr_base', '~> 14.0.6'
+  gem 'pyr_base', '~> 14.0.7'
   #gem 'pyr_base', :path => "../pyr/pyr_base"
 end
 

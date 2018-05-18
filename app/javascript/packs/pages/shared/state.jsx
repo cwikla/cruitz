@@ -38,9 +38,9 @@ const NEXT_STATES = {
   [STATE_NEW]: [STATE_UNLOCKED, STATE_REJECTED],
   [STATE_UNLOCKED]: [STATE_OFFER, STATE_REJECTED],
   [STATE_OFFER]: [STATE_HIRED, STATE_REJECTED],
-  [STATE_HIRED]: [STATE_REJECTED],
+  [STATE_HIRED]: [],
 
-  [STATE_REJECTED]: [STATE_NEW],
+  [STATE_REJECTED]: [],
   [STATE_SPAM]: [],
   [STATE_RECALLED]: [],
   [STATE_CANCELED]: [],
@@ -82,44 +82,52 @@ function nexts(sid) {
   return NEXT_STATES[sid];
 }
 
-const Bubble1 = (props) => (
+const Bubble = (props) => (
   <div className="state-bubble flx-col">
-    <Pyr.UI.Icon regular={true} name={props.state <= props.current ? "check-circle" : "circle"} className={(props.state <= props.current) ? toClassName(props.state) : ""} />
-    <div className={ClassNames("label").push((props.state <= props.current) ? toClassName(props.state) : "")}>{ toName(props.state) }</div>
+    <Pyr.UI.Icon regular={true} name="check-circle" className={toClassName(props.state)} />
+    <div className={ClassNames("label").push(toClassName(props.state))}>{ toName(props.state) }</div>
   </div>
 );
 
-const Bubble2 = (props) => (
-  <div className={ClassNames("state-bubble two flx-col").push(toClassName(props.state)).push("background")}>
-    <div className="mt-auto mb-auto ml-auto mr-auto">{ toName(props.state) }</div>
+const NoneBubble = (props) => (
+  <div className="state-bubble flx-col">
+    <Pyr.UI.Icon regular={true} name="circle" />
+    <div className={ClassNames("label")}>&nbsp;</div>
   </div>
-);
-
-const Bubble = Bubble1;
-
-const CurrentBubble = (props) => (
-  <Bubble state={props.state} current={props.state} />
 );
 
 const Nibble = (props) => (
-  <div className={ClassNames("nibble").push((props.state <= props.current) ? toClassName(props.state) : "")} >&mdash;&mdash;</div>
+  <div className={ClassNames("nibble").push(toClassName(props.state))} >&mdash;&mdash;</div>
 );
 
+class Bar extends Component {
+  render() {
+    let states = (this.props.candidateStates || []).reduce((arr, s) => {
+      arr.push(s.state);
+      return arr;
+    }, [ STATE_NEW ]);
 
-const Bar = (props) => (
-        <div className={ClassNames("flx-row state-bar").push(props.className)}>
-          <Bubble state={STATE_NEW} current={props.state}/>
-          <Nibble state={STATE_NEW} current={props.state} />
+    console.log("STATES");
+    console.log(states);
 
-          <Bubble state={STATE_UNLOCKED} current={props.state}/>
+    let rest = Pyr.Util.propsRemove(this.props, ["state", "candidateStates"]);
 
-          <Nibble state={STATE_OFFER} current={props.state} />
-          <Bubble state={STATE_OFFER} current={props.state}/>
-
-          <Nibble state={STATE_HIRED} current={props.state} />
-          <Bubble state={STATE_HIRED} current={props.state}/>
+    return (
+        <div {...Pyr.Util.propsMergeClassName(rest, ClassNames("flx-row state-bar").push(this.props.className))}>
+          { states.map(astate => {
+              return (
+                <Pyr.UI.PassThru key={"sta-"+astate} className="">
+                  <Bubble state={astate} current={this.props.state}/>
+                  { NEXT_STATES[astate].length == 0 ? null : <Nibble state={astate} current={this.props.state} /> }
+                </Pyr.UI.PassThru>
+              );
+            })
+          }
+          { NEXT_STATES[this.props.state].length == 0 ? null : <NoneBubble /> }
         </div>
-);
+    );
+  }
+}
 
 const State = {
   states,
@@ -129,7 +137,7 @@ const State = {
   nextIsValid,
   nexts,
   Bubble,
-  CurrentBubble,
+  NoneBubble,
   Bar,
 };
 

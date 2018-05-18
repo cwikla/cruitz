@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180516173821) do
+ActiveRecord::Schema.define(version: 20180518203251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(version: 20180516173821) do
     t.datetime "deleted_at"
     t.integer "candidate_id"
     t.integer "user_id"
-    t.integer "recruiter_id"
     t.integer "message_id"
     t.integer "state"
     t.index ["candidate_id", "state"], name: "index_candidate_states_on_candidate_id_and_state"

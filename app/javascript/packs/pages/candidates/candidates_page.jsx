@@ -686,14 +686,14 @@ class ShowSheet extends Sheet.Show {
     //console.log(candidate);
     let stateName = State.toName(candidate.state);
     let sclz = ClassNames("state").push(stateName);
-    let clazzes = ClassNames("actions flx-row p-1 flx-start").push(sclz).push("border-bottom");
+    let clazzes = ClassNames("candidate-actions flx-row").push(sclz).push("border-bottom");
 
     let score = candidate.score;
 
     return (
       <div className={clazzes}>
         <Avatar.Score className={ClassNames("flx-align-content-start mr-auto").push(sclz)}>{score}</Avatar.Score>
-        <State.Bar state={candidate.state} className="ml-auto mr-auto"/>
+        <State.Bar state={candidate.state} candidateStates={candidate.candidate_states} className="ml-auto mr-auto"/>
         <div className="ml-auto">{ this.renderButtons(candidate.state) }</div>
       </div>
     );

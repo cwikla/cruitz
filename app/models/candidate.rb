@@ -5,7 +5,7 @@ class Candidate < ApplicationRecord
   has_one :recruiter, through: :head, class_name: 'User', source: :recruiter
   has_one :hirer, through: :job, source: :user, class_name: 'User'
 
-  has_many :states, class_name: "CandidateState"
+  has_many :candidate_states, -> { order(:id) }
   has_many :messages
 
   has_many :candidate_uploads
@@ -14,6 +14,7 @@ class Candidate < ApplicationRecord
   belongs_to :description, class_name: 'Message'
 
   STATE_NEW = 0
+  STATE_REVIEWED = 50
   STATE_UNLOCKED = 100
   STATE_ENGAGED = 200
   STATE_OFFER = 300
@@ -27,6 +28,7 @@ class Candidate < ApplicationRecord
   #cache_notify :user # FIXME
 
   scope :isnew, -> { where(state: STATE_NEW) }
+  scope :reviewed, -> { where(state: STATE_REVIEWED) }
   scope :unlocked, -> {  where(state: STATE_UNLOCKED) }
   scope :engaged, -> { where(state: STATE_ENGAGED) }
   scope :hired, -> { where(state: STATE_HIRED) }
@@ -45,7 +47,7 @@ class Candidate < ApplicationRecord
   before_save :pre_save
 
   def pre_save
-    if self.state > STATE_NEW
+    if self.state >= STATE_UNLOCKED
       self.unlocked_at ||= Time.zone.now
     end
   end
@@ -94,44 +96,12 @@ class Candidate < ApplicationRecord
     return candidate
   end
 
-  def unlock(body=nil)
-    setState(self.hirer, STATE_UNLOCKED, body)
-  end
+  def setState(state, actor, body=nil)
+    state = state.to_i
 
-  def engage(body=nil)
-    setState(self.hirer, STATE_ENGAGED, body)
-  end
-
-  def reject(body=nil)
-    setState(self.hirer, STATE_REJECTED, body)
-  end
-
-  def spam(body=nil)
-    setState(self.hirer, STATE_SPAM, body)
-  end
-
-  def offer(salary, body=nil)
-    setState(self.hirer, STATE_OFFER, body)
-  end
-
-  def hire(salary, body=nil) # FIXME
-    setState(self.hirer, STATE_HIRED, body)
-  end
-
-  def recall(body=nil)
-    setState(self.hirer, STATE_RECALLED, body)
-  end
-
-  def cancel(body=nil)
-    setState(self.recruiter, STATE_CANCELED, body)
-  end
-
-  private
-
-  def setState(actor, state, body=nil)
     Candidate.transaction do
       self.state = state
-      self.unlocked_at = Time.zone.now if state > STATE_NEW
+      self.unlocked_at = Time.zone.now if state >= STATE_UNLOCKED
 
       self.save!
 
@@ -145,13 +115,20 @@ class Candidate < ApplicationRecord
         msg ||= Message.create(candidate: self, user: to_user, from_user: actor, body: body)
       end
       
-      #CandidateState.create(candidate: self,
-        #state: self.state,
-        #recruiter: recruiter,
-        #message: msg)
+      CandidateState.create!(candidate: self,
+        state: self.state,
+        user: actor,
+        message: msg)
     end
 
     return self
   end
+
+  private
+
+  def validate_next_state
+    # do something here
+  end
+
 
 end
