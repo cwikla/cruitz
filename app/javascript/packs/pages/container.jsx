@@ -79,7 +79,7 @@ class NavUserMenu extends Component {
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <Link to={Pyr.URL(ME_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="user-circle" /> My Profile</Link>
               <Link to={Pyr.URL(COMPANY_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="building" /> My Company</Link>
-              <Link to={Pyr.URL(SETTINGS_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="gear" /> Settings</Link>
+              <Link to={Pyr.URL(SETTINGS_URL).toString()} className="dropdown-item"><Pyr.UI.Icon name="cogs" /> Settings</Link>
             </div>
         </li>
       </div>

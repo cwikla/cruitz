@@ -266,7 +266,7 @@ class ShowSheet extends Sheet.Show {
         <Link to={url.toString()}>
           <div className="flx-row">
             <div className="mr-auto">{candidate.first_name} {candidate.last_name}</div>
-            <div className={ClassNames("ml-auto").push(State.toClassName(candidate.state))}>{stateName}</div>
+            <div className={ClassNames("ml-auto")}><State.CurrentBubble state={candidate.state} /></div>
           </div>
           <div className="flx-row">
             <div className="mr-auto">{candidate.summary.title} @ {candidate.summary.place}</div>

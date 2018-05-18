@@ -89,7 +89,7 @@ class SubNavBar extends Container.NavBar {
           <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
             <div className="mr-auto flx-row">
               <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={positionsCount}/>
-              <Container.SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages" count={messagesCount}/>
+              <Container.SubIcon name="Messages" icon="envelope" selected={this.props.page} page="messages" count={messagesCount}/>
               <Container.SubIcon name="Heads" icon="users" selected={this.props.page} page="heads" count={headsCount}/>
             </div>
           </Pyr.Grid.Col>

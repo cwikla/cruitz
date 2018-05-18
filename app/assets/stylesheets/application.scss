@@ -13,8 +13,7 @@
  */
 
 @import "pyr/base/application";
-@import "scss/font-awesome";
-//@import "web-fonts-with-css/scss/fontawesome";
+//@import "scss/font-awesome"; now included directly from CDN
 @import "react-input-range/index";
 
 @import "pyr_local";

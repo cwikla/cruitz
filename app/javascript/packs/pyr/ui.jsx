@@ -273,8 +273,21 @@ class RouterProps extends Component {
   }
 }
 
+function fontProp(props) {
+  if (props.regular) {
+    return "far";
+  }
+  if (props.brand) {
+    return "fab";
+  }
+  if (props.light) {
+    return "fal";
+  }
+  return "fas";
+}
+
 const Icon = (props) => (
-  <i {...Util.propsMergeClassName(props, "fa fa-" + props.name)}/>
+  <i {...Util.propsMergeClassName(Util.propsRemove(props, ["regular", "brand", "solid", "light"]), fontProp(props) + " fa-" + props.name)}/>
 );
 
 const PrimaryButton = (props) => (

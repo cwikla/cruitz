@@ -47,8 +47,7 @@ const WEB_LINK_TWITTER = 6;
 const WEB_LINK_ANGELIST = 7;
 
 const WEB_LINK_TO = {
-  [WEB_LINK_WEB] : "link",
-  [WEB_LINK_IN] : "linkedin",
+  [WEB_LINK_IN] : "linkedin-in",
   [WEB_LINK_GITHUB] : "github",
   [WEB_LINK_DRIBBBLE] : "dribbble",
   [WEB_LINK_QUORA] : "quora",
@@ -59,11 +58,11 @@ const WEB_LINK_TO = {
 
 
 const WebLinkFont = (props) => (
-  <a href={props.webLink.url} target="_cruitz"><Pyr.UI.Icon name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} /></a>
+  <a href={props.webLink.url} target="_cruitz"><Pyr.UI.Icon brand={!!WEB_LINK_TO[props.webLink.ltype]} name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} /></a>
 );
 
 const WebLinkLock = (props) => (
-  <Pyr.UI.Icon name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} className="locked"/>
+  <Pyr.UI.Icon brand={!!WEB_LINK_TO[props.webLink.ltype]}  name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} className="locked"/>
 );
 
 class WebLinks extends Component {

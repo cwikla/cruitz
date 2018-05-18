@@ -39,7 +39,7 @@ import {
   ME_URL,
 } from './const';
 
-const DEFAULT_PAGE = MESSAGES_PAGE; // CANDIDATES_PAGE; // MESSAGES_PAGE; //JOBS_PAGE;
+const DEFAULT_PAGE = CANDIDATES_PAGE; // MESSAGES_PAGE; //JOBS_PAGE;
 
 const PAGE_MAP = {
   "home" : DashboardPage,
@@ -62,7 +62,7 @@ class SubNavBar extends Container.NavBar {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
             <div className="mr-auto flx-row">
-              <Container.SubIcon name="Messages" icon="envelope-open-o" selected={this.props.page} page="messages" count={this.props.pageItemsCount.messages}/>
+              <Container.SubIcon name="Messages" icon="envelope" selected={this.props.page} page="messages" count={this.props.pageItemsCount.messages}/>
               <Container.SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates" count={this.props.pageItemsCount.candidates}/>
               <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="jobs" count={this.props.pageItemsCount.jobs}/>
               <Container.SubIcon name="Recruiters" icon="cubes" selected={this.props.page} page="recruiters" count={this.props.pageItemsCount.recruiters}/>

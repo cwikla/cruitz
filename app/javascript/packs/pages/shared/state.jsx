@@ -84,8 +84,8 @@ function nexts(sid) {
 
 const Bubble1 = (props) => (
   <div className="state-bubble flx-col">
-    <Pyr.UI.Icon name="check-circle" className={(props.state <= props.current) ? toClassName(props.state) : ""} />
-    <div className={(props.state <= props.current) ? toClassName(props.state) : ""}>{ toName(props.state) }</div>
+    <Pyr.UI.Icon regular={true} name={props.state <= props.current ? "check-circle" : "circle"} className={(props.state <= props.current) ? toClassName(props.state) : ""} />
+    <div className={ClassNames("label").push((props.state <= props.current) ? toClassName(props.state) : "")}>{ toName(props.state) }</div>
   </div>
 );
 
@@ -97,17 +97,20 @@ const Bubble2 = (props) => (
 
 const Bubble = Bubble1;
 
+const CurrentBubble = (props) => (
+  <Bubble state={props.state} current={props.state} />
+);
+
 const Nibble = (props) => (
-  <div className={ClassNames("nibble").push((props.state <= props.current) ? toClassName(props.state) : "")} />
+  <div className={ClassNames("nibble").push((props.state <= props.current) ? toClassName(props.state) : "")} >&mdash;&mdash;</div>
 );
 
 
 const Bar = (props) => (
-      <div className={ClassNames("flx-col state-bar").push(props.className)}>
-        <div className="flx-row circles">
+        <div className={ClassNames("flx-row state-bar").push(props.className)}>
           <Bubble state={STATE_NEW} current={props.state}/>
+          <Nibble state={STATE_NEW} current={props.state} />
 
-          <Nibble state={STATE_UNLOCKED} current={props.state} />
           <Bubble state={STATE_UNLOCKED} current={props.state}/>
 
           <Nibble state={STATE_OFFER} current={props.state} />
@@ -116,7 +119,6 @@ const Bar = (props) => (
           <Nibble state={STATE_HIRED} current={props.state} />
           <Bubble state={STATE_HIRED} current={props.state}/>
         </div>
-      </div>
 );
 
 const State = {
@@ -127,6 +129,7 @@ const State = {
   nextIsValid,
   nexts,
   Bubble,
+  CurrentBubble,
   Bar,
 };
 
