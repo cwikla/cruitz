@@ -64,8 +64,13 @@
             line-height: 2.5rem;
             padding-right: 0.5rem;
             border-bottom: 1px solid $white;
-            &:hover {
-              border-bottom: 1px solid $primary_color;
+            i {
+              &:hover {
+                border-bottom: 1px solid $primary_color;
+                &.locked {
+                  border-bottom: 1px solid $white;
+                }
+              }
             }
           }
         }
