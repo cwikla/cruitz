@@ -482,16 +482,16 @@ label {
     }
   }
 
-  &.passed {
-    color: $passed_color;
+  &.rejected {
+    color: $rejected_color;
     &.background {
-      background-color: rgba($passed_color, 0.05);
+      background-color: rgba($rejected_color, 0.05);
     }
     &.border-bottom {
-      border-bottom: 1px solid $passed_color;
+      border-bottom: 1px solid $rejected_color;
     }
     &.hover:hover {
-      background-color: rgba($passed_color, 0.20);
+      background-color: rgba($rejected_color, 0.20);
     }
   }
 
@@ -557,11 +557,11 @@ label {
     }
   }
 
-  &.passed {
+  &.rejected {
     color: white !important;
-    background-color: rgba($passed_color, 0.8) !important;
+    background-color: rgba($rejected_color, 0.8) !important;
     &:hover {
-      background-color: rgba($passed_color, 1.0) !important;
+      background-color: rgba($rejected_color, 1.0) !important;
     }
   }
 
@@ -615,31 +615,27 @@ label {
 
 }
 
+// YES THESE ARE EM.
+
 .state-bubble {
   text-align: center;
   vertical-align: middle;
-  width: 4rem;
-  max-width: 4rem;
+  width: 4em;
+  max-width: 4em;
 
   color: $med_gray_color;
 
   i {
-    font-size: 2.5rem;
+    font-size: 2.5em;
   }
 
   .label {
-    font-size: 1rem;
+    font-size: 1em;
 
     &.unlocked {
     }
   }
 
-  &.two {
-    border-radius: 50%;
-    border: solid $border_color 1px;
-    width: 5rem;
-   height: 5rem;
-  }
 }
 
 .state-bar {

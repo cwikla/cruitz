@@ -77,6 +77,10 @@
     .candidate-mini {
       padding: 1rem;
 
+      .state-bubble {
+        font-size: 0.75rem;
+      }
+
       &.new {
         background-color: $light_gray_color;
       }

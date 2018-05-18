@@ -159,7 +159,7 @@ class CandidateItem extends Component {
     let stateName = State.toClassName(candidate.state);
 
     let id = "candidate-" + candidate.id;
-    let allClass = ClassNames("item candidate-item flx-col");
+    let allClass = ClassNames("item candidate-item flx-row");
 
     if (this.props.isSelected) {
        allClass.push("selected");
@@ -175,8 +175,11 @@ class CandidateItem extends Component {
 
     return (
       <div key={id} className={allClass}>
-        <div>{candidate.first_name} {candidate.last_name}</div>
-        <div>{candidate.summary.title} @ {candidate.summary.place}</div>
+        <div className="flx-col flx-1">
+          <div>{candidate.first_name} {candidate.last_name}</div>
+          <div>{candidate.summary.title} @ {candidate.summary.place}</div>
+        </div>
+        <State.Bubble state={candidate.state} />
       </div>
     );
 
@@ -340,12 +343,9 @@ class IndexSheet extends Sheet.Index {
 
   renderNone() {
     return (
-      <div className="empty flx-3 flx-col-stretch">
-        { this.renderHeader() }
-        <div className="flx-1 flx-row-stretch flx-align-center ml-auto mr-auto">
-          <Pyr.UI.Icon name="user-times"/> No candidates have been submitted for this job.
+        <div className="flx-1 flx-row none">
+          No candidates have been submitted for this job.
         </div>
-      </div>
     );
   }
 

@@ -130,6 +130,11 @@
       font-size: 0.9rem;
     }
 
+    .none {
+      padding: 1rem;
+      font-size: 0.85rem;
+    }
+
     .section {
       padding: 0;
     }
@@ -146,6 +151,10 @@
       &.candidate-item {
         height: 5rem;
         overflow: none;
+
+        .state-bubble {
+          font-size: 0.75rem;
+        }
 
         & > div {
           white-space: nowrap;

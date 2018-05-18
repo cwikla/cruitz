@@ -262,20 +262,18 @@ class ShowSheet extends Sheet.Show {
     let stateName = State.toName(candidate.state);
 
     return (
-      <div className={ClassNames("section flx-col candidate-mini")} >
-        <Link to={url.toString()}>
-          <div className="flx-row">
+      <Link to={url.toString()}>
+      <div className={ClassNames("section flx-row candidate-mini")} >
+          <div className="flx-col flx-1">
             <div className="mr-auto">{candidate.first_name} {candidate.last_name}</div>
-            <div className={ClassNames("ml-auto")}><State.CurrentBubble state={candidate.state} /></div>
-          </div>
-          <div className="flx-row">
             <div className="mr-auto">{candidate.summary.title} @ {candidate.summary.place}</div>
           </div>
-          <div className={ClassNames("more flx-row")}>
-            <span className="ml-auto">More...</span>
+          <div className={ClassNames("flx-col")}>
+            <div className={ClassNames("ml-auto")}><State.Bubble state={candidate.state} /></div>
+            <span className="more ml-auto mt-auto">More...</span>
           </div>
-        </Link>
       </div>
+      </Link>
     );
   }
 

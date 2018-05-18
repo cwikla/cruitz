@@ -39,7 +39,7 @@ import {
   ME_URL,
 } from './const';
 
-const DEFAULT_PAGE = CANDIDATES_PAGE; // MESSAGES_PAGE; //JOBS_PAGE;
+const DEFAULT_PAGE = MESSAGES_PAGE; //CANDIDATES_PAGE; // MESSAGES_PAGE; //JOBS_PAGE;
 
 const PAGE_MAP = {
   "home" : DashboardPage,
