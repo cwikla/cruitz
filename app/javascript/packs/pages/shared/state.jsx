@@ -84,7 +84,7 @@ function nexts(sid) {
 
 const Bubble = (props) => (
   <div className="state-bubble flx-col">
-    <Pyr.UI.Icon regular={true} name="check-circle" className={toClassName(props.state)} />
+    <Pyr.UI.Icon regular={props.state < 0 ? false : true} name={props.state < 0 ? "minus-circle" : "check-circle"} className={toClassName(props.state)} />
     <div className={ClassNames("label").push(toClassName(props.state))}>{ toName(props.state) }</div>
   </div>
 );
