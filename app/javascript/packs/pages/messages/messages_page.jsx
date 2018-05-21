@@ -134,7 +134,7 @@ class IndexSheet extends Sheet.Index {
     }
 
     if (this.props.jobsMap) {
-      return this.props.jobsMap[msg.job.id]; // override with livelier version
+      return this.props.jobsMap[msg.job_id]; // override with livelier version
     }
 
     return msg.job;
@@ -222,7 +222,7 @@ class ShowSheet extends Sheet.Show {
     }
 
     if (this.props.jobsMap) {
-      return this.props.jobsMap[msg.job.id]; // override with livelier version
+      return this.props.jobsMap[msg.job_id]; // override with livelier version
     }
 
     return msg.job;

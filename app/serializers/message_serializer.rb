@@ -3,7 +3,7 @@ class MessageSerializer < ActiveModel::Serializer
     :body,
     #:parent_message_id,
     #:root_message_id,
-    #:job_id,
+    :job_id,
     #:candidate,
     #:user_id,
     #:from_user_id,
@@ -93,7 +93,7 @@ class MessageSerializer < ActiveModel::Serializer
       
       phash[:other] = UserSerializer.new(other)
       phash[:candidate] = object.candidate ? CandidateSmallSerializer.new(object.candidate) : {}
-      phash[:job] = JobSmallSerializer.new(object.job)
+      #phash[:job] = JobSmallSerializer.new(object.job)
       phash[:is_root] = true
 
       tl = object.thread_last

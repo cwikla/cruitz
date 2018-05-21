@@ -5,7 +5,7 @@ class UserSerializer < ActiveModel::Serializer
     :last_name,
     :full_name,
     :created_at,
-    :updated_at,
+    #:updated_at,
     :is_recruiter,
     :company
 

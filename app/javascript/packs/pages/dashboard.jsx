@@ -152,7 +152,20 @@ class LoaderComponent extends Loader.Component {
     });
   }
 
+  componentDidMount() {
+    if (!this.state.jobs) {
+      this.jobsLoader.load();
+    }
+  }
+
   render() {
+    if (!this.state.jobs) {
+      return (
+        <Pyr.UI.Loading />
+      );
+      // wait for jobs to load
+    }
+
     let props = this.getProps();
 
           //<Pyr.UI.RouteURL path="/jobs/:pid/candidates" page="candidates" action="index" />
