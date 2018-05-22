@@ -177,7 +177,7 @@ class CandidateItem extends Component {
       <div key={id} className={allClass}>
         <div className="flx-col flx-1">
           <div>{candidate.first_name} {candidate.last_name}</div>
-          <div>{candidate.summary.title} @ {candidate.summary.place}</div>
+          <div>{candidate.summary}</div>
         </div>
         <State.Bubble state={candidate.state} />
       </div>
