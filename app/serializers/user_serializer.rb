@@ -24,7 +24,7 @@ class UserSerializer < ActiveModel::Serializer
     object.updated_at.in_time_zone.iso8601 if object.updated_at
   end
 
-  def company
-    object.company ? CompanySerializer.new(object.company) : {}
-  end
+  #def company
+    #object.company ? CompanySerializer.new(object.company) : {}
+  #end
 end
