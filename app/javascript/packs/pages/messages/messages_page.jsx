@@ -253,7 +253,7 @@ class ShowSheet extends Sheet.Show {
     if (!candidate.unlocked_at) {
       return (
         <div className="section flx-col candidate-mini new">
-          <div>You have a new candidate: {candidate.summary.title} @ {candidate.summary.place}</div>
+          <div>You have a new candidate: {candidate.summary}</div>
           <div>You can respond to this recruiter and see more about this candidate <Link to={url.toString()}>here</Link>.</div>
         </div>
       );
@@ -266,7 +266,7 @@ class ShowSheet extends Sheet.Show {
       <div className={ClassNames("section flx-row candidate-mini")} >
           <div className="flx-col flx-1">
             <div className="mr-auto">{candidate.first_name} {candidate.last_name}</div>
-            <div className="mr-auto">{candidate.summary.title} @ {candidate.summary.place}</div>
+            <div className="mr-auto">{candidate.summary}</div>
           </div>
           <div className={ClassNames("flx-col")}>
             <div className={ClassNames("ml-auto")}><State.Bubble state={candidate.state} /></div>

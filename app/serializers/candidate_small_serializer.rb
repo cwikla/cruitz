@@ -32,8 +32,9 @@ class CandidateSmallSerializer < ActiveModel::Serializer
   end
 
   def summary
-    t = object.head.works.order("-id").first || object.head.educations.order("-id").first
-    t ? ExperienceSerializer.new(t) : nil
+    t = object.head.experiences.select(:title, :place).first
+    return "#{t.title} @ #{t.place}" if t
+    return nil
   end
 
 end

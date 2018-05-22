@@ -4,7 +4,7 @@ class UserSerializer < ActiveModel::Serializer
     :first_name,
     :last_name,
     :full_name,
-    :created_at,
+    #:created_at,
     #:updated_at,
     :is_recruiter,
     :company
@@ -22,5 +22,9 @@ class UserSerializer < ActiveModel::Serializer
 
   def updated_at
     object.updated_at.in_time_zone.iso8601 if object.updated_at
+  end
+
+  def company
+    object.company ? CompanySerializer.new(object.company) : {}
   end
 end

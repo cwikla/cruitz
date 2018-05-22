@@ -13,6 +13,10 @@ class JobSmallSerializer < ActiveModel::Serializer
 
   has_one :company
 
+  def created_at
+    object.created_at.in_time_zone.iso8601 if object.created_at
+  end
+
   def category
     cat = object.categories.first
     #puts "CATEGORY"
