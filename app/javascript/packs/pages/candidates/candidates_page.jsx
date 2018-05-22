@@ -175,7 +175,7 @@ class CandidateItem extends Component {
 
     return (
       <div key={id} className={allClass}>
-        <div className="flx-col flx-1">
+        <div className="flx-col flx-1 title">
           <div>{candidate.first_name} {candidate.last_name}</div>
           <div>{candidate.summary}</div>
         </div>

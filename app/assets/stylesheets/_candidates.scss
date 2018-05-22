@@ -150,10 +150,14 @@
 
       &.candidate-item {
         height: 5rem;
-        overflow: none;
 
         .state-bubble {
           font-size: 0.75rem;
+        }
+
+        .title {
+          overflow: hidden;
+          max-width: 20rem;
         }
 
         & > div {

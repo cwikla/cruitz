@@ -107,8 +107,8 @@ class Bar extends Component {
       return arr;
     }, [ STATE_NEW ]);
 
-    console.log("STATES");
-    console.log(states);
+    //console.log("STATES");
+    //console.log(states);
 
     let rest = Pyr.Util.propsRemove(this.props, ["state", "candidateStates"]);
 
