@@ -7,9 +7,8 @@ class CandidateSmallSerializer < ActiveModel::Serializer
     :job_id,
     :state,
     :unlocked_at,
-    :summary
-
-  has_one :recruiter
+    :summary,
+    :score
 
   def first_name
     object.unlocked? ? object.head.first_name : nil
@@ -35,6 +34,10 @@ class CandidateSmallSerializer < ActiveModel::Serializer
     t = object.head.experiences.select(:title, :place).first
     return "#{t.title} @ #{t.place}" if t
     return nil
+  end
+
+  def score
+    88
   end
 
 end

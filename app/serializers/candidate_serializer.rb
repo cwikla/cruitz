@@ -5,12 +5,11 @@ class CandidateSerializer < CandidateSmallSerializer
     :links,
     :skills,
     :uploads,
-    :score,
-    :recruiter
+    :recruiter,
+    :candidate_states
 
   has_many :candidate_states
-
-  #has_one :recruiter
+  has_one :recruiter
 
   def candidate_states_unused
     object.candidate_states.order(:id)

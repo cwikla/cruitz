@@ -608,6 +608,10 @@ class ShowSheet extends Sheet.Show {
     super(props);
     this.onButtonPresses = {};
     this.buttonBinds();
+
+    this.initState({
+      candidate: null,
+    });
   }
 
   buttonBinds() {
@@ -650,6 +654,10 @@ class ShowSheet extends Sheet.Show {
   }
 
   setCandidate(candidate) {
+    this.setState({
+      candidate
+    });
+
     this.props.loaders.candidates.replace(candidate);
     //console.log(candidate);
   }
@@ -699,6 +707,37 @@ class ShowSheet extends Sheet.Show {
     );
   }
 
+  loadCandidate(candyId) {
+    console.log("LOADING MAIN ITEM");
+    console.log(candyId);
+    this.props.loaders.candidates.loadItem(candyId).done(candidate => {
+      this.setCandidate(candidate);
+    });
+  }
+
+  componentDidMount() {
+    console.log("compnent did update");
+    console.log(this.props);
+
+    if (this.props.selected) {
+      this.loadCandidate(this.props.selected.id);
+    }
+  }
+
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("compnent did update");
+    console.log(this.props);
+
+    let pid = this.props.selected ? this.props.selected.id : null;
+    let lid = prevProps.selected ? prevProps.selected.id : null;
+
+    if (pid && (pid != lid)) {
+      this.loadCandidate(pid);
+    }
+  }
+
+
   renderHeader() {
     let job = this.props.job;
     if (!job) {
@@ -719,8 +758,16 @@ class ShowSheet extends Sheet.Show {
     }
 
     if (!item) {
-        return null;
+      return null;
     }
+
+    if (!this.state.candidate || (item.id != this.state.candidate.id)) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+
+    item = this.state.candidate; // use the loaded one
 
     //console.log("MESSAGE JOB");
     //console.log(item);

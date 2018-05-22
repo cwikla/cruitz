@@ -41,6 +41,10 @@ class Message < ApplicationRecord
     )
   end
 
+  def my_root
+    self.root_message_id ? self.root_message : self
+  end
+
   def thread_last_id
     rid = self.root_message_id ? self.root_message_id : self.id 
     tl = self.class.where(root_message_id: rid).select("id").order("-id").first
