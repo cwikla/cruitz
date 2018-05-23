@@ -625,12 +625,14 @@ label {
 
   color: $med_gray_color;
 
-  i {
+  .icon {
     font-size: 2.5em;
+    color: inherit;
   }
 
   .label {
     font-size: 1em;
+    color: inherit;
 
     &.unlocked {
     }

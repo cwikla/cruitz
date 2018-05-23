@@ -287,7 +287,7 @@ function fontProp(props) {
 }
 
 const Icon = (props) => (
-  <i {...Util.propsMergeClassName(Util.propsRemove(props, ["regular", "brand", "solid", "light"]), fontProp(props) + " fa-" + props.name)}/>
+  <i {...Util.propsMergeClassName(Util.propsRemove(props, ["regular", "brand", "solid", "light", "fixed"]), fontProp(props) + " fa-" + props.name + (props.fixed ? "fa-fw" : ""))}/>
 );
 
 const PrimaryButton = (props) => (

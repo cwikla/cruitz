@@ -708,16 +708,16 @@ class ShowSheet extends Sheet.Show {
   }
 
   loadCandidate(candyId) {
-    console.log("LOADING MAIN ITEM");
-    console.log(candyId);
+    //console.log("LOADING MAIN ITEM");
+    //console.log(candyId);
     this.props.loaders.candidates.loadItem(candyId).done(candidate => {
       this.setCandidate(candidate);
     });
   }
 
   componentDidMount() {
-    console.log("compnent did update");
-    console.log(this.props);
+    //console.log("compnent did update");
+    //console.log(this.props);
 
     if (this.props.selected) {
       this.loadCandidate(this.props.selected.id);
@@ -726,8 +726,8 @@ class ShowSheet extends Sheet.Show {
 
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("compnent did update");
-    console.log(this.props);
+    //console.log("compnent did update");
+    //console.log(this.props);
 
     let pid = this.props.selected ? this.props.selected.id : null;
     let lid = prevProps.selected ? prevProps.selected.id : null;

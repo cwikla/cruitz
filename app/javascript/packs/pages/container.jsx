@@ -124,7 +124,7 @@ class OldNavBar extends Component {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-5 flx-row navbar-nav align-items-center">
             <div className="flx-row ml-auto">
-              <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
+              <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell" className="fa-fw"/></div>
               <NavUserMenu user={this.props.user} />
             </div>
           </Pyr.Grid.Col>
@@ -143,7 +143,7 @@ class NavBar extends Component {
               <Logo className="mr-auto"/>
 
               <div className="flx-row ml-auto align-items-center">
-                <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
+                <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell" className="fa-fw"/></div>
                 <Container.NavUserMenu user={this.props.user} />
               </div>
           </Pyr.Grid.Col>

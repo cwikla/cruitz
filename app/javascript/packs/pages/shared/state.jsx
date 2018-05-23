@@ -82,23 +82,23 @@ function nexts(sid) {
   return NEXT_STATES[sid];
 }
 
-const Unlocked = (props) => (
-  <div className="state-bubble flx-col">
-    <Pyr.UI.Icon name="unlock" data-fa-transform="shrink-10 up-.5" data-fa-mask="fas fa-circle" />
-    <div className={ClassNames("label").push(toClassName(props.state))}>{ toName(props.state) }</div>
+const UnlockedBubble = (props) => (
+  <div className="state-bubble flx-col state unlocked">
+    <div className="icon"><Pyr.UI.Icon name="unlock" data-fa-transform="shrink-8" data-fa-mask="fas fa-circle" /></div>
+    <div className={ClassNames("label")}>{ toName(props.state) }</div>
   </div>
 );
 
 const Bubble = (props) => (
-  <div className="state-bubble flx-col">
-    <Pyr.UI.Icon name={ID_TO_STATE[props.state].icon} className={toClassName(props.state)} />
-    <div className={ClassNames("label").push(toClassName(props.state))}>{ toName(props.state) }</div>
+  <div className={"state-bubble flx-col " + toClassName(props.state)}>
+    <div className="icon "><Pyr.UI.Icon name={ID_TO_STATE[props.state].icon} /></div>
+    <div className={ClassNames("label")}>{ toName(props.state) }</div>
   </div>
 );
 
 const NoneBubble = (props) => (
-  <div className="state-bubble flx-col">
-    <Pyr.UI.Icon regular={true} name="circle" />
+  <div className="state-bubble flx-col none">
+    <div className="icon"><Pyr.UI.Icon regular={true} name="circle" /></div>
     <div className={ClassNames("label")}>&nbsp;</div>
   </div>
 );
@@ -122,9 +122,10 @@ class Bar extends Component {
     return (
         <div {...Pyr.Util.propsMergeClassName(rest, ClassNames("flx-row state-bar").push(this.props.className))}>
           { states.map(astate => {
+              let TheBubble = astate == STATE_UNLOCKED ? UnlockedBubble : Bubble;
               return (
                 <Pyr.UI.PassThru key={"sta-"+astate} className="">
-                  <Bubble state={astate} current={this.props.state}/>
+                  <TheBubble state={astate} current={this.props.state} />
                   { NEXT_STATES[astate].length == 0 ? null : <Nibble state={astate} current={this.props.state} /> }
                 </Pyr.UI.PassThru>
               );

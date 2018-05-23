@@ -60,7 +60,7 @@ class NavBar extends Component {
               <Logo className="mr-auto"/>
 
               <div className="flx-row ml-auto align-items-center">
-                <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell-o" className="fa-fw"/></div>
+                <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell" className="fa-fw"/></div>
                 <Container.NavUserMenu user={this.props.user} />
               </div>
           </Pyr.Grid.Col>
