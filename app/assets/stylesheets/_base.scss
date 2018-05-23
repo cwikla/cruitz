@@ -23,6 +23,14 @@ a:hover {
   color: $primary_light_color !important;
 }
 
+.font-primary-color {
+  color: $primary_color;
+}
+
+.font-secondary-color {
+  color: $secondary_color;
+}
+
 .scroll-x {
   display: flex;
   flex-wrap: nowrap;

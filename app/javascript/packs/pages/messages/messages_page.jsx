@@ -253,8 +253,15 @@ class ShowSheet extends Sheet.Show {
     if (!candidate.unlocked_at) {
       return (
         <div className="section flx-col candidate-mini new">
-          <div>You have a new candidate: {candidate.summary}</div>
-          <div>You can respond to this recruiter and see more about this candidate <Link to={url.toString()}>here</Link>.</div>
+          <Link to={url.toString()} className="flx-row flx-1">
+            <div className="flx-col flx-1">
+              <div>You have a new candidate: {candidate.summary}</div>
+              <div>You can respond to this recruiter and see more about this candidate <span className="font-secondary-color">here</span>.</div>
+            </div>
+            <div className="mb-auto">
+              <Pyr.UI.Icon name="lock" />
+            </div>
+          </Link>
         </div>
       );
     }
