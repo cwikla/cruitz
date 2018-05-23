@@ -62,7 +62,7 @@ class SubIcon extends Component {
       <Link to={url.toString()}>
         <div {...all}>
           <Pyr.UI.Icon name={this.props.icon} className="mt-auto mb-auto"/>
-          <div className="title">{this.props.count} - {this.props.name}</div>
+          <div className="title">&nbsp;{this.props.count} - {this.props.name}</div>
         </div>
       </Link>
     );
