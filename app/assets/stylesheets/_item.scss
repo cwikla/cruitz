@@ -82,6 +82,10 @@
     overflow: hidden;
     text-overflow: ellipses;
 
+    &.card-item {
+      overflow: visible;
+    }
+
     &:hover {
       b-background-color: rgba($light_gray_color, 0.5);
     }

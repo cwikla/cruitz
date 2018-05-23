@@ -368,7 +368,7 @@ class EditSheet extends Sheet.Edit {
       <div>
         { super.render() }
         <div className="me-info p-1 d-flex flx-end">
-          <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out"/>Logout</Pyr.UI.PrimaryButton>
+          <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out-alt"/> Logout</Pyr.UI.PrimaryButton>
         </div>
       </div>
     );

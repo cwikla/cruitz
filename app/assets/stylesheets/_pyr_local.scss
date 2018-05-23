@@ -236,6 +236,7 @@ $pfs_default_size: 5;
   .thing {
     padding: 0.5rem;
     padding-top: 0;
+    font-size: #{$pfs_default_size - 2}rem;
 
     border: 1px solid transparent;
 
@@ -249,7 +250,6 @@ $pfs_default_size: 5;
     }
 
     i.fa {
-      font-size: 3rem;
       padding: 1rem;
 
       &.fa-close {

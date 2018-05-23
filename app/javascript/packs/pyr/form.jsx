@@ -1098,8 +1098,8 @@ class FileSelector extends Child {
       //console.log(upload);
       return (
         <div key={upload.id + "-img"} className="upload thing flx-col" onClick={ e => this.onRemoveUpload(e, upload) }>
-          <UI.IconButton name="close" className="remove ml-auto"/>
-          <UI.ImageFile url={upload.url} contentType={upload.content_type} />
+          <UI.IconButton name="times" className="remove ml-auto"/>
+          <UI.ImageFile url={upload.url} contentType={upload.content_type} className="ml-auto mr-auto"/>
           <div className="file-name">{showFileName ? upload.file_name : ""}</div>
         </div>
       );
@@ -1123,7 +1123,7 @@ class FileSelector extends Child {
       }
       return (
         <div key={file_hash(file)+"-file"} className="file thing" >
-          <UI.IconButton name="close" className="remove ml-auto"/>
+          <UI.IconButton name="times" className="remove ml-auto"/>
           <UI.ImageFile file={file} />
           <div className="file-name">{showFileName ? file.name: ""}</div>
         </div>

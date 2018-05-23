@@ -287,7 +287,9 @@ function fontProp(props) {
 }
 
 const Icon = (props) => (
-  <i {...Util.propsMergeClassName(Util.propsRemove(props, ["regular", "brand", "solid", "light", "fixed"]), fontProp(props) + " fa-" + props.name + (props.fixed ? "fa-fw" : ""))}/>
+  <span {...Util.propsMergeClassName(Util.propsRemove(props, ["regular", "brand", "solid", "light", "fixed"]), "pyr-icon")}>
+    <i className={ClassNames(fontProp(props), " fa-" + props.name,  (props.fixed ? "fa-fw" : ""))} />
+  </span>
 );
 
 const PrimaryButton = (props) => (
@@ -408,13 +410,14 @@ class ImageFile extends Component {
   render() {
     let ftype = this.getContentType().toLowerCase();
 
+    let rest = Util.propsRemove(this.props, ["file", "url", "contentType"]);
+
     if (!Attachment.isImageType(this.props.file || this.props.contentType)) {
       return (
-        <Icon name={"file-" + ftype + "-o"}/>
+        <Icon name={"file-" + ftype} regular {...Util.propsMergeClassName(rest, "pyr-image-file")}/>
       );
     }
 
-    let rest = Util.propsRemove(this.props, ["file", "url", "contentType"]);
     
     return (
       <img
@@ -913,7 +916,7 @@ class Modal extends Component {
           >
             <div className="pyr-app-modal-header flx-row">
               { this.renderTitle() }
-              <IconButton name="close" className="close ml-auto" onClick={this.onClose}/>
+              <IconButton name="times" className="times ml-auto" onClick={this.onClose}/>
             </div>
             <div className="pyr-app-modal-inner" >
               { this.renderInner() }
