@@ -22,16 +22,16 @@ const STATE_RECALLED = -1000;
 const STATE_CANCELED = -5000;
 
 const ID_TO_STATE = {
-  [STATE_NEW]: { name: "New", action: "New"},
-  [STATE_UNLOCKED] : {name: "Unlocked", action: "Unlock"},
-  [STATE_ENGAGED] : {name: "Engaged", action: "Engage"},
-  [STATE_OFFER] : {name: "Offer", action: "Offer"},
-  [STATE_HIRED] : {name: "Hired", action: "Hire"},
+  [STATE_NEW]: { name: "New", action: "New", icon: "plus-circle"},
+  [STATE_UNLOCKED] : {name: "Unlocked", action: "Unlock", icon: "unlock"},
+  [STATE_ENGAGED] : {name: "Engaged", action: "Engage", icon: "dot-circle"},
+  [STATE_OFFER] : {name: "Offer", action: "Offer", icon: "info-circle"},
+  [STATE_HIRED] : {name: "Hired", action: "Hire", icon: "user-circle"},
 
-  [STATE_REJECTED] : {name: "Rejected", action: "Reject"},
-  [STATE_SPAM] : {name: "SPAM",action: "SPAM"},
-  [STATE_RECALLED] : {name: "Recalled", action: "Recall"},
-  [STATE_CANCELED] : {name: "Cancelled", action: "Cancel"},
+  [STATE_REJECTED] : {name: "Rejected", action: "Reject", icon: "minus-circle"},
+  [STATE_SPAM] : {name: "SPAM",action: "SPAM", icon: "ban"},
+  [STATE_RECALLED] : {name: "Recalled", action: "Recall", icon: "exclamation-circle"},
+  [STATE_CANCELED] : {name: "Cancelled", action: "Cancel", icon: "times-circle"},
 };
 
 const NEXT_STATES = {
@@ -82,9 +82,16 @@ function nexts(sid) {
   return NEXT_STATES[sid];
 }
 
+const Unlocked = (props) => (
+  <div className="state-bubble flx-col">
+    <Pyr.UI.Icon name="unlock" data-fa-transform="shrink-10 up-.5" data-fa-mask="fas fa-circle" />
+    <div className={ClassNames("label").push(toClassName(props.state))}>{ toName(props.state) }</div>
+  </div>
+);
+
 const Bubble = (props) => (
   <div className="state-bubble flx-col">
-    <Pyr.UI.Icon regular={props.state < 0 ? false : true} name={props.state < 0 ? "minus-circle" : "check-circle"} className={toClassName(props.state)} />
+    <Pyr.UI.Icon name={ID_TO_STATE[props.state].icon} className={toClassName(props.state)} />
     <div className={ClassNames("label").push(toClassName(props.state))}>{ toName(props.state) }</div>
   </div>
 );

@@ -11,11 +11,11 @@ class ReadThreadJob < Pyr::Async::BaseJob
 
     message = Message.find_safe(message_id)
 
-    puts "GOT MESSAGE #{message.inspect}"
+    #puts "GOT MESSAGE #{message.inspect}"
     return if message.nil?
 
     messages = message.thread()
-    puts "GOT #{messages.count} MESSAGES"
+    #puts "GOT #{messages.count} MESSAGES"
     messages.each do |m|
       next if m.read_at
 

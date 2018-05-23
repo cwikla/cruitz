@@ -37,7 +37,7 @@ class ReviewList extends Component {
     }
 
     if (this.props.reviews.length == 0) {
-      return <div>No reviews. Why no leave one?</div>
+      return <div>No reviews. Why not leave one?</div>
     }
 
     return this.props.reviews.map((review) => {
