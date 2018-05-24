@@ -274,7 +274,7 @@ class Card extends Component {
               url={url}
               id={recruiter.id}
             />
-            <Avatar.Stars rating={3.7} className="mt-auto mb-auto"/>
+            <Avatar.Stars rating={Math.random() * 5.0} className="mt-auto mb-auto"/>
 
             <div className="dropdown ml-auto flx-me-start">
               <Pyr.UI.Icon name="bars" className="dropdown-toggle" id="recCardFilterMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
