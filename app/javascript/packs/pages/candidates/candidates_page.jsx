@@ -165,7 +165,7 @@ class CandidateItem extends Component {
        allClass.push("selected");
     }
 
-    allClass.push("state").push(stateName);
+    allClass.push("state");
     if (!candidate.unlocked_at) {
       allClass.push("locked");
     }
