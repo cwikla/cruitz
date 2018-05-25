@@ -329,8 +329,8 @@ class SearchForm extends Component {
   }
 
   success(data, textStatus, jqXHR) {
-    console.log("SUCCESSS");
-    console.log(data);
+    //console.log("SUCCESSS");
+    //console.log(data);
     this.props.onSetItems(data.recruiters || []);
   }
 

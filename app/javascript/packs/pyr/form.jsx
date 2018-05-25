@@ -1274,8 +1274,8 @@ class AutoComplete extends Child {
   }
 
   search(query) {
-    console.log("A: *******");
-    console.log(this.props.url);
+    //console.log("A: *******");
+    //console.log(this.props.url);
     let url = Util.URL(this.props.url).push("auto").set("q", query);
     //console.log(url);
     //console.log(url.parser.href);
@@ -1286,8 +1286,8 @@ class AutoComplete extends Child {
       url : url,
       onLoading : this.onLoading,
     }).done((data, textStatus, jqXHR) => {
-      console.log("RESULTS");
-      console.log(data.results);
+      //console.log("RESULTS");
+      //console.log(data.results);
       this.setState({
         results: data.results
       });
