@@ -13,6 +13,22 @@ class UsersController < ApplicationController
     render json: @recruiter, serializer: RecruiterSerializer, reviews: true
   end
 
+  def recruiter_search
+    puts "PARAMS"
+    puts params
+
+    spar = recruiter_search_params
+    puts "PARAMS"
+    puts spar
+
+    all = User.is_recruiter.full_search(spar)
+    puts all.to_sql
+    #all = []
+
+    render json: all, each_serializer: RecruiterSerializer, company: true
+  end
+
+
   def password
     pwd = params.require(:user).require(:password)
     current_user.password = pwd
@@ -55,6 +71,11 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :logo)
   end
+
+  def recruiter_search_params
+    params.require(:search).permit(:key_words, categories: [], locations: [], companies: [])
+  end
+
 
   
 

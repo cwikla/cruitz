@@ -288,7 +288,9 @@ function fontProp(props) {
 
 const Icon = (props) => (
   <span {...Util.propsMergeClassName(Util.propsRemove(props, ["regular", "brand", "solid", "light", "fixed"]), "pyr-icon")}>
-    <i className={ClassNames(fontProp(props), " fa-" + props.name,  (props.fixed ? "fa-fw" : ""))} />
+    <i 
+      {...Util.propsMergeClassName(Util.propsRemove(props, ["regular", "brand", "solid", "light", "fixed"]),
+        ClassNames(fontProp(props), " fa-" + props.name,  (props.fixed ? "fa-fw" : "")))} />
   </span>
 );
 

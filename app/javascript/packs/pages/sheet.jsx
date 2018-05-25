@@ -11,6 +11,8 @@ import Pyr, {
 } from '../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+import Loader from './loader/loader';
+
 import Logo from './shared/logo';
 
 class FSWL extends Pyr.UI.FullScreen {
@@ -24,13 +26,14 @@ class FSWL extends Pyr.UI.FullScreen {
 class Item extends Component {
 }
 
-
 class Base extends Component {
   constructor(...args) {
     super(...args);
 
     this.initState({
       isLoading: false,
+      searchItems: null,
+      searchItemsMap: null,
     });
 
     this.onClicks = {};
@@ -38,6 +41,41 @@ class Base extends Component {
     this.onLoaded = this.setLoading.bind(this, false);
     this.onBack = this.back.bind(this);
     this.onClose = this.close.bind(this);
+
+    this.onSetSearchItems = this.setSearchItems.bind(this);
+    this.onResetSearch = this.resetSearch.bind(this);
+    this.onSearchPreSubmit = this.searchPreSubmit.bind(this);
+  }
+
+  resetSearch() {
+    this.setState({
+      items: null,
+      itemsMap: null,
+    });
+  }
+
+  setSearchItems(searchItems) {
+    console.log("SET SEARCH ITEMS");
+    console.log(searchItems);
+
+    let searchItemsMap = null;
+
+    if (searchItems) {
+      //console.log("ITEMS ET TO");
+      //console.log(items);
+      //items = this.sortItems(items);
+      searchItemsMap = searchItems.reduce((m, o) => {m[o.id] = o; return m;}, {});
+    }
+
+    this.setState({
+       searchItems, 
+       searchItemsMap,
+    });
+
+  }
+
+  searchPreSubmit() {
+    setSearchItems(null);
   }
 
   name() {
@@ -137,11 +175,11 @@ class Base extends Component {
   }
 
   getItems() {
-    return this.props.items;
+    return this.state.searchItems || this.props.items;
   }
 
   getItemsMap() {
-    return this.props.itemsMap;
+    return this.state.searchItemsMap || this.props.itemsMap;
   }
 
   route(url) {

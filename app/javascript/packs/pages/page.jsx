@@ -291,6 +291,7 @@ class Page extends Component {
       onSetItems: this.onSetItems,
       onSetSelected: this.onSetSelected,
       onReplaceItem: this.onReplaceItem,
+      loader: this.loader(),
     });
   }
 

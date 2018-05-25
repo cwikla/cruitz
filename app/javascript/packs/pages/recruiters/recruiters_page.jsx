@@ -261,9 +261,7 @@ class IndexSheet extends Sheet.Index {
       <div className="row">
         <div className={leftClasses}>
           <RecruitersPage.SearchForm
-            onSetItems={this.props.onSetItems}
-            onPreSubmit={this.props.onPreSubmit}
-            onPostSubmit={this.props.onPostSubmit}
+            onSetItems={this.onSetSearchItems}
             onError={this.props.onError}
           />
         </div>
@@ -331,9 +329,9 @@ class SearchForm extends Component {
   }
 
   success(data, textStatus, jqXHR) {
-    //console.log("SUCCESSS");
-    //console.log(data);
-    this.props.onSetItems(data.jobs || []);
+    console.log("SUCCESSS");
+    console.log(data);
+    this.props.onSetItems(data.recruiters || []);
   }
 
   preSubmit() {
@@ -383,20 +381,6 @@ class SearchForm extends Component {
             <Pyr.Form.AutoComplete url={LOCATIONS_URL} multiple labelKey="full_name" valueByID bpSize="small"/>
           </Pyr.Form.Group>
 
-          <Pyr.Form.Group name="skills">
-            <Pyr.Form.Label>Skills</Pyr.Form.Label>
-            <Pyr.Form.AutoComplete url={SKILLS_URL} multiple bpSize="small"/>
-          </Pyr.Form.Group>
-
-          <Pyr.Form.Group name="age">
-            <Pyr.Form.Label>Posting Age</Pyr.Form.Label>
-            <Pyr.Form.Range
-              minValue={0}
-              maxValue={10}
-              step={1}
-              formatLabel={this.renderAge}
-            />
-          </Pyr.Form.Group>
         </Pyr.Form.Form>
         <div className="form-footer">
           <Pyr.Form.SubmitButton target={this.onGetTarget} disabled={this.props.isLoading}>Filter</Pyr.Form.SubmitButton>

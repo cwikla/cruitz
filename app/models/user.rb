@@ -49,6 +49,8 @@ class User < ApplicationRecord
 
   validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }, unless: :password_is_nil?
 
+  pg_search_scope :search, against: [:first_name, :last_name] #, using: :trigram
+
   def after_cached
     self.score_cached(true)
     #self.thread_last_cached(true)
@@ -148,6 +150,34 @@ class User < ApplicationRecord
   def self.find_recruiter(id, clear=false)
     ux = User.find(id)
     ux = ux.is_recruiter ? ux : nil
+  end
+
+  def self.full_search(params)
+    q = self
+    kw = params[:key_words]
+    q = q.search(kw.strip) if !kw.blank?
+
+    categories = [*params[:categories]]
+    if !categories.blank?
+      q = q.joins(:categories).merge(Category.where(id: categories).or(Category.where(parent_id: categories)))
+    end
+
+    locations = [*params[:locations]]
+    if !locations.blank?
+      q = q.joins(:locations).merge(GeoName.where(id: locations).or(GeoName.where(primary_id: locations)))
+    end
+
+    companies = [*params[:companies]]
+    if !companies.blank?
+      q = q.joins(:company).merge(Company.where(id: companies))
+    end
+
+    skills = [*params[:skills]]
+    if !skills.blank?
+      q = q.joins(:skills).merge(Skill.where(id: skills))
+    end
+
+    return q.order("-users.id")
   end
 
   def ui_identifier
