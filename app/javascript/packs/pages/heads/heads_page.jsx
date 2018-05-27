@@ -65,15 +65,8 @@ class HeadItem extends Component {
     return (
       <div className={allClass} id={id}>
         <div className="mr-auto full-name">{head.full_name}</div>
-        { head.experiences.map( exp => {
-            if (exp.year_end) {
-              return null;
-            }
-            return (
-              <div className="mr-auto current">{exp.place} - {exp.title}</div>
-            );
-          })
-        }
+        <div className="mr-auto current">{head.summary}</div>
+
         <div className="application-counts ml-auto">
           <div className="mr-auto submitted-count">{head.candidates.total || 0} Applications</div>
           <div className="mr-auto submitted-count">{head.candidates.waiting || 0} Waiting</div>

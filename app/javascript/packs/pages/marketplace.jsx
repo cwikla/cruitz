@@ -124,8 +124,8 @@ class LoaderComponent extends Loader.Component {
     super(props);
 
     this.initState({
-      positions: null,
-      positionsMap: null,
+      jobs: null,
+      jobsMap: null,
 
       heads: null,
       headsMap: null,
@@ -134,19 +134,9 @@ class LoaderComponent extends Loader.Component {
       messagesMap: null,
     });
 
-/*
-    let loaderProps = {
-      onSetState: this.onSetState,
-      onGetState: this.onGetState,
-      onLoading: this.onLoading,
-      onSetItems: this.onSetItems,
-    };
-*/
-
-
-    this.positionsLoader = new Loader.Positions(loaderProps);
-    this.headsLoader = new Loader.Heads(loaderProps);
-    this.messagesLoader = new Loader.Messages(loaderProps);
+    this.positionsLoader = new Loader.Positions(this.loaderProps);
+    this.headsLoader = new Loader.Heads(this.loaderProps);
+    this.messagesLoader = new Loader.Messages(this.loaderProps);
   }
 
   extraProps() {
@@ -158,8 +148,12 @@ class LoaderComponent extends Loader.Component {
       },
 
       // need to see if I can make this a dict...
-      positions: this.state.positions,
-      positionsMap: this.state.positionsMap,
+      jobs: this.state.jobs,
+      jobsMap: this.state.jobsMap,
+
+      positions: this.state.jobs,
+      positionsMap: this.state.jobsMap,
+      
 
       heads: this.state.heads,
       headsMap: this.state.headsMap,
@@ -169,25 +163,29 @@ class LoaderComponent extends Loader.Component {
     });
   }
 
+  componentDidMount() {
+    if (!this.state.jobs) {
+      this.positionsLoader.load();
+    }
+  }
+
   render() {
+    if (!this.state.jobs) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+      // wait for jobs to load
+
     let props = this.getProps();
 
+        //<Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
+        //<Pyr.UI.RouteURL path="/heads/new" page="heads" action="new" />
+        //<Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
     return (
       <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE} {...props} >
-        <Pyr.UI.RouteURL path="/messages/:pid" page="messages" action="index" />
-        <Pyr.UI.RouteURL path="/heads/new" page="heads" action="new" />
-        <Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
         <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
       </Pyr.UI.RouterProps>
-    );
-  }
-}
-
-
-class Hello extends Component {
-  render() {
-    return (
-      <div>HELLLO</div>
     );
   }
 }

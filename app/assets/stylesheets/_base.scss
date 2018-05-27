@@ -1126,3 +1126,19 @@ div.line {
   display: inline-block;
   margin: 0px;
 }
+
+.web-link {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  padding-right: 0.5rem;
+  border-bottom: 1px solid $white;
+  span {
+    &:hover {
+      border-bottom: 1px solid $primary_color;
+      &.locked {
+        border-bottom: 1px solid $white;
+      }
+    }
+  }
+}
+

@@ -31,9 +31,7 @@ class CandidateSmallSerializer < ActiveModel::Serializer
   end
 
   def summary
-    t = object.head.experiences.select(:title, :place).first
-    return "#{t.title} @ #{t.place}" if t
-    return nil
+    t = object.head.summary
   end
 
   def score

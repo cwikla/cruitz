@@ -17,6 +17,7 @@ import Sheet from '../sheet';
 import MessageThread from '../messages/message_thread';
 import Recruiter from '../shared/recruiter';
 import Loader from '../loader/loader';
+import WebLink from '../shared/web_link';
 
 import Avatar, {
 } from '../shared/avatar';
@@ -36,63 +37,6 @@ import {
 
   RANGES
 } from '../const';
-
-const WEB_LINK_WEB = 0;
-const WEB_LINK_IN = 1;
-const WEB_LINK_GITHUB = 2;
-const WEB_LINK_DRIBBBLE = 3;
-const WEB_LINK_QUORA = 4;
-const WEB_LINK_FACEBOOK = 5;
-const WEB_LINK_TWITTER = 6;
-const WEB_LINK_ANGELIST = 7;
-
-const WEB_LINK_TO = {
-  [WEB_LINK_IN] : "linkedin-in",
-  [WEB_LINK_GITHUB] : "github",
-  [WEB_LINK_DRIBBBLE] : "dribbble",
-  [WEB_LINK_QUORA] : "quora",
-  [WEB_LINK_FACEBOOK] : "facebook-f",
-  [WEB_LINK_TWITTER] : "twitter",
-  [WEB_LINK_ANGELIST] : "angellist",
-};
-
-
-const WebLinkFont = (props) => (
-  <a href={props.webLink.url} target="_cruitz"><Pyr.UI.Icon brand={!!WEB_LINK_TO[props.webLink.ltype]} name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} /></a>
-);
-
-const WebLinkLock = (props) => (
-  <Pyr.UI.Icon brand={!!WEB_LINK_TO[props.webLink.ltype]}  name={WEB_LINK_TO[props.webLink.ltype] ? WEB_LINK_TO[props.webLink.ltype] : "link"} className="locked"/>
-);
-
-class WebLinks extends Component {
-  render() {
-    if (!this.props.candidate) {
-      return null;
-    }
-
-    let candidate = this.props.candidate;
-
-    let webLinks = candidate.links;
-    if (!webLinks) {
-      return null;
-    }
-
-    let locked = !candidate.unlocked_at;
-
-    let WebLinkComp = locked ? WebLinkLock : WebLinkFont;
-
-    return (
-      <div id="web-links" className="cv-section web-links flx-row">
-        {
-          webLinks.map( (item, pos) => {
-            return (<div className="web-link flx-0 flx-nowrap" key={"web-lnk"+item.id}><WebLinkComp webLink={item} /></div>);
-          })
-        }
-      </div>
-    );
-  }
-}
 
 const Lock = (props) => (
   <div className="flx-col">
@@ -143,7 +87,7 @@ class CandidateHeader extends Component {
           <div className={ClassNames(extra).push("salary mr-auto flx-1")}>{salary}</div>
         </div>
         <div className="flx-row-stretch info social-links">
-          <WebLinks candidate={candidate} />
+          <WebLink.Links links={candidate.links} locked={!!candidate.unlocked_at}/>
         </div>
         <div className={ClassNames(extra).push("lock ml-auto mr-auto mt-auto mb-auto")}><ALock /></div>
       </div>

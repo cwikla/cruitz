@@ -129,6 +129,9 @@ class IndexSheet extends Sheet.Index {
   }
 
   getJob(msg) {
+    console.log("GET JOB");
+    console.log(msg);
+
     if (!msg) {
       return null;
     }

@@ -15,6 +15,8 @@ import Pyr, {
 } from '../../pyr/pyr';
 const ClassNames = Pyr.ClassNames;
 
+import WebLink from '../shared/web_link';
+
 class Head extends Component {
   render () {
     return (
@@ -182,12 +184,14 @@ class WorkHistory extends Component {
 
 class Full extends Component {
   render() {
+    let head = this.props.head;
+
     return (
       <Head>
         <Name {...this.props} />
         <Primary {...this.props}/>
         <Address {...this.props} />
-        <SocialLinks {...this.props} />
+        <WebLink.Links links={head.links} locked={false} />
         <Skills {...this.props} />
         <WorkHistory {...this.props} />
       </Head>

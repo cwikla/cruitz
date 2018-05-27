@@ -47,6 +47,12 @@ class Head < ApplicationRecord
     "#{self.first_name} #{self.last_name}"
   end
 
+  def summary
+    t = experiences.select(:title, :place).first
+    return "#{t.title} @ #{t.place}" if t
+    return nil
+  end
+
   def add_skill(skill)
     return HeadSkill.find_or_create_unique(head: self, skill: skill)
   end

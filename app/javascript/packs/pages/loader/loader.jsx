@@ -293,7 +293,7 @@ class Candidates extends LoaderBase {
 
 class Positions extends LoaderBase {
   name() {
-    return "positions";
+    return "jobs";
   }
 
   url() {
