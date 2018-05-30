@@ -8,7 +8,8 @@ class CandidateSmallSerializer < ActiveModel::Serializer
     :state,
     :unlocked_at,
     :summary,
-    :score
+    :score,
+    :commission
 
   def first_name
     object.unlocked? ? object.head.first_name : nil

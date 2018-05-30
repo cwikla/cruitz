@@ -70,8 +70,8 @@ const Simple = (props) => (
 );
 
 const Score = (props) => (
-  <div className={Pyr.ClassNames("user-score justify-content-center flx-col-stretch").push(props.className)}>
-    <div className="align-self-center">{ Pyr.Util.firstKid(props.children) }</div>
+  <div className={Pyr.ClassNames("user-score").push(props.className)}>
+    <Pyr.UI.Icon name="bullseye" />&nbsp;{ Pyr.Util.firstKid(props.children) }
   </div>
 );
 

@@ -74,6 +74,12 @@ class CandidateHeader extends Component {
 
     let ALock = candidate.unlocked_at ? Pyr.UI.Empty : Lock;
 
+/*
+    console.log("HMMM");
+    console.log(candidate.unlocked_at);
+    console.log(!!candidate.unlocked_at);
+*/
+
     return (
       <div className={clazzes} >
         <div className="flx-row flx-1">
@@ -87,7 +93,7 @@ class CandidateHeader extends Component {
           <div className={ClassNames(extra).push("salary mr-auto flx-1")}>{salary}</div>
         </div>
         <div className="flx-row-stretch info social-links">
-          <WebLink.Links links={candidate.links} locked={!!candidate.unlocked_at}/>
+          <WebLink.Links links={candidate.links} locked={!candidate.unlocked_at}/>
         </div>
         <div className={ClassNames(extra).push("lock ml-auto mr-auto mt-auto mb-auto")}><ALock /></div>
       </div>
@@ -358,6 +364,19 @@ class IndexSheet extends Sheet.Index {
 
 }
 
+const Match = (props) => (
+  <div className="flx-col candidate-match section">
+    <Avatar.Score>{props.candidate.score}</Avatar.Score>
+  </div>
+);
+
+const Fee = (props) => (
+  <div className="flx-col candidate-fee section">
+    <div className="title">Fee</div>
+    <div className="commission">{props.candidate.commission} %</div>
+  </div>
+);
+
 class RecruiterMessage extends Component {
   render() {
     let candidate = this.props.candidate;
@@ -547,6 +566,51 @@ const StateButton = (props) =>  (
   >{props.children}</Pyr.UI.PrimaryButton>
 );
 
+class UnlockModal extends Pyr.UI.Modal {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+    });
+
+    this.onNextStep = this.nextStep.bind(this);
+  }
+
+  title() {
+    return "Unlock Candidate";
+  }
+
+  nextStep(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onClick();
+    this.props.onClose();
+  }
+
+  renderInner() {
+    let state = State.STATE_UNLOCKED;
+
+    let name = State.toName(state);
+    let action = State.toAction(state);
+
+    return (
+      <div className="inner">
+        <div className="section">
+          By unlocking this candidate you agree to pay a commission of {this.props.candidate.commission}%
+          of their first year salary if they are hired within a year from today.
+        </div>
+        <div className="section">
+          Unlocking this candidate gives you full access to their details, attachments and the ability to 
+          directly message with the recruiter.
+        </div>
+        <StateButton key={"sb-unlock-mod-"+name} state={state} onClick={this.onNextStep}>{action}</StateButton>
+      </div>
+    );
+  }
+}
+
 class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
@@ -555,6 +619,29 @@ class ShowSheet extends Sheet.Show {
 
     this.initState({
       candidate: null,
+      showUnlockModal: false,
+    });
+
+    this.onHideUnlock = this.hideUnlock.bind(this);
+    this.onShowUnlock = this.showUnlock.bind(this);
+  }
+
+  hideUnlock(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.setState({
+      showUnlockModal: false
+    });
+  }
+
+  showUnlock(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    this.setState({
+      showUnlockModal: true
     });
   }
 
@@ -611,6 +698,7 @@ class ShowSheet extends Sheet.Show {
   }
 
   renderButtons(curState) {
+    let candidate = this.props.selected;
     let nexts = State.nexts(curState);
 
     return (
@@ -619,6 +707,12 @@ class ShowSheet extends Sheet.Show {
         nexts.map( (state, pos) => {
           let name = State.toName(state);
           let action = State.toAction(state);
+
+          if (!candidate.unlocked_at && (state == State.STATE_UNLOCKED)) {
+            return (
+              <StateButton key={"sb-" + name} state={state} onClick={this.onShowUnlock}>{action}</StateButton>
+            );
+          }
 
           return (
             <StateButton key={"sb-" + name} state={state} onClick={this.onButtonPresses[state]}>{action}</StateButton>
@@ -644,8 +738,7 @@ class ShowSheet extends Sheet.Show {
 
     return (
       <div className={clazzes}>
-        <Avatar.Score className={ClassNames("flx-align-content-start mr-auto").push(sclz)}>{score}</Avatar.Score>
-        <State.Bar state={candidate.state} candidateStates={candidate.candidate_states} className="ml-auto mr-auto"/>
+        <State.Bar state={candidate.state} candidateStates={candidate.candidate_states} className="mr-auto"/>
         <div className="ml-auto">{ this.renderButtons(candidate.state) }</div>
       </div>
     );
@@ -723,10 +816,20 @@ class ShowSheet extends Sheet.Show {
     //console.log("RECRUITER");
     //console.log(recruiter);
 
+    let unlockAction = this.onButtonPresses[State.STATE_UNLOCKED];
 
     return (
         <div className="flx-row flx-1">
-          <div className="flx-col left flx-5">
+          <div className="flx-col left flx-5 unlock-modal-below">
+            <UnlockModal 
+              open={this.state.showUnlockModal} 
+              onClose={this.onHideUnlock} 
+              candidate={candidate}
+              recruiter={recruiter}
+              job={job}
+              onClick={unlockAction}
+            />
+
             { this.statusTop(candidate) }
             <div className="flx-col flx-2 cv">
               <Pyr.UI.Scroll>
@@ -739,7 +842,9 @@ class ShowSheet extends Sheet.Show {
  
             </div>
           </div>
-          <div className="flx-col right flx-2">
+          <div className="right flx-2">
+            <Match candidate={candidate} job={job} recruiter={recruiter} />
+            <Fee candidate={candidate} job={job} recruiter={recruiter} />
             <Recruiter.Blurb recruiter={recruiter}/>
             <RecruiterMessage candidate={candidate} job={job} recruiter={recruiter} />
           </div>
@@ -765,51 +870,6 @@ class New extends Sheet.Base {
   renderForm() { 
     return ( 
       <CandidateForm onPreSubmit={this.onPreSubmit} postSubmit={this.postSubmit} />
-    );
-  }
-}
-
-const CandidateRow = (props) => (
-  <tr>
-    <td>{props.candidate.first_name}</td>
-    <td>{props.job}</td>
-    <td>{props.job}</td>
-  </tr>
-);
-
-class CandidateTable extends Sheet.Index {
-  key(item) {
-    return "candidate-row-" + item.id;
-  }
-
-  render() {
-    if (!this.props.items) {
-      return null;
-    }
-
-    return (
-      <table id="candidate-table" className="display col-stretch">
-        <thead>
-          <tr>
-            <th>Candidate</th>
-            <th>Job</th>
-            <th>Submitted At</th>
-          </tr>
-        </thead>
-        <tbody>
-          { 
-            this.props.items.map((candidate, pos) => {
-              let job = candidate.job_id;
-              let key = "candidate-row-" + candidate.id;
-              return (<CandidateRow 
-                        key={key}
-                        candidate={candidate} 
-                        job={job} />
-              );
-            })
-          }
-        </tbody>
-      </table>
     );
   }
 }

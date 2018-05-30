@@ -10,9 +10,24 @@
       }
 
     &.sheet {
-      .user-score {
-        margin-left: 1rem;
-        font-size: 3rem;
+      .right {
+        .section {
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      .candidate-match {
+        .user-score {
+          font-size: 3rem;
+          color: $secondary_color;
+        }
+      }
+
+      .candidate-fee {
+        .commission {
+          font-size: 1.5rem;
+          line-height: 3rem;
+        }
       }
 
       .status {
@@ -166,17 +181,22 @@
       }
     }
   }
-  
-  .recruiter-message {
-    max-height: 20rem;
+ 
+  .section { 
     padding: 1rem;
-    margin-top: 0.5rem;
 
     .title {
       font-weight: $font_weight_bold;
       border-bottom: 1px solid $border_color;
       margin-bottom: 0.5rem;
     }
+  }
+
+  .recruiter-message {
+    max-height: 20rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+
 
     .message {
       font-style: italic;
