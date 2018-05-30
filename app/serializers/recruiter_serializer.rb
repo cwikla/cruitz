@@ -8,7 +8,7 @@ class RecruiterSerializer < UserSerializer
   end
 
   def score
-    object.score || (rand * 5) # FIXME
+    (rand * 3) + 2 # FIXME
   end
 
   def attributes(*args)

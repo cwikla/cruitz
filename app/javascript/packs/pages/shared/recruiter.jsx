@@ -350,8 +350,8 @@ class Blurb extends Component {
     let TheBack = (logo && logo.url) ? Pyr.UI.BackgroundImage : Pyr.UI.DIV;
     let backURL = (logo && logo.url ) ? logo.url : null;
 
-    console.log("RECRUITER");
-    console.log(recruiter);
+    //console.log("RECRUITER");
+    //console.log(recruiter);
 
     return (
       <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-blurb ")} >

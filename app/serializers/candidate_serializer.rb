@@ -9,7 +9,7 @@ class CandidateSerializer < CandidateSmallSerializer
     :candidate_states
 
   has_many :candidate_states
-  has_one :recruiter
+  #has_one :recruiter
 
   def candidate_states_unused
     object.candidate_states.order(:id)
@@ -29,6 +29,10 @@ class CandidateSerializer < CandidateSmallSerializer
 
   def links
     object.unlocked? ? object.head.links : object.head.links.map{ |x| Link.new(ltype: x.ltype, id: x.id) }
+  end
+
+  def recruiter
+    RecruiterSerializer.new(object.recruiter)
   end
 
   def uploads

@@ -720,6 +720,9 @@ class ShowSheet extends Sheet.Show {
     let job = this.props.job;
     let recruiter = candidate.recruiter;
 
+    //console.log("RECRUITER");
+    //console.log(recruiter);
+
 
     return (
         <div className="flx-row flx-1">
