@@ -596,10 +596,10 @@ class UnlockModal extends Pyr.UI.Modal {
     let action = State.toAction(state);
 
     return (
-      <div className="inner">
+      <div className="unlock-modal inner">
         <div className="section">
-          By unlocking this candidate you agree to pay a commission of {this.props.candidate.commission}%
-          of their first year salary if they are hired within a year from today.
+          By unlocking this candidate you agree to pay a commission of <span className="commission">{this.props.candidate.commission}%</span> 
+          of their first year salary if they are hired within one year from today.
         </div>
         <div className="section">
           Unlocking this candidate gives you full access to their details, attachments and the ability to 
