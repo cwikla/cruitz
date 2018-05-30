@@ -775,27 +775,27 @@ label {
   .title {
     font-size: 2rem;
     line-height: 3rem;
-    font-weight: $font_weight_normal;
+    f-font-weight: $font_weight_normal;
   }
 
   .company {
     padding-top: 0.5rem;
     font-size: 1.5rem;
     line-height: 2rem;
-    font-weight: $font_weight_normal;
+    f-font-weight: $font_weight_normal;
   }
 
   .locations {
     padding-top: 0.5rem;
     font-size: 1.0rem;
     line-height: 1.5rem;
-    font-weight: $font_weight_normal;
+    f-font-weight: $font_weight_normal;
   }
 }
 
 %header {
   padding: 0.5rem;
-  font-weight: 500rem;
+  font-weight: $font_weight_bold;
   font-size: 1.1rem;
   border: 1px solid $border_color;
   color: $primary_color;
@@ -818,6 +818,7 @@ label {
 
   &.selected {
     background-color: rgba($primary_light_color, 0.05);
+    font-weight: $font_weight_dark;
   }
 
   &:hover {
