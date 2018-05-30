@@ -509,7 +509,10 @@ class Uploads extends Component {
             }
             return (
               <div className="file flx-0 flx-nowrap" key={"fi-"+pos}>
-                <a href={item.url} download target="_blank"><Pyr.UI.ImageFile url={item.url} contentType={item.content_type}/></a>
+                <a href={item.url} download target="_blank">
+                  <Pyr.UI.ImageFile url={item.url} contentType={item.content_type}/>
+                  <div className="file-name">{item.file_name}</div>
+                </a>
               </div>
             );
           })

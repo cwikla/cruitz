@@ -71,7 +71,7 @@ const Simple = (props) => (
 
 const Score = (props) => (
   <div className={Pyr.ClassNames("user-score").push(props.className)}>
-    <Pyr.UI.Icon name="bullseye" />&nbsp;{ Pyr.Util.firstKid(props.children) }
+    <Pyr.UI.Icon name="empire" brand/>&nbsp;{ Pyr.Util.firstKid(props.children) }
   </div>
 );
 

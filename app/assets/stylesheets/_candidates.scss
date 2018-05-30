@@ -35,6 +35,7 @@
         .user-score {
           font-size: 3rem;
           color: $secondary_color;
+          margin-left: -3rem;
         }
       }
 
@@ -47,6 +48,11 @@
 
       .status {
         font-size: 2.0rem;
+      }
+
+      .uploads {
+        .pyr-image-file {
+        }
       }
 
 
@@ -120,10 +126,25 @@
         }
 
         .uploads {
+          font-size: 5rem;
+
+          .file-name {
+            font-size: 1rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .pyr-image-file {
+            padding-right: 0.5rem;
+          }
+
           .file {
+            max-width: 5rem;
+            padding-right: 0.5rem;
             img {
               height: 5rem;
               max-height: 5rem;
+              max-width: 5rem;
             }
 
             i {
