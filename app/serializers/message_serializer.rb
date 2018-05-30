@@ -91,7 +91,7 @@ class MessageSerializer < ActiveModel::Serializer
 
     if object.root_message_id.nil?
       
-      phash[:other] = UserSerializer.new(other)
+      phash[:other] = other.is_recruiter ? RecruiterSerializer.new(other) : UserSerializer.new(other)
       phash[:candidate] = object.candidate ? CandidateSmallSerializer.new(object.candidate) : {}
       #phash[:job] = JobSmallSerializer.new(object.job)
       phash[:is_root] = true

@@ -87,7 +87,7 @@ class MessageItem extends Sheet.Item {
         <div className="other flx-row">
           <Avatar.Avatar
             className={"mb-auto"}
-            userId={other.id}
+            user={other}
             small
           />
           <div className="flx-col flx-1">
@@ -129,8 +129,8 @@ class IndexSheet extends Sheet.Index {
   }
 
   getJob(msg) {
-    console.log("GET JOB");
-    console.log(msg);
+    //console.log("GET JOB");
+    //console.log(msg);
 
     if (!msg) {
       return null;

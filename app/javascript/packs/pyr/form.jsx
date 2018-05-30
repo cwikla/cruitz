@@ -95,14 +95,13 @@ class Form extends Network.Component {
       return false;
     }
 
+    this.preSubmit();
+
     let $item = $(this.form);
-
     let data = $item.serialize();
-
     //console.log("DATA");
     //console.log(data);
 
-    this.preSubmit();
     this.innerSubmit(data);
   }
 

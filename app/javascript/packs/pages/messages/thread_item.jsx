@@ -16,7 +16,7 @@ function THREAD_ID(message) {
 
 const OtherAvatar = (props) => (
   <Avatar.Avatar 
-    userId={props.user.id}
+    user={props.user}
     name={props.user.first_name}
     small={true}
   />

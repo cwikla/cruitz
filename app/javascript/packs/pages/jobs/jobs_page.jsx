@@ -20,8 +20,6 @@ import Sheet from '../sheet';
 
 import Job from '../shared/job';
 
-import Avatar from '../shared/avatar';
-
 import {
   JOBS_URL,
   SEARCH_URL,

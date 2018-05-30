@@ -14,13 +14,13 @@ const logos = ["/Dropbox-Logo-High-Res_1.jpg",
 
 const avatars = ["emilia", "snow", "sophie", "thetick"];
 
-function getLogo(uid) {
+function unused_getLogo(uid) {
   let pos = Math.abs(Pyr.Util.hash(uid)) % logos.length;
   let av = "/assets/images/" + logos[pos];
   return av;
 }
 
-function getAvatar(uid) {
+function unused_getAvatar(uid) {
   let pos = Math.abs(Pyr.Util.hash(uid)) % avatars.length;
   let av = "/assets/images/thrones/" + avatars[pos] + ".jpeg";
   return av;
@@ -62,9 +62,9 @@ const Label = (props) => (
   ><Pyr.UI.Icon name="user" className="fa-fw" /><Pyr.UI.Icon id="arrow" name="arrow-down" className="fa-fw"/></div>
 );
 
-const Image = (props) => (
+const Simple = (props) => (
   <div className={Pyr.ClassNames("flx-col avatar user-avatar justify-content-center").push(props.small ? "small" : "").push(props.className)}>
-    <div className="align-self-center"><img src={props.url ? props.url : getAvatar(props.id)}/></div>
+    <div className="align-self-center">{ props.logo ? <img src={props.logo.url}/> : <Pyr.UI.Icon name="user"/> }</div>
     { props.name ? (<div className="align-self-center">{props.name}</div> ) : null }
   </div>
 );
@@ -75,15 +75,23 @@ const Score = (props) => (
   </div>
 );
 
+class UserAvatar extends Component {
+  render() {
+    let logo = this.props.user.logo || (this.props.userOnly ? null : this.props.user.company.logo);
+    return (
+      <Simple {...this.props} logo={logo} name={!this.props.imageOnly ? this.props.user.first_name : null}/>
+    );
+  }
+}
+
+
 
 const Avatar = {
   Label,
-  Avatar: Image,
+  Avatar: UserAvatar,
+  Simple,
   Score,
   Stars,
-
-  getLogo,
-  getAvatar
 }
 
 export default Avatar;

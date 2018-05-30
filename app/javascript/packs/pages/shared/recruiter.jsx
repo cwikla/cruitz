@@ -271,8 +271,8 @@ class Card extends Component {
       <div className={allClass}>
         <div className="menu flx-row">
             <Avatar.Avatar
-              url={url}
-              id={recruiter.id}
+              user={recruiter}
+              name={fullName}
             />
             <Avatar.Stars rating={Math.random() * 5.0} className="mt-auto mb-auto"/>
 
@@ -345,12 +345,20 @@ class Blurb extends Component {
     let description = recruiter.description || "";
 
     let url = recruiter.logo ? recruiter.logo.url : (logo ? logo.url : null);
+    let score = recruiter.score || 0;
+
+    let TheBack = (logo && logo.url) ? Pyr.UI.BackgroundImage : Pyr.UI.DIV;
+    let backURL = (logo && logo.url ) ? logo.url : null;
+
+    console.log("RECRUITER");
+    console.log(recruiter);
 
     return (
       <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-blurb ")} >
         <SpamModal recruiter={recruiter} company={company} ref={node => this.spam = node}/>
         <ReviewsModal recruiter={recruiter} company={company} ref={node => this.reviews = node}/>
-        <Pyr.UI.BackgroundImage className="fifty" url={Avatar.getLogo(recruiter.id)}>
+
+        <TheBack className="fifty" url={backURL}>
           <Pyr.UI.Fifty>
             <div className="rec-blurb-inner">
               <div>
@@ -360,23 +368,24 @@ class Blurb extends Component {
                 </div>
     
                 <Avatar.Avatar
-                  userId={recruiter.id}
-                  name={recruiter.first_name}
+                  user={recruiter}
+                  name={fullName}
+                  userOnly
                 />
-                <Avatar.Stars rating={3.7}/>
+                <Avatar.Stars rating={score}/>
                 <div className="rate">64% acceptance rate</div>
                 <div className="company">{companyName}</div>
                 <div className="blurb">{description}</div>
               </div>
             </div>
           </Pyr.UI.Fifty>
-        </Pyr.UI.BackgroundImage>
+        </TheBack>
+
       </div>
     );
   }
 }
 
-const FAKE_STARS = 3.7;
 const FAKE_RATE = 64;
 
 class Header extends Component {
@@ -397,7 +406,8 @@ class Header extends Component {
       <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-header flx-row")} >
         <div className="flx-col flx-align-center">
           <Avatar.Avatar
-            userId={recruiter.id}
+            user={recruiter}
+            imageOnly
           />
         </div>
         <div className="flx-col">
@@ -408,7 +418,7 @@ class Header extends Component {
 
         </div>
         <div className="flx-col ml-auto">
-          <Avatar.Stars rating={FAKE_STARS} />
+          <Avatar.Stars rating={recruiter.score} />
           <div className="review-count">{count} Reviews</div>
         </div>
         <div className="blurb">{ description }</div>

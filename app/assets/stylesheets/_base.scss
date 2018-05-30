@@ -683,6 +683,12 @@ label {
 
   .rec-blurb-inner > div{
     padding: 1rem;
+    .user-avatar {
+      .pyr-icon {
+        font-size: #{$avatar_width}rem;
+        color: $gray_color;
+      }
+    }
   }
 
   .icon .fa {
@@ -695,6 +701,7 @@ label {
   }
 
   .user-avatar {
+    padding-top: 1.5rem;
     padding-bottom: 1.5rem;
   }
 
