@@ -130,19 +130,31 @@ class IndexSheet extends Sheet.Index {
   }
 }
 
-class SubmitSheet extends Sheet.ShowFull {
+class SubmitSheet extends Sheet.Edit {
   key(position) {
     return PositionsPage.key(position);
   }
 
-  renderItem(position, isSelected) {
-    //console.log("SUBMIT: renderItem");
-    if (!this.props.head) {
-      return (
-        <Pyr.UI.Loading />
-      );
-    }
+  name() {
+    return "submit";
+  }
 
+  getPosition() {
+    return this.props.selected;
+  }
+
+  title() {
+    let name = this.props.head.first_name;
+
+    return "Submit " + name + " for " + this.getPosition().title;
+  }
+
+  renderButton() {
+    return null; // nothing to see here
+  }
+
+
+  renderForm() {
     //console.log("STATE HEAD");
     //console.log(this.props.head);
 
@@ -151,32 +163,59 @@ class SubmitSheet extends Sheet.ShowFull {
 
     return (
       <HeadForm
-        position={position}
+        position={this.getPosition()}
         head={this.props.head}
       />
     );
   }
+
+  render() {
+    //console.log("SUBMIT: renderItem");
+    if (!this.props.head || !this.getPosition()) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+
+    return super.render();
+  }
+
 }
 
-class ShowSheet extends Sheet.ShowFull {
+class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
     this.initState({
+      position: null,
       candidates: null,
+      showChooser: false,
     });
 
     this.onSetCandidates = this.setCandidates.bind(this);
     this.onAddCandidate = this.addCandidate.bind(this);
     this.onRemoveCandidate = this.removeCandidate.bind(this);
+    this.onShowChooser = this.showChooser.bind(this);
   }
 
   asPage() {
     return true;
   }
 
+  setPosition(position) {
+    this.setState({
+      position
+    });
+  }
+
   setCandidates(candidates) {
     this.setState({
       candidates
+    });
+  }
+
+  showChooser() {
+    this.setState({
+      showChooser : true
     });
   }
 
@@ -248,10 +287,22 @@ class ShowSheet extends Sheet.ShowFull {
     });
   }
 
+  loadPosition(posId) {
+    //console.log("LOADING MAIN ITEM");
+    //console.log(posId);
+    this.props.loaders.positions.loadItem(posId).done(position => {
+      this.setPosition(position);
+    });
+  }
+
   componentDidMount() {
     //console.log("DIDMOUNT");
     //console.log(this.state.candidates);
     super.componentDidMount();
+
+    if (this.props.selected) {
+      this.loadPosition(this.props.selected.id);
+    }
 
     if (!this.state.candidates) {
       this.loadCandidates(this.props.selected, this.props.onLoading);
@@ -263,6 +314,9 @@ class ShowSheet extends Sheet.ShowFull {
     let lid = prevProps.selected ? prevProps.selected.id : null;
 
     if (pid != lid) {
+      if (pid) {
+        this.loadCandidate(pid);
+      }
       this.loadCandidates(this.props.selected);
     }
   }
@@ -286,6 +340,7 @@ class ShowSheet extends Sheet.ShowFull {
     return (
       <div className="flx-col flx-1">
         <HeadIndexSheet
+          {...this.props}
           position={position} 
           onAddCandidate={this.onAddCandidate}
         />
@@ -297,20 +352,25 @@ class ShowSheet extends Sheet.ShowFull {
     let position = this.props.selected;
 
     return (
-      <div className="submitted border">
+      <div className="submitted border flx-1">
         <CandidateComponent
           position={position} 
           onSetCandidates={this.onSetCandidates}
           onAddCandidate={this.onAddCandidate}
           onRemoveCandidate={this.onRemoveCandidate}
           candidates={this.state.candidates}
+          onClick={this.onShowChooser}
         />
       </div>
     );
   }
 
+  getPosition() {
+    return this.state.position;
+  }
+
   renderInner() {
-    let position = this.props.selected;
+    let position = this.state.position;
 
     if (!position) {
       return (
@@ -318,18 +378,18 @@ class ShowSheet extends Sheet.ShowFull {
       );
     }
 
+    let rightClasses = ClassNames("flx-col").push(this.state.showChooser ? "flx-2" : "flx-3");
+
     return (
-      <div className="inner flx-col flx-1">
-        <div >
-          {this.renderCandidates() }
+      <div className="inner flx-row flx-1">
+        <div className="submitted-candidates flx-col flx-1">
+          { this.renderCandidates() }
         </div>
-        <div className="flx-row flx-1">
-          <div className="flx-col flx-4 border">
-            {this.renderItem(position, false) }
-          </div>
-          <div className="flx-col flx-5 scroll">
-            {this.renderChooser() }
-          </div>
+        <div className={ClassNames("chooser-candidates flx-col flx-1").push(this.state.showChooser ? "" : "hidden")}>
+          { this.renderChooser() }
+        </div>
+        <div className={rightClasses}>
+          {this.renderItem(position, false) }
         </div>
       </div>
     );

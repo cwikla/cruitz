@@ -82,9 +82,24 @@
   .sheet.show, .sheet.submit {
     background-color: $alt_background_color;
 
+    .candidates {
+      .header > div {
+        @extend %header;
+      }
+    }
+
     .inner {
       border: 0;
       padding: 0;
+    }
+
+    .left {
+      margin: 2rem;
+    }
+
+    .right {
+      margin: 2rem;
+      margin-left: 0;
     }
 
     .scroll.inner {
@@ -95,34 +110,20 @@
 
     .submitted {
       background-color: white;
-      margin-bottom: 2rem;
       min-height: 8rem;
+      margin-right: 2rem;
     }
 
-    .candidate-item, .placeholder {
-      font-size: 0.8rem;
-
-      width: 10rem;
-      height: 10rem;
+    .candidate-item {
 
       margin: 0.5rem;
       border: solid $border_color 1px;
-      border-radius: 5px;
-
-      padding-left: 1.0rem;
-      padding-right: 1.0rem;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-
-      &:hover {
-        box-shadow: 1px 1px 5px 0px $gray_color;
-      }
     }
 
     .placeholder {
-      color: $light_gray_color;
-      font-size: 7rem;
-      line-height: 8rem;
+      color: $gray_color;
+      padding: 1rem;
+
       &:hover {
         box-shadow: none;
       }
@@ -147,11 +148,11 @@
     }
 
     .chooser {
-      margin-left: 2rem;
+      margin-left: -1rem;
+      margin-right: 2.0rem;
 
       .heads {
         background-color: $alt_background_color;
-        margin-left: 1rem;
       }
 
       .candidates {
@@ -170,6 +171,7 @@
       }
 
       .head {
+        color: black;
         border: 1px solid $border_color;
         background-color: white;
         border-radius: 5px;
@@ -178,7 +180,11 @@
         margin-bottom: 0.5rem;
 
         min-width: 20rem;
-        min-height: 20rem;
+        min-height: 12rem;
+
+        .more {
+          color: $white_color;
+        }
 
         &:hover {
           box-shadow: 2px 2px 5px 0px $gray_color;
@@ -195,6 +201,20 @@
     .inner {
       li {
         margin: 1rem;
+      }
+    }
+
+    .card-item.job-card {
+      .card-inner {
+        line-height: 1.5rem;
+        .company {
+          .name {
+            font-weight: $font_weight_bold;
+          }
+        }
+        .job {
+          margin-top: 1rem;
+        }
       }
     }
   }

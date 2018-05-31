@@ -19,6 +19,7 @@ const ClassNames = Pyr.ClassNames;
 import State from '../shared/state';
 import Job from '../shared/job';
 import HeadDetails from '../heads/head_details';
+import CV from '../shared/cv';
 
 import {
   POSITIONS_URL,
@@ -73,7 +74,7 @@ class CandidateItem extends Component {
   render() {
     let candidate = this.props.candidate;
 
-    let clazzes = ClassNames("candidate-item").push(State.toClassName(candidate.state)).push("background").push("scroll-x-inner");
+    let clazzes = ClassNames("candidate-item").push(State.toClassName(candidate.state));
 
     return (
       <div onClick={this.onRemoveMe} className={clazzes}>
@@ -100,13 +101,21 @@ class CandidateComponent extends Component {
     }
 
     let candidateCount = this.candidates().length;
-    let maxForRecruiter = this.props.position.recruiter_limit || (candidateCount + 1);
+    let maxForRecruiter = this.props.position.recruiter_limit || 10;
     //maxForRecruiter = 10;
+
+    let canAdd = false;
+    if (maxForRecruiter - candidateCount > 0) {
+      canAdd = true;
+    }
 
     console.log("LEFT: " + (maxForRecruiter - candidateCount));
 
+    let url = Pyr.URL(POSITIONS_URL).push(this.props.position.id).push("submit");
+
     return (
-      <div className="flx-row scroll-x">
+      <div className="flx-col flx-1 ">
+        <Pyr.UI.Scroll>
         { this.candidates().map((item, pos) => {
           let key = "cand-" + item.id;
           return (
@@ -117,24 +126,38 @@ class CandidateComponent extends Component {
             />
           );
         })}
-        { Pyr.Util.times(maxForRecruiter - candidateCount, (pos) => {
-            let key = "p-cand-" + pos;
-            return (
-              <div 
-                key={key}
-                className="placeholder scroll-x-inner flx-row"
-              ><span className="ml-auto mr-auto">{pos+1}</span></div>
-            );
-          })
-        } 
+        </Pyr.UI.Scroll>
       </div>
     )
   }
+
+  renderHeader() {
+    
+    return (
+      <div className="flx-row">
+        <div className="mr-auto">Candidates</div>
+        <Pyr.UI.IconButton name="plus" className="ml-auto" onClick={this.props.onClick}> Select</Pyr.UI.IconButton>
+        <div className="dropdown ml-auto">
+          <Pyr.UI.IconButton name="sort" className="dropdown-toggle pyr-icon-btn" id="candSubmitSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+          <div className="dropdown-menu" aria-labelledby="candSubmitSortMenuButton">
+            <label className="dropdown-header">Sort</label>
+            <div className="dropdown-divider"></div>
+            <label className="dropdown-item" >Newest</label>
+            <label className="dropdown-item" >Oldest</label>
+            <label className="dropdown-item" >A-Z</label>
+            <label className="dropdown-item" >Z-A</label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   render() {
     
     return (
       <div className="candidates">
+        <div className="header">{ this.renderHeader() }</div>
         { this.renderAll() }
       </div>
     );
@@ -273,7 +296,7 @@ class HeadItem extends Component {
           <div className="company">{ company }</div>
           <div className="phone_number">{ phone_number }</div>
           <div className="email">{ email }</div>
-          <Pyr.UI.PrimaryButton className="mt-auto">Submit Me</Pyr.UI.PrimaryButton>
+          <span className="more ml-auto mt-auto">Submit...</span>
         </div>
       </div>
       </Link>
@@ -332,12 +355,18 @@ class Stuff extends Component {
 class ActualForm extends Component {
 }
 
-class HeadForm extends Sheet.Form {
+class HeadForm extends Component {
   constructor(props) {
     super(props);
 
     this.onSuccess = this.success.bind(this);
     this.onGetTarget = this.getTarget.bind(this);
+  }
+
+  getTarget() {
+    //console.log("GETTING TARGET");
+    //console.log(this.form);
+    return this.form;
   }
 
   success(data, textStatus, jqXHR) {
@@ -400,22 +429,20 @@ class HeadForm extends Sheet.Form {
     );
   }
 
-  renderForm() {
+  render() {
     console.log("RENDER FORM");
     console.log(this.props);
 
     return (
-      <div className="form-parent">
+      <div className="form-parent flx-col flx-1">
         <Job.Header {...this.props} />
         <div className="flx-row flx-1">
           <div className="section flx-4 left">
             { this.renderActualForm() }
+            { this.renderButton() }
           </div>
-          <div className="section flx-5 right">
-            <HeadDetails.Primary {...this.props} />
-            <HeadDetails.SocialLinks {...this.props} />
-            <HeadDetails.Skills {...this.props} />
-            <HeadDetails.WorkHistory {...this.props} />
+          <div className="section flx-5 right scroll">
+            <CV.CV {...this.props} candidate={this.props.head} job={this.props.position} locked={false}/>
           </div>
         </div>
       </div>
@@ -433,19 +460,17 @@ class HeadIndexSheet extends Sheet.Index {
   constructor(props) {
     super(props);
     this.initState({
-      heads : null,
       selected: null,
       showSubmit: false
     });
 
     this.onLoadItems = this.loadItems.bind(this);
-    this.onSetHeads = this.setHeads.bind(this);
     //this.onSetSelected = this.setSelected.bind(this);
     this.onCloseModal = this.closeModal.bind(this);
   }
 
   getItems() {
-    return this.state.heads;
+    return this.props.heads;
   }
 
   setSelected(unused) {
@@ -469,30 +494,12 @@ class HeadIndexSheet extends Sheet.Index {
     });
   }
 
-  setHeads(heads) {
-    console.log("HEADS");
-    console.log(heads);
-
-    this.setState({
-      heads
-    });
-  }
-
   loadItems(onLoading) {
-
-    this.getJSON({
-      url: HEADS_URL,
-      context: this,
-      onLoading: onLoading,
-
-    }).done((data, textStatus, jqXHR) => {
-        this.onSetHeads(data.heads || []);
-
-    });
+    this.props.loaders.heads.load();
   }
 
   componentDidMount() {
-    if (!this.state.heads) {
+    if (!this.props.heads) {
       this.onLoadItems(this.props.onLoading);
     }
   }
@@ -536,15 +543,7 @@ class HeadIndexSheet extends Sheet.Index {
     let url = Pyr.URL(HEADS_URL).push("new");
 
     return (
-      <div className="chooser flx-row">
-        <div className={leftClasses}>
-          <SearchForm
-            onSetItems={this.props.onSetItems}
-            onPreSubmit={this.props.onPreSubmit}
-            onPostSubmit={this.props.onPostSubmit}
-            onError={this.props.onError}
-          />
-        </div>
+      <div className="chooser flx-col flx-1">
         <div className={rightClasses}>
           { super.renderInnerNoScroll() }
         </div>

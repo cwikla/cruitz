@@ -9,9 +9,11 @@ class JobSmallSerializer < ActiveModel::Serializer
               :salary,
               :salary_high,
               :salary_doe,
-              :company
+              :company,
+              :recruiter_limit
 
   has_one :company
+  has_many :locations
 
   def created_at
     object.created_at.in_time_zone.iso8601 if object.created_at
@@ -33,6 +35,10 @@ class JobSmallSerializer < ActiveModel::Serializer
 
   def description
     Pyr::Base::Util::String::emojify(object.description)
+  end
+
+  def recruiter_limit
+    5 # FIXME
   end
 
 end

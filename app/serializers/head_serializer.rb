@@ -8,10 +8,10 @@ class HeadSerializer < ActiveModel::Serializer
     :summary
 
   has_many :candidates
-  has_many :experiences
+  has_many :works
+  has_many :educations
   has_many :skills
   has_many :links
   has_many :uploads
-
 
 end

@@ -616,10 +616,15 @@ class Edit extends Form {
     return "Edit";
   }
 
+  getItemId() {
+    return this.props.itemId;
+  }
+
+
   componentDidMount() {
     if (!this.props.selected) {
       //console.log("GETTING SELECTED");
-      this.props.onLoadItem(this.props.itemId, this.onLoading);
+      this.props.onLoadItem(this.getItemId(), this.onLoading);
     }
   }
 

@@ -1150,3 +1150,111 @@ div.line {
   }
 }
 
+.cv {
+   padding: 1rem;
+   background-color: $alt_background_color;
+
+   .scroll {
+     background-color: white;
+   }
+
+  .cv-label {
+    font-weight: 500;
+    font-size: 1.5rem;
+
+    padding-bottom: 0.25rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+
+    border-bottom: 1px solid $border_color;
+  }
+
+  .cv-header {
+    font-size: 1rem;
+    min-height: 7rem;
+  
+    .name {
+      font-size: 2rem;
+      line-height: 2.5rem;
+      color: $primary_color;
+  
+       &.locked {
+         color: $med_gray_color;
+         @extend %blurry-text;
+        }
+     }
+  
+     .lock {
+       color: $dark_gray_color;
+       text-align: center;
+       margin-left: auto;
+       margin-right: auto;
+       position: relative;
+       top: -6rem;
+       font-size: 8rem;
+       height: 0;
+     }
+  
+     .info {
+       font-size: 1rem;
+       line-height: 1.5rem;
+  
+       .locked {
+         color: $med_gray_color;
+         @extend %blurry-text;
+        }
+      }
+  }
+  
+  .cv-section {
+    &.education {
+      .item {
+        .degree {
+          font-size: 1.15rem;
+          font-weight: 500;
+        }
+      }
+    }
+  
+    &.experience {
+       .item {
+  
+         .title {
+           font-size: 1.15rem;
+           font-weight: 500;
+          }
+       }
+    }
+  
+    &.uploads {
+      font-size: 5rem;
+  
+      .file-name {
+        font-size: 1rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .pyr-image-file {
+        padding-right: 0.5rem;
+      }
+  
+      .file {
+        max-width: 5rem;
+        padding-right: 0.5rem;
+        img {
+          height: 5rem;
+          max-height: 5rem;
+          max-width: 5rem;
+        }
+  
+        i {
+          font-size: 3rem;
+        }
+        i.fa-lock {
+          color: $med_gray_color;
+        }
+      }
+    }
+  }
+}

@@ -79,7 +79,7 @@ class Card extends Component {
         <div className="card-inner">
           <div className="company flx-row">
             <Pyr.UI.Image src={url} className="mr-auto" />
-            <div className="flx-1 mr-auto mt-auto mb-auto">{ companyName }</div>
+            <div className="flx-1 mr-auto mt-auto mb-auto name">{ companyName }</div>
           </div>
           <div className="job">
             { title }

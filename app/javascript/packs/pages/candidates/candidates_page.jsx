@@ -23,6 +23,7 @@ import Avatar, {
 } from '../shared/avatar';
 
 import State from '../shared/state';
+import CV from '../shared/cv';
 
 
 import {
@@ -821,6 +822,8 @@ class ShowSheet extends Sheet.Show {
 
     let unlockAction = this.onButtonPresses[State.STATE_UNLOCKED];
 
+    let locked = !candidate.unlocked_at;
+
     return (
         <div className="flx-row flx-1">
           <div className="flx-col left flx-5 unlock-modal-below">
@@ -836,10 +839,11 @@ class ShowSheet extends Sheet.Show {
             { this.statusTop(candidate) }
             <div className="flx-col flx-2 cv">
               <Pyr.UI.Scroll>
-                <CandidateCVItem 
+                <CV.CV
                   candidate={candidate} 
                   isSelected={isSelected} 
                   job={this.state.job}
+                  locked={locked}
                 />
               </Pyr.UI.Scroll>
  

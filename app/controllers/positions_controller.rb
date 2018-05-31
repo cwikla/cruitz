@@ -3,7 +3,7 @@ class PositionsController < ApplicationController
 
   def index
     all = Job.order("-id")
-    render json: all, company: true, submitted_candidates: true
+    render json: all, each_serializer: JobSmallSerializer, company: true #, submitted_candidates: true
   end
 
   def search
@@ -43,7 +43,7 @@ class PositionsController < ApplicationController
 
   def show
     pid = position_params
-    render json: Job.find_safe(pid), root: :position, company: true
+    render json: Job.find_safe(pid), company: true, submitted_candidates: true
   end
 
   private
