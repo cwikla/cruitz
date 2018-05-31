@@ -47,11 +47,12 @@ class Base extends Component {
     this.onSearchPreSubmit = this.searchPreSubmit.bind(this);
   }
 
-  resetSearch() {
-    this.setState({
-      items: null,
-      itemsMap: null,
-    });
+  resetSearch(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.setSearchItems(null);
   }
 
   setSearchItems(searchItems) {
@@ -71,6 +72,9 @@ class Base extends Component {
        searchItems, 
        searchItemsMap,
     });
+
+    this.forceUpdate();
+    console.log("FORCED UPDATE");
 
   }
 

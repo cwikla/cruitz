@@ -114,7 +114,8 @@ class IndexSheet extends Sheet.Index {
       <div className="row">
         <div className={leftClasses}>
           <PositionsPage.SearchForm 
-            onSetItems={this.props.onSetItems}
+            onSetItems={this.onSetSearchItems}
+            onResetSearch={this.onResetSearch}
             onPreSubmit={this.props.onPreSubmit}
             onPostSubmit={this.props.onPostSubmit}
             onError={this.props.onError}
@@ -540,6 +541,7 @@ class SearchForm extends Component {
         <div className="search-header">
           <div className="flx-row">
             <div className="mr-auto">Search</div>
+            <Pyr.UI.IconButton className="ml-auto" name="times" onClick={this.props.onResetSearch}> Reset</Pyr.UI.IconButton>
           </div>
         </div>
         <Pyr.Form.Form

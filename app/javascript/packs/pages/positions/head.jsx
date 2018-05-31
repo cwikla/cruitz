@@ -478,8 +478,8 @@ class HeadForm extends Component {
   }
 
   render() {
-    console.log("RENDER FORM");
-    console.log(this.props);
+    //console.log("RENDER FORM");
+    //console.log(this.props);
 
     return (
       <div className="form-parent flx-col flx-1">

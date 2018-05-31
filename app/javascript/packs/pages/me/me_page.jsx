@@ -65,8 +65,8 @@ class PasswordModal extends Pyr.UI.Modal {
 
     let validLength = pwd && (pwd.length >= MIN_PWD_LENGTH);
     let validLetters = pwd && (pwd.match(/[a-zA-Z]/) != null);
-    console.log(pwd.match(/[a-zA-Z]/));
-    console.log(validLetters);
+    //console.log(pwd.match(/[a-zA-Z]/));
+    //console.log(validLetters);
     let validNumbers = pwd && (pwd.match(/[0-9]/) != null);
 
     this.setState({
@@ -336,7 +336,7 @@ class EditSheet extends Sheet.Edit {
   }
 
   getTarget() {
-    console.log("GET TARGET");
+    //console.log("GET TARGET");
     return this.me_form.form;
   }
 
@@ -393,10 +393,10 @@ class MePage extends Page {
   }
 
   getAction() {
-    console.log("GET ACTION");
-    console.log(this.props.action);
+    //console.log("GET ACTION");
+    //console.log(this.props.action);
     if (this.props.action && (this.props.action.toLowerCase() == 'password')) {
-      console.log("RETURNING PASSWORD");
+      //console.log("RETURNING PASSWORD");
       return this.props.action;
     }
 
