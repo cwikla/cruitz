@@ -492,6 +492,82 @@ class TextField extends Child {
   }
 }
 
+class MoneyField extends TextField {
+  constructor(props) {
+    super(props);
+
+    this.onMoneyBlur = this.moneyBlur.bind(this);
+    this.onMoneyFocus = this.moneyFocus.bind(this);
+    this.onMoneyChange = this.moneyChange.bind(this);
+  }
+
+  ripOut(v) {
+    if (!v || v.length == 0) {
+      return v;
+    }
+
+    console.log(v.constructor);
+    return v.replace(/[,\.]/, '');
+  }
+
+  ripIn(v) {
+    if (!v || v.length == 0) {
+      return v;
+    }
+
+    console.log(v.constructor);
+    return ripOut(v).toLocaleString('en-US'); // FIXME
+  }
+
+  moneyFocus(e) {
+    this.setText(this.ripOut(this.state.value));
+  }
+
+  moneyBlur(e) {
+    this.setText(this.ripIn(this.state.value));
+  }
+
+  moneyChange(e) {
+    if ((e.keyCode == 13) && (this.props.onSubmit)) {
+      //console.log(e);
+      this.submit(e);
+      return;
+    }
+
+    e.preventDefault();
+
+    const re = /^[0-9]+$/;
+  
+    if ((e.target.value == '') || re.test(e.target.value)) {
+      console.log("TEXT PASSED");
+      console.log(e.target.value);
+      this.setText(e.target.value);
+    }
+  }
+
+  render() {
+    let myProps = {
+      name: this.name(),
+      type: "text",
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID(),
+    };
+    if (!this.props.unmanaged) {
+      myProps.value = this.state.value;
+    }
+
+    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
+
+    return(
+      <input type="text" {...myProps} {...Util.propsMergeClassName(rest, "money-text form-control")} 
+        onKeyUp={this.onKeyUp}
+        onChange={this.onMoneyChange} 
+      />
+    );
+  }
+
+}
+
 class PasswordField extends TextField {
   render() {
     let myProps = { 
@@ -1386,6 +1462,7 @@ const PyrForm = {
   Label, 
   TextField, 
   PasswordField, 
+  MoneyField,
   Select, 
   Option, 
   TextArea, 

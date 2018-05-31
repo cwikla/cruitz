@@ -165,14 +165,22 @@ class JobsController < ApplicationController
     params.require(:id)
   end
 
-  def job_params
-    jp = params.require(:job).permit(:title, :description, :time_commit, :category, :salary, :salary_doe, locations: [], skills: [], uploads: [])
-    if !jp[:salary].blank?
-      val = jp[:salary]
+  def sal_fix(s)
+    val = s
+    if !val.blank?
       val = val.sub(",", "")
       val = val.split(".")[0]
-      jp[:salary] = val
     end
+
+    val
+  end
+
+  def job_params
+    jp = params.require(:job).permit(:title, :description, :time_commit, :category, :salary, :salary_high, :salary_doe, locations: [], skills: [], uploads: [])
+
+    jp[:salary] = sal_fix(jp[:salary])
+    jp[:salary_high] = sal_fix(jp[:salary_high])
+
     jp
   end
 

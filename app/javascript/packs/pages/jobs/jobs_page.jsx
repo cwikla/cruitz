@@ -180,13 +180,15 @@ class JobForm extends Component {
 
           <div className="flx-row">
             <Pyr.Form.Group name="salary">
-              <Pyr.Form.Label>Salary</Pyr.Form.Label>
-              <Pyr.Form.TextField placeholder="Salary" />
+              <Pyr.Form.Label>Salary Range</Pyr.Form.Label>
+              <Pyr.Form.MoneyField placeholder="Salary" />
             </Pyr.Form.Group>
 
-            <Pyr.Form.Group name="salary_doe">
-              <Pyr.Form.Label>DOE</Pyr.Form.Label>
-              <Pyr.Form.CheckBox />
+            <div className="mt-auto mb-auto">&nbsp;&mdash;&nbsp;</div>
+
+            <Pyr.Form.Group name="salary_high">
+              <Pyr.Form.Label>&nbsp;</Pyr.Form.Label>
+              <Pyr.Form.MoneyField placeholder="Salary" />
             </Pyr.Form.Group>
           </div>
 
