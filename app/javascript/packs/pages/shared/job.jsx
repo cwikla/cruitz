@@ -226,9 +226,40 @@ class Header extends Component {
   }
 }
 
-class View extends Component {
+class Uploads extends Component {
+  render() {
+    if (!this.props.uploads || this.props.uploads.length == 0) {
+      return (
+        <div className="none">None</div>
+      );
+    }
+    
+    let uploads = this.props.uploads;
+    
+    return (
+      <div id="uploads" className="job-section uploads flx-row">
+        { 
+          uploads.map( (item, pos) => {
+            if (!item.url) {
+              return null;
+            }
+            return (
+              <div className="file flx-0 flx-nowrap" key={"fi-"+pos}>
+                <a href={item.url} download target="_blank">
+                  <Pyr.UI.ImageFile url={item.url} contentType={item.content_type}/>
+                  <div className="file-name">{item.file_name}</div>
+                </a>
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+  }
+}
 
-  renderContent() {
+class Content extends Component {
+  render() {
     let job = this.props.job;
     if (!job) {
       return null;
@@ -247,6 +278,10 @@ class View extends Component {
     );
   }
 
+}
+
+class View extends Component {
+
   render() {
     let job = this.props.job;
 
@@ -264,7 +299,8 @@ class View extends Component {
         <div className="flx-row flx-1">
           <div className="flx-col flx-1">
             <Header {...this.props} job={job}/>
-            { this.renderContent() }
+            <Content {...this.props} job={job}/>
+            <Uploads {...this.props} job={job} uploads={job.uploads}/>
           </div>
         </div>
       </div>
