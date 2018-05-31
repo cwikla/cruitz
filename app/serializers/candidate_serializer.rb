@@ -46,7 +46,4 @@ class CandidateSerializer < CandidateSmallSerializer
 
   end
 
-  def score
-    88
-  end
 end

@@ -47,7 +47,7 @@ class CandidateSmallSerializer < BaseSerializer
   end
 
   def score
-    88
+    (object.id % 25) + 70
   end
 
 end
