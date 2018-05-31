@@ -380,6 +380,7 @@ class Stuff extends Component {
             minValue={0}
             maxValue={100}
             step={1}
+            value={20}
             formatLabel={this.renderComm}
           />
         </Pyr.Form.Group>
@@ -447,7 +448,7 @@ class HeadForm extends Component {
 
           <Pyr.Form.Group name="files">
             <Pyr.Form.Label>Attachments</Pyr.Form.Label>
-            <Pyr.Form.FileSelector multiple/>
+            <Pyr.Form.FileSelector multiple row wrap showFileName/>
           </Pyr.Form.Group>
 
 
@@ -461,6 +462,7 @@ class HeadForm extends Component {
           </Pyr.Form.Group>
 
         </Pyr.Form.Form>
+        { this.renderButton() }
       </div>
     );
   }
@@ -471,11 +473,9 @@ class HeadForm extends Component {
 
     return (
       <div className="form-parent flx-col flx-1">
-        <Job.Header {...this.props} />
         <div className="flx-row flx-1">
-          <div className="section flx-4 left">
+          <div className="section flx-col flx-4 left">
             { this.renderActualForm() }
-            { this.renderButton() }
           </div>
           <div className="section flx-5 right scroll">
             <CV.CV {...this.props} candidate={this.props.head} job={this.props.position} locked={false}/>
