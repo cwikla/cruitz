@@ -1243,6 +1243,15 @@ div.line {
   }
   
   .cv-section {
+    .item {
+      padding-bottom: 1rem;
+
+      .years {
+        padding-bottom: 0.75rem;
+      }
+
+    }
+
     &.education {
       .item {
         .degree {
