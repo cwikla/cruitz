@@ -61,7 +61,9 @@ class Candidate < ApplicationRecord
   end
 
 
-  def self.submit(head, job, commission, body=nil)
+  def self.submit(head, job, commission, **kwargs)
+    body = kwargs[:body]
+    attachments = kwargs[:attachments] || []
 
     candidate = nil
     state = STATE_NEW
@@ -69,7 +71,7 @@ class Candidate < ApplicationRecord
     puts "SUBMIT"
 
     Candidate.transaction do
-      candidate = Candidate.find_or_create_unique(job_id: job.id, head_id: head.id, commission: commission, state: state)
+      candidate = Candidate.find_or_create_unique(job_id: job.id, head_id: head.id)
       candidate.commission = commission if !candidate.commission || (commission.to_f < candidate.commission.to_f) # allow commission to be less
       candidate.state = state
       candidate.save!
@@ -87,6 +89,15 @@ class Candidate < ApplicationRecord
       msg = Message.create!(candidate: candidate, user: candidate.hirer, from_user: recruiter, job_id: job.id, body: body)
 
       candidate.description = msg
+
+      att_uploads = []
+      attachments.each do |fid|
+        upload = Upload.find(fid) # need to get the real id, not uuid
+        att_uploads << CandidateUpload.find_or_create_unique(candidate_id: candidate.id, upload_id: upload.id) if upload
+      end
+
+      candidate.candidate_uploads = att_uploads
+
       candidate.save!
     
       #CandidateState.create!(candidate: candidate, 

@@ -27,8 +27,9 @@ class CandidatesController < ApplicationController
     job = Job.find(cp[:job])
     commission = cp[:commission]
     body = cp[:message] || cp[:body]
+    file_ids = cp[:files]
 
-    @candidate = Candidate.submit(my_head, job, commission, body)
+    @candidate = Candidate.submit(my_head, job, commission, body: body, attachments: file_ids)
 
     return render json: @candidate, current_user: current_user
   end
@@ -57,7 +58,7 @@ class CandidatesController < ApplicationController
   def create_params
     puts params
 
-    params.require(:candidate).permit(:job, :head, :message, :commission, :views)
+    params.require(:candidate).permit(:job, :head, :message, :commission, :views, files: [])
   end
 
   def candidates_params
