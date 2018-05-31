@@ -230,7 +230,7 @@ class Uploads extends Component {
   render() {
     if (!this.props.uploads || this.props.uploads.length == 0) {
       return (
-        <div className="none">None</div>
+        <div className="none"></div>
       );
     }
     
