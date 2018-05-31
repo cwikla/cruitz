@@ -7,12 +7,12 @@ class PositionsController < ApplicationController
   end
 
   def search
-    puts "PARAMS"
-    puts params
+    #puts "PARAMS"
+    #puts params
 
     spar = search_params
-    puts "PARAMS"
-    puts spar
+    #puts "PARAMS"
+    #puts spar
 
     all = Job.full_search(spar)
     #all = []

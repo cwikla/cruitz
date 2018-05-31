@@ -11,12 +11,12 @@ class JobsController < ApplicationController
   end
 
   def search
-    puts "PARAMS"
-    puts params
+    #puts "PARAMS"
+    #puts params
 
     spar = search_params
-    puts "PARAMS"
-    puts spar
+    #puts "PARAMS"
+    #puts spar
 
     all = Job.full_search(spar).includes(:company, :locations, :job_locations, :skills, :job_skills).limit(LIMIT)
     #all = []
@@ -109,7 +109,7 @@ class JobsController < ApplicationController
 
   def lsearch_unused
     results = GeoName.search(params[:q]).map{ |x| [x.name, x.admin_code_1 || x.admin_name_1].join(", ")}.uniq
-    puts "***** RESULT #{results}"
+    #puts "***** RESULT #{results}"
     render json: { results: results }
   end
 

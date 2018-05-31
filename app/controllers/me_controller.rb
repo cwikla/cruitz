@@ -24,22 +24,22 @@ class MeController < ApplicationController
     if up[:logo] # should refactor this out
       upload = Upload.find(up[:logo])
       if upload.user_id == current_user.id  # make sure it's owned 
-        puts "ME UPDATE"
-        puts upload.inspect
+        #puts "ME UPDATE"
+        #puts upload.inspect
         up[:logo] = upload
-        puts up.inspect
+        #puts up.inspect
       end
     end
 
-    puts "PARMS"
-    puts up.inspect
+    #puts "PARMS"
+    #puts up.inspect
 
     @user = current_user
 
     if @user.update_without_password(up)
-      puts "#{@user.inspect}"
+      #puts "#{@user.inspect}"
       result = render json: @user
-      puts result
+      #puts result
       return result
     else
       puts @user.errors.inspect

@@ -14,15 +14,15 @@ class UsersController < ApplicationController
   end
 
   def recruiter_search
-    puts "PARAMS"
-    puts params
+    #puts "PARAMS"
+    #puts params
 
     spar = recruiter_search_params
-    puts "PARAMS"
-    puts spar
+    #puts "PARAMS"
+    #puts spar
 
     all = User.is_recruiter.full_search(spar)
-    puts all.to_sql
+    #puts all.to_sql
     #all = []
 
     render json: all, each_serializer: RecruiterSerializer, company: true
@@ -46,19 +46,19 @@ class UsersController < ApplicationController
     if up[:logo] # should refactor this out
       upload = Upload.find(cp[:logo])
       if upload.user_id == current_user.id  # make sure it's owned 
-        puts "CMPY UPDATE"
-        puts upload.inspect
+        #puts "CMPY UPDATE"
+        #puts upload.inspect
         up[:logo] = upload
-        puts up.inspect
+        #puts up.inspect
       end
     end
 
     @user = current_user
 
     if @user.update(up)
-      puts "#{@user.inspect}"
+      #puts "#{@user.inspect}"
       result = render json: @user
-      puts result
+      #puts result
       return result
     else
       return render_create_error json: @user

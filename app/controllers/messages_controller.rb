@@ -27,15 +27,15 @@ class MessagesController < ApplicationController
   end
 
   def create
-    request.headers.each do |k,v|
-      puts "HEADER: #{k} => #{v}"
-    end
-    puts "DATA: #{request.params}"
+    #request.headers.each do |k,v|
+      #puts "HEADER: #{k} => #{v}"
+    #end
+    #puts "DATA: #{request.params}"
 
     mid = hid()
     @parentMessage = Message.last_for(current_user, mid)
 
-    puts "GOT PARENT MSG: #{@parentMessage.id}"
+    #puts "GOT PARENT MSG: #{@parentMessage.id}"
 
     @message = @parentMessage.reply_from(current_user)
     @message.body = message_params[:body].blank? ? nil : message_params[:body]
@@ -60,7 +60,7 @@ class MessagesController < ApplicationController
 
   def lsearch
     result = GeoName.search(params[:term]).map(&:name)
-    puts "***** RESULT #{result}"
+    #puts "***** RESULT #{result}"
     render json: result #, current_user: current_user
   end
 

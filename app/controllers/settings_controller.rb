@@ -8,7 +8,7 @@ class SettingsController < ApplicationController
   end
 
   def update
-    puts params.inspect
+    #puts params.inspect
     if current_user.setting.update(setting_params)
       return render json: true
     else

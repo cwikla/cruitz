@@ -20,8 +20,8 @@ class CandidatesController < ApplicationController
 
   def create
     cp = create_params
-    puts "CP"
-    puts cp
+    #puts "CP"
+    #puts cp
 
     my_head = current_user.heads.find(cp[:head])
     job = Job.find(cp[:job])
@@ -56,7 +56,7 @@ class CandidatesController < ApplicationController
   private
 
   def create_params
-    puts params
+    #puts params
 
     params.require(:candidate).permit(:job, :head, :message, :commission, :views, files: [])
   end
