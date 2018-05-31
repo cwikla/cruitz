@@ -137,7 +137,7 @@ class CandidateComponent extends Component {
     }
 
     let candidateCount = this.candidates().length;
-    let maxForRecruiter = this.props.position.recruiter_limit || 10;
+    let maxForRecruiter = this.props.position.recruiter_limit || 6;
     //maxForRecruiter = 10;
 
     let canAdd = false;
@@ -145,7 +145,7 @@ class CandidateComponent extends Component {
       canAdd = true;
     }
 
-    console.log("LEFT: " + (maxForRecruiter - candidateCount));
+    //console.log("LEFT: " + (maxForRecruiter - candidateCount));
 
     let url = Pyr.URL(POSITIONS_URL).push(this.props.position.id).push("submit");
 
@@ -168,11 +168,21 @@ class CandidateComponent extends Component {
   }
 
   renderHeader() {
-    
+    let canAdd = true;
+
+    if (this.candidates()) {
+      let candidateCount = this.candidates().length;
+      let maxForRecruiter = this.props.position.recruiter_limit || 6;
+
+      if (maxForRecruiter - candidateCount <= 0) {
+        canAdd = false;
+      }
+    }
+
     return (
       <div className="flx-row">
         <div className="mr-auto">Candidates</div>
-        <Pyr.UI.IconButton name="plus" className="ml-auto" onClick={this.props.onClick}> Select</Pyr.UI.IconButton>
+        <Pyr.UI.IconButton name="plus" className={ClassNames("ml-auto").push(canAdd ? "" : "disabled")} onClick={this.props.onClick}> Select</Pyr.UI.IconButton>
         <div className="dropdown ml-auto">
           <Pyr.UI.IconButton name="sort" className="dropdown-toggle pyr-icon-btn" id="candSubmitSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
           <div className="dropdown-menu" aria-labelledby="candSubmitSortMenuButton">
