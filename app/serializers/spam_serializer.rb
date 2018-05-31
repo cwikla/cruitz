@@ -1,3 +1,3 @@
-class SpamSerializer < ActiveModel::Serializer
+class SpamSerializer < BaseSerializer
   attribute :id
 end

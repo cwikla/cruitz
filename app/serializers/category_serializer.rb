@@ -1,4 +1,4 @@
-class CategorySerializer < ActiveModel::Serializer
+class CategorySerializer < BaseSerializer
   attributes :id,
     :name,
     :parent_id

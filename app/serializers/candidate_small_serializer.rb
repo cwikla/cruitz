@@ -1,4 +1,4 @@
-class CandidateSmallSerializer < ActiveModel::Serializer
+class CandidateSmallSerializer < BaseSerializer
   attributes :id,
     :first_name,
     :last_name,
@@ -9,25 +9,36 @@ class CandidateSmallSerializer < ActiveModel::Serializer
     :unlocked_at,
     :summary,
     :score,
-    :commission
+    :commission,
+    :is_unlocked
+
+  def is_unlocked
+    return true if !object.unlocked_at.nil?
+
+    return current_user.id == object.head.user_id
+  end
+
+  def is_unlocked?
+    is_unlocked
+  end
 
   def first_name
-    object.unlocked? ? object.head.first_name : nil
+    is_unlocked? ? object.head.first_name : nil
   end
 
   def last_name
-    object.unlocked? ? object.head.last_name : nil
+    is_unlocked? ? object.head.last_name : nil
   end
 
   def phone_number
-    object.unlocked? ? object.head.phone_number : nil
+    is_unlocked? ? object.head.phone_number : nil
   end
 
   def email
-    object.unlocked? ? object.head.email : nil
+    is_unlocked? ? object.head.email : nil
   end
 
-  def unlocked_at
+  def unused_unlocked_at
     object.unlocked_at.in_time_zone.iso8601 if object.unlocked_at
   end
 

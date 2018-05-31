@@ -3,14 +3,14 @@ class MessagesController < ApplicationController
   def index
     @threads = Message.threads_for(current_user)
 
-    render json: @threads, current_user: current_user
+    render json: @threads
   end
 
   def show
     mid = params[:id]
     @message = Message.find_for(current_user, mid)
 
-    render json: @message, current_user: current_user
+    render json: @message #, current_user: current_user
   end
 
   def thread
@@ -19,7 +19,7 @@ class MessagesController < ApplicationController
 
      ReadThreadJob.mark(@message)
     
-    render json: @message.thread, current_user: current_user
+    render json: @message.thread #, current_user: current_user
   end
 
   def new
@@ -41,9 +41,9 @@ class MessagesController < ApplicationController
     @message.body = message_params[:body].blank? ? nil : message_params[:body]
     
     if @message.save
-      return render json: @message, current_user: current_user
+      return render json: @message #, current_user: current_user
     else
-      return render_create_error json: @message, current_user: current_user
+      return render_create_error json: @message #, current_user: current_user
     end
   end
 
@@ -51,9 +51,9 @@ class MessagesController < ApplicationController
     mid = hid()
     @message = Message.last_for(current_user, mid)
     if @message.update(message_params)
-      return render json: @message, current_user: current_user
+      return render json: @message #, current_user: current_user
     else
-      return render_create_error json: @message, current_user: current_user
+      return render_create_error json: @message #, current_user: current_user
     end
   end
 
@@ -61,7 +61,7 @@ class MessagesController < ApplicationController
   def lsearch
     result = GeoName.search(params[:term]).map(&:name)
     puts "***** RESULT #{result}"
-    render json: result, current_user: current_user
+    render json: result #, current_user: current_user
   end
 
   private

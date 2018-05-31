@@ -6,6 +6,10 @@ class ApplicationController < Pyr::Base::ApplicationController
 
   before_action :set_app_name
 
+  def render(*args, **kwargs)
+    super(*args, **kwargs, current_user: current_user)
+  end
+
   private 
 
   def hid
@@ -27,4 +31,5 @@ class ApplicationController < Pyr::Base::ApplicationController
     using = "pyr/base/layout"
     return using
   end
+
 end

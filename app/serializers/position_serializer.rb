@@ -1,4 +1,4 @@
-class PositionSerializer < ActiveModel::Serializer
+class PositionSerializer < BaseSerializer
   attributes :id
 
   def id

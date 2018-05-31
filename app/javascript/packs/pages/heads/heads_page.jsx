@@ -61,18 +61,20 @@ class HeadItem extends Component {
     }  
     
     let description = head.description || "No Description";
-    
-    return (
-      <div className={allClass} id={id}>
-        <div className="mr-auto full-name">{head.full_name}</div>
-        <div className="mr-auto current">{head.summary}</div>
-
+   
+/*  FIXME
         <div className="application-counts ml-auto">
           <div className="mr-auto submitted-count">{head.candidates.total || 0} Applications</div>
           <div className="mr-auto submitted-count">{head.candidates.waiting || 0} Waiting</div>
           <div className="mr-auto submitted-count">{head.candidates.accepted || 0} Accepted</div>
           <div className="mr-auto submitted-count">{head.candidates.rejected || 0} Rejected</div>
         </div>
+*/
+    return (
+      <div className={allClass} id={id}>
+        <div className="mr-auto full-name">{head.full_name}</div>
+        <div className="mr-auto current">{head.summary}</div>
+
       </div>
     );
   }

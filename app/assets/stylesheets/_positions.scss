@@ -114,6 +114,36 @@
       margin-right: 2rem;
     }
 
+   .item {
+      @extend %state;
+
+      &.submitted-candidate-item {
+        height: 5rem;
+        padding: 0.5rem;
+        border-bottom: solid $border_color 1px;
+
+        .state-bubble {
+          font-size: 0.75rem;
+        }
+
+        .title {
+          overflow: hidden;
+          max-width: 20rem;
+          margin-right: 0.25rem;
+        }
+
+        & > div {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .recruiter {
+          border-left: 1px solid $border_color;
+          border-right: 0;
+        }
+      }
+    }
+
     .candidate-item {
 
       margin: 0.5rem;

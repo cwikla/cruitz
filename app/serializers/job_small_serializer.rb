@@ -1,4 +1,4 @@
-class JobSmallSerializer < ActiveModel::Serializer
+class JobSmallSerializer < BaseSerializer
   attributes  :id,
               :title, 
 							:description, 

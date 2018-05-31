@@ -1,4 +1,4 @@
-class MessageSerializer < ActiveModel::Serializer
+class MessageSerializer < BaseSerializer
   attributes :id,
     :body,
     #:parent_message_id,
@@ -77,7 +77,9 @@ class MessageSerializer < ActiveModel::Serializer
   end
 
   def mine
-    object.from_user_id == instance_options[:current_user].id
+    #puts "INSTANCE OPTIONS"
+    #puts "#{instance_options.inspect}"
+    object.from_user_id == current_user.id # instance_options[:current_user].id
   end
 
   def other
@@ -92,7 +94,7 @@ class MessageSerializer < ActiveModel::Serializer
     if object.root_message_id.nil?
       
       phash[:other] = other.is_recruiter ? RecruiterSerializer.new(other) : UserSerializer.new(other)
-      phash[:candidate] = object.candidate ? CandidateSmallSerializer.new(object.candidate) : {}
+      phash[:candidate] = object.candidate ? CandidateSmallSerializer.new(object.candidate, current_user: current_user) : {}
       #phash[:job] = JobSmallSerializer.new(object.job)
       phash[:is_root] = true
 

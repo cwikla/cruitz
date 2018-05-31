@@ -1,4 +1,4 @@
-class HeadSerializer < ActiveModel::Serializer
+class HeadSerializer < BaseSerializer
   attributes :id,
     :first_name,
     :last_name,
@@ -7,7 +7,7 @@ class HeadSerializer < ActiveModel::Serializer
     :full_name,
     :summary
 
-  has_many :candidates
+#  has_many :candidates
   has_many :works
   has_many :educations
   has_many :skills

@@ -1,4 +1,4 @@
-class CompanySerializer < ActiveModel::Serializer
+class CompanySerializer < BaseSerializer
   attributes :id,
             :url,
             :name,

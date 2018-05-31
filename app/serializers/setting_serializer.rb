@@ -1,4 +1,4 @@
-class SettingSerializer < ActiveModel::Serializer
+class SettingSerializer < BaseSerializer
   attributes :use_ignore_recruiters,
     :minimum_recruiter_score,
     :use_ignore_agencies,

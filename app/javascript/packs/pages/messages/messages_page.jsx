@@ -253,7 +253,7 @@ class ShowSheet extends Sheet.Show {
 
     let url = Pyr.URL(CANDIDATES_URL).push(candidate.job_id).push(candidate.id);
 
-    if (!candidate.unlocked_at) {
+    if (!candidate.is_unlocked) {
       return (
         <div className="section flx-col candidate-mini new">
           <Link to={url.toString()} className="flx-row flx-1">
@@ -320,7 +320,7 @@ class ShowSheet extends Sheet.Show {
             onSetItems={this.props.onSetItems}
             onAddItem={this.props.onAddItem}
             onSetLast={this.props.onSetLast}
-            readOnly={!candidate.unlocked_at}
+            readOnly={!candidate.is_unlocked}
           />
         </div>
         <div className="flx-1 blurb right">

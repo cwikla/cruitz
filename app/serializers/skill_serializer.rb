@@ -1,4 +1,4 @@
-class SkillSerializer < ActiveModel::Serializer
+class SkillSerializer < BaseSerializer
   attributes :id,
     :name
 end

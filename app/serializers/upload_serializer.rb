@@ -1,4 +1,4 @@
-class UploadSerializer < ActiveModel::Serializer
+class UploadSerializer < BaseSerializer
   attributes  :id,
               :content_type,
               :file_name,

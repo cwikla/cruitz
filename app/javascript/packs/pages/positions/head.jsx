@@ -87,6 +87,42 @@ class CandidateItem extends Component {
 
 }
 
+class SubmittedCandidateItem extends Component {
+
+  render() {
+    let candidate = this.props.candidate;
+    let recruiter = candidate.recruiter;
+    let stateName = State.toClassName(candidate.state);
+
+    let id = "sub-cand-" + candidate.id;
+    let allClass = ClassNames("item submitted-candidate-item flx-row");
+
+    if (this.props.isSelected) {
+       allClass.push("selected");
+    }
+
+    allClass.push("state");
+    if (!candidate.is_unlocked) {
+      allClass.push("locked");
+    }
+
+    //console.log("CANDIDATE");
+    //console.log(candidate);
+
+    return (
+      <div key={id} className={allClass}>
+        <div className="flx-col flx-1 title">
+          <div>{candidate.first_name} {candidate.last_name}</div>
+          <div>{candidate.summary}</div>
+        </div>
+        <State.Bubble state={candidate.state} />
+      </div>
+    );
+
+  }
+}
+
+
 class CandidateComponent extends Component {
 
   candidates() {
@@ -119,7 +155,7 @@ class CandidateComponent extends Component {
         { this.candidates().map((item, pos) => {
           let key = "cand-" + item.id;
           return (
-            <CandidateItem 
+            <SubmittedCandidateItem 
               key={key} 
               candidate={item}
               onRemoveCandidate={this.props.onRemoveCandidate}

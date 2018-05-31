@@ -69,7 +69,7 @@ class Candidate < ApplicationRecord
     puts "SUBMIT"
 
     Candidate.transaction do
-      candidate = Candidate.find_or_create_unique(job: job, head: head, commission: commission, state: state)
+      candidate = Candidate.find_or_create_unique(job_id: job.id, head_id: head.id, commission: commission, state: state)
       candidate.commission = commission if !candidate.commission || (commission.to_f < candidate.commission.to_f) # allow commission to be less
       candidate.state = state
       candidate.save!
@@ -79,10 +79,12 @@ class Candidate < ApplicationRecord
 
       recruiter = head.recruiter
 
-      body ||= "New candidate #{head.full_name}"
+      body = nil if body.blank?
+      body ||= "New candidate for #{job.title}"
+      puts "BODY IS #{body}"
     
       msg = nil 
-      msg = Message.create!(candidate: candidate, user: candidate.hirer, from_user: recruiter, job: job, body: body) if body
+      msg = Message.create!(candidate: candidate, user: candidate.hirer, from_user: recruiter, job_id: job.id, body: body)
 
       candidate.description = msg
       candidate.save!

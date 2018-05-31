@@ -1,4 +1,4 @@
-class LinkSerializer < ActiveModel::Serializer
+class LinkSerializer < BaseSerializer
   attributes :id,
     :url,
     :ltype

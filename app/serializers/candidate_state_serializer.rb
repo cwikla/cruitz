@@ -1,4 +1,4 @@
-class CandidateStateSerializer < ActiveModel::Serializer
+class CandidateStateSerializer < BaseSerializer
   attributes :id, 
     :state, 
     :created_at

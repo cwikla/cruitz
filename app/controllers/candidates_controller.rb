@@ -1,7 +1,7 @@
 class CandidatesController < ApplicationController
 
   def index
-    render json: current_user.candidates.order("-candidates.id"), each_serializer: CandidateSmallSerializer #.limit(10)
+    render json: current_user.candidates.order("-candidates.id"), current_user: current_user, each_serializer: CandidateSmallSerializer #.limit(10)
   end
 
   def jobs
@@ -10,7 +10,7 @@ class CandidatesController < ApplicationController
 
   def show
     cid = hid()
-    render json: current_user.candidates.find(cid)
+    render json: current_user.candidates.find(cid), current_user: current_user
   end
 
   def thread
@@ -30,7 +30,7 @@ class CandidatesController < ApplicationController
 
     @candidate = Candidate.submit(my_head, job, commission, body)
 
-    return render json: @candidate
+    return render json: @candidate, current_user: current_user
   end
 
   def destroy
@@ -46,7 +46,7 @@ class CandidatesController < ApplicationController
     cid = hid()
     @candidate = current_user.candidates.find(cid)
     if @candidate.setState(candidates_params[:state], current_user)
-      return render json: @candidate
+      return render json: @candidate, current_user: current_user
     else
       return render_create_error json: @candidate
     end

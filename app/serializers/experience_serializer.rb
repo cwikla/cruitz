@@ -1,6 +1,4 @@
-
-
-class ExperienceSerializer < ActiveModel::Serializer
+class ExperienceSerializer < BaseSerializer
   attributes :place,
     :title,
     :exp_type,

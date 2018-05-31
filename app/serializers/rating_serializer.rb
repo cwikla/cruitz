@@ -1,4 +1,4 @@
-class RatingSerializer < ActiveModel::Serializer
+class RatingSerializer < BaseSerializer
   attributes :id
 
   def id

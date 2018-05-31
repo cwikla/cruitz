@@ -1,4 +1,4 @@
-class ReviewSerializer < ActiveModel::Serializer
+class ReviewSerializer < BaseSerializer
   attributes  :from_user,
 							:description, 
 							:score,

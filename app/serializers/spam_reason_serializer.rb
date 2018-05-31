@@ -1,4 +1,4 @@
-class SpamReasonSerializer < ActiveModel::Serializer
+class SpamReasonSerializer < BaseSerializer
   attributes :id,
     :title
 end

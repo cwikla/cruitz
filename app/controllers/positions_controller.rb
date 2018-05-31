@@ -29,7 +29,7 @@ class PositionsController < ApplicationController
     @candidate = Candidate.new(job: job, head: my_head)
 
     if @candidate.save
-      return render json: @candidate
+      return render json: @candidate, current_user: current_user
     else
       return render_create_error json: @candidate
     end
@@ -38,7 +38,7 @@ class PositionsController < ApplicationController
   def candidates
     pid = position_params
     @candies = current_user.submitted_candidates.where(job_id: pid)
-    render json: @candies
+    render json: @candies, current_user: current_user
   end
 
   def show

@@ -63,7 +63,7 @@ class CandidateHeader extends Component {
     let company = candidate.company || "No Company";
     let description = candidate.description || "No Description";
 
-    if (!candidate.unlocked_at) {
+    if (!candidate.is_unlocked) {
       fullName = Pyr.Util.scramble("George Smith");
       phoneNumber = Pyr.Util.scramble("415-555-1212");
       email = Pyr.Util.scramble("georgith@george.com");
@@ -71,9 +71,9 @@ class CandidateHeader extends Component {
     }
 
     let clazzes = ClassNames("candidate-header flx-col flx-noshrink");
-    let extra = ClassNames(!candidate.unlocked_at ? "locked" : "");
+    let extra = ClassNames(!candidate.is_unlocked ? "locked" : "");
 
-    let ALock = candidate.unlocked_at ? Pyr.UI.Empty : Lock;
+    let ALock = candidate.is_unlocked ? Pyr.UI.Empty : Lock;
 
 /*
     console.log("HMMM");
@@ -94,7 +94,7 @@ class CandidateHeader extends Component {
           <div className={ClassNames(extra).push("salary mr-auto flx-1")}>{salary}</div>
         </div>
         <div className="flx-row-stretch info social-links">
-          <WebLink.Links links={candidate.links} locked={!candidate.unlocked_at}/>
+          <WebLink.Links links={candidate.links} locked={!candidate.is_unlocked}/>
         </div>
         <div className={ClassNames(extra).push("lock ml-auto mr-auto mt-auto mb-auto")}><ALock /></div>
       </div>
@@ -117,7 +117,7 @@ class CandidateItem extends Component {
     }
 
     allClass.push("state");
-    if (!candidate.unlocked_at) {
+    if (!candidate.is_unlocked) {
       allClass.push("locked");
     }
 
@@ -712,7 +712,7 @@ class ShowSheet extends Sheet.Show {
           let name = State.toName(state);
           let action = State.toAction(state);
 
-          if (!candidate.unlocked_at && (state == State.STATE_UNLOCKED)) {
+          if (!candidate.is_unlocked && (state == State.STATE_UNLOCKED)) {
             return (
               <StateButton key={"sb-" + name} state={state} onClick={this.onShowUnlock}>{action}</StateButton>
             );
@@ -822,7 +822,7 @@ class ShowSheet extends Sheet.Show {
 
     let unlockAction = this.onButtonPresses[State.STATE_UNLOCKED];
 
-    let locked = !candidate.unlocked_at;
+    let locked = !candidate.is_unlocked;
 
     return (
         <div className="flx-row flx-1">

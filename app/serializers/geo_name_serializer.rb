@@ -1,4 +1,4 @@
-class GeoNameSerializer < ActiveModel::Serializer
+class GeoNameSerializer < BaseSerializer
   attributes :id,
     :name,
     :admin_code_1,

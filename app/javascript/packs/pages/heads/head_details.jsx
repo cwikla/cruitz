@@ -16,6 +16,7 @@ import Pyr, {
 const ClassNames = Pyr.ClassNames;
 
 import WebLink from '../shared/web_link';
+import CV from '../shared/cv';
 
 class Head extends Component {
   render () {
@@ -182,7 +183,7 @@ class WorkHistory extends Component {
   }
 }
 
-class Full extends Component {
+class OldFull extends Component {
   render() {
     let head = this.props.head;
 
@@ -196,6 +197,14 @@ class Full extends Component {
         <WorkHistory {...this.props} />
       </Head>
     )
+  }
+}
+
+class Full extends Component {
+  render() {
+    return (
+      <CV.CV {...this.props} candidate={this.props.head} />
+    );
   }
 }
 
