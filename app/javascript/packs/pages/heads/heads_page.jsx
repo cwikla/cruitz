@@ -56,7 +56,7 @@ class HeadItem extends Component {
     let id = "head-" + head.id;
     let allClass = ClassNames("item head-item flx-col");
     
-    if (this.props.selected) {
+    if (this.props.isSelected) {
        allClass.push("selected");
     }  
     
