@@ -62,12 +62,6 @@ class JobItem extends Component {
       <div className={allClass} id={id}>
         <div className="created-at ml-auto"><Pyr.UI.MagicDate date={job.created_at} short/></div>
         <div className="title mr-auto">{job.title}</div>
-        <div className="item-content flx-col ml-auto flx-1">
-          <div className="total">{job.candidate_counts.total} Candidates</div>
-          <div className="new">{job.candidate_counts.waiting} New</div>
-          <div className="accepted">{job.candidate_counts.accepted} Accepted</div>
-          <div className="rejected">{job.candidate_counts.rejected} Rejected</div>
-        </div>
       </div>
     );
   }
