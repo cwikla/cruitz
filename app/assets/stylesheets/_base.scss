@@ -326,6 +326,8 @@ label {
   img {
     width: #{$avatar_width}rem;
     height: #{$avatar_width}rem;
+    object-fit: contain;
+
     border-color: white;
     border-width: 1px;
     border-radius: 5px;
@@ -339,6 +341,7 @@ label {
     img {
       width: #{$avatar_small_width}rem;
       height: #{$avatar_small_width}rem;
+      object-fit: contain;
     }
   }
 }
@@ -782,7 +785,7 @@ label {
   }
 
   .logo {
-    object-fit: cover;
+    object-fit: contain;
     height: 3rem;
     width: 3rem;
 
@@ -925,6 +928,7 @@ label {
           height: 5rem;
           max-height: 5rem;
           max-width: 5rem;
+          object-fit: contain;
         }
 
         i {
@@ -1038,7 +1042,7 @@ label {
     }
   
     img {
-      object-fit: cover;
+      object-fit: contain;
       width: 5rem;
       height: 5rem;
       border-radius: 5px;
@@ -1052,6 +1056,7 @@ label {
     img {
       height: 1.5rem;
       max-height: 1.5rem;
+      object-fit: contain;
     }
   }
 
@@ -1318,6 +1323,7 @@ div.line {
           height: 5rem;
           max-height: 5rem;
           max-width: 5rem;
+          object-fit: contain;
         }
   
         i {
