@@ -422,6 +422,13 @@ function friendlyDate(date, options) {
     }
   }
 
+  if (options.medium) {
+    longOptions = { month: 'long', day: 'numeric'};
+    if (now.getYear() != date.getYear()) {
+      longOptions.year = 'numeric';
+    }
+  }
+
   if (options.mini || options.short) {
     longOptions = { month: 'numeric', day: 'numeric', year: 'numeric'};
   }

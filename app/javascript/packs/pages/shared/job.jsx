@@ -55,7 +55,7 @@ class Card extends Component {
     let title = item.title || company.name || "No Title";
     let description = item.description || "No Description";
     let category = item.category ? item.category.name : "Other";
-    let url = logo ? logo.url : "";
+    let url = logo ? logo.url : null;
     let companyName = company ? company.name : "Anonymous";
     let createdAt = item.created_at;
 
@@ -78,7 +78,7 @@ class Card extends Component {
         </div>
         <div className="card-inner">
           <div className="company flx-row">
-            <Pyr.UI.Image src={url} className="mr-auto" />
+            { url ? <Pyr.UI.Image src={url} className="mr-auto" /> : null }
             <div className="flx-1 mr-auto mt-auto mb-auto name">{ companyName }</div>
           </div>
           <div className="job">
@@ -132,27 +132,24 @@ class Blurb extends Component {
     let title = job.title || company.name || "No Title";
     let description = job.description || "No Description";
     let category = job.category ? job.category.name : "Other";
-    let logo_url = logo ? logo.url : "";
+    let url = logo ? logo.url : null;
     let companyName = company ? company.name : "Anonymous";
 
     return (
-      <div className="header job-blurb flx-col" id={"job-" + job.id}>
+      <div className="job-blurb flx-col" id={"jbrb-" + job.id}>
+        <div className="created_at ml-auto"><Pyr.UI.MagicDate dateOnly date={job.created_at} medium/></div>
+        <div className="company flx-row">
+          { url ? <Pyr.UI.Image src={url} className="logo mr-auto" /> : null }
+          <div className="flx-1 mr-auto mt-auto mb-auto name">{ companyName }</div>
+        </div>
+
         <div className="flx-col">
-          <img src={logo_url} className="logo"/>
+          <div className="title mr-auto">{ title }</div>
+          <div className="locations mr-auto">{ locations }</div>
+          <div className="salary-range mr-auto">$120,000 - $160,000</div>
         </div>
 
-        <div className="flx-col flx-1">
-          <div className="flx-row">
-            <div className="title flx-1">{ title }</div>
-            <div className="created_at"><Pyr.UI.MagicDate dateOnly date={job.created_at}/></div>
-          </div>
-          <div className="company">{ companyName }</div>
-          <div className="locations">{ locations }</div>
-
-          <div className="flx-row mt-auto">
-            <div className="salary-range">$120,000 - $160,000</div>
-          </div>
-        </div>
+        <div className="more ml-auto">More...</div>
       </div>
     );
   }

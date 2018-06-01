@@ -760,38 +760,51 @@ label {
 }
 
 .job-blurb, %job-blurb {
+  background-color: white;
   box-shadow: 1px 1px 5px 0px $gray_color;
-  unused-margin-bottom: 2rem;
+  font-size: 0.9rem;
+  line-height: 1rem;
+
+  .more {
+    color: white;
+  }
+
+  &:hover {
+    box-shadow: 2px 2px 5px 0px $gray_color;
+  
+    .more {
+      color: $secondary_color;
+    }
+  }
 
   & > div {
     padding: 1rem;
   }
 
   .logo {
-    height: 10rem;
-    width: 10rem;
+    object-fit: cover;
+    height: 3rem;
+    width: 3rem;
+
     border: solid $border_color 1px;
+
     border-radius: 5px;
   }
 
+  .name {
+    margin-left: 1rem;
+  }
+
   .title {
-    font-size: 2rem;
-    line-height: 3rem;
-    f-font-weight: $font_weight_normal;
+    font-weight: $font_weight_bold;
   }
 
   .company {
     padding-top: 0.5rem;
-    font-size: 1.5rem;
-    line-height: 2rem;
-    f-font-weight: $font_weight_normal;
   }
 
   .locations {
     padding-top: 0.5rem;
-    font-size: 1.0rem;
-    line-height: 1.5rem;
-    f-font-weight: $font_weight_normal;
   }
 }
 
@@ -991,6 +1004,10 @@ label {
 }
 
 .job-card {
+  .card-inner {
+    line-height: 1.5rem;
+  }
+
   .position {
     max-height: 3rem;
     text-align: left;
@@ -1004,9 +1021,16 @@ label {
     font-weight: $font_weight_normal;
     padding-bottom: 0.5rem;
   }
+
+  .job {
+    margin-top: 1rem;
+  }
   
   .company {
     max-height: 7rem;
+    .name {
+      font-weight: $font_weight_bold;
+    }
   
     div {
       padding-left: 0.5rem;
@@ -1014,6 +1038,7 @@ label {
     }
   
     img {
+      object-fit: cover;
       width: 5rem;
       height: 5rem;
       border-radius: 5px;
