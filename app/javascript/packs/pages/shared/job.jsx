@@ -28,7 +28,7 @@ class Card extends Component {
     let company = this.getCompany(item.company || {});
     let logo = company.logo;
 
-    let id = "item-" + item.id;
+    let id = "jci-" + item.id;
     let allClass = ClassNames("card-item job-card flx-col");
 
     if (this.props.selected) {
@@ -65,7 +65,7 @@ class Card extends Component {
           <span className="flx-1">{ category }</span>
 
           <div className="dropdown">
-            <Pyr.UI.Icon name="bars" className="dropdown-toggle" id="dropdownFilterMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+            <Pyr.UI.Burger id={id+"-dropdown"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
             <div className="dropdown-menu" aria-labelledby="dropdownFilterMenuButton">
               <label className="dropdown-header">Filter with same</label>
               <div className="dropdown-divider"></div>

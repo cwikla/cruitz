@@ -1250,8 +1250,11 @@ class Range extends Child {
 
   constructor(props) {
     super(props);
+    console.log("PROPS");
+    console.log(props);
+
     this.initState({
-      value: this.minValue()
+      value: props.value || this.minValue() 
     });
 
     this.onChange = this.change.bind(this);

@@ -236,7 +236,7 @@ class Card extends Component {
     let company = recruiter.company;
     let logo = company.logo;
 
-    let id = "item-" + recruiter.id;
+    let id = "rci-" + recruiter.id;
     let allClass = ClassNames("card-item recruiter-card flx-col");
 
     if (this.props.selected) {
@@ -277,7 +277,7 @@ class Card extends Component {
             <Avatar.Stars rating={Math.random() * 5.0} className="mt-auto mb-auto"/>
 
             <div className="dropdown ml-auto flx-me-start">
-              <Pyr.UI.Icon name="bars" className="dropdown-toggle" id="recCardFilterMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+              <Pyr.UI.Burger id={id+"-burger"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
               <div className="dropdown-menu" aria-labelledby="recCardFilterMenuButton">
                 <label className="dropdown-header">Filter with same</label>
                 <div className="dropdown-divider"></div>

@@ -532,7 +532,7 @@ class SearchForm extends Component {
   }
 
   preSubmit() {
-    this.props.onSetItems(null);
+    this.props.onSetItems([]);
   }
 
   render() {
@@ -588,6 +588,7 @@ class SearchForm extends Component {
               maxValue={10}
               step={1}
               formatLabel={this.renderAge}
+              value={10}
             />
           </Pyr.Form.Group>
         </Pyr.Form.Form>

@@ -50,7 +50,10 @@ class Job < ApplicationRecord
 
   validates :salary, :numericality => {:only_integer => true}, allow_blank: true
 
-  pg_search_scope :search, against: [:title, :description] #, using: :trigram
+  pyr_search_scope :search, against:  {
+    title: 'A', 
+    description: 'B'
+  } 
 
   def self.after_cached_candidate(candidate)
     j = Job.new(:id => candidate.job_id)

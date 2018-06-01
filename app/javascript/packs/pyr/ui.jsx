@@ -294,6 +294,14 @@ const Icon = (props) => (
   </span>
 );
 
+const Burger = (props) => (
+  <span className="pyr-icon dropdown-toggle"
+    {...props}
+  >
+    <i className="fa fa-bars" />
+  </span>
+);
+
 const PrimaryButton = (props) => (
     <label href="#"
       {...Util.propsMergeClassName(props, "btn btn-primary pyr-btn-primary")}
@@ -1050,6 +1058,7 @@ const UI = {
   NoticeReceiver,
 
   Icon,
+  Burger,
   Label,
   FancyLabel,
   FancyButton,

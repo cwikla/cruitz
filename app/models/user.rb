@@ -49,7 +49,10 @@ class User < ApplicationRecord
 
   validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }, unless: :password_is_nil?
 
-  pg_search_scope :search, against: [:first_name, :last_name] #, using: :trigram
+  pyr_search_scope :search, against: {
+    first_name: 'B', 
+    last_name: 'A'
+  } 
 
   def after_cached
     self.score_cached(true)

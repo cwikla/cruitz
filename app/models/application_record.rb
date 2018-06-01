@@ -11,7 +11,14 @@ class ApplicationRecord < ActiveRecord::Base
   #include Pyr::Base::UuidHelp
   #include Hashid
 
-  pg_search_scope :search_name, against: :name #, using: :trigram
+
+  class << self
+    def pyr_search_scope(*args, **kwargs) 
+      susing = kwargs[:using] ||  { tsearch: { any_word: true }}
+      pg_search_scope(*args, **kwargs, using: susing)
+    end
+  end
+
 
   def self.ids
     select(:id).map(&:id).uniq

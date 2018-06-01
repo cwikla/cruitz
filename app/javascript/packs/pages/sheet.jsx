@@ -72,14 +72,14 @@ class Base extends Component {
        searchItems, 
        searchItemsMap,
     });
-
-    this.forceUpdate();
-    console.log("FORCED UPDATE");
+    //this.forceUpdate();
+    //console.log("FORCED UPDATE");
+    console.log("END SET SEARCH");
 
   }
 
   searchPreSubmit() {
-    setSearchItems(null);
+    setSearchItems([]);
   }
 
   name() {
