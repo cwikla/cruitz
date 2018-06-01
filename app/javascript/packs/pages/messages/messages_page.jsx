@@ -92,7 +92,7 @@ class MessageItem extends Sheet.Item {
           />
           <div className="flx-col flx-1">
             <div className="ml-auto">
-              <Pyr.UI.MagicDate date={message.created_at} short/>
+              <Pyr.UI.MagicDate date={message.created_at} short={true}/>
             </div>
             <div className="flx-row flx-1"><Header className="title flx-row mr-auto" message={message} job={job} isNew={unread}/><div className="ml-auto">({count})</div></div>
           </div>

@@ -38,7 +38,7 @@ class ThreadItem extends Sheet.Item {
     let id = THREAD_ID(message);
     //console.log("RENDER THREADID: " + id);
 
-    let allClass = ClassNames("thread-item", ownerClass);
+    let allClass = ClassNames("thread-item flx-col", ownerClass);
     if (!mine && !message.read_at) {
       allClass.push("unread");
     }
@@ -62,14 +62,10 @@ class ThreadItem extends Sheet.Item {
 
     return (
       <div className={allClass} id={id}>
-        <div className={justify.concat("created-at")}>
-          <Pyr.UI.MagicDate date={message.created_at} />
-        </div>
+        <Pyr.UI.MagicDate date={message.created_at} className={ClassNames("created-at").push(mine ? "ml-auto" : "mr-auto")}/>
         <div className={justify}>
           { leftAvatar }
-          <div className="flx-col justify-content-center item-content">
-            <div className="item-body flx-0">{message.body}</div>
-          </div>
+          <div className="item-content mt-auto mb-auto">{message.body}</div>
           { rightAvatar }
         </div>
       </div>

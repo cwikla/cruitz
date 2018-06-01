@@ -564,7 +564,7 @@ class MagicDate extends Component {
     let value = Util.friendlyDate(this.props.date, this.props);
 
     return (
-      <span className="pyr-magic-date">{ value }</span>
+      <span className={ClassNames(this.props.className).push("pyr-magic-date")}>{ value }</span>
     );
   }
 }
@@ -572,9 +572,9 @@ class MagicDate extends Component {
 class MagicFuzzyDate extends MagicDate {
   render() {
     let value = Util.fuzzyDate(this.props.date);
-    
+
      return (
-        <span className="pyr-magic-fuzzy-date">{ value }</span>
+        <span className={ClassNames(this.props.className).push("pyr-magic-fuzzy-date")}>{ value }</span>
       );
   }
 }
