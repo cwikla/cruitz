@@ -19,7 +19,6 @@
   .show {
       .inner {
         margin-top: 1rem;
-        background-color: white;
         padding: 0;
         border: none;
       }
@@ -60,6 +59,7 @@
         font-size: 1rem;
 
         margin-bottom: 0;
+        background-color: white;
 
         .candidate-actions {
           padding: 0.5rem;
