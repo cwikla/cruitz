@@ -213,7 +213,7 @@ class ShowSheet extends Sheet.Show {
     }
 
     if (this.props.candidatesMap) {
-      return this.props.candidatesMap[msg.candidate.id]; // override with livelier version
+      return this.props.candidatesMap[msg.candidate.id] || msg.candidate; // override with livelier version
     }
 
     return msg.candidate;
@@ -301,8 +301,15 @@ class ShowSheet extends Sheet.Show {
 
     let message = item;
     let candidate = this.getCandidate(message);
+
+    if (!candidate) {
+      console.log("Message " + message.id + " has no candidate");
+      return null;
+    }
+
     let job = this.getJob(message);
     let other = message.other;
+
 
     let ThreadRender = candidate ? MessageThread : MessageQA;
 

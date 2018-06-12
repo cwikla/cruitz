@@ -21,6 +21,7 @@ import {
   POSITIONS_PAGE,
   HEADS_PAGE,
   MESSAGES_PAGE,
+  CANDIDATES_PAGE,
 
   POSITIONS_URL,
   HEADS_URL,
@@ -34,6 +35,7 @@ import Container from './container';
 import Loader from './loader/loader';
 
 import PositionsPage from './positions/positions_page';
+import SubmittedCandidatesPage from './submitted_candidates/submitted_candidates_page';
 import MessagesPage from './messages/messages_page';
 import HeadsPage from './heads/heads_page';
 
@@ -46,6 +48,7 @@ const HolderPage = (props) => (
 const PAGE_MAP = {
   "home" : HolderPage,
   [POSITIONS_PAGE.toLowerCase()]: PositionsPage,
+  [CANDIDATES_PAGE.toLowerCase()]: SubmittedCandidatesPage,
   [HEADS_PAGE.toLowerCase()]: HeadsPage,
   [MESSAGES_PAGE.toLowerCase()] : MessagesPage,
 };
@@ -90,6 +93,7 @@ class SubNavBar extends Container.NavBar {
             <div className="mr-auto flx-row">
               <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={positionsCount}/>
               <Container.SubIcon name="Messages" icon="envelope" selected={this.props.page} page="messages" count={messagesCount}/>
+              <Container.SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates" count={this.props.pageItemsCount.candidates}/>
               <Container.SubIcon name="Heads" icon="users" selected={this.props.page} page="heads" count={headsCount}/>
             </div>
           </Pyr.Grid.Col>
@@ -132,11 +136,15 @@ class LoaderComponent extends Loader.Component {
 
       messages: null,
       messagesMap: null,
+
+      candidates: null,
+      candidatesMap: null,
     });
 
     this.positionsLoader = new Loader.Positions(this.loaderProps);
     this.headsLoader = new Loader.Heads(this.loaderProps);
     this.messagesLoader = new Loader.Messages(this.loaderProps);
+    this.candidatesLoader = new Loader.Candidates(this.loaderProps);
   }
 
   extraProps() {
@@ -145,6 +153,7 @@ class LoaderComponent extends Loader.Component {
         positions: this.positionsLoader,
         heads: this.headsLoader,
         messages: this.messagesLoader,
+        candidates: this.candidatesLoader,
       },
 
       // need to see if I can make this a dict...
@@ -160,6 +169,10 @@ class LoaderComponent extends Loader.Component {
 
       messages: this.state.messages,
       messagesMap: this.state.messagesMap,
+
+      candidates: this.state.candidates,
+      candidatesMap: this.state.candidatesMap,
+
     });
   }
 
@@ -186,6 +199,7 @@ class LoaderComponent extends Loader.Component {
       <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE} {...props} >
         <Pyr.UI.RouteURL path="/positions/:pid/select" page="positions" action="select" />
         <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
+        <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
       </Pyr.UI.RouterProps>
     );
   }

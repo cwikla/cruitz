@@ -36,7 +36,7 @@ class UserProvider extends Network.Component {
       setUser: this.onSetUser,
       setCompany: this.onSetCompany,
       getCompany: this.onGetCompany,
-    }
+    };
   }
 
   constructor(props) {

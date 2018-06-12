@@ -290,6 +290,21 @@ class Candidates extends LoaderBase {
   }
 }
 
+class SubmittedCandidates extends LoaderBase {
+  name() {
+    return "candidates";
+  }
+
+  url(props) {
+    //return Pyr.URL(JOBS_URL).push(props.jobId).push(CANDIDATES_URL);
+    return Pyr.URL(CANDIDATES_URL).push('submitted');
+  }
+
+  unused_setData(data) {
+    this.setItems(data.job.candidates);
+  }
+}
+
 
 class Positions extends LoaderBase {
   name() {

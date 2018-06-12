@@ -595,11 +595,16 @@ GEM
       activesupport (>= 4.2)
       arel (>= 6)
     puma (3.10.0)
+    pusher (1.3.1)
+      httpclient (~> 2.7)
+      multi_json (~> 1.0)
+      pusher-signature (~> 0.1.8)
+    pusher-signature (0.1.8)
     pyr_async (4.0.0)
       rails (~> 5.1.1)
       resque
       resque-scheduler
-    pyr_base (14.1.3)
+    pyr_base (14.1.4)
       aws-sdk
       aws-sdk-rails
       bootstrap (= 4.0.0.alpha6)
@@ -784,8 +789,9 @@ DEPENDENCIES
   pg
   pg_search
   puma (~> 3.0)
+  pusher
   pyr_async (~> 4.0.0)!
-  pyr_base (~> 14.1.3)!
+  pyr_base (~> 14.1.4)!
   pyr_gem (~> 7.0.0)!
   pyr_geo (~> 5.0.1)!
   pyr_push (~> 6.1.0)!

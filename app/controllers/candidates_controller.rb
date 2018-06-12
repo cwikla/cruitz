@@ -1,7 +1,7 @@
 class CandidatesController < ApplicationController
 
   def index
-    render json: current_user.candidates.order("-candidates.id"), current_user: current_user, each_serializer: CandidateSmallSerializer #.limit(10)
+    render json: candidates.order("-candidates.id"), current_user: current_user, each_serializer: CandidateSmallSerializer #.limit(10)
   end
 
   def jobs
@@ -10,7 +10,7 @@ class CandidatesController < ApplicationController
 
   def show
     cid = hid()
-    render json: current_user.candidates.find(cid), current_user: current_user
+    render json: candidates.find(cid), current_user: current_user
   end
 
   def thread
@@ -37,7 +37,7 @@ class CandidatesController < ApplicationController
   def destroy
     cid = params.require(:id)
     
-    @candidate = current_user.submitted_candidates.find(cid)
+    @candidate = candidates.find(cid)
     @candidate.cancel
 
     render body: nil, status: :no_content
@@ -45,7 +45,7 @@ class CandidatesController < ApplicationController
 
   def update
     cid = hid()
-    @candidate = current_user.candidates.find(cid)
+    @candidate = candidates.find(cid)
     if @candidate.setState(candidates_params[:state], current_user)
       return render json: @candidate, current_user: current_user
     else
@@ -54,6 +54,10 @@ class CandidatesController < ApplicationController
   end
 
   private
+
+  def candidates
+    current_user.is_recruiter ? current_user.submitted_candidates : current_user.candidates
+  end
 
   def create_params
     #puts params
