@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import BaseComponent from './base';
 import Util from './util';
 
+import Pusher from './pusher';
+
 import { 
   PyrForm as Form, 
 } from "./form";
@@ -43,7 +45,7 @@ class UserProvider extends Network.Component {
     super(props);
 
     this.initState({
-      user: null
+      user: null,
     });
 
     this.onSetCompany = this.setCompany.bind(this);
@@ -65,8 +67,9 @@ class UserProvider extends Network.Component {
     user = Object.assign({}, user);
 
     this.setState({
-      user
+      user,
     });
+
   }
 
   setCompany(company) {
@@ -109,7 +112,20 @@ class UserProvider extends Network.Component {
   }
 
   render() {
-    return this.props.children;
+    let user = this.state.user;
+
+    let userId = user ? user.uuid : null;
+    let pusher = user ? user.pusher : null;
+
+    if (!user || !user.pusher) {
+      return this.props.children;
+    }
+    
+    return (
+      <Pusher.Provider key="user-pusher" userId={userId} pusher={pusher}>
+        { this.props.children }
+      </Pusher.Provider>
+    );
   }
 }
 
@@ -165,6 +181,8 @@ const Pyr = {
 
   UserContextTypes,
   UserProvider,
+
+  Pusher: Pusher.Pusher,
 
   UI,
   Grid,

@@ -1,10 +1,10 @@
 class MeController < ApplicationController
   def index
-    render json: current_user
+    render json: current_user, serializer: MeSerializer
   end
 
   def show
-    render json: current_user
+    render json: current_user, serializer: MeSerializer
   end
 
   def password
@@ -14,7 +14,7 @@ class MeController < ApplicationController
       bypass_sign_in(current_user)
     end
 
-    render json: current_user
+    render json: current_user, serializer: MeSerializer
   end
 
   def update
@@ -38,7 +38,7 @@ class MeController < ApplicationController
 
     if @user.update_without_password(up)
       #puts "#{@user.inspect}"
-      result = render json: @user
+      result = render json: @user, serializer: MeSerializer
       #puts result
       return result
     else

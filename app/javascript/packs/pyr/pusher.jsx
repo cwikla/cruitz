@@ -1,33 +1,156 @@
 
-const PUSHER_ID = 'c9b6d0b4647c88393e62';
-Pusher.logToConsole = true;
+import React from 'react';
+import PropTypes from 'prop-types';
+import PusherJS from 'pusher-js';
 
-class PusherObj {
-  constructor(uid) {
+import BaseComponent from './base';
+import Util from './util';
 
-    this.pusher = new Pusher(PUSHER_ID, {
-      cluster: 'us2',
-      encrypted: true
-    });
+PusherJS.logToConsole = true;
 
-    this.channel = this.pusher.subscribe("private-" + uid);
+const PusherContextTypes = {
+  pusher: PropTypes.object,
+};
+
+class Provider extends BaseComponent {
+  static childContextTypes = {
+    pusher: PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      pusher: {
+        onListen : this.onListen,
+        onForget : this.onForget,
+      }
+    };
   }
 
-  listen(eventName, f) {
-    this.channel.bind(eventName, data => {
-      if (f) {
-        f(data);
+  constructor(props) {  
+    super(props);
+
+    this.onSuccess = this.success.bind(this);
+    this.onError = this.error.bind(this);
+
+    this.pusher = new PusherJS(this.props.pusher.key, {
+        authEndpoint: Util.URL("/pusher/auth").toRemote(),
+        cluster: this.props.pusher.cluster || 'us2',
+        encrypted: this.props.pusher.encrypted,
+      });
+
+    let channel = null; // this.addChannel("private-" + this.props.userId);
+
+    this.onListen = this.listen.bind(this);
+    this.onForget = this.forget.bind(this);
+  }
+
+  success(status) {
+    console.log("----- Pusher success ---- ");
+    console.log(status);
+    console.log("+++++ Pusher end sucess +++++");
+  }
+
+  error(status) {
+    console.log("------ Pusher error -----");
+    console.log(status);
+    console.log("++++++ Pusher end error +++++");
+  }
+
+  privateChannel() {
+    return this.channel;
+  }
+
+  componentDidMount() {
+   this.channel = this.addChannel("private-" + this.props.userId);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.userId != prevProps.userId) {
+      this.channel = this.addChannel("private-" + this.props.userId);
+    }
+  }
+
+  addChannel(name) {
+    let channel = this.getChannel(name);
+    channel.bind("pusher:subscription_error", this.onError);
+    channel.bind("pusher:subscription_succeeded", this.onSuccess);
+
+    return channel;
+  }
+
+  getChannel(name) {
+    if (name) {
+      return this.pusher.subscribe(name);
+    }
+    return this.privateChannel();
+  }
+
+  listen(args) {
+    let channel = this.getChannel(args.channelName);
+
+    channel.bind(args.eventName, data => {
+      if (args.onListen) {
+        args.onListen(data);
       }
-      console.log("Listening to " + eventName);
+      console.log("Listening to " + args.eventName);
     });
   }
 
-  forget(eventname, f) {
-    this.channel.unbind(eventName, data => {
-      if (f) {
-        f(data); 
+  forget(args) {
+    let channel = this.getChannel(args.channelName);
+
+    channel.unbind(eventName, data => {
+      if (args.onForget) {
+        args.onForget(data); 
       }
-      console.log("Stopped istening to " + eventName);
+      console.log("Stopped listening to " + args.eventName);
     });
+  }
+
+  render() {
+    return this.props.children;
   }
 }
+
+class PusherComponent extends BaseComponent {
+  static contextTypes = PusherContextTypes;
+
+  componentDidMount() {
+    if (!this.context.pusher) {
+      return;
+    }
+
+    console.log("PUSHER COMP CONTEXT");
+    console.log(this.context);
+
+    this.context.pusher.onListen({
+      channelName: this.props.channel,
+      eventName: this.props.event,
+      func: this.props.onListen,
+    });
+  }
+
+  componentWillUnmount() {
+    if (!this.context.pusher) {
+      return;
+    }
+
+    this.context.pusher.onForget({
+      channelName: this.props.channel,
+      eventName: this.props.event,
+      func: this.props.onForget,
+    });
+  }
+
+  render() {
+    return null;
+  }
+
+}
+
+const Pusher = {
+  Provider,
+  Pusher : PusherComponent
+};
+
+export default Pusher;

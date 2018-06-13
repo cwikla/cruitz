@@ -2,7 +2,7 @@ class PositionsController < ApplicationController
   LIMIT = 50
 
   def index
-    all = Job.order("-id")
+    all = Job.order("-id") #.limit(1)
     render json: all, each_serializer: JobSmallSerializer, company: true #, submitted_candidates: true
   end
 

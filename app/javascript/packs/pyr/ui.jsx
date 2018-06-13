@@ -53,6 +53,12 @@ class ChildSelector extends Component {
 
 }
 
+class Children extends Component {
+  render() {
+    return this.props.children;
+  }
+}
+
 const Loading = (props) => (
   <div className="loading" />
 );
@@ -1084,6 +1090,8 @@ const UI = {
   Collapse,
   ImageFile,
   DIV,
+
+  Children,
 
   Scroll,
   PieChart,
