@@ -29,6 +29,9 @@ pusher_args = {
   production: production,
 }
 
+USE_PUSHER = ENV['USE_PUSHER'] || false
+puts "Pusher is on!" if USE_PUSHER
+
 PUSHER_APP_ID = pusher_args[Rails.env.to_sym][:app_id]
 PUSHER_KEY = pusher_args[Rails.env.to_sym][:key]
 PUSHER_SECRET = pusher_args[Rails.env.to_sym][:secret]

@@ -13,6 +13,7 @@ class PusherController < ApplicationController
   end
 
   def setup_pusher
+    # for some reason global settinsg wasn't working
     @pusher_client = Pusher::Client.new(
       app_id: ::PUSHER_APP_ID,
       key: ::PUSHER_KEY,

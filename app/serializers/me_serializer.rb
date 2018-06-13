@@ -1,6 +1,4 @@
 
-USE_PUSHER = ENV['USE_PUSHER'] || false
-
 class MeSerializer < UserSerializer
   attributes :pusher
 
