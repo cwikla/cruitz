@@ -352,7 +352,7 @@ const StateButton = (props) =>  (
   >{props.children}</Pyr.UI.PrimaryButton>
 );
 
-class UnlockModal extends Pyr.UI.Modal {
+class CancelModal extends Pyr.UI.Modal {
   constructor(props) {
     super(props);
 
@@ -363,7 +363,7 @@ class UnlockModal extends Pyr.UI.Modal {
   }
 
   title() {
-    return "Unlock Candidate";
+    return "Cancel Candidate";
   }
 
   nextStep(e) {
@@ -376,20 +376,39 @@ class UnlockModal extends Pyr.UI.Modal {
   }
 
   renderInner() {
-    let state = State.STATE_UNLOCKED;
+    let state = State.STATE_CANCELED;
 
     let name = State.toName(state);
     let action = State.toAction(state);
 
     return (
-      <div className="unlock-modal inner">
+      <div className="cancel-modal inner">
         <div className="section">
-          By unlocking this candidate you agree to pay a commission of <span className="commission">{this.props.candidate.commission}%</span> 
-          of their first year salary if they are hired within one year from today.
+          You are about to remove this candidate for consideration for { this.props.job.title }.
+          Let us know the reason for removing this candidate.
         </div>
         <div className="section">
-          Unlocking this candidate gives you full access to their details, attachments and the ability to 
-          directly message with the recruiter.
+          <Pyr.Form.Form
+            url={Pyr.URL(CANDIDATES_URL).push(this.props.candidate.id)}
+            method={Pyr.Method.DELETE}
+            ref={(node) =>{ this.form = node; }}
+            onPreSubmit={this.onPreSubmit}
+            onPostSubmit={this.props.onPostSubmit}
+            onSuccess={this.onNextStep}
+            object={{}}
+            model="cancel"
+            className="cancel-inner"
+          >
+            <Pyr.Form.Group name="reason">
+              <Pyr.Form.Select>
+                <Pyr.Form.Option value="0">Candidate has been hired</Pyr.Form.Option>
+                <Pyr.Form.Option value="1">Candidate is no longer looking for another job</Pyr.Form.Option>
+                <Pyr.Form.Option value="3">Candidate is not interested in this company</Pyr.Form.Option>
+                <Pyr.Form.Option value="4">Candidate is not interested in this position</Pyr.Form.Option>
+                <Pyr.Form.Option value="5">Unknown</Pyr.Form.Option>
+              </Pyr.Form.Select>
+            </Pyr.Form.Group>
+          </Pyr.Form.Form>
         </div>
         <StateButton key={"sb-unlock-mod-"+name} state={state} onClick={this.onNextStep}>{action}</StateButton>
       </div>
@@ -400,50 +419,38 @@ class UnlockModal extends Pyr.UI.Modal {
 class ShowSheet extends Sheet.Show {
   constructor(props) {
     super(props);
-    this.onButtonPresses = {};
-    this.buttonBinds();
 
     this.initState({
       candidate: null,
-      showUnlockModal: false,
+      showCancelModal: false,
     });
 
-    this.onHideUnlock = this.hideUnlock.bind(this);
-    this.onShowUnlock = this.showUnlock.bind(this);
+    this.onCancel = this.cancel.bind(this);
+    this.onHideCancel = this.hideCancel.bind(this);
+    this.onShowCancel = this.showCancel.bind(this);
   }
 
-  hideUnlock(e) {
+  hideCancel(e) {
     if (e) {
       e.preventDefault();
     }
 
     this.setState({
-      showUnlockModal: false
+      showCancelModal: false
     });
   }
 
-  showUnlock(e) {
+  showCancel(e) {
     if (e) {
       e.preventDefault();
     }
     this.setState({
-      showUnlockModal: true
+      showCancelModal: true
     });
   }
 
-  buttonBinds() {
-    let states = State.states();
-    let bps = {};
-
-    for(let i=0; i<states.length; i++) {
-      let ns = states[i];
-      bps[ns] = this.candidateStateChange.bind(this, ns);
-    }
-
-    this.onButtonPresses = bps;
-  }
-
-  candidateStateUpdate(state) {
+  cancel() {
+    let state = State.STATE_CANCELED;
     let candidate = this.props.selected;
 
     let url = Pyr.URL(CANDIDATES_URL).push(candidate.id);
@@ -487,24 +494,13 @@ class ShowSheet extends Sheet.Show {
     let candidate = this.props.selected;
     let nexts = State.nexts(curState);
 
+    let state = State.STATE_CANCELED;
+    let name = "cancel";
+    let action = "Cancel";
+
     return (
       <div className="state-change">
-      {
-        nexts.map( (state, pos) => {
-          let name = State.toName(state);
-          let action = State.toAction(state);
-
-          if (!candidate.is_unlocked && (state == State.STATE_UNLOCKED)) {
-            return (
-              <StateButton key={"sb-" + name} state={state} onClick={this.onShowUnlock}>{action}</StateButton>
-            );
-          }
-
-          return (
-            <StateButton key={"sb-" + name} state={state} onClick={this.onButtonPresses[state]}>{action}</StateButton>
-          );
-        })
-      }
+        <StateButton key={"sb-" + name} state={state} onClick={this.onShowCancel}>{action}</StateButton>
       </div>
     );
   }
@@ -602,20 +598,18 @@ class ShowSheet extends Sheet.Show {
     //console.log("RECRUITER");
     //console.log(recruiter);
 
-    let unlockAction = this.onButtonPresses[State.STATE_UNLOCKED];
-
     let locked = !candidate.is_unlocked;
 
     return (
         <div className="flx-row flx-1">
           <div className="flx-col left flx-5 unlock-modal-below">
-            <UnlockModal 
-              open={this.state.showUnlockModal} 
-              onClose={this.onHideUnlock} 
+            <CancelModal 
+              open={this.state.showCancelModal} 
+              onClose={this.onHideCancel} 
               candidate={candidate}
               recruiter={recruiter}
               job={job}
-              onClick={unlockAction}
+              onClick={this.onCancel}
             />
 
             { this.statusTop(candidate) }
@@ -704,11 +698,23 @@ class SubmittedCandidatesPage extends Page {
   }
 
   getItemId() {
-    return this.props.subItemId;
+    if (this.props.subItemId) {
+      return this.props.subItemId;
+    }
+    if (this.props.candidates && this.props.candidates.length > 0) {
+      return this.props.candidates[0].id;
+    }
+    return null;
   }
 
   getJobId() {
-    return this.props.itemId;
+    if (this.props.itemId) {
+      return this.props.itemId;
+    }
+    if (this.props.candidates && this.props.candidates.length > 0) {
+      return this.props.candidates[0].job_id;
+    }
+    return null;
   }
 
   getJob() {
@@ -752,7 +758,7 @@ class SubmittedCandidatesPage extends Page {
     let miniJobs = this.props.jobs;
 
     if (this.props.candidates) {
-      console.log("REDUCING");
+      //console.log("REDUCING");
       miniJobsMap = this.props.candidates.reduce((d, item) => {
         d[item.job_id] = this.props.jobsMap[item.job_id];
         return d;

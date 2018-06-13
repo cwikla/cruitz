@@ -159,6 +159,7 @@ const State = {
   NoneBubble,
   Bar,
   STATE_UNLOCKED,
+  STATE_CANCELED,
 };
 
 export default State;
