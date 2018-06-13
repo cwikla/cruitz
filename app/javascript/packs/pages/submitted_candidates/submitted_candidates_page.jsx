@@ -675,6 +675,61 @@ class IndexShowSheet extends Sheet.IndexShow {
 
 
 class SubmittedCandidatesPage extends Page {
+  constructor(props) {
+    super(props);
+
+    let result = this.updateJobs(props.jobs, props.jobsMap);
+
+    this.initState(result);
+  }
+
+  updateJobs(jobs, jobsMap) {
+    let result = {
+      jobs: jobs,
+      jobsMap: jobsMap,
+      firstCandidateMap: {},
+    };
+
+    if (!jobs || jobs.length == 0) {
+      return result;
+    }
+
+    let miniJobsMap = {};
+    let miniJobs = jobs;
+    let candyMap = {};
+
+    if (this.props.candidates) {
+      //console.log("REDUCING");
+
+      for(let item in this.props.candidates) {
+        miniJobsMap[item.job_id] = jobsMap[item.job_id];
+        candyMap[item.job_id] = candyMap[item.job_id] || item;
+      }
+
+      //console.log(miniJobsMap);
+
+      miniJobs = [];
+      for(let j of jobs) {
+        if (miniJobsMap[j.id]) {
+          miniJobs.push(j);
+        }
+      }
+
+      result.jobs = miniJobs;
+      result.jobsMap = miniJobsMap;
+      result.firstCandidateMap = candyMap;
+    }
+
+    return result;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.jobs != this.props.jobs) {
+      let result = this.updateJobs(props.jobs, props.jobsMap);
+      this.setState(result);
+    }
+  }
+
   getItems() {
     let all = super.getItems();
 
@@ -701,9 +756,12 @@ class SubmittedCandidatesPage extends Page {
     if (this.props.subItemId) {
       return this.props.subItemId;
     }
-    if (this.props.candidates && this.props.candidates.length > 0) {
-      return this.props.candidates[0].id;
+
+    let jid = this.getJobId();
+    if (jid) {
+      return this.state.firstCandidateMap[jid];
     }
+
     return null;
   }
 
@@ -711,9 +769,11 @@ class SubmittedCandidatesPage extends Page {
     if (this.props.itemId) {
       return this.props.itemId;
     }
-    if (this.props.candidates && this.props.candidates.length > 0) {
-      return this.props.candidates[0].job_id;
+
+    if (this.state.jobs && this.state.jobs.length) {
+      return this.state.jobs[0].id;
     }
+
     return null;
   }
 
@@ -723,6 +783,18 @@ class SubmittedCandidatesPage extends Page {
       return this.props.jobsMap[jid];
     }
     return null;
+  }
+
+  getJobs() {
+    if (!this.props.jobs) {
+      return this.props.jobs;
+    }
+  }
+
+  getJobsMap() {
+    if (!this.props.jobsMap) {
+      return this.props.jobsMap;
+    }
   }
 
   name() {
@@ -754,29 +826,7 @@ class SubmittedCandidatesPage extends Page {
   pageProps() {
     let pp = super.pageProps();
 
-    let miniJobsMap = this.props.jobsMap;
-    let miniJobs = this.props.jobs;
-
-    if (this.props.candidates) {
-      //console.log("REDUCING");
-      miniJobsMap = this.props.candidates.reduce((d, item) => {
-        d[item.job_id] = this.props.jobsMap[item.job_id];
-        return d;
-      }, {});
-
-      //console.log(miniJobsMap);
-
-      miniJobs = [];
-      for(let j of this.props.jobs) {
-        if (miniJobsMap[j.id]) {
-          miniJobs.push(j);
-        }
-      }
-
-      //console.log(miniJobs);
-    }
-
-    return Object.assign({}, pp, { jobId: this.getJobId(), job: this.getJob(), jobs: miniJobs, jobsMap: miniJobsMap });
+    return Object.assign({}, pp, { jobId: this.getJobId(), job: this.getJob(), jobs: this.state.jobs, jobsMap: this.state.jobsMap });
   }
 
   render() {
