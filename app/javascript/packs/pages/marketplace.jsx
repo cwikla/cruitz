@@ -141,6 +141,8 @@ class LoaderComponent extends Loader.Component {
       candidatesMap: null,
     });
 
+    this.mounted = false;
+
     this.positionsLoader = new Loader.Positions(this.loaderProps);
     this.headsLoader = new Loader.Heads(this.loaderProps);
     this.messagesLoader = new Loader.Messages(this.loaderProps);
@@ -177,9 +179,17 @@ class LoaderComponent extends Loader.Component {
   }
 
   componentDidMount() {
+    console.log("COMPONENT DID MOUNT");
     if (!this.state.jobs) {
       this.positionsLoader.load();
     }
+    console.log("COMPONENT DID MOUNT END");
+    this.mounted =true;
+  }
+
+  componentWillUnmount() {
+    console.log("UNMOUNT ? ");
+    this.mounted = false;
   }
 
   render() {

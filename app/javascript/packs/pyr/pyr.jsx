@@ -117,10 +117,6 @@ class UserProvider extends Network.Component {
     let userId = user ? user.uuid : null;
     let pusher = user ? user.pusher : null;
 
-    if (!user || !user.pusher) {
-      return this.props.children;
-    }
-    
     return (
       <Pusher.Provider key="user-pusher" userId={userId} pusher={pusher}>
         { this.props.children }

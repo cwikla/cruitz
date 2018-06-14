@@ -32,13 +32,10 @@ class Provider extends BaseComponent {
     this.onSuccess = this.success.bind(this);
     this.onError = this.error.bind(this);
 
-    this.pusher = new PusherJS(this.props.pusher.key, {
-        authEndpoint: Util.URL("/pusher/auth").toRemote(),
-        cluster: this.props.pusher.cluster || 'us2',
-        encrypted: this.props.pusher.encrypted,
-      });
 
-    let channel = null; // this.addChannel("private-" + this.props.userId);
+   
+    this.pusher = null; 
+    this.channel = null; // this.addChannel("private-" + this.props.userId);
 
     this.onListen = this.listen.bind(this);
     this.onForget = this.forget.bind(this);
@@ -60,12 +57,51 @@ class Provider extends BaseComponent {
     return this.channel;
   }
 
+  releasePrivate() {
+    if (this.channel) {
+      this.channel.unbind();
+      this.channel.unsubscribe("private-" + this.props.userId);
+      this.channel = null;
+    }
+  }
+
+  getPusherJS(pusher) {
+    if (!pusher || !pusher.key) {
+      return null;
+    }
+
+    return new PusherJS(pusher.key, {
+        authEndpoint: Util.URL("/pusher/auth").toRemote(),
+        cluster: pusher.cluster || 'us2',
+        encrypted: pusher.encrypted,
+      });
+  }
+
   componentDidMount() {
-   this.channel = this.addChannel("private-" + this.props.userId);
+    if (!this.props.pusher || !this.props.pusher.key) {
+      return;
+    }
+
+    this.pusher = this.getPusherJS(this.props.pusher);
+    this.channel = this.addChannel("private-" + this.props.userId);
+  }
+
+  componentWillUnmount() {
+    this.releasePrivate();
+    this.pusher = null;
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (!this.props.pusher || !this.props.pusher.key) {
+      return;
+    }
+
+    if (this.props.pusher && !this.pusher) {
+      this.pusher = this.getPusherJS(this.props.pusher);
+    }
+
     if (this.props.userId != prevProps.userId) {
+      this.releasePrivate();
       this.channel = this.addChannel("private-" + this.props.userId);
     }
   }
