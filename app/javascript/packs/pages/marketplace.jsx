@@ -179,16 +179,13 @@ class LoaderComponent extends Loader.Component {
   }
 
   componentDidMount() {
-    console.log("COMPONENT DID MOUNT");
     if (!this.state.jobs) {
       this.positionsLoader.load();
     }
-    console.log("COMPONENT DID MOUNT END");
     this.mounted =true;
   }
 
   componentWillUnmount() {
-    console.log("UNMOUNT ? ");
     this.mounted = false;
   }
 
@@ -206,11 +203,14 @@ class LoaderComponent extends Loader.Component {
         //<Pyr.UI.RouteURL path="/heads/new" page="heads" action="new" />
         //<Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
     return (
-      <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE} {...props} >
-        <Pyr.UI.RouteURL path="/positions/:pid/select" page="positions" action="select" />
-        <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
-        <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
-      </Pyr.UI.RouterProps>
+      <Pyr.UI.Children>
+        <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE} {...props} >
+          <Pyr.UI.RouteURL path="/positions/:pid/select" page="positions" action="select" />
+          <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
+          <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
+        </Pyr.UI.RouterProps>
+        <Pyr.Pusher event="message" onEvent={ data => console.log(data) } />
+      </Pyr.UI.Children>
     );
   }
 }

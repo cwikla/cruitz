@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Pyr::Base::Model::User
+  include Cruitz::Pusher
 
   #make_authorized_by(:email)
 

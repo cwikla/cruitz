@@ -125,8 +125,8 @@ class Provider extends BaseComponent {
     let channel = this.getChannel(args.channelName);
 
     channel.bind(args.eventName, data => {
-      if (args.onListen) {
-        args.onListen(data);
+      if (args.onEvent) {
+        args.onEvent(data);
       }
       console.log("Listening to " + args.eventName);
     });
@@ -162,7 +162,7 @@ class PusherComponent extends BaseComponent {
     this.context.pusher.onListen({
       channelName: this.props.channel,
       eventName: this.props.event,
-      func: this.props.onListen,
+      func: this.props.onEvent,
     });
   }
 
