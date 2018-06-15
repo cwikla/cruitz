@@ -31,6 +31,7 @@ class Candidate < ApplicationRecord
   scope :reviewed, -> { where(state: STATE_REVIEWED) }
   scope :unlocked, -> {  where(state: STATE_UNLOCKED) }
   scope :engaged, -> { where(state: STATE_ENGAGED) }
+  scope :offer, -> { where(state: STATE_OFFER) }
   scope :hired, -> { where(state: STATE_HIRED) }
 
   scope :live, -> { where("state >= ? and state <= ?", STATE_NEW, STATE_HIRED) }

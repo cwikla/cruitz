@@ -1,0 +1,56 @@
+
+.page.main {
+  .main-stats > div {
+    margin: 2rem;
+
+    justify-content: space-around;
+  }
+
+  .stat {
+    background-color: white;
+    color: black;
+    border: 1px $border_color solid;
+    box-shadow: 1px 1px 5px 0px $gray_color;
+
+    margin: 1.5rem;
+    padding: 0.5rem;
+
+    height: 15rem;
+    width: 15rem;
+
+    font-size: 4rem;
+
+    .count {
+      background-color: $light_gray_color;
+      border-radius: 50%;
+
+      height: 10rem;
+      width: 10rem;
+      max-height: 10rem;
+      max-width: 10rem;
+
+      align-items: center;
+      justify-content: center;
+
+      div {
+        text-align: center;
+        vertical-align: middle;
+        margin: auto;
+      }
+
+    }
+
+    .label {
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.5em;
+    }
+
+    &.offers-stat, &.new-candidates-stat, &.open-jobs-stat {
+      .label {
+        font-size: 0.4em;
+      }
+    }
+
+  }
+}

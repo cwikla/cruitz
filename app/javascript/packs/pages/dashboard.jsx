@@ -19,6 +19,7 @@ import Container from './container';
 
 import Loader from './loader/loader';
 
+import MainPage from './main/main_page';
 import JobsPage from './jobs/jobs_page';
 import CandidatesPage from './candidates/candidates_page';
 import MessagesPage from './messages/messages_page';
@@ -30,6 +31,7 @@ const DashboardPage = (props) => (
 );
 
 import {
+  MAIN_PAGE,
   JOBS_PAGE,
   CANDIDATES_PAGE,
   RECRUITERS_PAGE,
@@ -39,10 +41,11 @@ import {
   ME_URL,
 } from './const';
 
-const DEFAULT_PAGE = MESSAGES_PAGE; //CANDIDATES_PAGE; // MESSAGES_PAGE; //JOBS_PAGE;
+const DEFAULT_PAGE = MESSAGES_PAGE; // CANDIDATES_PAGE; // MESSAGES_PAGE; //JOBS_PAGE;
 
 const PAGE_MAP = {
   "home" : DashboardPage,
+  [MAIN_PAGE.toLowerCase()]: MainPage,
   [JOBS_PAGE.toLowerCase()]: JobsPage,
   [CANDIDATES_PAGE.toLowerCase()]: CandidatesPage,
   [RECRUITERS_PAGE.toLowerCase()]: RecruitersPage,

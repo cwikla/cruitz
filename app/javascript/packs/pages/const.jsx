@@ -1,6 +1,7 @@
 //====
 
 
+export const MAIN_PAGE = 'Main';
 export const JOBS_PAGE = 'Jobs';
 export const CANDIDATES_PAGE = 'Candidates';
 export const RECRUITERS_PAGE = 'Recruiters';
@@ -13,7 +14,7 @@ export const COMPANIES_PAGE = 'Companies';
 export const POSITIONS_PAGE = 'Positions';
 export const HEADS_PAGE = 'Heads';
 
-export const HOME_URL = "/";
+export const MAIN_URL = "/";
 export const JOBS_URL = "/jobs";
 export const CANDIDATES_URL = "/candidates";
 export const RECRUITERS_URL = "/recruiters";

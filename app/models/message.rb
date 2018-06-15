@@ -26,6 +26,10 @@ class Message < ApplicationRecord
     Message.new(id: self.root_message_id).after_cached if self.root_message_id
   end
 
+  def self.unread
+    where(:read_at => nil)
+  end
+
   def reply_from(from_user)
     to_user_id = (from_user.id == self.user_id ? self.from_user_id : self.user_id)
 
