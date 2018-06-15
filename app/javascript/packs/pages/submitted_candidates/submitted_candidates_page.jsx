@@ -733,6 +733,9 @@ class SubmittedCandidatesPage extends Page {
   getItems() {
     let all = super.getItems();
 
+    //console.log("GET ITEMS");
+    //console.log(all);
+
     if (!all) {
       return null;
     }
@@ -786,15 +789,11 @@ class SubmittedCandidatesPage extends Page {
   }
 
   getJobs() {
-    if (!this.props.jobs) {
-      return this.props.jobs;
-    }
+    return this.props.jobs;
   }
 
   getJobsMap() {
-    if (!this.props.jobsMap) {
-      return this.props.jobsMap;
-    }
+    return this.props.jobsMap;
   }
 
   name() {
@@ -826,7 +825,7 @@ class SubmittedCandidatesPage extends Page {
   pageProps() {
     let pp = super.pageProps();
 
-    return Object.assign({}, pp, { jobId: this.getJobId(), job: this.getJob(), jobs: this.state.jobs, jobsMap: this.state.jobsMap });
+    return Object.assign({}, pp, { jobId: this.getJobId(), job: this.getJob(), jobs: this.getJobs(), jobsMap: this.getJobsMap() });
   }
 
   render() {
