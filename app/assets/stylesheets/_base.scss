@@ -324,13 +324,13 @@ label {
 .avatar {
   font-size: 0.8rem;
   img {
-    width: auto;
+    width: #{$avatar_width}rem;
     height: #{$avatar_width}rem;
-    object-fit: contain;
+    object-fit: cover;
 
     border-color: white;
     border-width: 1px;
-    border-radius: 5px;
+    border-radius: 50%;
   }
 
   &.small {
@@ -339,9 +339,10 @@ label {
 
     font-size: 0.6rem;
     img {
-      width: auto;
+      width: #{$avatar_small_width}rem;
       height: #{$avatar_small_width}rem;
-      object-fit: contain;
+      object-fit: cover;
+      border-radius: 50%;
     }
   }
 }
