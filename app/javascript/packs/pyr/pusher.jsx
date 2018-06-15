@@ -122,6 +122,10 @@ class Provider extends BaseComponent {
   }
 
   listen(args) {
+    if (!this.pusher) {
+      return;
+    }
+
     let channel = this.getChannel(args.channelName);
 
     channel.bind(args.eventName, data => {
@@ -133,6 +137,10 @@ class Provider extends BaseComponent {
   }
 
   forget(args) {
+    if (!this.pusher) {
+      return;
+    }
+
     let channel = this.getChannel(args.channelName);
 
     channel.unbind(eventName, data => {
