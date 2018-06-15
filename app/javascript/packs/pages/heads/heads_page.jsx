@@ -362,13 +362,15 @@ class ShowSheet extends Sheet.Show {
     return HeadsPage.key(head);
   }
 
-  renderItem(head, isSelected) {
+  renderHeader() {
+    let url = Pyr.URL(HEADS_URL);
+    let title = "Heads";
+
     return (
-      <div className="item flx-1">
-        <div>Show Item {head.full_name}</div>
-      </div>
+      <Sheet.ShowHeader className="candidate-title" title={title} nextId={this.props.nextId} prevId={this.props.prevId} url={url} />
     );
   }
+
 
   renderItem(item, isSelected) {
     if (this.state.isLoading || !item) {

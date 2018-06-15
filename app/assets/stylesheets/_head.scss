@@ -4,57 +4,70 @@
   @extend %stats;
 }
 
-.head {
+.page.heads {
 
-  .head-details {
-    padding: 0.5rem;
-
-    &.name {
-      padding-top: 0.5rem;
-
-      font-size: 1.5rem;
-      line-height: 1.75rem;
-      color: $primary_color;
-    }
-  
-    &.address, &.primary {
-      > div {
-        padding-top: 0.5rem;
+  .show {
+      .inner {
+        margin-top: 1rem;
+        padding: 0;
+        border: none;
       }
+  }
 
-      font-size: 1.15rem;
-      line-height: 1.25rem;
-    }
 
-    &.social-links {
-      > div {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
-
-      font-size: 2rem;
-    }
+  .head {
   
-    &.skills {
-    }
+    .head-details {
+      padding: 0.5rem;
   
-    &.work-history {
-      font-size: 0.9rem;
-
-      .work {
+      &.name {
         padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-
-        .year {
-          font-weight: 700;
-          font-size: 1.1rem;
+  
+        font-size: 1.5rem;
+        line-height: 1.75rem;
+        color: $primary_color;
+      }
+    
+      &.address, &.primary {
+        > div {
+          padding-top: 0.5rem;
         }
-        .company {
-          font-weight: 500;
-          font-size: 1rem;
+  
+        font-size: 1.15rem;
+        line-height: 1.25rem;
+      }
+  
+      &.social-links {
+        > div {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
         }
-
+  
+        font-size: 2rem;
+      }
+    
+      &.skills {
+      }
+    
+      &.work-history {
+        font-size: 0.9rem;
+  
+        .work {
+          padding-top: 0.5rem;
+          padding-bottom: 0.5rem;
+  
+          .year {
+            font-weight: 700;
+            font-size: 1.1rem;
+          }
+          .company {
+            font-weight: 500;
+            font-size: 1rem;
+          }
+  
+        }
       }
     }
   }
+  
 }
