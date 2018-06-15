@@ -113,26 +113,6 @@ class NavSearch extends Component {
 }
 
 
-class OldNavBar extends Component {
-  render() {
-    return (
-       <Pyr.Grid.Row className="navbar flx-row align-items-center">
-          <Pyr.Grid.Col className="col col-1 navbar-nav">
-            <Logo />
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-6 navbar-nav flx-row">
-          </Pyr.Grid.Col>
-          <Pyr.Grid.Col className="col col-5 flx-row navbar-nav align-items-center">
-            <div className="flx-row ml-auto">
-              <div id="alerts" className="alerts nav-item"><Pyr.UI.Icon name="bell" className="fa-fw"/></div>
-              <NavUserMenu user={this.props.user} />
-            </div>
-          </Pyr.Grid.Col>
-        </Pyr.Grid.Row>
-    );
-  }
-}
-
 class NavBar extends Component {
   render() {
     return (
@@ -151,6 +131,108 @@ class NavBar extends Component {
           </Pyr.Grid.Col>
         </Pyr.Grid.Row>
     );
+  }
+}
+
+class Cache extends Component {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      loading: false,
+      pageItemsCount: {},
+    });
+
+    this.onLoading = this.setLoading.bind(this);
+    this.onSetItems = this.setItems.bind(this);
+    this.onSetPageItemsCount = this.setPageItemsCount.bind(this);
+    this.onGetPageItemsCount = this.getPageItemsCount.bind(this);
+
+    this.onSetState = this.setState.bind(this);
+    this.onGetState = this.getState.bind(this);
+
+
+    this.loaderProps = {
+      onSetState: this.onSetState,
+      onGetState: this.onGetState,
+      onLoading: this.onLoading,
+      onSetItems: this.onSetItems,
+      onSetPageItemsCount: this.onSetPageItemsCount,
+      pageItemsCount: this.state.pageItemsCount,
+      loading: this.state.loading,
+    };
+  }
+
+  extraProps() {
+    return {};
+  }
+
+  getProps() {
+    return Object.assign({}, this.loaderProps, this.extraProps());
+  }
+
+  getState(name) {
+    return this.state[name];
+  }
+
+  getPageItemsCount(name) {
+    this.state.pageItemsCount[name] || 0;
+  }
+
+  setPageItemsCount(name, count) {
+    let pageItemsCount = Object.assign({}, this.state.pageItemsCount);
+
+    pageItemsCount[name] = count;
+    this.setState({
+      pageItemsCount
+    });
+  }
+
+  sortItems(items) {
+    //console.log("SORTING ITEMS");
+    if (!items || (items.length == 0)) {
+      return items;
+    }
+
+    if (items[0].id) {
+      return items.sort((x, y) => y.id - x.id);
+    }
+    if (items[0].created_at) {
+      return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
+    }
+    return items;
+  }
+
+  setItems(name, items) {
+    let itemMap = null;
+
+    if (items) {
+      //console.log("ITEMS ET TO");
+      //console.log(items);
+      items = this.sortItems(items);
+      itemMap = items.reduce((m, o) => {m[o.id] = o; return m;}, {});
+    }
+
+    let stuff = {};
+    stuff[name] = items;
+    stuff[name + 'Map'] = itemMap;
+    stuff['pageItemsCount'] = this.state.pageItemsCount || {};
+    stuff.pageItemsCount[name] = items ? items.length : 0;
+
+    //console.log("SET ITEMS STUFF");
+    //console.log(stuff);
+
+    this.setState(stuff);
+  }
+
+
+  setLoading(loading=true) {
+    //alert("SETLOADIN: " + loading);
+    this.setState({loading});
+  }
+
+  render() {
+    alert("Container:Cache: OVERRIDE ME!");
   }
 }
 
@@ -374,6 +456,7 @@ class Base extends Component {
 }
 
 const Container = {
+  Cache,
   Base,
   NavUserMenu,
   NavBar,

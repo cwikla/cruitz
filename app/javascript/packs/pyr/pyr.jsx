@@ -184,6 +184,8 @@ const Pyr = {
   Grid,
   Form, 
   Component,
+
+  PassThru: UI.PassThru
 };
 
 export { 

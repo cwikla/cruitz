@@ -123,7 +123,7 @@ class MarketPlace extends Container.Base {
 
 }
 
-class LoaderComponent extends Loader.Component {
+class CacheComponent extends Container.Cache {
   constructor(props) {
     super(props);
 
@@ -203,14 +203,14 @@ class LoaderComponent extends Loader.Component {
         //<Pyr.UI.RouteURL path="/heads/new" page="heads" action="new" />
         //<Pyr.UI.RouteURL path="/heads/:pid" page="heads" action="index" />
     return (
-      <Pyr.UI.Children>
+      <Pyr.PassThru>
         <Pyr.UI.RouterProps component={MarketPlace} dashboard={DEFAULT_PAGE} {...props} >
           <Pyr.UI.RouteURL path="/positions/:pid/select" page="positions" action="select" />
           <Pyr.UI.RouteURL path="/positions/:pid/submit/:subid" page="positions" action="submit" />
           <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
         </Pyr.UI.RouterProps>
-        <Pyr.Pusher event="message" onEvent={ data => console.log(data) } />
-      </Pyr.UI.Children>
+        <Loader.Component loader={this.messagesLoader} />
+      </Pyr.PassThru>
     );
   }
 }
@@ -219,7 +219,7 @@ class LoaderComponent extends Loader.Component {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
     <Pyr.UI.NoticeProvider>
-      <LoaderComponent />
+      <CacheComponent />
     </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 

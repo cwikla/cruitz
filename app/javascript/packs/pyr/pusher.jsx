@@ -129,6 +129,9 @@ class Provider extends BaseComponent {
     let channel = this.getChannel(args.channelName);
 
     channel.bind(args.eventName, data => {
+      console.log("EVENT!");
+      console.log(args);
+
       if (args.onEvent) {
         args.onEvent(data);
       }
@@ -159,6 +162,14 @@ class Provider extends BaseComponent {
 class PusherComponent extends BaseComponent {
   static contextTypes = PusherContextTypes;
 
+  listenEvent(data) {
+    console.log("GOT LISTEN EVENT");
+    console.log(data);
+    if (this.props.onEvent) {
+      this.props.onEvent(data);
+    }
+  }
+
   componentDidMount() {
     if (!this.context.pusher) {
       return;
@@ -166,11 +177,13 @@ class PusherComponent extends BaseComponent {
 
     console.log("PUSHER COMP CONTEXT");
     console.log(this.context);
+    console.log("EVENT: " + this.props.event);
+    console.log("ONEVENT: " + this.props.onEvent);
 
     this.context.pusher.onListen({
       channelName: this.props.channel,
       eventName: this.props.event,
-      func: this.props.onEvent,
+      onEvent: this.props.onEvent,
     });
   }
 
@@ -182,7 +195,7 @@ class PusherComponent extends BaseComponent {
     this.context.pusher.onForget({
       channelName: this.props.channel,
       eventName: this.props.event,
-      func: this.props.onForget,
+      onForget: this.props.onForget,
     });
   }
 

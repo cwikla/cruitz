@@ -53,11 +53,9 @@ class ChildSelector extends Component {
 
 }
 
-class Children extends Component {
-  render() {
-    return this.props.children;
-  }
-}
+const PassThru = (props) => (
+  props.children
+);
 
 const Loading = (props) => (
   <div className="loading" />
@@ -1048,10 +1046,6 @@ const Fifty = (props) => (
   </div>
 );
 
-const PassThru = (props) => (
-  props.children
-);
-
 const UI = { 
   RouterContextTypes,
   RouterProvider,
@@ -1090,8 +1084,6 @@ const UI = {
   Collapse,
   ImageFile,
   DIV,
-
-  Children,
 
   Scroll,
   PieChart,

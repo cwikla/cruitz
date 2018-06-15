@@ -22,102 +22,50 @@ class LoaderComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.initState({
-      loading: false,
-      pageItemsCount: {},
-    });
-
-    this.onLoading = this.setLoading.bind(this);
-    this.onSetItems = this.setItems.bind(this);
-    this.onSetPageItemsCount = this.setPageItemsCount.bind(this);
-    this.onGetPageItemsCount = this.getPageItemsCount.bind(this);
-
-    this.onSetState = this.setState.bind(this);
-    this.onGetState = this.getState.bind(this);
-
-
-    this.loaderProps = {
-      onSetState: this.onSetState,
-      onGetState: this.onGetState,
-      onLoading: this.onLoading,
-      onSetItems: this.onSetItems,
-      onSetPageItemsCount: this.onSetPageItemsCount,
-      pageItemsCount: this.state.pageItemsCount,
-      loading: this.state.loading,
-    };
+    this.onAdd = this.add.bind(this);
+    this.onRemove = this.remove.bind(this);
+    this.onReplace = this.replace.bind(this);
+    this.onReload = this.reload.bind(this);
   }
 
-  extraProps() {
-    return {};
+  name() {
+    return this.props.loader.name();
   }
 
-  getProps() {
-    return Object.assign({}, this.loaderProps, this.extraProps());
-  }
-
-  getState(name) {
-    return this.state[name];
-  }
-
-  getPageItemsCount(name) {
-    this.state.pageItemsCount[name] || 0;
-  }
-
-  setPageItemsCount(name, count) {
-    let pageItemsCount = Object.assign({}, this.state.pageItemsCount);
-
-    pageItemsCount[name] = count;
-    this.setState({
-      pageItemsCount
-    });
-  }
-
-  sortItems(items) {
-    //console.log("SORTING ITEMS");
-    if (!items || (items.length == 0)) {
-      return items;
+  componentDidMount() {
+    if (this.props.autoLoad) {
+      this.props.loader.load();
     }
-    if (items[0].id) {
-      return items.sort((x, y) => y.id - x.id);
-    }
-    if (items[0].created_at) {
-      return items.sort((x, y) => new Date(y.created_at).getTime() - new Date(x.created_at).getTime());
-    }
-    return items;
   }
 
-  setItems(name, items) {
-    let itemMap = null;
-
-    if (items) {
-      //console.log("ITEMS ET TO");
-      //console.log(items);
-      items = this.sortItems(items);
-      itemMap = items.reduce((m, o) => {m[o.id] = o; return m;}, {});
-    }
-
-    let stuff = {};
-    stuff[name] = items;
-    stuff[name + 'Map'] = itemMap;
-    stuff['pageItemsCount'] = this.state.pageItemsCount || {};
-    stuff.pageItemsCount[name] = items ? items.length : 0;
-
-    //console.log("SET ITEMS STUFF");
-    //console.log(stuff);
-
-    this.setState(stuff);
+  add(data) {
+    this.props.loader.add(data[this.name()]);
   }
 
+  remove(data) {
+    this.props.loader.remove(data[this.name()]);
+  }
 
-  setLoading(loading=true) {
-    //alert("SETLOADIN: " + loading);
-    this.setState({loading});
+  replace(data) {
+    this.props.loader.replace(data[this.name()]);
+  }
+
+  reload(data) {
+    console.log("RELOAD CALLED!");
+    this.props.loader.load({force: true});
   }
 
   render() {
-    alert("LoaderComponent: OVERRIDE ME!");
+    let name = this.name();
+    return (
+      <Pyr.PassThru>
+        <Pyr.Pusher event={name + "-add"} onEvent={this.onAdd}/>
+        <Pyr.Pusher event={name + "-remove"} onEvent={this.onRemove}/>
+        <Pyr.Pusher event={name + "-replace"} onEvent={this.onReplace}/>
+        <Pyr.Pusher event={name + "-reload"} onEvent={this.onReload}/>
+      </Pyr.PassThru>
+    );
   }
-
 }
 
 class LoaderBase {

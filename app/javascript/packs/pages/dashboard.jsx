@@ -107,7 +107,7 @@ class Dashboard extends Container.Base {
         ///<Pyr.UI.RouteURL path="/jobs/:pid/candidates/:subid" page="candidates" action="show" />
 ///
 
-class LoaderComponent extends Loader.Component {
+class CacheComponent extends Container.Cache {
   constructor(props) {
     super(props);
 
@@ -173,9 +173,12 @@ class LoaderComponent extends Loader.Component {
 
           //<Pyr.UI.RouteURL path="/jobs/:pid/candidates" page="candidates" action="index" />
     return (
-        <Pyr.UI.RouterProps component={Dashboard} dashboard={DEFAULT_PAGE} {...props}>
-          <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
-        </Pyr.UI.RouterProps>
+        <Pyr.PassThru >
+          <Load.Component loader={this.messagesLoader} />
+          <Pyr.UI.RouterProps component={Dashboard} dashboard={DEFAULT_PAGE} {...props}>
+            <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
+          </Pyr.UI.RouterProps>
+        </Pyr.PassThru>
     );
   }
 
@@ -184,7 +187,7 @@ class LoaderComponent extends Loader.Component {
 render (
   <Pyr.UserProvider url={Pyr.URL(ME_URL)}>
       <Pyr.UI.NoticeProvider>
-        <LoaderComponent />
+        <CacheComponent />
       </Pyr.UI.NoticeProvider>
   </Pyr.UserProvider>,
 
