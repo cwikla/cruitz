@@ -324,7 +324,7 @@ label {
 .avatar {
   font-size: 0.8rem;
   img {
-    width: #{$avatar_width}rem;
+    width: auto;
     height: #{$avatar_width}rem;
     object-fit: contain;
 
@@ -339,7 +339,7 @@ label {
 
     font-size: 0.6rem;
     img {
-      width: #{$avatar_small_width}rem;
+      width: auto;
       height: #{$avatar_small_width}rem;
       object-fit: contain;
     }
