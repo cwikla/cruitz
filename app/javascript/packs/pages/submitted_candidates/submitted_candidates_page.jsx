@@ -179,12 +179,16 @@ class JobSelect extends Component {
   }
 
   render() {
-    let options = {};
-    options = this.props.jobs.map(item => {
+    let options = this.props.jobs.map(item => {
       return (
         { value: item.id, label: item.title }
       );
     });
+
+    console.log("OPTIONS");
+    console.log(options);
+
+    options = options || [];
 
     let value = this.props.job ? { value: this.props.job.id, label: this.props.job.title } : null;
 
@@ -274,6 +278,7 @@ class IndexSheet extends Sheet.Index {
     let jobsMap = this.getJobsMap();
     let job = jobId ? jobsMap[jobId] : null;
 
+    let items = this.getItems();
 
     return (
       <div className="flx-row flx-1">
@@ -801,7 +806,20 @@ class SubmittedCandidatesPage extends Page {
   }
 
   getJobs() {
-    return this.props.jobs;
+    // FIXME
+    let items = super.getItems();
+    //console.log("GETJOBS");
+    //console.log(items);
+
+    let candyJobsMap = items ? items.reduce((m, o) => {m[o.job_id] = o; return m;}, {}) : {};
+    let prunedJobs = (this.props.jobs || []).reduce((arr, j) => {
+      if (candyJobsMap[j.id]) {
+        arr.push(j);
+      }
+      return arr;
+    }, []);
+    return prunedJobs;
+    //return this.props.jobs;
   }
 
   getJobsMap() {
