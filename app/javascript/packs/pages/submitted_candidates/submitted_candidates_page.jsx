@@ -479,7 +479,7 @@ class ShowSheet extends Sheet.Show {
   }
 
   setCandidate(candidate) {
-    console.log("SETTING CANDIDATE: " + candidate.id + " = " + candidate.state);
+    //console.log("SETTING CANDIDATE: " + candidate.id + " = " + candidate.state);
     this.setState({
       candidate
     });
@@ -489,8 +489,8 @@ class ShowSheet extends Sheet.Show {
   }
 
   pusherEvent(data) {
-    console.log("PUSHER EVENT!");
-    console.log(data);
+    //console.log("PUSHER EVENT!");
+    //console.log(data);
 
     this.setCandidate(data.candidate);
   }
