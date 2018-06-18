@@ -107,6 +107,8 @@ class Candidate < ApplicationRecord
         #state: candidate.state,
         #recruiter: recruiter,
         #message: msg)
+
+       create_notify
     end
 
     return candidate
@@ -135,6 +137,8 @@ class Candidate < ApplicationRecord
         message: msg)
 
       self.save!
+
+      state_notify
     end
 
     return self

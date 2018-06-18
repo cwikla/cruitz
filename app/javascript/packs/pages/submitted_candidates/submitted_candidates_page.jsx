@@ -523,8 +523,8 @@ class ShowSheet extends Sheet.Show {
     let sclz = ClassNames("state").push(stateName);
     let clazzes = ClassNames("candidate-actions flx-row").push(sclz).push("border-bottom");
 
-    console.log("RENDER STATUS TOP");
-    console.log(stateName);
+    //console.log("RENDER STATUS TOP");
+    //console.log(stateName);
 
     let score = candidate.score;
 
@@ -597,7 +597,7 @@ class ShowSheet extends Sheet.Show {
     }
 
     let candidate = this.state.candidate; // use the loaded one
-    console.log("RENDER candidate state: " + candidate.state);
+    //console.log("RENDER candidate state: " + candidate.state);
 
     //console.log("MESSAGE JOB");
     //console.log(item);
