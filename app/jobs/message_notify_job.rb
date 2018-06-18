@@ -20,7 +20,7 @@ class MessageNotifyJob < Pyr::Async::BaseJob
     result = MessageSerializer.new(message, current_user: user).as_json
     root_result = MessageSerializer.new(root_message, current_user: user).as_json
 
-    user.pusher_batch([
+    user.pusher_private_batch([
       { name: "messages-add", data: { message: root_result} },
       { name: "message-#{root_message.id}-thread", data: { message: result } } # yes root_message.id
     ])

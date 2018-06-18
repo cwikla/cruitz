@@ -146,7 +146,7 @@ class Provider extends BaseComponent {
 
     let channel = this.getChannel(args.channelName);
 
-    channel.unbind(eventName, data => {
+    channel.unbind(args.eventName, data => {
       if (args.onForget) {
         args.onForget(data); 
       }
@@ -163,11 +163,35 @@ class PusherComponent extends BaseComponent {
   static contextTypes = PusherContextTypes;
 
   listenEvent(event) {
-    console.log("GOT LISTEN EVENT");
-    console.log(event);
+    //console.log("GOT LISTEN EVENT");
+    //console.log(event);
     if (this.props.onEvent) {
       this.props.onEvent(event.data); // silly pusher gem always uses "data:"
     }
+  }
+
+  listenUp(channelName, eventName) {
+    //console.log("LISTEN UP : " + eventName);
+
+    this.context.pusher.onListen({
+      channelName: channelName,
+      eventName: eventName,
+      onEvent: this.props.onEvent,
+    });
+  }
+
+  forgetIt(channelName, eventName) {
+    //console.log("FORGET IT : " + eventName);
+
+    if (!eventName) {
+      return;
+    }
+
+    this.context.pusher.onForget({
+      channelName: channelName,
+      eventName: eventName,
+      onForget: this.props.onForget,
+    });
   }
 
   componentDidMount() {
@@ -180,11 +204,7 @@ class PusherComponent extends BaseComponent {
     console.log("EVENT: " + this.props.event);
     console.log("ONEVENT: " + this.props.onEvent);
 
-    this.context.pusher.onListen({
-      channelName: this.props.channel,
-      eventName: this.props.event,
-      onEvent: this.props.onEvent,
-    });
+    this.listenUp(this.props.channel, this.props.event);
   }
 
   componentWillUnmount() {
@@ -192,11 +212,17 @@ class PusherComponent extends BaseComponent {
       return;
     }
 
-    this.context.pusher.onForget({
-      channelName: this.props.channel,
-      eventName: this.props.event,
-      onForget: this.props.onForget,
-    });
+    this.forgetIt(this.props.channel, this.props.event);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let update = (prevProps.channel != this.props.channel) ||
+      (prevProps.event != this.props.event);
+
+    if (update) {
+      this.listenUp(this.props.channel, this.props.event);
+      this.forgetIt(prevProps.channel, prevProps.event);
+    }
   }
 
   render() {

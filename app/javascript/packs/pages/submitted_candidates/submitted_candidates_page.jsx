@@ -428,6 +428,7 @@ class ShowSheet extends Sheet.Show {
     this.onCancel = this.cancel.bind(this);
     this.onHideCancel = this.hideCancel.bind(this);
     this.onShowCancel = this.showCancel.bind(this);
+    this.onPusherEvent = this.pusherEvent.bind(this);
   }
 
   hideCancel(e) {
@@ -478,12 +479,20 @@ class ShowSheet extends Sheet.Show {
   }
 
   setCandidate(candidate) {
+    console.log("SETTING CANDIDATE: " + candidate.id + " = " + candidate.state);
     this.setState({
       candidate
     });
 
     this.props.loaders.candidates.replace(candidate);
     //console.log(candidate);
+  }
+
+  pusherEvent(data) {
+    console.log("PUSHER EVENT!");
+    console.log(data);
+
+    this.setCandidate(data.candidate);
   }
 
   key(item) {
@@ -510,11 +519,12 @@ class ShowSheet extends Sheet.Show {
       return null;
     }
 
-    //console.log("RENDER HEADER");
-    //console.log(candidate);
     let stateName = State.toName(candidate.state);
     let sclz = ClassNames("state").push(stateName);
     let clazzes = ClassNames("candidate-actions flx-row").push(sclz).push("border-bottom");
+
+    console.log("RENDER STATUS TOP");
+    console.log(stateName);
 
     let score = candidate.score;
 
@@ -586,12 +596,12 @@ class ShowSheet extends Sheet.Show {
       );
     }
 
-    item = this.state.candidate; // use the loaded one
+    let candidate = this.state.candidate; // use the loaded one
+    console.log("RENDER candidate state: " + candidate.state);
 
     //console.log("MESSAGE JOB");
     //console.log(item);
 
-    let candidate = item;
     let job = this.props.job;
     let recruiter = candidate.recruiter;
 
@@ -629,6 +639,8 @@ class ShowSheet extends Sheet.Show {
             <Match candidate={candidate} job={job} recruiter={recruiter} />
             <Fee candidate={candidate} job={job} recruiter={recruiter} />
           </div>
+
+          <Pyr.Pusher event={"candidate-" + candidate.id} onEvent={this.onPusherEvent} />
         </div>
     );
   }

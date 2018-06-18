@@ -417,6 +417,7 @@ class ShowSheet extends Sheet.Show {
 
     this.onHideUnlock = this.hideUnlock.bind(this);
     this.onShowUnlock = this.showUnlock.bind(this);
+    this.onPusherEvent = this.pusherEvent.bind(this);
   }
 
   hideUnlock(e) {
@@ -484,6 +485,10 @@ class ShowSheet extends Sheet.Show {
 
     this.props.loaders.candidates.replace(candidate);
     //console.log(candidate);
+  }
+
+  pusherEvent(data) {
+    this.setCandidate(data.candidate);
   }
 
   key(item) {
@@ -644,6 +649,7 @@ class ShowSheet extends Sheet.Show {
             <Recruiter.Blurb recruiter={recruiter}/>
             <RecruiterMessage candidate={candidate} job={job} recruiter={recruiter} />
           </div>
+          <Pyr.Pusher event={"candidate-" + candidate.id} onEvent={this.onPusherEvent} />
         </div>
     );
   }

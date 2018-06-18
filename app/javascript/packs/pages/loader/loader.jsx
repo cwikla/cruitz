@@ -71,7 +71,7 @@ class LoaderComponent extends Component {
       <Pyr.PassThru>
         <Pyr.Pusher event={name + "-add"} onEvent={this.onAdd}/>
         <Pyr.Pusher event={name + "-remove"} onEvent={this.onRemove}/>
-        <Pyr.Pusher event={name + "-replace"} onEvent={this.onReplace}/>
+        <Pyr.Pusher event={name + "-update"} onEvent={this.onReplace}/>
         <Pyr.Pusher event={name + "-reload"} onEvent={this.onReload}/>
       </Pyr.PassThru>
     );

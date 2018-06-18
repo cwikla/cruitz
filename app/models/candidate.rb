@@ -1,4 +1,6 @@
 class Candidate < ApplicationRecord
+  include CandidateConcern
+
   belongs_to :job
   belongs_to :head
 
@@ -117,8 +119,6 @@ class Candidate < ApplicationRecord
       self.state = state
       self.unlocked_at = Time.zone.now if state >= STATE_UNLOCKED
 
-      self.save!
-
       msg = nil
       if body
         recruiter = self.head.recruiter
@@ -133,6 +133,8 @@ class Candidate < ApplicationRecord
         state: self.state,
         user: actor,
         message: msg)
+
+      self.save!
     end
 
     return self

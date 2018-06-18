@@ -15,6 +15,10 @@ module PusherConcern
           encrypted: ::PUSHER_ENCRYPTED
         )
       end
+
+      def pusher_batch(*events)
+        self.pusher_client.trigger_batch(*events)
+      end
   
     end
   
@@ -22,20 +26,18 @@ module PusherConcern
       "private-" + self.uuid
     end
   
-    def pusher_event(eventName, **data)
+    def pusher_private_event(eventName, **data)
       self.class.pusher_client.trigger(self.pusher_private_channel, eventName, **data)
     end
 
-    def pusher_batch(events)
+    def pusher_private_batch(events)
       pchan = self.pusher_private_channel
 
       nev = events.map{ |x|
-        puts "****"
-        puts x.class
         x = x.dup
         x[:channel] = pchan
         x
       }
-      self.class.pusher_client.trigger_batch(nev)
+      self.class.pusher_batch(nev)
     end
 end

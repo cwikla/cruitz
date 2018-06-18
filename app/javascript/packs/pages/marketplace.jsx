@@ -210,6 +210,7 @@ class CacheComponent extends Container.Cache {
           <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
         </Pyr.UI.RouterProps>
         <Loader.Component loader={this.messagesLoader} />
+        <Loader.Component loader={this.candidatesLoader} />
       </Pyr.PassThru>
     );
   }
