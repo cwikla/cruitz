@@ -1,4 +1,6 @@
 class Message < ApplicationRecord
+  include MessageConcern
+
   belongs_to :user
   belongs_to :from_user, class_name: 'User'
   belongs_to :job

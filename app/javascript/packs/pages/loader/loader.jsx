@@ -32,6 +32,10 @@ class LoaderComponent extends Component {
     return this.props.loader.name();
   }
 
+  singular() {
+    return this.props.loader.singular();
+  }
+
   componentDidMount() {
     if (this.props.autoLoad) {
       this.props.loader.load();
@@ -39,15 +43,21 @@ class LoaderComponent extends Component {
   }
 
   add(data) {
-    this.props.loader.add(data[this.name()]);
+    console.log("ADD");
+    console.log(data);
+
+    this.props.loader.add(data[this.singular()]);
   }
 
   remove(data) {
-    this.props.loader.remove(data[this.name()]);
+    this.props.loader.remove(data[this.singular()]);
   }
 
   replace(data) {
-    this.props.loader.replace(data[this.name()]);
+    console.log("REPLACE");
+    console.log(data);
+
+    this.props.loader.replace(data[this.singular()]);
   }
 
   reload(data) {
@@ -99,6 +109,9 @@ class LoaderBase {
 
   setItems(newItems) {
     let name = this.name();
+
+    console.log("SETTING ITEMS: " + name);
+    console.log(newItems.length);
 
     this.props.onSetItems(name, newItems);
   }
@@ -165,7 +178,16 @@ class LoaderBase {
     return a.id == b.id;
   }
 
+  exists(item) {
+    return (this.itemsMap()[item.id] != null);
+  }
+
   add(item) {
+    if (this.exists(item)) {
+      console.log("ROUTING TO REPLACE");
+      return this.replace(item);
+    }
+
     let newItems = (this.items() || []).slice();
     newItems.push(item);
     
@@ -173,6 +195,10 @@ class LoaderBase {
   }
 
   remove(item) {
+    if (!this.exists(item)) {
+      return;
+    }
+
     let items = this.items() || [];
 
     let pos = items.findIndex((other) => {
@@ -186,6 +212,11 @@ class LoaderBase {
   }
 
   replace(item) {
+    if (!this.exists(item)) {
+      console.log("ROUTING TO ADD");
+      return this.add(item);
+    }
+
     let items = this.items() || [];
 
     let newItems = items.map((other) => {

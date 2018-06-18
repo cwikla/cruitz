@@ -162,11 +162,11 @@ class Provider extends BaseComponent {
 class PusherComponent extends BaseComponent {
   static contextTypes = PusherContextTypes;
 
-  listenEvent(data) {
+  listenEvent(event) {
     console.log("GOT LISTEN EVENT");
-    console.log(data);
+    console.log(event);
     if (this.props.onEvent) {
-      this.props.onEvent(data);
+      this.props.onEvent(event.data); // silly pusher gem always uses "data:"
     }
   }
 

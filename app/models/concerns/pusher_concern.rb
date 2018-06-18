@@ -1,5 +1,4 @@
-module Cruitz
-  module Pusher
+module PusherConcern
     extend ActiveSupport::Concern
   
     included do
@@ -19,12 +18,24 @@ module Cruitz
   
     end
   
-    def private_channel
+    def pusher_private_channel
       "private-" + self.uuid
     end
   
     def pusher_event(eventName, **data)
-      self.class.pusher_client.trigger(self.private_channel, eventName, **data)
+      self.class.pusher_client.trigger(self.pusher_private_channel, eventName, **data)
     end
-  end
+
+    def pusher_batch(events)
+      pchan = self.pusher_private_channel
+
+      nev = events.map{ |x|
+        puts "****"
+        puts x.class
+        x = x.dup
+        x[:channel] = pchan
+        x
+      }
+      self.class.pusher_client.trigger_batch(nev)
+    end
 end

@@ -174,10 +174,10 @@ class CacheComponent extends Container.Cache {
           //<Pyr.UI.RouteURL path="/jobs/:pid/candidates" page="candidates" action="index" />
     return (
         <Pyr.PassThru >
-          <Load.Component loader={this.messagesLoader} />
           <Pyr.UI.RouterProps component={Dashboard} dashboard={DEFAULT_PAGE} {...props}>
             <Pyr.UI.RouteURL path="/candidates/:pid/:subid" page="candidates" action="index" />
           </Pyr.UI.RouterProps>
+          <Loader.Component loader={this.messagesLoader} />
         </Pyr.PassThru>
     );
   }

@@ -268,6 +268,9 @@ class MessageThread extends Component {
   }
 
   success(data, textStatus, jqXHR) {
+    console.log("DATA");
+    console.log(data);
+
     let thread = this.state.thread || [];
     thread = thread.concat(data.message);
 
@@ -383,6 +386,7 @@ class MessageThread extends Component {
       >
         {this.renderContent()}
         {this.renderFooter()}
+        <Pyr.Pusher event={"message-"+this.props.message.id+"-thread"} onEvent={this.onSuccess} />
       </div>
     );
   }
