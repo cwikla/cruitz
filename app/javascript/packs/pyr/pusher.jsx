@@ -129,8 +129,8 @@ class Provider extends BaseComponent {
     let channel = this.getChannel(args.channelName);
 
     channel.bind(args.eventName, data => {
-      console.log("EVENT!");
-      console.log(args);
+      //console.log("EVENT!");
+      //console.log(args);
 
       if (args.onEvent) {
         args.onEvent(data);
@@ -199,10 +199,10 @@ class PusherComponent extends BaseComponent {
       return;
     }
 
-    console.log("PUSHER COMP CONTEXT");
-    console.log(this.context);
-    console.log("EVENT: " + this.props.event);
-    console.log("ONEVENT: " + this.props.onEvent);
+    //console.log("PUSHER COMP CONTEXT");
+    //console.log(this.context);
+    //console.log("EVENT: " + this.props.event);
+    //console.log("ONEVENT: " + this.props.onEvent);
 
     this.listenUp(this.props.channel, this.props.event);
   }
