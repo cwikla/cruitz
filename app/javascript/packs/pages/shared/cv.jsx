@@ -302,7 +302,7 @@ class Skills extends Component {
 
 const EditUploads = (props) => (
   <Pyr.Form.Group name="uploads">
-    <Pyr.Form.FileSelector multiple row wrap showFileName/>
+    <Pyr.Form.FileSelector multiple row wrap showFileName uploads={props.uploads}/>
   </Pyr.Form.Group>
 );
 
