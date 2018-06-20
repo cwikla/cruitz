@@ -1238,8 +1238,15 @@ div.line {
   }
 
   .cv-label {
-    font-weight: 500;
-    font-size: 1.5rem;
+    label {
+      font-weight: 500;
+      font-size: 1.5rem;
+    }
+
+    .icon-btn {
+      font-weight: 400;
+      font-size: 1rem;
+    }
 
     padding-bottom: 0.25rem;
     margin-top: 1rem;
@@ -1294,6 +1301,13 @@ div.line {
       color: $primary_color;
     }
 
+    div.phone-number {
+      margin-right: 1rem;
+    }
+
+    div.email {
+      margin-left: 1rem;
+    }
 
     .lock {
       color: $dark_gray_color;

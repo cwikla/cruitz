@@ -320,7 +320,7 @@ const Button = (props) => (
 
 const IconButton = (props) => (
   <label
-    {...Util.propsMergeClassName(props, "icon-btn pyr-icon-btn")}
+    {...Util.propsMergeClassName(props, "icon-btn pyr-icon-btn text-center")}
   ><Icon name={props.name}/> {props.children}</label>
 );
 

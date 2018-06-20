@@ -22,7 +22,8 @@ import State from '../shared/state';
 
 import {
   RANGES,
-  HEADS_URL
+  HEADS_URL,
+  SKILLS_URL,
 } from '../const';
 
 const Lock = (props) => (
@@ -101,11 +102,11 @@ class CVHeader extends Component {
           <div className={ClassNames(extra).push("name mr-auto flx-1")}><AutoText name="full_name" edit={edit}>{fullName}</AutoText></div>
         </div>
         <div className="flx-row flx-1 info">
-          <div className={ClassNames(extra).push("phone-number mr-auto flx-1")}><AutoText name="phone_number" edit={edit}>{phoneNumber}</AutoText></div>
-          <div className={ClassNames(extra).push("email mr-auto flx-1")}><AutoText name="email" edit={edit}>{email}</AutoText></div>
+          <div className={ClassNames(extra).push("phone-number flx-1")}><AutoText name="phone_number" edit={edit}>{phoneNumber}</AutoText></div>
+          <div className={ClassNames(extra).push("email flx-1")}><AutoText name="email" edit={edit}>{email}</AutoText></div>
         </div>
         <div className="flx-row flx-1 info">
-          <div className={ClassNames(extra).push("salary mr-auto flx-1")}><AutoText name="salary" edit={edit}>{salary}</AutoText></div>
+          <div className={ClassNames(extra).push("salary mr-auto")}><AutoText name="salary" edit={edit}>{salary}</AutoText></div>
         </div>
         <div className="flx-row-stretch info social-links">
           <WebLink.Links links={candidate.links} locked={locked} edit={edit}/>
@@ -125,10 +126,11 @@ class ExperienceModal extends Pyr.UI.Modal {
     return (
       <div className="exp-modal flx-col flx-1">
         <div className="flx-row">
-          <Pyr.Form.Group name="title">
+          <Pyr.Form.Group name="title" className="flx-5">
             <Pyr.Form.TextField />
-          </Pyr.Form.Group> @
-          <Pyr.Form.Group name="company">
+          </Pyr.Form.Group> 
+          <div className="flx-1 text-center">@</div>
+          <Pyr.Form.Group name="company" className="flx-5">
             <Pyr.Form.TextField />
           </Pyr.Form.Group>
         </div>
@@ -148,7 +150,7 @@ class ExperienceModal extends Pyr.UI.Modal {
 
 const ExpAdd = (props) => (
   <Pyr.PassThru>
-   { props.edit ? <div className="exp-add flx-row flx-1" onClick={props.onClick}><Pyr.UI.Icon className="ml-auto mb-auto mt-auto" name="plus"> Add Experience</Pyr.UI.Icon></div> : null }
+    { props.edit ? <div className={props.className}><Pyr.UI.IconButton className="mt-auto mb-auto" name="plus" onClick={props.onShowModal}> Add Experience</Pyr.UI.IconButton></div> : null }
   </Pyr.PassThru>
 );
 
@@ -188,32 +190,44 @@ class Experience extends Component {
     //console.log("EXPS");
     //console.log(this.props.experiences);
 
+    let edit = this.props.edit;
+
     if (!this.props.experiences || this.props.experiences.length == 0) {
       return (
-        <div className="none">No Experience</div>
+        <Pyr.PassThru>
+          <div key="exp-title" className="cv-label flx-row"><Pyr.UI.Label>Experience</Pyr.UI.Label> <ExpAdd className="ml-auto" edit={edit} /></div>
+          <div className="none">No Experience</div>
+        </Pyr.PassThru>
       );
     }
 
     let experiences = this.props.experiences;
 
     return (
-      <div id="experience" className="cv-section experience">
-        {
-          experiences.map( (item, pos) => {
-            return (
-              <Pyr.PassThru key={"pt-" + pos}>
-                <ExpAdd key={"exp-add-" + pos} edit={this.props.edit} onClick={this.onShowModal}/>
-                <ExperienceItem item={item} key={"exp"+pos}/>
-              </Pyr.PassThru>
-            );
-          })
-        }
-        <ExpAdd key={"exp-add-555"} edit={this.props.edit} onClick={this.onShowModal} onClose={this.onCloseModal}/>
-        <ExperienceModal onClose={this.onCloseModal} open={this.state.showModal}/>
-      </div>
+      <Pyr.PassThru>
+       <div key="exp-title" className="cv-label flx-row"><Pyr.UI.Label>Experience</Pyr.UI.Label> <ExpAdd className="ml-auto" edit={edit} /></div>
+       <div id="experience" className="cv-section experience">
+         {
+           experiences.map( (item, pos) => {
+             return (
+               <Pyr.PassThru key={"pt-" + pos}>
+                 <ExperienceItem item={item} key={"exp"+pos}/>
+               </Pyr.PassThru>
+             );
+           })
+         }
+         <ExperienceModal onClose={this.onCloseModal} open={this.state.showModal}/>
+       </div>
+      </Pyr.PassThru>
     );
   }
 }
+
+const EduAdd = (props) => (
+  <Pyr.PassThru>
+    { props.edit ? <div className={props.className}><Pyr.UI.IconButton className="mt-auto mb-auto" name="plus" onClick={props.onShowModal}> Add Education</Pyr.UI.IconButton></div> : null }
+  </Pyr.PassThru>
+);
 
 const EducationItem = (props) => (
   <div className="item">
@@ -224,78 +238,109 @@ const EducationItem = (props) => (
 
 class Education extends Component {
   render() {
+    let edit = this.props.edit;
+
     if (!this.props.educations || this.props.educations.length == 0) {
-      return null;
+      return (
+        <Pyr.PassThru>
+          <div key="edu-title" className="cv-label flx-row"><Pyr.UI.Label>Education</Pyr.UI.Label> <EduAdd className="ml-auto" edit={edit} /></div>
+          <div className="none">No Education</div>
+        </Pyr.PassThru>
+      );
     }
 
     let educations = this.props.educations;
 
     return (
-      <div id="education" className="cv-section education">
-      {
-        educations.map( (item, pos) => {
-          return (
-            <EducationItem item={item} key={"ed"+pos}/>
-          );
-        })
-      }
-      </div>
-    );
-  }
-}
-
-class Skills extends Component {
-  render() {
-    if (!this.props.skills || this.props.skills.length == 0) {
-      return (
-        <div className="none">No Skills</div>
-      );
-    }
-
-    let skills = this.props.skills;
-
-    return (
-      <div id="skills" className="cv-section skills flx-row flx-wrap">
+      <Pyr.PassThru>
+        <div key="edu-title" className="cv-label flx-row"><Pyr.UI.Label>Education</Pyr.UI.Label> <EduAdd className="ml-auto" edit={edit} /></div>
+        <div id="education" className="cv-section education">
         {
-          skills.map( (item, pos) => {
-            return (<div className="skill flx-0 flx-nowrap" key={"sk"+item.id}>{item.name}</div>);
-          })
-        }
-      </div>
-    );
-  }
-}
-
-class Uploads extends Component {
-  render() {
-    if (!this.props.uploads || this.props.uploads.length == 0) {
-      return (
-        <div className="none">None</div>
-      );
-    }
-
-    let uploads = this.props.uploads;
-
-    return (
-      <div id="uploads" className="cv-section uploads flx-row">
-        {
-          uploads.map( (item, pos) => {
-            if (!item.url) {
-              return (
-                <div className="file mt-auto flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Icon name="lock" /></div>
-              );
-            }
+          educations.map( (item, pos) => {
             return (
-              <div className="file mt-auto flx-0 flx-nowrap" key={"fi-"+pos}>
-                <a href={item.url} download target="_blank">
-                  <Pyr.UI.ImageFile url={item.url} contentType={item.content_type}/>
-                  <div className="file-name">{item.file_name}</div>
-                </a>
-              </div>
+              <EducationItem item={item} key={"ed"+pos}/>
             );
           })
         }
-      </div>
+        </div>
+      </Pyr.PassThru>
+    );
+  }
+}
+
+const EditSkills = (props) => (
+    <Pyr.Form.Group name="skills">
+      <Pyr.Form.AutoComplete url={SKILLS_URL} multiple allowNew />
+    </Pyr.Form.Group>
+);
+
+const ListSkills = (props) => (
+   <div id="skills" className="cv-section skills flx-row flx-wrap">
+    { (!props.skills || props.skills.length == 0) ? <Pyr.UI.Label>No Skills</Pyr.UI.Label> : null }
+     {
+        props.skills.map( (item, pos) => {
+          return (<div className="skill flx-0 flx-nowrap" key={"sk"+item.id}>{item.name}</div>);
+        })
+      }
+    </div>
+);
+
+
+class Skills extends Component {
+  render() {
+    let skills = this.props.skills;
+    let edit = this.props.edit;
+
+    return (
+      <Pyr.PassThru>
+        <div key="skills-title" className="cv-label flx-row"><Pyr.UI.Label>Skills</Pyr.UI.Label></div>
+        { edit ? <EditSkills skills={skills} /> : <ListSkills skills={skills} /> }
+      </Pyr.PassThru>
+    );
+  }
+}
+
+const EditUploads = (props) => (
+  <Pyr.Form.Group name="uploads">
+    <Pyr.Form.Label>Attachments</Pyr.Form.Label>
+    <Pyr.Form.FileSelector multiple row wrap showFileName/>
+  </Pyr.Form.Group>
+);
+
+const ListUploads = (props) => (
+    <div id="uploads" className="cv-section uploads flx-row">
+      { (!props.uploads || props.uploads.length == 0) ? <Pyr.UI.Label>No Attachments</Pyr.UI.Label> : null }
+      {
+        props.uploads.map( (item, pos) => {
+          if (!item.url) {
+            return (
+              <div className="file mt-auto flx-0 flx-nowrap" key={"fi-"+pos}><Pyr.UI.Icon name="lock" /></div>
+            );
+          }
+          return (
+            <div className="file mt-auto flx-0 flx-nowrap" key={"fi-"+pos}>
+              <a href={item.url} download target="_blank">
+                <Pyr.UI.ImageFile url={item.url} contentType={item.content_type}/>
+                <div className="file-name">{item.file_name}</div>
+              </a>
+            </div>
+          );
+        })
+      }
+    </div>
+);
+
+
+class Uploads extends Component {
+  render() {
+    let uploads = this.props.uploads;
+    let edit = this.props.edit;
+
+    return (
+      <Pyr.PassThru>
+        <div key="uploads-title" className="cv-label flx-row"><Pyr.UI.Label>Attachments</Pyr.UI.Label></div>
+        { edit ? <EditUploads uploads={uploads} /> : <ListUploads uploads={uploads} /> }
+      </Pyr.PassThru>
     );
   }
 }
@@ -330,14 +375,10 @@ class CandidateCVItem extends Component {
           onSetItem={this.props.onSetItem}
           edit={edit}
         />
-        <Pyr.UI.Label className="cv-label">Experience</Pyr.UI.Label>
-        <Experience experiences={candidate.works} edit={edit}/>
-        <Pyr.UI.Label className="cv-label">Education</Pyr.UI.Label>
-        <Education educations={candidate.educations} />
-        <Pyr.UI.Label className="cv-label">Skills</Pyr.UI.Label>
-        <Skills skills={candidate.skills} />
-        <Pyr.UI.Label className="cv-label">Attachments</Pyr.UI.Label>
-        <Uploads uploads={candidate.uploads} locked={locked}/>
+        <Experience experiences={candidate.works} edit={edit} locked={locked}/>
+        <Education educations={candidate.educations} edit={edit} locked={locked}/>
+        <Skills skills={candidate.skills} edit={edit} locked={locked}/>
+        <Uploads uploads={candidate.uploads} edit={edit} locked={locked}/>
       </div>
     );
   }
