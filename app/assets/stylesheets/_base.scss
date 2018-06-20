@@ -1169,6 +1169,17 @@ label {
 }
 
 i {
+  &.fab {
+    color: $primary_color;
+  }
+
+  &.fa-youtube {
+    color: red;
+  }
+
+  &.fa-link {
+    color: $primary_color;
+  }
   &.fa-facebook-f {
     color: $fb-color;
   }
@@ -1184,7 +1195,7 @@ i {
   &.fa-twitter {
     color: $tw-color;
   }
-  &.fa-linkedin {
+  &.fa-linkedin, &.fa-linked-in, &.fa-linkedin-in {
     color: $li-color;
   }
   &.fa-angellist {
@@ -1219,12 +1230,12 @@ div.line {
 }
 
 .cv {
-   padding: 1rem;
-   background-color: $alt_background_color;
+  padding: 1rem;
+  background-color: $alt_background_color;
 
-   .scroll {
-     background-color: white;
-   }
+  .scroll {
+    background-color: white;
+  }
 
   .cv-label {
     font-weight: 500;
@@ -1237,42 +1248,78 @@ div.line {
     border-bottom: 1px solid $border_color;
   }
 
+  .cv-form-header {
+    font-size: 1rem;
+    min-height: 7rem;
+
+
+    .phone-number {
+      margin-right: 3rem;
+    }
+  }
+
   .cv-header {
     font-size: 1rem;
     min-height: 7rem;
-  
+
     .name {
       font-size: 2rem;
       line-height: 2.5rem;
-      padding-bottom: 2rem;
+      margin-bottom: 2rem;
       color: $primary_color;
   
-       &.locked {
-         color: $med_gray_color;
-         @extend %blurry-text;
-        }
-     }
+      &.locked {
+        color: $med_gray_color;
+        @extend %blurry-text;
+       }
+    }
+
+    .form-group {
+      padding: 0;
+      margin: 0;
+    }
+
+    .form-control {
+      padding-left: 0;
+    }
+
+    input[type=text] {
+      font-size: 1.25rem;
+      line-height: 1.5rem;
+    }
+
+    input[type=text]#head-full_name {
+      font-size: 2rem;
+      line-height: 2.5rem;
+      color: $primary_color;
+    }
+
+
+    .lock {
+      color: $dark_gray_color;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      top: -10rem;
+      font-size: 8rem;
+      height: 0;
+    }
+
+    .social-links {
+      margin-top: 0.25rem;
+    }
   
-     .lock {
-       color: $dark_gray_color;
-       text-align: center;
-       margin-left: auto;
-       margin-right: auto;
-       position: relative;
-       top: -6rem;
-       font-size: 8rem;
-       height: 0;
-     }
+    .info {
+      font-size: 1.25rem;
+      line-height: 1.5rem;
+      margin-bottom: 0.25rem;
   
-     .info {
-       font-size: 1rem;
-       line-height: 1.5rem;
-  
-       .locked {
-         color: $med_gray_color;
-         @extend %blurry-text;
-        }
+      .locked {
+        color: $med_gray_color;
+        @extend %blurry-text;
       }
+    }
   }
   
   .cv-section {

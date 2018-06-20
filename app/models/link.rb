@@ -7,6 +7,10 @@ class Link < ApplicationRecord
   LINK_FACEBOOK = 5
   LINK_TWITTER = 6
   LINK_ANGELIST = 7
+  LINK_YOUTUBE = 8
+  LINK_WORDPRESS = 9
+  LINK_MEDIUM = 10
+  LINK_GOOGLE = 11
 
   LINK_ALL = [
     [LINK_WEB, nil],
@@ -16,7 +20,11 @@ class Link < ApplicationRecord
     [LINK_QUORA, 'quora.com'],
     [LINK_FACEBOOK, 'facebook.com',],
     [LINK_TWITTER, 'twitter.com'],
-    [LINK_ANGELIST, 'angel.co']
+    [LINK_ANGELIST, 'angel.co'],
+    [LINK_YOUTUBE, 'youtube.co'],
+    [LINK_WORDPRESS, 'wordpress.co'],
+    [LINK_MEDIUM, 'medium.co'],
+    [LINK_GOOGLE, 'google.co']
   ]
 
   validates :url, presence: true

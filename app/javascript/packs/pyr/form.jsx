@@ -144,6 +144,7 @@ class Form extends Network.Component {
     //console.log("AJAX SUCCESS");
     //console.log(this.props);
     if (this.props.onSuccess) {
+      console.log("CALLING SUCCESS");
       this.props.onSuccess(data, textStatus, jqXHR);
     }
     else {
@@ -447,6 +448,12 @@ class TextField extends Child {
       return;
     }
 
+    if ((e.keyCode == 13) && this.props.noSubmit) {
+      e.preventDefault();
+      return;
+    }
+
+
     if (this.props.onKeyUp) {
       this.props.onKeyUp(e);
     }
@@ -484,10 +491,16 @@ class TextField extends Child {
       myProps.value = this.state.value;
     }
 
-    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
+    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged", "noSubmit"]);
 
     return(
-      <input type="text" {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>
+      <input type="text" 
+        autoComplete="off"
+        {...myProps} 
+        {...Util.propsMergeClassName(rest, "form-control")} 
+        onChange={this.onTextChange} 
+        onKeyUp={this.onKeyUp}
+      />
     );
   }
 }

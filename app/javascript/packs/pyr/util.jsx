@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import BaseComponent from './base';
-import uuid from 'uuid';
+import uuidv4 from 'uuid/v4';
 
 const ONE_MINUTE = (60 * 1000);
 const ONE_HOUR = (ONE_MINUTE * 60);
@@ -14,6 +14,10 @@ const ONE_MONTH = (ONE_DAY * 30);
 const ONE_YEAR = (ONE_DAY * 365);
 
 const REMOTE_PATH = "/api/v1";
+
+function uuid() {
+  return uuidv4();
+}
 
 class URLObj {
   constructor(path) {
@@ -561,6 +565,7 @@ const Util = {
   getRandomInt,
   fancyParagraph,
   matchAll,
+  uuid,
 };
 
 export default Util;
