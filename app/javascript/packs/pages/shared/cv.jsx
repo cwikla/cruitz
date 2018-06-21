@@ -117,6 +117,29 @@ class CVHeader extends Component {
   }
 }
 
+const EditExperienceInner = (props) => (
+    <div className="exp-modal flx-col flx-1">
+      <div className="flx-row">
+        <Pyr.Form.Group name="title" className="flx-5">
+          <Pyr.Form.TextField />
+        </Pyr.Form.Group> 
+        <div className="flx-1 text-center">@</div>
+        <Pyr.Form.Group name="company" className="flx-5">
+          <Pyr.Form.TextField />
+        </Pyr.Form.Group>
+      </div>
+      <div className="flx-row">
+        Put the date selector here
+      </div>
+
+      <div className="">
+        <Pyr.Form.Group name="description">
+          <Pyr.Form.TextArea />
+        </Pyr.Form.Group>
+      </div>
+    </div>
+);
+
 class ExperienceModal extends Pyr.UI.Modal {
   title() {
     return "Experience";
@@ -124,26 +147,7 @@ class ExperienceModal extends Pyr.UI.Modal {
 
   renderInner() {
     return (
-      <div className="exp-modal flx-col flx-1">
-        <div className="flx-row">
-          <Pyr.Form.Group name="title" className="flx-5">
-            <Pyr.Form.TextField />
-          </Pyr.Form.Group> 
-          <div className="flx-1 text-center">@</div>
-          <Pyr.Form.Group name="company" className="flx-5">
-            <Pyr.Form.TextField />
-          </Pyr.Form.Group>
-        </div>
-        <div className="flx-row">
-          Put the date selector here
-        </div>
-
-        <div className="">
-          <Pyr.Form.Group name="description">
-            <Pyr.Form.TextArea />
-          </Pyr.Form.Group>
-        </div>
-      </div>
+      <EditExperienceInner props={this.props} />
     );
   }
 }
@@ -152,6 +156,26 @@ const ExpAdd = (props) => (
   <Pyr.PassThru>
     { props.edit ? <div className={props.className}><Pyr.UI.IconButton className="mt-auto mb-auto" name="plus" onClick={props.onShowModal}> Add Experience</Pyr.UI.IconButton></div> : null }
   </Pyr.PassThru>
+);
+
+const EditExperience = (props) => (
+      <Pyr.Form.Many model={props.model} name={props.name} >
+        <div className="flx-row">
+          <Pyr.Form.Group name="title" className="flx-1">
+            <Pyr.Form.TextField className="" />
+          </Pyr.Form.Group>
+
+          @
+
+          <Pyr.Form.Group name="place" className="flx-1">
+            <Pyr.Form.TextField className="" />
+          </Pyr.Form.Group>
+        </div>
+      
+        <Pyr.Form.Group name="description" className="flx-1">
+          <Pyr.Form.TextArea className="experience" />
+        </Pyr.Form.Group>
+      </Pyr.Form.Many>
 );
 
 const ExperienceItem = (props) => (
@@ -203,6 +227,15 @@ class Experience extends Component {
 
     let experiences = this.props.experiences;
 
+    if (edit) {
+      return (
+        <Pyr.PassThru>
+          <div key="exp-title" className="cv-label flx-row"><Pyr.UI.Label>Experience</Pyr.UI.Label> </div>
+          <EditExperience model="Works" name="works"/>
+        </Pyr.PassThru>
+      );
+    }
+
     return (
       <Pyr.PassThru>
        <div key="exp-title" className="cv-label flx-row"><Pyr.UI.Label>Experience</Pyr.UI.Label> <ExpAdd className="ml-auto" edit={edit} /></div>
@@ -250,6 +283,15 @@ class Education extends Component {
     }
 
     let educations = this.props.educations;
+
+    if (edit) {
+      return (
+        <Pyr.PassThru>
+          <div key="edu-title" className="cv-label flx-row"><Pyr.UI.Label>Education</Pyr.UI.Label> </div>
+          <EditExperience model="Educations" name="educations"/>
+        </Pyr.PassThru>
+      );
+    }
 
     return (
       <Pyr.PassThru>

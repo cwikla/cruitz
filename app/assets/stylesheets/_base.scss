@@ -1265,6 +1265,13 @@ div.line {
     }
   }
 
+
+  textarea {
+    &.experience {
+      height: 10.5rem;
+    }
+  }
+
   .cv-header {
     font-size: 1rem;
     min-height: 7rem;
@@ -1300,6 +1307,8 @@ div.line {
       line-height: 2.5rem;
       color: $primary_color;
     }
+
+
 
     div.phone-number {
       margin-right: 1rem;

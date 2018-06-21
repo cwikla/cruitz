@@ -25,7 +25,7 @@ class Form extends Network.Component {
     model: PropTypes.string,
     errors: PropTypes.object,
     object: PropTypes.object,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -219,11 +219,70 @@ class Form extends Network.Component {
   }
 }
 
+class ObjectWrapper extends BaseComponent {
+  static childContextTypes = {
+    object: PropTypes.object,
+    model: PropTypes.string,
+  };
+
+  getChildContext() {
+    return {
+      object: this.props.object,
+      model: this.props.model,
+    }
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
+class Many extends BaseComponent {
+  static childContextTypes = {
+    model: PropTypes.string,
+  };
+
+  static contextTypes = {
+    model: PropTypes.string,
+    object: PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      model: this.props.model,
+    }
+  }
+
+  getName() {
+    return this.props.name;
+  }
+
+  render() {
+    return (
+      <UI.PassThru>
+        { 
+          this.context.object[this.props.name].map((item, pos) => {
+            let mname = this.context.model + "[" + this.props.model + "][" + item.id + "]";
+            console.log(mname);
+            return (
+              <ObjectWrapper object={item} model={mname} key={mname + "-" + item.id}>
+                { 
+                  Util.childrenWithProps(this.props.children, {}) 
+                }
+              </ObjectWrapper>
+            );
+          })
+        }
+      </UI.PassThru>
+    );
+  }
+}
+
 class Group extends BaseComponent {
   static childContextTypes = {
     name: PropTypes.string,
     errorString: PropTypes.string
-  }
+  };
 
   static contextTypes = {
     errors: PropTypes.object
@@ -1488,6 +1547,7 @@ const PyrForm = {
   FileSelector,
   AutoComplete,
   Range,
+  Many,
 };
 
 export { 
