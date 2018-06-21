@@ -56,8 +56,8 @@ class Base extends Component {
   }
 
   setSearchItems(searchItems) {
-    console.log("SET SEARCH ITEMS");
-    console.log(searchItems);
+    //console.log("SET SEARCH ITEMS");
+    //console.log(searchItems);
 
     let searchItemsMap = null;
 
@@ -74,7 +74,7 @@ class Base extends Component {
     });
     //this.forceUpdate();
     //console.log("FORCED UPDATE");
-    console.log("END SET SEARCH");
+    //console.log("END SET SEARCH");
 
   }
 
@@ -187,8 +187,8 @@ class Base extends Component {
   }
 
   route(url) {
-    console.log("ROUTE");
-    console.log(this.context);
+    //console.log("ROUTE");
+    //console.log(this.context);
     this.context.router.history.push(url.toString());
   }
 

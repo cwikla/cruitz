@@ -113,7 +113,7 @@ class LinkMakerModal extends Pyr.UI.Modal {
   }
 
   close() {
-    console.log("CLOSE");
+    //console.log("CLOSE");
     this.setState({
       value: null,
       ltype: null,
@@ -127,9 +127,9 @@ class LinkMakerModal extends Pyr.UI.Modal {
 
   success() {
     if (this.props.onSuccess) {
-      console.log("SUCCESS");
-      console.log(this.state.value);
-      console.log(this.state.ltype);
+      //console.log("SUCCESS");
+      //console.log(this.state.value);
+      //console.log(this.state.ltype);
 
       this.props.onSuccess({url: this.state.value, ltype: this.state.ltype});
     }

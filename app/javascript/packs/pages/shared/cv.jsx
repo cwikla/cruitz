@@ -42,8 +42,8 @@ class AutoText extends Component {
       );
     }
 
-    console.log("PROPS");
-    console.log(this.props);
+    //console.log("PROPS");
+    //console.log(this.props);
 
     return (
       <Pyr.Form.Group name={this.props.name} {...rest}>
@@ -200,7 +200,7 @@ class Experience extends Component {
   }
 
   showModal() {
-    console.log("SHOW MODAL");
+    //console.log("SHOW MODAL");
     this.setState({
       showModal: true
     });

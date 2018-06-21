@@ -43,8 +43,8 @@ class LoaderComponent extends Component {
   }
 
   add(data) {
-    console.log("ADD");
-    console.log(data);
+    //console.log("ADD");
+    //console.log(data);
 
     this.props.loader.add(data[this.singular()]);
   }
@@ -54,14 +54,14 @@ class LoaderComponent extends Component {
   }
 
   replace(data) {
-    console.log("REPLACE");
-    console.log(data);
+    //console.log("REPLACE");
+    //console.log(data);
 
     this.props.loader.replace(data[this.singular()]);
   }
 
   reload(data) {
-    console.log("RELOAD CALLED!");
+    //console.log("RELOAD CALLED!");
     this.props.loader.load({force: true});
   }
 
@@ -110,8 +110,8 @@ class LoaderBase {
   setItems(newItems) {
     let name = this.name();
 
-    console.log("SETTING ITEMS: " + name);
-    console.log(newItems.length);
+    //console.log("SETTING ITEMS: " + name);
+    //console.log(newItems.length);
 
     this.props.onSetItems(name, newItems);
   }
@@ -184,7 +184,7 @@ class LoaderBase {
 
   add(item) {
     if (this.exists(item)) {
-      console.log("ROUTING TO REPLACE");
+      //console.log("ROUTING TO REPLACE");
       return this.replace(item);
     }
 
@@ -213,7 +213,7 @@ class LoaderBase {
 
   replace(item) {
     if (!this.exists(item)) {
-      console.log("ROUTING TO ADD");
+      //console.log("ROUTING TO ADD");
       return this.add(item);
     }
 
