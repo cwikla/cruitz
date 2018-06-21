@@ -160,21 +160,23 @@ const ExpAdd = (props) => (
 
 const EditExperience = (props) => (
       <Pyr.Form.Many model={props.model} name={props.name} >
-        <div className="flx-row">
-          <Pyr.Form.Group name="title" className="flx-1">
-            <Pyr.Form.TextField className="" />
-          </Pyr.Form.Group>
-
-          @
-
-          <Pyr.Form.Group name="place" className="flx-1">
-            <Pyr.Form.TextField className="" />
+        <div className="edit-experience">
+          <div className="flx-row">
+            <Pyr.Form.Group name="title" className="flx-1">
+              <Pyr.Form.TextField className="" />
+            </Pyr.Form.Group>
+  
+            @
+  
+            <Pyr.Form.Group name="place" className="flx-1">
+              <Pyr.Form.TextField className="" />
+            </Pyr.Form.Group>
+          </div>
+        
+          <Pyr.Form.Group name="description" className="flx-1">
+            <Pyr.Form.TextArea className="experience" />
           </Pyr.Form.Group>
         </div>
-      
-        <Pyr.Form.Group name="description" className="flx-1">
-          <Pyr.Form.TextArea className="experience" />
-        </Pyr.Form.Group>
       </Pyr.Form.Many>
 );
 

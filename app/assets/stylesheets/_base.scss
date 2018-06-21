@@ -1255,6 +1255,13 @@ div.line {
     border-bottom: 1px solid $border_color;
   }
 
+  .edit-experience {
+    background-color: $light_gray_color;
+    padding: 0.5rem;
+    border: 1px $border_color solid;
+    margin-bottom: 1rem;
+  }
+
   .cv-form-header {
     font-size: 1rem;
     min-height: 7rem;
