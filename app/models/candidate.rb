@@ -108,7 +108,7 @@ class Candidate < ApplicationRecord
         #recruiter: recruiter,
         #message: msg)
 
-       create_notify
+       candidate.create_notify
     end
 
     return candidate
