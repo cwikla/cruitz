@@ -16,6 +16,7 @@ const ClassNames = Pyr.ClassNames;
 import {
   JOBS_URL,
   MESSAGES_URL,
+  POSITIONS_URL,
 } from '../const';
 
 class Card extends Component {
@@ -132,25 +133,31 @@ class Blurb extends Component {
     let title = job.title || company.name || "No Title";
     let description = job.description || "No Description";
     let category = job.category ? job.category.name : "Other";
-    let url = logo ? logo.url : null;
+    let logoUrl = logo ? logo.url : null;
     let companyName = company ? company.name : "Anonymous";
 
+    let url = Pyr.URL(POSITIONS_URL).push(job.id);
+
     return (
-      <div className="job-blurb flx-col" id={"jbrb-" + job.id}>
-        <div className="created_at ml-auto"><Pyr.UI.MagicDate dateOnly date={job.created_at} medium/></div>
-        <div className="company flx-row">
-          { url ? <Pyr.UI.Image src={url} className="logo mr-auto" /> : null }
-          <div className="flx-1 mr-auto mt-auto mb-auto name">{ companyName }</div>
+      <Link to={url.toString()}>
+        <div className="job-blurb flx-col" id={"jbrb-" + job.id}>
+          <div className="created_at ml-auto"><Pyr.UI.MagicDate dateOnly date={job.created_at} medium/></div>
+          <div className="company flx-row">
+            { logoUrl ? <Pyr.UI.Image src={logoUrl} className="logo mr-auto" /> : null }
+            <div className="flx-1 mr-auto mt-auto mb-auto name">{ companyName }</div>
+          </div>
+  
+          <div className="flx-col">
+            <div className="title mr-auto">{ title }</div>
+            <div className="locations mr-auto">{ locations }</div>
+            <div className="salary-range mr-auto">$120,000 - $160,000</div>
+          </div>
+  
+          <div className="more flx-row mt-auto">
+            <span className="ml-auto">More...</span>
+          </div>
         </div>
-
-        <div className="flx-col">
-          <div className="title mr-auto">{ title }</div>
-          <div className="locations mr-auto">{ locations }</div>
-          <div className="salary-range mr-auto">$120,000 - $160,000</div>
-        </div>
-
-        <div className="more ml-auto">More...</div>
-      </div>
+      </Link>
     );
   }
 }
@@ -196,13 +203,13 @@ class Header extends Component {
     let title = job.title || company.name || "No Title";
     let description = job.description || "No Description";
     let category = job.category ? job.category.name : "Other";
-    let logo_url = logo ? logo.url : "";
+    let logoUrl = logo ? logo.url : "";
     let companyName = company ? company.name : "Anonymous";
 
     return (
       <div className="job-header job-blurb flx-row">
         <div className="flx-col">
-          <img src={logo_url} className="logo"/>
+          <img src={logoUrl} className="logo"/>
         </div>
 
         <div className="flx-col flx-1">
