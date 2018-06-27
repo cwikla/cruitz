@@ -69,16 +69,36 @@ function auto_ltype(url) {
 
 
 const Icon = (props) => (
-  <Pyr.UI.Icon brand={props.brand} name={props.name || "link"} className={props.className}/>
+  <Pyr.UI.Icon name={props.name || "link"} {...Pyr.Util.propsRemove(props, ["name"])} />
 );
 
 const LinkIcon = (props) => (
-  <Icon brand={!!WEB_LINK_TO[props.ltype]} name={WEB_LINK_TO[props.ltype]} />
+  <Icon brand={!!WEB_LINK_TO[props.ltype]} name={WEB_LINK_TO[props.ltype]} {...Pyr.Util.propsRemove(props, ["ltype"])} />
 );
 
 const LinkObj = (props) => (
   <a href={props.webLink.url} target="_cruitz"><LinkIcon ltype={props.webLink.ltype} /></a>
 );
+
+class EditLinkObj extends Component {
+    constructor(props) {
+      super(props); 
+   
+      this.onPreClick = this.preClick.bind(this); 
+    }
+
+    preClick(e) {
+      if (this.props.onClick) {
+        this.props.onClick(e, this.props.webLink);
+      }
+    }
+
+    render() {
+      return (
+        <LinkIcon ltype={this.props.webLink.ltype} onClick={this.onPreClick}/> 
+      );
+    }
+}
 
 const Lock = (props) => (
   <Pyr.UI.Icon brand={!!WEB_LINK_TO[props.webLink.ltype]}  name={WEB_LINK_TO[props.webLink.ltype]} className="locked"/>
@@ -89,13 +109,22 @@ class LinkMakerModal extends Pyr.UI.Modal {
     super(props);
 
     this.initState({
-      value: null,
-      ltype: null,
+      item: props.item || {}
     });
 
     this.onGetTarget = this.getTarget.bind(this);
     this.onSuccess = this.success.bind(this);
     this.onChange = this.change.bind(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.item != prevProps.item) {
+      //console.log("SETTING STATE IN UPDATE");
+      //console.log(this.props);
+      this.setState({
+        item: this.props.item || {}
+      });
+    }
   }
 
   change(e) {
@@ -106,17 +135,21 @@ class LinkMakerModal extends Pyr.UI.Modal {
 
     let ltype = auto_ltype(url);
 
+
     this.setState({
-      value: url,
-      ltype
+      item: {
+        url: url,
+        ltype
+      }
     });
+
+    //console.log("LTYPE:" + ltype);
   }
 
   close() {
     //console.log("CLOSE");
     this.setState({
-      value: null,
-      ltype: null,
+      item: {}
     });
     super.close();
   }
@@ -131,11 +164,10 @@ class LinkMakerModal extends Pyr.UI.Modal {
       //console.log(this.state.value);
       //console.log(this.state.ltype);
 
-      this.props.onSuccess({url: this.state.value, ltype: this.state.ltype});
+      let value = Object.assign({}, this.props.item || {}, this.state.item); // will catch id
+      this.props.onSuccess(value);
     }
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
+    this.close();
   }
 
   getTarget() {
@@ -151,9 +183,9 @@ class LinkMakerModal extends Pyr.UI.Modal {
     return (
       <Pyr.PassThru>
         <Pyr.Form.Group name="link">
-          <div className="flx-row"><LinkIcon ltype={this.state.ltype} /> <Pyr.Form.TextField value={this.props.value} noSubmit onChange={this.onChange} onSubmit={this.onSuccess}/></div>
+          <div className="flx-row"><LinkIcon ltype={this.state.item.ltype || 0} /> <Pyr.Form.TextField disabled={!this.props.open} value={this.state.item.url} noSubmit onChange={this.onChange} onSubmit={this.onSuccess}/></div>
         </Pyr.Form.Group>
-        <Pyr.UI.PrimaryButton onClick={this.onSuccess}>Add</Pyr.UI.PrimaryButton>
+        <Pyr.UI.PrimaryButton onClick={this.onSuccess}>{ this.state.item.url ? "Save" : "Add"}</Pyr.UI.PrimaryButton>
       </Pyr.PassThru>
     );
   }
@@ -176,6 +208,7 @@ class Links extends Component {
     super(props);
 
     this.initState({
+      item: null,
       showModal: false,
       links: (this.props.links || []).slice()
     });
@@ -183,15 +216,21 @@ class Links extends Component {
     this.onShowModal = this.showModal.bind(this);
     this.onCloseModal = this.closeModal.bind(this);
     this.onAddLink = this.addLink.bind(this);
+    this.onEditLink = this.editLink.bind(this);
     this.onRemoveLink = this.removeLink.bind(this);
   }
 
-  showModal(e) {
+  showModal(e, item) {
+    //console.log("SHOW MODAL");
+    //console.log(e);
+    //console.log(item);
+
     if (e) {
       e.preventDefault();
     }
     this.setState({
-      showModal: true
+      item: item, 
+      showModal: true,
     });
   }
 
@@ -205,9 +244,26 @@ class Links extends Component {
   }
 
   addLink(l) {
+    if (l.id) {
+      return this.editLink(l);
+    }
+
     let links = this.state.links.slice();
     links.push({url: l.url, ltype: l.ltype || WEB_LINK_WEB, id: Pyr.Util.uuid()});
 
+    this.setState({
+      links
+    });
+  }
+
+  editLink(l) {
+    let links = this.state.links.slice();
+    let pos = links.findIndex(e => {
+      return e.id == l.id;
+    });
+    if (pos >= 0) {
+      Object.assign(links[pos], l);
+    }
     this.setState({
       links
     });
@@ -241,8 +297,9 @@ class Links extends Component {
              })
           }
         </Pyr.Form.Group>
+       { webLinks.length == 0 ? <Icon className="placeholder"/> : null }
         <Pyr.UI.IconButton className="mt-auto mb-auto" name="plus" onClick={this.onShowModal}> Add Link</Pyr.UI.IconButton> 
-        <LinkMakerModal open={this.state.showModal} onClose={this.onCloseModal} onSuccess={this.onAddLink} edit={this.props.edit}/>
+        <LinkMakerModal open={this.state.showModal} onClose={this.onCloseModal} onSuccess={this.onAddLink} edit={this.props.edit} item={this.state.item}/>
       </Pyr.PassThru>
     );
   }
@@ -257,13 +314,20 @@ class Links extends Component {
     let locked = this.props.locked;
     let edit = this.props.edit;
 
-    let WebLinkComp = locked ? Lock : LinkObj;
+    let WebLinkComp = locked ? Lock : (edit ? EditLinkObj : LinkObj);
 
     return (
       <div id="web-links" className="cv-section web-links flx-row">
         {
           webLinks.map( (item, pos) => {
-            return (<div className="web-link flx-0 flx-nowrap" key={"web-lnk"+item.id}><WebLinkComp key={"web-lnk2"+item.id} webLink={item} edit={edit}/></div>);
+            return (<div className="web-link flx-0 flx-nowrap" key={"web-lnk"+item.id}>
+                      <WebLinkComp 
+                        key={"web-lnk2"+item.id} 
+                        webLink={item} 
+                        edit={edit}
+                        onClick={this.onShowModal}
+                      />
+                    </div>);
           })
         }
         { this.renderEdit() }

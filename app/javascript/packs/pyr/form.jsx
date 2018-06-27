@@ -8,6 +8,7 @@ import Util from './util';
 import Network from './network';
 import UI from './ui';
 import Attachment from './attachment';
+import ReactSelect from 'react-select';
 
 import {
   Typeahead,
@@ -211,7 +212,7 @@ class Form extends Network.Component {
     return (
       <form ref={(node) => {this.form = node;}} 
         {...Util.propsMergeClassName(rest, Util.ClassNames(!this.state.valid ? "invalid" : "").push("hello"))}
-        onSubmit={this.onSubmit}
+        onSubmit={this.props.onSubmit || this.onSubmit}
       >
         {this.props.children}
       </form>
@@ -258,10 +259,12 @@ class Many extends BaseComponent {
   }
 
   render() {
+    let items = this.context.object[this.props.name] || [];
+
     return (
       <UI.PassThru>
         { 
-          this.context.object[this.props.name].map((item, pos) => {
+          items.map((item, pos) => {
             let mname = this.context.model + "[" + this.props.model + "][" + item.id + "]";
             console.log(mname);
             return (
@@ -677,6 +680,23 @@ class Option extends Child {
   render() {
     return(
       <option {...Util.propsMergeClassName(this.props, "hmmm-form-control")}>{this.props.children}</option>
+    );
+  }
+}
+
+class CompactSelect extends Child {
+  render() {
+    let myProps = { 
+      name: this.name(), 
+      id: this.htmlID() ,
+      "aria-describedby": this.htmlID()
+    };
+
+    return (
+      <ReactSelect
+        {...myProps}
+        {...Util.propsMergeClassName(this.props, "form-control")}
+      />
     );
   }
 }
@@ -1546,8 +1566,10 @@ const PyrForm = {
   CheckBox,
   FileSelector,
   AutoComplete,
+  CompactSelect,
   Range,
   Many,
+  ObjectWrapper,
 };
 
 export { 

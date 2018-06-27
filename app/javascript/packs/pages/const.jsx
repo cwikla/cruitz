@@ -1,5 +1,7 @@
 //====
 
+import Pyr from '../pyr/pyr';
+
 
 export const MAIN_PAGE = 'Main';
 export const JOBS_PAGE = 'Jobs';
@@ -46,6 +48,15 @@ export const EDIT_ACTION = 'edit';
 export const DELETE_ACTION = 'delete';
 export const INDEX_SHOW_ACTION = 'indexshow';
 
+export const EXP_TYPE_COMPANY = 0;
+export const EXP_TYPE_SCHOOL = 1;
+
+export const EXP_TYPES = [
+  EXP_TYPE_COMPANY,
+  EXP_TYPE_SCHOOL
+];
+
+
 export const RANGES = {
   0 : 'Recent',
   1 : '1 week',
@@ -59,6 +70,21 @@ export const RANGES = {
   9 : '6 month',
   10 : 'All Time'
 };
+
+export const YEARS = Pyr.Util.range(1960, new Date().getFullYear());
+
+export function methodToName(method) {
+  switch (method) {
+    case Pyr.Method.PATCH:
+      return "Save";
+      break
+
+    default:
+      return "Add";
+      break;
+  }
+}
+
 
 
 //===

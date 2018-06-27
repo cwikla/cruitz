@@ -543,6 +543,10 @@ function matchAll(s, r) {
   return results;
 }
 
+function range(start, stop, step=1) {
+  return Array(stop - start).fill(start).map((x, y) => x + y * step);
+}
+
 const Util = {
   URL : PURL,
   ClassNames,
@@ -566,6 +570,7 @@ const Util = {
   fancyParagraph,
   matchAll,
   uuid,
+  range
 };
 
 export default Util;

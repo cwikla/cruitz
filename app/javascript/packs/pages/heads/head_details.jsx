@@ -272,8 +272,6 @@ class HeadForm extends Component {
               <FormHeader />
               
     
-              { this.renderCompany() }
-    
               <Pyr.Form.Group name="title">
                 <Pyr.Form.Label>Title</Pyr.Form.Label>
                 <Pyr.Form.TextField placeholder= "Enter head title"/>

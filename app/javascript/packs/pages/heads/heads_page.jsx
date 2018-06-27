@@ -19,6 +19,7 @@ import Page from '../page';
 import Sheet from '../sheet';
 
 import HeadDetails from './head_details';
+import CV from '../shared/cv';
 
 import {
   HEADS_URL,
@@ -286,7 +287,7 @@ class NewSheet extends Sheet.New {
 
   renderForm() { 
     return ( 
-      <HeadDetails.Form 
+      <CV.NewForm
         company={this.user().company}
         onPreSubmit={this.onPreSubmit} 
         onPostSubmit={this.onPostSubmit} 

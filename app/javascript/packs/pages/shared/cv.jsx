@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
 
 import {
   Link,
@@ -24,6 +23,9 @@ import {
   RANGES,
   HEADS_URL,
   SKILLS_URL,
+  EXP_TYPE_COMPANY,
+  EXP_TYPE_SCHOOL,
+  YEARS,
 } from '../const';
 
 const Lock = (props) => (
@@ -35,7 +37,7 @@ const Lock = (props) => (
 
 class AutoText extends Component {
   render() {
-    let rest = Pyr.Util.propsRemove(this.props, ["edit", "name"]);
+    let rest = Pyr.Util.propsRemove(this.props, ["edit", "name", "children"]);
     if (!this.props.edit) {
       return (
         <span {...rest}>{this.props.children}</span>
@@ -46,14 +48,31 @@ class AutoText extends Component {
     //console.log(this.props);
 
     return (
-      <Pyr.Form.Group name={this.props.name} {...rest}>
-        <Pyr.Form.TextField value={this.props.children} />
+      <Pyr.Form.Group name={this.props.name} >
+        <Pyr.Form.TextField value={this.props.children} {...rest}/>
       </Pyr.Form.Group>
     );
   }
 }
 
-class CVHeader extends Component {
+const CVHeader = (props) => (
+  <div className={ClassNames("cv-header flx-col flx-noshrink").push(props.locked ? "locked" : "")} >
+    <div className="flx-row flx-1">
+      <div className={ClassNames("name mr-auto flx-1").push(props.locked ? "locked" : "")}><AutoText name="full_name" edit={props.edit} placeholder="Client Name">{props.fullName}</AutoText></div>
+    </div>
+    <div className="flx-row flx-1 info">
+      <div className={ClassNames("phone-number flx-1").push(props.locked ? "locked" : "")}><AutoText name="phone_number" edit={props.edit} placeholder="555-555-1212">{props.phoneNumber}</AutoText></div>
+      <div className={ClassNames("email flx-1").push(props.locked ? "locked" : "")}><AutoText name="email" edit={props.edit} placeholder="email@company.com">{props.email}</AutoText></div>
+    </div>
+    <div className="flx-row-stretch info social-links">
+      <WebLink.Links links={props.links} locked={props.locked} edit={props.edit}/>
+    </div>
+    <div className={ClassNames("lock ml-auto mr-auto mt-auto mb-auto").push(props.locked ? "locked" : "")}>{ props.locked ? <Lock /> : null }</div>
+  </div>
+)
+
+class CandidateHeader extends Component {
+
   isLocked() {
     return this.props.locked;
   }
@@ -69,10 +88,6 @@ class CVHeader extends Component {
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
     let email = candidate.email || "No Email";
-    let salary = candidate.salary || "No Salary";
-
-    let company = candidate.company || "No Company";
-    let description = candidate.description || "No Description";
 
     let locked = this.isLocked();
 
@@ -80,40 +95,23 @@ class CVHeader extends Component {
       fullName = Pyr.Util.scramble("George Smith");
       phoneNumber = Pyr.Util.scramble("415-555-1212");
       email = Pyr.Util.scramble("georgith@george.com");
-      salary = Pyr.Util.scramble("60,000");
     }
-
-    let clazzes = ClassNames("cv-header flx-col flx-noshrink");
-    let extra = ClassNames(locked ? "locked" : "");
 
     let edit = this.props.edit;
 
     let ALock = !locked ? Pyr.UI.Empty : Lock;
 
-/*
-    console.log("HMMM");
-    console.log(candidate.unlocked_at);
-    console.log(!!candidate.unlocked_at);
-*/
-
     return (
-      <div className={clazzes} >
-        <div className="flx-row flx-1">
-          <div className={ClassNames(extra).push("name mr-auto flx-1")}><AutoText name="full_name" edit={edit}>{fullName}</AutoText></div>
-        </div>
-        <div className="flx-row flx-1 info">
-          <div className={ClassNames(extra).push("phone-number flx-1")}><AutoText name="phone_number" edit={edit}>{phoneNumber}</AutoText></div>
-          <div className={ClassNames(extra).push("email flx-1")}><AutoText name="email" edit={edit}>{email}</AutoText></div>
-        </div>
-        <div className="flx-row flx-1 info">
-          <div className={ClassNames(extra).push("salary mr-auto")}><AutoText name="salary" edit={edit}>{salary}</AutoText></div>
-        </div>
-        <div className="flx-row-stretch info social-links">
-          <WebLink.Links links={candidate.links} locked={locked} edit={edit}/>
-        </div>
-        <div className={ClassNames(extra).push("lock ml-auto mr-auto mt-auto mb-auto")}><ALock /></div>
-      </div>
+      <CVHeader
+        locked = {this.isLocked()}
+        fullName={fullName}
+        phoneNumber={phoneNumber}
+        email={email}
+        edit={edit}
+        links={candidate.links}
+      />
     );
+
   }
 }
 
@@ -123,8 +121,8 @@ const EditExperienceInner = (props) => (
         <Pyr.Form.Group name="title" className="flx-5">
           <Pyr.Form.TextField />
         </Pyr.Form.Group> 
-        <div className="flx-1 text-center">@</div>
-        <Pyr.Form.Group name="company" className="flx-5">
+        <div className="flx-1 text-center at">@</div>
+        <Pyr.Form.Group name="place" className="flx-5">
           <Pyr.Form.TextField />
         </Pyr.Form.Group>
       </div>
@@ -140,49 +138,138 @@ const EditExperienceInner = (props) => (
     </div>
 );
 
-class ExperienceModal extends Pyr.UI.Modal {
-  title() {
-    return "Experience";
-  }
-
-  renderInner() {
-    return (
-      <EditExperienceInner props={this.props} />
-    );
-  }
-}
-
 const ExpAdd = (props) => (
   <Pyr.PassThru>
     { props.edit ? <div className={props.className}><Pyr.UI.IconButton className="mt-auto mb-auto" name="plus" onClick={props.onShowModal}> Add Experience</Pyr.UI.IconButton></div> : null }
   </Pyr.PassThru>
 );
 
+const YEARS_OPTIONS = YEARS.map( year => {
+    return {value: year, label: year} 
+  }).concat({value: 0, label: "Current"}).reverse();
+
+const YearSelect = (props) => (
+  <Pyr.Form.Group {...props}>
+    <Pyr.Form.CompactSelect
+      options={YEARS_OPTIONS}
+      isClearable={false}
+      isSearchable={false}
+    />
+  </Pyr.Form.Group>
+);
+
 const EditExperience = (props) => (
-      <Pyr.Form.Many model={props.model} name={props.name} >
-        <div className="edit-experience">
-          <div className="flx-row">
-            <Pyr.Form.Group name="title" className="flx-1">
-              <Pyr.Form.TextField className="" />
-            </Pyr.Form.Group>
+  <div className={ClassNames("edit-experience").push(props.className)}>
+    <div className="flx-row">
+      <Pyr.Form.Group name="title" className="flx-1">
+        <Pyr.Form.TextField className="" placeholder="Title"/>
+      </Pyr.Form.Group>
+
+      <div className="at">@</div>
   
-            @
-  
-            <Pyr.Form.Group name="place" className="flx-1">
-              <Pyr.Form.TextField className="" />
-            </Pyr.Form.Group>
-          </div>
+      <Pyr.Form.Group name="place" className="flx-1">
+        <Pyr.Form.TextField className="" placeholder="Organization"/>
+      </Pyr.Form.Group>
+    </div>
+
+    <div className="flx-row">
+      <YearSelect name="year_start" className="flx-1"/>
+
+      <div className="at"> - </div>
+
+      <YearSelect name="year_end" className="flx-1"/>
+    </div>
         
-          <Pyr.Form.Group name="description" className="flx-1">
-            <Pyr.Form.TextArea className="experience" />
-          </Pyr.Form.Group>
-        </div>
-      </Pyr.Form.Many>
+    <Pyr.Form.Group name="description" className="flx-1">
+      <Pyr.Form.TextArea className="experience" placeholder="Description"/>
+    </Pyr.Form.Group>
+  </div>
+);
+
+const EditManyExperiences = (props) => (
+  <Pyr.Form.Many model="Works" name="works" >
+    <EditExperience {...props} />
+  </Pyr.Form.Many>
+);
+
+class EditManyExp extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.onAddByType = this.addByType.bind(this);
+    this.onRemove = this.remove.bind(this);
+  }
+
+  getName() {
+    return this.props.name;
+  }
+
+  getKey() {
+    return this.props.name.toLowerCase();
+  }
+
+  getExperiences(expType) {
+    return this.props.experiences.reduce((arr, item) => {
+      if (item.exp_type == expType) {
+        arr.push(item);
+      }
+      return arr;
+    }, []);
+  }
+
+  addByType() {
+    if (this.props.onAdd) {
+      this.props.onAdd(this.props.expType);
+    }
+  }
+
+  remove(item) {
+    if (this.props.onRemove) {
+      this.props.onRemove(item.id);
+    }
+  }
+
+  render() {
+    let title = this.props.title || "Experience";
+    let name = this.getName();
+    let key = this.getKey();
+
+    let type = this.props.expType;
+    let exps = this.getExperiences(type)
+
+    let ts = type == EXP_TYPE_SCHOOL ? "edu" : "work";
+  
+    return (
+      <div className="flx-col exp-form">
+        <div className={ClassNames("exp-title cv-label flx-row").push("exp-" + ts)}><Pyr.UI.Label>{title}</Pyr.UI.Label> <Pyr.UI.IconButton className="ml-auto" name="plus" onClick={this.onAddByType}> Add { name }</Pyr.UI.IconButton></div>
+        { exps.length == 0 ? "None" : null }
+  
+        {  
+          exps.map((item, pos) => {
+            let kid = item.id || pos;
+            return (
+              <Pyr.Form.ObjectWrapper object={item} model={"Experiences["+kid+"]"} key={key + "-" + ts + "-eme-" + kid}>
+                <div className="flx-row"><EditExperience className="flx-1"/> <Pyr.UI.IconButton name="times" className="mb-auto remove" onClick={e => this.onRemove(item)}/></div>
+              </Pyr.Form.ObjectWrapper>
+            );
+          })
+        }
+      </div>
+    );
+  }
+}
+
+const WorkEditManyExp = (props) => (
+  <EditManyExp {...props} edit={true} locked={false} name="Work" expType={EXP_TYPE_COMPANY}/>
+);
+
+const EducationEditManyExp = (props) => (
+  <EditManyExp {...props} edit={true} locked={false} name="Education" title="Education" expType={EXP_TYPE_SCHOOL}/>
 );
 
 const ExperienceItem = (props) => (
   <div className="item">
-    <div className="title">{props.item.title} @ {props.item.place}</div>
+    <div className="title">{props.item.title} <div className="at">@</div> {props.item.place}</div>
     <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
     <div className="description">{props.item.description}</div>
   </div>
@@ -233,7 +320,7 @@ class Experience extends Component {
       return (
         <Pyr.PassThru>
           <div key="exp-title" className="cv-label flx-row"><Pyr.UI.Label>Experience</Pyr.UI.Label> </div>
-          <EditExperience model="Works" name="works"/>
+          <EditManyExperiences />
         </Pyr.PassThru>
       );
     }
@@ -266,7 +353,7 @@ const EduAdd = (props) => (
 
 const EducationItem = (props) => (
   <div className="item">
-    <div className="degree">{props.item.title} @ {props.item.place}</div>
+    <div className="degree">{props.item.title} <div className="at">@</div> {props.item.place}</div>
     <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
   </div>
 );
@@ -411,7 +498,7 @@ class CandidateCVItem extends Component {
 
     return (
       <div className={allClass} id={id}>
-        <CVHeader 
+        <CandidateHeader 
           candidate={candidate}
           job={job}
           locked={locked}
@@ -427,8 +514,183 @@ class CandidateCVItem extends Component {
   }
 }
 
+
+class ExperienceModal extends Pyr.UI.Modal {
+  constructor(props) {
+    super(props);
+
+    this.onGetTarget = this.getTarget.bind(this);
+    this.onSubmit = this.submit.bind(this);
+  }
+
+  valid() {
+    return true;
+  }
+
+  getTarget() {
+    return this.form;
+  }
+
+  title() {
+    return "Add Experience";
+  }
+
+  submit(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    let $item = $(this.getTarget().form);
+    console.log($item);
+
+    let data = $item.serializeArray();
+    console.log("DATA");
+    console.log(data);
+
+    if (this.props.onAdd) {
+//      this.props.onAdd(data);
+    }
+
+    this.close();
+  }
+
+  renderInner() {
+    return (
+      <div className="add-experience-modal">
+        <Pyr.Form.Form
+          model="Experience"
+          object={{}}
+          url={"#"}
+          method={Pyr.Method.PUT}
+          id="experience-form"
+          ref={(node) => { this.form = node; }}
+          onSubmit={this.onSubmit}
+        >
+          <Pyr.Form.Group name="hello">
+            <Pyr.Form.TextField   />
+          </Pyr.Form.Group>
+        </Pyr.Form.Form>
+      </div>
+    );
+  }
+}
+
+class CVNewForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.initState({
+      experiences: []
+    });
+
+    this.onAddExperience = this.addExperience.bind(this);
+    this.onRemoveExperience = this.removeExperience.bind(this);
+  }
+
+  addExperience(exp_type) {
+    let experiences = this.state.experiences.slice()
+    exp_type = exp_type || EXP_TYPE_COMPANY;
+
+    let last = experiences[experiences.length - 1];
+  
+    let id = last ? last.id + 1 : 1;
+
+    experiences.push({
+      exp_type,
+      id
+    });
+
+    console.log(experiences);
+
+    this.setState({
+      experiences
+    });
+  }
+
+  removeExperience(itemId) {
+    console.log("REMOVE");
+    console.log(itemId);
+
+    let experiences = this.state.experiences.reduce( (arr, item) => {
+      if (item.id != itemId) {
+        arr.push(item);
+      }
+      return arr;
+    }, []);
+
+    this.setState({
+      experiences
+    });
+  }
+
+  render() {
+    let key = "head-form";
+    let url = Pyr.URL(HEADS_URL);
+
+    if (this.props.head) {
+      url = url.push(this.props.head.id);
+      key = key + "-" + this.props.head.id;
+    }
+
+    let allClass = ClassNames("cv cv-form flx-col section scroll");
+
+    let method = this.props.method || Pyr.Method.POST;
+    let candidate = null;
+    let job = null;
+    let locked= false;
+    let edit = true;
+
+    let object = {
+      works: this.state.works,
+      educations: this.state.educations,
+    };
+
+    return (
+      <div className={allClass} >
+        <Pyr.Form.Form
+          model="Head"
+          object={object}
+          url={url}
+          method={method}
+          id="head-form"
+          key={key}
+          ref={(node) => { this.form = node; }}
+          onPreSubmit={this.props.onPreSubmit}
+          onPostSubmit={this.props.onPostSubmit}
+          onSuccess={this.props.onSuccess}
+          onError={this.props.onError}
+        >
+          <CVHeader
+            candidate={candidate}
+            job={job}
+            locked={locked}
+            onSetItem={this.props.onSetItem}
+            edit={edit}
+          />
+          <WorkEditManyExp onAdd={this.onAddExperience} onRemove={this.onRemoveExperience} experiences={this.state.experiences}/>
+          <EducationEditManyExp onAdd={this.onAddExperience} onRemove={this.onRemoveExperience} experiences={this.state.experiences}/>
+          <Skills edit={edit} locked={locked}/>
+          <Uploads edit={edit} locked={locked}/>
+        </Pyr.Form.Form>
+      </div>
+    );
+  }
+}
+
 const CV = {
-  CV : CandidateCVItem 
+  CV : CandidateCVItem,
+  NewForm : CVNewForm,
+
+  Header : CVHeader,
+  Experience,
+  Education,
+  Skills,
+  Uploads,
+
+  AutoText,
+  EditExperience,
+  EditSkills,
+  EditUploads,
 };
 
 export default CV;

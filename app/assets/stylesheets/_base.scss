@@ -1414,3 +1414,23 @@ div.line {
     }
   }
 }
+
+.cv-form {
+  padding: 2rem;
+
+  &.section {
+    margin-bottom: 0;
+  }
+
+  .at {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .exp-form {
+    .remove {
+      margin-left: 0.5rem;
+    }
+  }
+
+}

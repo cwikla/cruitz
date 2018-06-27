@@ -6,6 +6,13 @@
 
 .page.heads {
 
+  .pyr-icon.placeholder {
+    margin-right: 0.5rem;
+    i.fa-link {
+      color: $border_color;
+    }
+  }
+
   .link-maker-modal {
     input[text] {
       size: 50;
