@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180615063803) do
+ActiveRecord::Schema.define(version: 20180628010650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -518,6 +518,7 @@ ActiveRecord::Schema.define(version: 20180615063803) do
     t.boolean "first_time", default: true, null: false
     t.integer "upload_id"
     t.boolean "is_recruiter", default: false
+    t.string "phone_number"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["digits_user_id", "deleted_at"], name: "index_users_on_digits_user_id_and_deleted_at", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

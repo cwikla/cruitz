@@ -24,18 +24,18 @@ class Head < ApplicationRecord
  
   validates :first_name, presence: true 
   validates :last_name, presence: true
-  validates :phone_number, presence: true,  format: { with: /(\d{3}-)?\d{3}-\d{4}/ }
-  #validates :email #hmmm, presence: true
+  validates :phone_number, presence: true,  valid_phone_number: true
 
-  validates :email, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/ }
+  validates :email, valid_email: true
 
-  before_save :pre_save
+  before_save :on_before_save
 
   def self.after_cached_candidate(candidate)
     h = Head.new(:id => candidate.head_id)
   end
 
-  def pre_save
+  def on_before_save
+    phone_number_on_before_save
     self.email = self.email.downcase if self.email
   end
 

@@ -41,12 +41,15 @@ class User < ApplicationRecord
   before_create :on_before_create
   after_create :on_after_create
 
+  before_save :on_before_save
+
   scope :is_recruiter, -> { where(is_recruiter: true) }
   scope :not_recruiter, -> { where(is_recruiter: false) }
 
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :email, uniqueness: true # FIXME, this isn't good
+  validates :email, uniqueness: true, valid_email: true
+  validates :phone_number, valid_phone_number: true, allow_nil: true # FIXME
 
   validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\z/, message: "must be at least 8 characters and include one number and one letter." }, unless: :password_is_nil?
 
@@ -214,6 +217,11 @@ class User < ApplicationRecord
   end
 
   private
+
+  def on_before_save
+    phone_number_on_before_save
+    self.email = self.email.strip.downcase if !self.email.blank?
+  end
 
   def on_before_create
     self.jti = SecureRandom.uuid

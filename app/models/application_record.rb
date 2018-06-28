@@ -53,4 +53,8 @@ class ApplicationRecord < ActiveRecord::Base
     super(stuff)
   end
 
+  def phone_number_on_before_save
+    self.phone_number = self.phone_number.strip.scan(/\d/).join if !self.phone_number.blank?
+  end
+
 end
