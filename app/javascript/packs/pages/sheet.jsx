@@ -12,7 +12,7 @@ import Pyr, {
 const ClassNames = Pyr.ClassNames;
 
 import Loader from './loader/loader';
-
+import Theme from './shared/theme';
 import Logo from './shared/logo';
 
 class FSWL extends Pyr.UI.FullScreen {
@@ -259,7 +259,7 @@ class Form extends Base {
 
     return (
       <div>
-        <Pyr.Form.SubmitButton className="mr-auto" target={this.onGetTarget} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
+        <Pyr.Form.SubmitButton className="ml-auto" target={this.onGetTarget} disabled={isDisabled}>Save</Pyr.Form.SubmitButton>
       </div>
     );
   }
@@ -285,12 +285,12 @@ class Form extends Base {
   render() {
     let AComponent = Pyr.UI.DIV; // this.props.notFullScreen ? Pyr.UI.DIV : FSWL;
 
-    let clz = ClassNames("sheet flx-col");
+    let clz = ClassNames("sheet");
     clz.push(this.name().toLowerCase());
 
     return (
       <AComponent className={clz}>
-        { this.renderTitle() }
+        <Theme.Title.Section>{ this.title() }</Theme.Title.Section>
         <div className="form-content section">
           { this.renderForm() }
         </div>

@@ -22,6 +22,8 @@ import {
   ME_URL,
 } from '../const';
 
+import Theme from '../shared/theme';
+
 const MIN_PWD_LENGTH = 8;
 
 class PasswordModal extends Pyr.UI.Modal {
@@ -151,9 +153,6 @@ class PasswordModal extends Pyr.UI.Modal {
             </ul>
           </div>
         </Pyr.Form.Form>
-        <div className="form-footer">
-          <Pyr.Form.SubmitButton target={this} disabled={disabled}>Save</Pyr.Form.SubmitButton>
-        </div>
       </div>
     );
   }
@@ -195,7 +194,6 @@ class MeForm extends Component {
     this.context.setNotice("Password Updated");
   }
 
-  
   render() {
     let key = "me-form";
     let url = Pyr.URL(ME_URL);
@@ -270,38 +268,17 @@ class MeForm extends Component {
   }
 }
 
-class EditSheet extends Sheet.Edit {
-
+class Logout extends Component {
   constructor(props) {
     super(props);
-    this.initState({
-      open: false
-    });
 
     this.onLogout = this.logout.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({
-      open: true
-    });
+    this.onToroot = this.toRoot.bind(this);
   }
 
   toRoot() {
     window.location = "/"; // HMMMm
   }
-
-  success(data, textStatus, jqXHR) {
-    let user = data.user;
-
-    this.setUser(user);
-
-    super.success(data, textStatus, jqXHR);
-
-    this.setNotice("Profile updated");
-    this.goBack();
-  }
-
 
   logout(e) {
     if (e) {
@@ -317,6 +294,45 @@ class EditSheet extends Sheet.Edit {
     });
   }
 
+  render() {
+    return (
+      <div className="sheet edit logout">
+        <Theme.Title.Section>Session</Theme.Title.Section>
+        <div className="me-info flx-row section">
+          <Pyr.UI.PrimaryButton onClick={this.onLogout} className="mt-auto mb-auto ml-auto mr-auto"><Pyr.UI.Icon name="sign-out-alt"/> Logout</Pyr.UI.PrimaryButton>
+        </div>
+      </div>
+    );
+  }
+}
+
+class EditSheet extends Sheet.Edit {
+
+  constructor(props) {
+    super(props);
+    this.initState({
+      open: false
+    });
+
+  }
+
+  componentDidMount() {
+    this.setState({
+      open: true
+    });
+  }
+
+  success(data, textStatus, jqXHR) {
+    let user = data.user;
+
+    this.setUser(user);
+
+    super.success(data, textStatus, jqXHR);
+
+    this.setNotice("Profile updated");
+    this.goBack();
+  }
+
   close(e) {
     this.setState({
       open: false
@@ -325,7 +341,7 @@ class EditSheet extends Sheet.Edit {
     super.close(e);
   }
 
-  render() {
+  unsued_render() {
     if (!this.state.open) {
       return (<Redirect to="/messages" />);
     }
@@ -337,38 +353,37 @@ class EditSheet extends Sheet.Edit {
     return this.me_form.form;
   }
 
-  renderForm() {
+  renderButton() {
     return (
-      <div className="me-index-header">
-        <MeForm 
-          me={this.user()} 
-          ref={(node) => this.me_form = node}
-          onSuccess={this.onSuccess}
-        />
+      <div className="form-footer flx-row">
+        <Pyr.Form.SubmitButton className="ml-auto" target={this.onGetTarget} >Save</Pyr.Form.SubmitButton>
       </div>
     );
   }
 
-  unused_renderTitle() {
+  renderForm() {
     return (
-      <h3 className="mr-auto title flx-row"><span className="mt-auto mb-auto mr-auto">{this.title()}</span> {this.renderButton()}</h3>
+        <div className="me-index-header">
+          <MeForm 
+            me={this.user()} 
+            ref={(node) => this.me_form = node}
+            onSuccess={this.onSuccess}
+          />
+        </div>
     );
-  }
-
-
-  title() {
-    return "My Profile";
   }
 
   render() {
     return (
       <div>
         { super.render() }
-        <div className="me-info flx-row">
-          <Pyr.UI.PrimaryButton onClick={this.onLogout} className="ml-auto"><Pyr.UI.Icon name="sign-out-alt"/> Logout</Pyr.UI.PrimaryButton>
-        </div>
+        <Logout />
       </div>
     );
+  }
+
+  title() {
+    return "My Profile";
   }
 }
 

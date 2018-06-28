@@ -282,12 +282,21 @@ class NewSheet extends Sheet.New {
   }
 
   renderButton() {
-    return null; //
+    return (
+      <div className="submit-button flx-row">
+        <Pyr.Form.SubmitButton className="ml-auto" target={this.onGetTarget} disabled={this.props.isLoading}>Submit Candidate</Pyr.Form.SubmitButton>
+      </div>
+    );
+  }
+
+  getTarget() {
+    this.newForm.form;
   }
 
   renderForm() { 
     return ( 
       <CV.NewForm
+        ref={e => this.newForm = e}
         company={this.user().company}
         onPreSubmit={this.onPreSubmit} 
         onPostSubmit={this.onPostSubmit} 

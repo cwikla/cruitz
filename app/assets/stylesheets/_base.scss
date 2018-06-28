@@ -412,12 +412,28 @@ label {
   border: 1px solid $border_color;
 }
 
-.sheet {
-  .title > h3 {
+.section-title {
+  h3 {
     color: $primary_color;
-    padding-bottom: 1rem;
   }
+
+  text-transform: uppercase;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  padding: 0;
 }
+
+.modal-title {
+  h3 {
+    color: $primary_color;
+  }
+
+  text-transform: none;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
 
 .section {
   border: 1px solid $border_color;

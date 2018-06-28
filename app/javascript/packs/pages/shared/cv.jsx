@@ -652,7 +652,7 @@ class CVNewForm extends Component {
       key = key + "-" + this.props.head.id;
     }
 
-    let allClass = ClassNames("cv cv-form flx-col section scroll");
+    let allClass = ClassNames("cv cv-form flx-col");
 
     let method = this.props.method || Pyr.Method.POST;
     let candidate = null;

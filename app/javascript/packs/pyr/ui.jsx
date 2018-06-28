@@ -840,6 +840,12 @@ class NoticeReceiver extends Component {
   }
 }
 
+const ModalTitle = (props) => (
+  <div {...Util.propsMergeClassName(props, "modal-title mr-auto")} >
+    <h3 className="">{props.children}</h3>
+  </div>
+);
+
 class Modal extends Component {
   constructor(...args) {
     super(...args);
@@ -903,14 +909,6 @@ class Modal extends Component {
     return "";
   }
 
-  renderTitle() {
-    return (
-      <div className="title mr-auto" >
-        <h3 className="">{this.title()}</h3>
-      </div>
-    );
-  }
-
   renderInner() {
   }
 
@@ -929,7 +927,7 @@ class Modal extends Component {
               onClick={this.noProp}
           >
             <div className="pyr-app-modal-header flx-row">
-              { this.renderTitle() }
+              <ModalTitle>{ this.title() }</ModalTitle>
               <IconButton name="times" className="times ml-auto" onClick={this.onClose}/>
             </div>
             <div className="pyr-app-modal-inner" >
