@@ -1233,6 +1233,11 @@ div.line {
   padding: 1rem;
   background-color: $alt_background_color;
 
+  .at {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
   .scroll {
     background-color: white;
   }

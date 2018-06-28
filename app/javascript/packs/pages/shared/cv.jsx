@@ -275,8 +275,8 @@ const EducationEditManyExp = (props) => (
 
 const ExperienceItem = (props) => (
   <div className="item">
-    <div className="title">{props.item.title} <div className="at">@</div> {props.item.place}</div>
-    <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
+    <div className="title flx-row">{props.item.title} <div className="at">@</div> {props.item.place}</div>
+    <div className="years flx-row">{props.item.year_start} <div className="at">-</div> {props.item.year_end || "Current"}</div>
     <div className="description">{props.item.description}</div>
   </div>
 );
@@ -359,8 +359,8 @@ const EduAdd = (props) => (
 
 const EducationItem = (props) => (
   <div className="item">
-    <div className="degree">{props.item.title} <div className="at">@</div> {props.item.place}</div>
-    <div className="years">{props.item.year_start} - {props.item.year_end || "Current"}</div>
+    <div className="degree flx-row">{props.item.title} <div className="at">@</div> {props.item.place}</div>
+    <div className="years flx-row">{props.item.year_start} <div className="at">-</div> {props.item.year_end || "Current"}</div>
   </div>
 );
 
