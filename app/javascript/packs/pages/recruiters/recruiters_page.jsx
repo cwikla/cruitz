@@ -64,7 +64,7 @@ class InviteForm extends Component {
     let method = Pyr.Method.POST;
 
     return (
-      <div className="form-parent section">
+      <div className="form-parent">
         <Pyr.Form.Form
           model="Invite"
           object={this.props.invite}

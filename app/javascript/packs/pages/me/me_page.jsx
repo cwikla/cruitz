@@ -118,7 +118,7 @@ class PasswordModal extends Pyr.UI.Modal {
           onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
-          className={Pyr.Util.ClassNames("form-parent section").push(!same ? "unmatches" : "")}
+          className={Pyr.Util.ClassNames("form-parent").push(!same ? "unmatches" : "")}
         >
           <div className="flx-row">
             <Pyr.Grid.Col className="">
@@ -205,7 +205,7 @@ class MeForm extends Component {
      let logo = this.props.me.logo;
 
     return (
-      <div className="form-parent section">
+      <div className="form-parent">
         <PasswordModal
           ref={node => this.password = node}
           url={url}
@@ -228,45 +228,42 @@ class MeForm extends Component {
           onError={this.props.onError}
         >
 
-         <Pyr.Grid.Row>
-           <Pyr.Grid.Col className="col-2">
-             <Pyr.Form.Group name="logo">
-               <Pyr.Form.FileSelector imageOnly uploads={logo}/>
-             </Pyr.Form.Group>
-           </Pyr.Grid.Col>
+         <div className="flx-row">
+           <Pyr.Form.Group name="logo" className="flx-1 flx-col">
+             <Pyr.Form.FileSelector imageOnly uploads={logo} className="flx-col flx-1"/>
+           </Pyr.Form.Group>
  
-           <Pyr.Grid.Col>
-             <div className="flx-row">
-               <Pyr.Grid.Col>
-                 <Pyr.Form.Group name="first_name">
-                   <Pyr.Form.Label>First Name</Pyr.Form.Label>
-                   <Pyr.Form.TextField placeholder= "First Name"/>
-                 </Pyr.Form.Group>
-               </Pyr.Grid.Col>
+           <div className="flx-col flx-3">
+             <div className="flx-row flx-1">
+               <Pyr.Form.Group name="first_name" className="flx-1">
+                 <Pyr.Form.Label>First Name</Pyr.Form.Label>
+                 <Pyr.Form.TextField placeholder= "First Name" autoFocus/>
+               </Pyr.Form.Group>
  
-               <Pyr.Grid.Col>
-                 <Pyr.Form.Group name="last_name">
-                   <Pyr.Form.Label>Last Name</Pyr.Form.Label>
-                   <Pyr.Form.TextField placeholder= "Last Name"/>
-                 </Pyr.Form.Group>
-                 </Pyr.Grid.Col>
+               <Pyr.Form.Group name="last_name" className="flx-1">
+                 <Pyr.Form.Label>Last Name</Pyr.Form.Label>
+                 <Pyr.Form.TextField placeholder= "Last Name"/>
+               </Pyr.Form.Group>
              </div>
  
-             <Pyr.Grid.Col>
-               <Pyr.Form.Group name="email">
+             <div className="flx-row flx-1">
+               <Pyr.Form.Group name="email" className="flx-1">
                  <Pyr.Form.Label>Email</Pyr.Form.Label>
                  <Pyr.Form.TextField placeholder= "Email"/>
                </Pyr.Form.Group>
-             </Pyr.Grid.Col>
- 
-             <Pyr.Grid.Col>
-               <Pyr.Form.Group name="password">
-                 <Pyr.Form.Label>Password</Pyr.Form.Label>
-                 <Pyr.UI.PrimaryButton onClick={this.onShowPassword}>Change Password</Pyr.UI.PrimaryButton>
+
+               <Pyr.Form.Group name="phone_number" className="flx-1">
+                 <Pyr.Form.Label>Phone Number</Pyr.Form.Label>
+                 <Pyr.Form.TextField placeholder= "415-555-1212"/>
                </Pyr.Form.Group>
-             </Pyr.Grid.Col>
-            </Pyr.Grid.Col>
-          </Pyr.Grid.Row>
+             </div>
+ 
+             <Pyr.Form.Group name="password">
+               <Pyr.Form.Label>Password</Pyr.Form.Label>
+               <Pyr.UI.PrimaryButton onClick={this.onShowPassword}>Change Password</Pyr.UI.PrimaryButton>
+             </Pyr.Form.Group>
+            </div>
+          </div>
         </Pyr.Form.Form>
       </div>
     );
@@ -367,8 +364,8 @@ class EditSheet extends Sheet.Edit {
     return (
       <div>
         { super.render() }
-        <div className="me-info p-1 d-flex flx-end">
-          <Pyr.UI.PrimaryButton onClick={this.onLogout}><Pyr.UI.Icon name="sign-out-alt"/> Logout</Pyr.UI.PrimaryButton>
+        <div className="me-info flx-row">
+          <Pyr.UI.PrimaryButton onClick={this.onLogout} className="ml-auto"><Pyr.UI.Icon name="sign-out-alt"/> Logout</Pyr.UI.PrimaryButton>
         </div>
       </div>
     );

@@ -5,6 +5,7 @@ class UserSerializer < BaseSerializer
     :first_name,
     :last_name,
     :full_name,
+    :phone_number,
     #:created_at,
     #:updated_at,
     :is_recruiter,

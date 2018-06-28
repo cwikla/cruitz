@@ -291,10 +291,10 @@ class Form extends Base {
     return (
       <AComponent className={clz}>
         { this.renderTitle() }
-        <div className="form-content mb-auto flx-col flx-1">
+        <div className="form-content section">
           { this.renderForm() }
-          { this.renderButton() }
         </div>
+        { this.renderButton() }
       </AComponent>
     );
   }
