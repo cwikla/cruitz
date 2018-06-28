@@ -1305,11 +1305,6 @@ div.line {
     }
 
 
-    .form-group {
-      padding: 0;
-      margin: 0;
-    }
-
     .form-control {
       padding-left: 0;
     }
@@ -1327,11 +1322,11 @@ div.line {
 
 
 
-    div.phone-number {
+    #div.phone-number {
       margin-right: 1rem;
     }
 
-    div.email {
+    #div.email {
       margin-left: 1rem;
     }
 
@@ -1444,4 +1439,3 @@ div.line {
   }
 
 }
-

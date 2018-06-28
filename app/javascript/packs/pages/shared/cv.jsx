@@ -37,7 +37,7 @@ const Lock = (props) => (
 
 class AutoText extends Component {
   render() {
-    let rest = Pyr.Util.propsRemove(this.props, ["edit", "name", "children"]);
+    let rest = Pyr.Util.propsRemove(this.props, ["edit", "name", "children", "component"]);
     if (!this.props.edit) {
       return (
         <span className={this.props.className}>{this.props.children}</span>
@@ -47,9 +47,11 @@ class AutoText extends Component {
     //console.log("PROPS");
     //console.log(this.props);
 
+    let TextComponent = this.props.component || Pyr.Form.TextField;
+
     return (
       <Pyr.Form.Group name={this.props.name} >
-        <Pyr.Form.TextField value={this.props.children} {...rest}/>
+        <TextComponent value={this.props.children} {...rest}/>
       </Pyr.Form.Group>
     );
   }
@@ -58,12 +60,24 @@ class AutoText extends Component {
 const CVHeader = (props) => (
   <div className={ClassNames("cv-header flx-col flx-noshrink").push(props.locked ? "locked" : "")} >
     <div className="flx-row flx-1">
-      <div className={ClassNames("name first-name").push(props.locked ? "locked" : "").push(props.edit ? "flx-1" : "")}><AutoText autoFocus name="first_name" edit={props.edit} placeholder="First Name">{props.firstName}</AutoText></div>
-      <div className={ClassNames("name last-name mr-auto flx-1").push(props.locked ? "locked" : "")}><AutoText name="last_name" edit={props.edit} placeholder="Last Name">{props.lastName}</AutoText></div>
+
+      <div className={ClassNames("name first-name").push(props.locked ? "locked" : "").push(props.edit ? "flx-1" : "")}>
+        <AutoText autoFocus name="first_name" edit={props.edit} placeholder="First Name">{props.firstName}</AutoText>
+      </div>
+
+      <div className={ClassNames("name last-name mr-auto flx-1").push(props.locked ? "locked" : "")}>
+        <AutoText name="last_name" edit={props.edit} placeholder="Last Name">{props.lastName}</AutoText>
+      </div>
     </div>
+
     <div className="flx-row flx-1 info">
-      <div className={ClassNames("phone-number flx-1").push(props.locked ? "locked" : "")}><AutoText name="phone_number" edit={props.edit} placeholder="555-555-1212" onValidate={Pyr.Util.isValidPhoneNumber}>{props.phoneNumber}</AutoText></div>
-      <div className={ClassNames("email flx-1").push(props.locked ? "locked" : "")}><AutoText name="email" edit={props.edit} placeholder="email@company.com" onValidate={Pyr.Util.isValidEmail}>{props.email}</AutoText></div>
+      <div className={ClassNames("email flx-1").push(props.locked ? "locked" : "")}>
+        <AutoText name="email" edit={props.edit} component={Pyr.Form.EmailField}>{props.email}</AutoText>
+      </div>
+
+      <div className={ClassNames("phone-number flx-1").push(props.locked ? "locked" : "")}>
+        <AutoText name="phone_number" edit={props.edit} component={Pyr.Form.PhoneNumberField}>{props.phoneNumber}</AutoText>
+      </div>
     </div>
     <div className="flx-row-stretch info social-links">
       <WebLink.Links links={props.links} locked={props.locked} edit={props.edit}/>

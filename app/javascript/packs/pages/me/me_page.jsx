@@ -249,12 +249,12 @@ class MeForm extends Component {
              <div className="flx-row flx-1">
                <Pyr.Form.Group name="email" className="flx-1">
                  <Pyr.Form.Label>Email</Pyr.Form.Label>
-                 <Pyr.Form.TextField placeholder= "Email"/>
+                 <Pyr.Form.EmailField />
                </Pyr.Form.Group>
 
                <Pyr.Form.Group name="phone_number" className="flx-1">
                  <Pyr.Form.Label>Phone Number</Pyr.Form.Label>
-                 <Pyr.Form.TextField placeholder= "415-555-1212"/>
+                 <Pyr.Form.PhoneNumberField />
                </Pyr.Form.Group>
              </div>
  

@@ -6,8 +6,10 @@
 }
 
 .form-group {
-  margin-bottom: 0;
+  padding: 0;
+  margin: 0.5rem;
 }
+
 
 /* this fixes the fucked up mdb border */
 
@@ -357,7 +359,6 @@ $pfs_default_size: 5;
   padding-top: 1rem;
   padding-bottom: 1rem;
   padding-right: 0.5rem;
-  padding-left: 1.5rem;
 
   .input-range__label--max {
     .input-range__label-container {

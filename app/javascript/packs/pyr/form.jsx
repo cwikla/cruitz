@@ -574,7 +574,7 @@ class TextField extends Child {
     let val = e.target.value || "";
     let good = this.valid(val);
 
-    let keepGoing = good || !this.props.validOnly;
+    let keepGoing = good;
 
     if (!keepGoing) {
       if (e) {
@@ -691,6 +691,14 @@ class MoneyField extends TextField {
     return "money-text";
   }
 }
+
+const EmailField = (props) => (
+  <TextField placeholder="email@domain.com" onValidate={Util.isValidEmail} {...props} />
+);
+
+const PhoneNumberField = (props) => (
+  <TextField placeholder = "415-555-1212" onValidate={Util.isValidPhoneNumber} {...props } />
+);
 
 class Select extends Child {
   render() {
@@ -1599,6 +1607,8 @@ const PyrForm = {
   Range,
   Many,
   ObjectWrapper,
+  EmailField,
+  PhoneNumberField,
 };
 
 export { 
