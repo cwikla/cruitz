@@ -269,7 +269,7 @@ class Many extends BaseComponent {
         { 
           items.map((item, pos) => {
             let mname = this.context.model + "[" + this.props.model + "][" + item.id + "]";
-            console.log(mname);
+            //console.log(mname);
             return (
               <ObjectWrapper object={item} model={mname} key={mname + "-" + item.id}>
                 { 
