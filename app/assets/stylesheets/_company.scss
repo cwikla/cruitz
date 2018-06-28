@@ -1,0 +1,16 @@
+
+.page.company {
+
+    .pyr-file-selector {
+      .thing {
+        img.pyr-image-file {
+          object-fit: contain;
+          max-height: 10rem;
+          max-width: unset;
+          height: auto;
+          width: auto;
+        }
+      }
+    }
+}
+
