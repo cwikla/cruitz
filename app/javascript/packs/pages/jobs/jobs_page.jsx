@@ -151,7 +151,7 @@ class JobForm extends Component {
 
           <Pyr.Form.Group name="title">
             <Pyr.Form.Label>Title</Pyr.Form.Label>
-            <Pyr.Form.TextField placeholder= "Enter job title"/>
+            <Pyr.Form.TextField placeholder="Enter job title" autoFocus/>
           </Pyr.Form.Group>
 
           <Pyr.Form.Group name="uploads">

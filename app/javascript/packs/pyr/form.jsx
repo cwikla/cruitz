@@ -26,6 +26,7 @@ class Form extends Network.Component {
     model: PropTypes.string,
     errors: PropTypes.object,
     object: PropTypes.object,
+    setValid: PropTypes.func,
   };
 
   constructor(props) {
@@ -41,6 +42,7 @@ class Form extends Network.Component {
     });
 
     this.onSubmit = this.submitHandler.bind(this);
+    this.onSetValid = this.setValid.bind(this);
   }
 
   isValid() {
@@ -58,6 +60,7 @@ class Form extends Network.Component {
       model: this.props.model,
       object: this.props.object,
       errors: this.state.errors,
+      setValid: this.onSetValid,
     }
   }
 
@@ -475,11 +478,14 @@ class TextField extends Child {
   constructor(props) {
     super(props);
     this.initState({
-      value: ""
+      value: "",
+      valid: true,
     });
 
-    this.onTextChange = this.textChange.bind(this);
+    this.onChange = this.change.bind(this);
     this.onKeyUp = this.keyUp.bind(this);
+    this.onBlur = this.blur.bind(this);
+    this.onFocus = this.focus.bind(this);
   }
 
   value() {
@@ -489,7 +495,8 @@ class TextField extends Child {
   componentDidMount() {
     let value = this.props.value || this.modelValue() || "";
     this.setState({
-      value
+      value,
+      valid: this.valid(value),
     });
   }
 
@@ -497,7 +504,8 @@ class TextField extends Child {
     if (nextProps.value) {
       //console.log("Setting value to: " + nextProps.value);
       this.setState({
-        value: nextProps.value
+        value: nextProps.value,
+        valid: true,
       });
     }
   }
@@ -521,31 +529,84 @@ class TextField extends Child {
     }
   }
 
-  setText(value) {
+  setText(value, valid) {
     this.setState({
-      value
+      value,  
+      valid
     });
   }
 
-  textChange(e) {
-    if ((e.keyCode == 13) && (this.props.onSubmit)) {
+  blur(e) {
+    this.setState({
+      valid: this.valid(e.target.value)
+    });
+
+    if (this.props.onBlur) {
+      this.props.onBlur(e);
+    }
+  }
+
+  focus(e) {
+    if (this.props.onFocus) {
+      this.props.onFocus(e);
+    }
+  }
+
+  valid(str) {
+    if (str) {
+      str = $.trim(str);
+    }
+
+    let isEmpty = !str || (str.length == 0);
+
+    if (isEmpty) {
+      return !this.props.nonEmpty;
+    }
+
+    if (this.props.onValidate) {
+      return this.props.onValidate(str);
+    }
+
+    return true;
+  }
+
+  change(e) {
+    let val = e.target.value || "";
+    let good = this.valid(val);
+
+    let keepGoing = good || !this.props.validOnly;
+
+    if (!keepGoing) {
+      if (e) {
+        e.preventDefault();
+      }
+      return;
+    }
+
+    if ((e.keyCode == 13) && this.props.onSubmit) {
       //console.log(e);
       this.submit(e);
       return;
     }
 
-    let val = e.target.value || "";
-
-    this.setText(val);
+    this.setText(val, good);
     if (this.props.onChange) {
       this.props.onChange(e);
     }
   }
 
+  inputType() {
+    return "text";
+  }
+
+  subClassName() {
+    return "";
+  }
+
   render() {
     let myProps = { 
       name: this.name(), 
-      type: "text", 
+      type: this.inputType(),
       id: this.htmlID() ,
       "aria-describedby": this.htmlID(),
     };
@@ -553,35 +614,52 @@ class TextField extends Child {
       myProps.value = this.state.value;
     }
 
-    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged", "noSubmit"]);
+    let rest = this.cleanProps(this.props, 
+      ["value", 
+        "onChange", 
+        "onKeyUp", 
+        "onFocus", 
+        "onBlur", 
+        "onValidate",
+        "autoClear", 
+        "unmanaged", 
+        "nonEmpty",
+        "noSubmit"]
+    );
+
+    let hasStuff = this.state.value && this.state.value.length > 0;
 
     return(
       <input type="text" 
         autoComplete="off"
         {...myProps} 
-        {...Util.propsMergeClassName(rest, "form-control")} 
-        onChange={this.onTextChange} 
+        {...Util.propsMergeClassName(rest, ["form-control", this.subClassName(), this.valid(myProps.value) ? (hasStuff ? "valid" : "") : "invalid"])} 
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
+        onChange={this.onChange} 
         onKeyUp={this.onKeyUp}
       />
     );
   }
 }
 
-class MoneyField extends TextField {
-  constructor(props) {
-    super(props);
-
-    this.onMoneyBlur = this.moneyBlur.bind(this);
-    this.onMoneyFocus = this.moneyFocus.bind(this);
-    this.onMoneyChange = this.moneyChange.bind(this);
+class PasswordField extends TextField {
+  inputType() {
+    return "password";
   }
 
+  subClassName() {
+    return "password-text";
+  }
+}
+
+
+class MoneyField extends TextField {
   ripOut(v) {
     if (!v || v.length == 0) {
       return v;
     }
 
-    console.log(v.constructor);
     return v.replace(/[,\.]/, '');
   }
 
@@ -590,76 +668,27 @@ class MoneyField extends TextField {
       return v;
     }
 
-    console.log(v.constructor);
     return ripOut(v).toLocaleString('en-US'); // FIXME
   }
 
-  moneyFocus(e) {
+  focus(e) {
     this.setText(this.ripOut(this.state.value));
+    super.focus(e);
   }
 
-  moneyBlur(e) {
+  blur(e) {
     this.setText(this.ripIn(this.state.value));
+    super.blur(e);
   }
 
-  moneyChange(e) {
-    if ((e.keyCode == 13) && (this.props.onSubmit)) {
-      //console.log(e);
-      this.submit(e);
-      return;
-    }
-
-    e.preventDefault();
-
+  valid(str) {
     const re = /^[0-9]+$/;
   
-    if ((e.target.value == '') || re.test(e.target.value)) {
-      console.log("TEXT PASSED");
-      console.log(e.target.value);
-      this.setText(e.target.value);
-    }
+    return super.valid(str) && (str && re.test(str));
   }
 
-  render() {
-    let myProps = {
-      name: this.name(),
-      type: "text",
-      id: this.htmlID() ,
-      "aria-describedby": this.htmlID(),
-    };
-    if (!this.props.unmanaged) {
-      myProps.value = this.state.value;
-    }
-
-    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
-
-    return(
-      <input type="text" {...myProps} {...Util.propsMergeClassName(rest, "money-text form-control")} 
-        onKeyUp={this.onKeyUp}
-        onChange={this.onMoneyChange} 
-      />
-    );
-  }
-
-}
-
-class PasswordField extends TextField {
-  render() {
-    let myProps = { 
-      name: this.name(), 
-      type: "password", 
-      id: this.htmlID() ,
-      "aria-describedby": this.htmlID(),
-    };
-    if (!this.props.unmanaged) {
-      myProps.value = this.state.value;
-    }
-
-    let rest = this.cleanProps(this.props, ["value", "onChange", "onKeyUp", "autoClear", "unmanaged"]);
-
-    return(
-      <input {...myProps} {...Util.propsMergeClassName(rest, "form-control")} onChange={this.onTextChange} onKeyUp={this.onKeyUp}/>
-    );
+  subClassName() {
+    return "money-text";
   }
 }
 

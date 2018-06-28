@@ -7,6 +7,7 @@ class ApplicationController < Pyr::Base::ApplicationController
   before_action :set_app_name
 
   def render(*args, **kwargs)
+    # https://github.com/rails/sprockets/issues/242
     super(*args, **kwargs, current_user: current_user)
   end
 

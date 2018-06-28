@@ -547,6 +547,25 @@ function range(start, stop, step=1) {
   return Array(stop - start).fill(start).map((x, y) => x + y * step);
 }
 
+function isValidEmail(s) {
+  s = s || "";
+  s = s.trim();
+
+  const re = /^[^@\s]+@([^@\s]+\.)+[^@\s]+$/; // No \A\z in javascript
+
+  return re.test(s || "");
+
+}
+
+function isValidPhoneNumber(s) {
+  s = s || "";
+  s = s.trim();
+
+  const re = /^(1\-?)?(\d{3}\-?)?(\d{3})\-?\d{4}$/;
+
+  return re.test(s || "");
+}
+
 const Util = {
   URL : PURL,
   ClassNames,
@@ -570,7 +589,9 @@ const Util = {
   fancyParagraph,
   matchAll,
   uuid,
-  range
+  range,
+  isValidEmail,
+  isValidPhoneNumber
 };
 
 export default Util;

@@ -183,9 +183,9 @@ class LinkMakerModal extends Pyr.UI.Modal {
     return (
       <Pyr.PassThru>
         <Pyr.Form.Group name="link">
-          <div className="flx-row"><LinkIcon ltype={this.state.item.ltype || 0} /> <Pyr.Form.TextField disabled={!this.props.open} value={this.state.item.url} noSubmit onChange={this.onChange} onSubmit={this.onSuccess}/></div>
+          <div className="flx-row"><LinkIcon ltype={this.state.item.ltype || 0} /> <Pyr.Form.TextField autoFocus disabled={!this.props.open} value={this.state.item.url} noSubmit onChange={this.onChange} onSubmit={this.onSuccess}/></div>
         </Pyr.Form.Group>
-        <Pyr.UI.PrimaryButton onClick={this.onSuccess}>{ this.state.item.url ? "Save" : "Add"}</Pyr.UI.PrimaryButton>
+        <Pyr.UI.PrimaryButton onClick={this.onSuccess}>"Save"</Pyr.UI.PrimaryButton>
       </Pyr.PassThru>
     );
   }

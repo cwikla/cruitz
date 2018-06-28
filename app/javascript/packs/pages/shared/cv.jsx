@@ -40,7 +40,7 @@ class AutoText extends Component {
     let rest = Pyr.Util.propsRemove(this.props, ["edit", "name", "children"]);
     if (!this.props.edit) {
       return (
-        <span {...rest}>{this.props.children}</span>
+        <span className={this.props.className}>{this.props.children}</span>
       );
     }
 
@@ -58,11 +58,12 @@ class AutoText extends Component {
 const CVHeader = (props) => (
   <div className={ClassNames("cv-header flx-col flx-noshrink").push(props.locked ? "locked" : "")} >
     <div className="flx-row flx-1">
-      <div className={ClassNames("name mr-auto flx-1").push(props.locked ? "locked" : "")}><AutoText name="full_name" edit={props.edit} placeholder="Client Name">{props.fullName}</AutoText></div>
+      <div className={ClassNames("name first-name").push(props.locked ? "locked" : "").push(props.edit ? "flx-1" : "")}><AutoText autoFocus name="first_name" edit={props.edit} placeholder="First Name">{props.firstName}</AutoText></div>
+      <div className={ClassNames("name last-name mr-auto flx-1").push(props.locked ? "locked" : "")}><AutoText name="last_name" edit={props.edit} placeholder="Last Name">{props.lastName}</AutoText></div>
     </div>
     <div className="flx-row flx-1 info">
-      <div className={ClassNames("phone-number flx-1").push(props.locked ? "locked" : "")}><AutoText name="phone_number" edit={props.edit} placeholder="555-555-1212">{props.phoneNumber}</AutoText></div>
-      <div className={ClassNames("email flx-1").push(props.locked ? "locked" : "")}><AutoText name="email" edit={props.edit} placeholder="email@company.com">{props.email}</AutoText></div>
+      <div className={ClassNames("phone-number flx-1").push(props.locked ? "locked" : "")}><AutoText name="phone_number" edit={props.edit} placeholder="555-555-1212" onValidate={Pyr.Util.isValidPhoneNumber}>{props.phoneNumber}</AutoText></div>
+      <div className={ClassNames("email flx-1").push(props.locked ? "locked" : "")}><AutoText name="email" edit={props.edit} placeholder="email@company.com" onValidate={Pyr.Util.isValidEmail}>{props.email}</AutoText></div>
     </div>
     <div className="flx-row-stretch info social-links">
       <WebLink.Links links={props.links} locked={props.locked} edit={props.edit}/>
@@ -85,6 +86,9 @@ class CandidateHeader extends Component {
     let candidate = this.props.candidate;
     let job = this.props.job;
 
+    let firstName = candidate.first_name;
+    let lastName = candidate.last_name;
+
     let fullName = candidate.first_name + " " + candidate.last_name;
     let phoneNumber = candidate.phone_number || "No Phone";
     let email = candidate.email || "No Email";
@@ -105,6 +109,8 @@ class CandidateHeader extends Component {
       <CVHeader
         locked = {this.isLocked()}
         fullName={fullName}
+        firstName={firstName}
+        lastName={lastName}
         phoneNumber={phoneNumber}
         email={email}
         edit={edit}
@@ -661,7 +667,6 @@ class CVNewForm extends Component {
           onError={this.props.onError}
         >
           <CVHeader
-            candidate={candidate}
             job={job}
             locked={locked}
             onSetItem={this.props.onSetItem}
