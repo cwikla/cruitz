@@ -181,6 +181,9 @@ const YearSelect = (props) => (
 const EditExperience = (props) => (
   <div className={ClassNames("edit-experience").push(props.className)}>
     <div className="flx-row">
+      <Pyr.Form.Group name="exp_type">
+        <Pyr.Form.Hidden value={props.expType} />
+      </Pyr.Form.Group>
       <Pyr.Form.Group name="title" className="flx-1">
         <Pyr.Form.TextField className="" placeholder="Title"/>
       </Pyr.Form.Group>
@@ -268,8 +271,8 @@ class EditManyExp extends Component {
           exps.map((item, pos) => {
             let kid = item.id || pos;
             return (
-              <Pyr.Form.ObjectWrapper object={item} model={"Experiences["+kid+"]"} key={key + "-" + ts + "-eme-" + kid}>
-                <div className="flx-row"><EditExperience className="flx-1"/> <Pyr.UI.IconButton name="times" className="mb-auto remove" onClick={e => this.onRemove(item)}/></div>
+              <Pyr.Form.ObjectWrapper object={item} model={"Head[experiences]["+kid+"]"} key={key + "-" + ts + "-eme-" + kid}>
+                <div className="flx-row"><EditExperience className="flx-1" expType={type}/> <Pyr.UI.IconButton name="times" className="mb-auto remove" onClick={e => this.onRemove(item)}/></div>
               </Pyr.Form.ObjectWrapper>
             );
           })

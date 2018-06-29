@@ -9,4 +9,9 @@ class HeadsController < ApplicationController
     render json: the_head
   end
 
+  def create
+    puts "LOOKIE I WANNA CREATE SOMETHING"
+    puts params
+  end
+
 end
