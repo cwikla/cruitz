@@ -27,6 +27,8 @@ class Form extends Network.Component {
     errors: PropTypes.object,
     object: PropTypes.object,
     setValid: PropTypes.func,
+    isValid: PropTypes.bool,
+    isLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -49,10 +51,17 @@ class Form extends Network.Component {
     return this.state.valid;
   }
 
+  isLoading() {
+    return this.state.isLoading;
+  }
+
   setValid(valid) {
     this.setState({
       valid
     });
+    if (this.props.onSetValid) {
+      this.props.onSetValid(valid);
+    }
   }
 
   getChildContext() {
@@ -61,6 +70,8 @@ class Form extends Network.Component {
       object: this.props.object,
       errors: this.state.errors,
       setValid: this.onSetValid,
+      isValid: this.isValid(),
+      isLoading: this.isLoading(),
     }
   }
 
@@ -431,6 +442,7 @@ class SubmitButton extends BaseComponent {
     }
 
     if (this.props.disabled) {
+      console.log("DISABLED?");
       return;
     }
 
@@ -438,6 +450,9 @@ class SubmitButton extends BaseComponent {
     //console.log(this.props);
 
     let t = this.target();
+
+    console.log("TARGET");
+    console.log(t);
 
 
     if (t) {
@@ -452,11 +467,13 @@ class SubmitButton extends BaseComponent {
   render() {
     let rest = Util.propsRemove(this.props, ["target"]);
 
+    let disabled = this.props.disabled;
+
     return (
       <a href="#" 
         ref={(node) => this.button = node}
         onClick={this.onClick}
-        {...Util.propsMergeClassName(rest, Util.ClassNames("btn btn-primary").push(this.props.disabled ? "disabled" : ""))}
+        {...Util.propsMergeClassName(rest, Util.ClassNames("btn btn-primary").push(disabled ? "disabled" : ""))}
       >{this.props.children}</a>
     );
   }

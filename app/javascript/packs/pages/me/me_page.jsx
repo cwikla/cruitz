@@ -153,6 +153,10 @@ class PasswordModal extends Pyr.UI.Modal {
             </ul>
           </div>
         </Pyr.Form.Form>
+        <div className="form-footer">
+          <Pyr.Form.SubmitButton target={this} disabled={disabled}>Save</Pyr.Form.SubmitButton>
+        </div>
+
       </div>
     );
   }

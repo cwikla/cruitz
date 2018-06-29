@@ -290,7 +290,7 @@ class NewSheet extends Sheet.New {
   }
 
   getTarget() {
-    this.newForm.form;
+    return this.newForm.form; // ARRRG
   }
 
   renderForm() { 

@@ -235,14 +235,29 @@ class Form extends Base {
   constructor(props) {
     super(props);
 
+    this.initState({
+      isValid: true
+    });
+
     this.onSuccess = this.success.bind(this);
     this.onGetTarget = this.getTarget.bind(this);
+    this.onSetValid = this.setValid.bind(this);
 
     this.form = null;
   }
 
   name() {
     return "Form";
+  }
+
+  setValid(isValid) {
+    this.setState({
+      isValid
+    });
+  }
+
+  isValid() {
+    return this.state.isValid;
   }
 
   getTarget() {
@@ -255,7 +270,14 @@ class Form extends Base {
   }
 
   renderSaveButton() {
-    let isDisabled = this.props.isLoading;
+    let isDisabled = false;
+
+    if (this.props.isLoading) {
+      isDisabled = true;
+    }
+    else {
+      isDisabled = this.isValid();
+    }
 
     return (
       <div>
