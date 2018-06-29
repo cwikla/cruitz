@@ -220,7 +220,7 @@ class Base extends Component {
 
 function sheetComponent(action) {
   action = action || "Index";
-  let nameAction = Pyr.Util.capFirstLetter(action) + "Sheet";
+  let nameAction = Pyr.Util.capitalize(action) + "Sheet";
   return nameAction;
 }
 

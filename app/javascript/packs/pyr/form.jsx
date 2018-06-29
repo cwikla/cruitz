@@ -29,6 +29,8 @@ class Form extends Network.Component {
     setValid: PropTypes.func,
     isValid: PropTypes.bool,
     isLoading: PropTypes.bool,
+    clearError: PropTypes.func,
+    resetErrors: PropTypes.func,
   };
 
   constructor(props) {
@@ -45,6 +47,31 @@ class Form extends Network.Component {
 
     this.onSubmit = this.submitHandler.bind(this);
     this.onSetValid = this.setValid.bind(this);
+
+    this.onClearError = this.clearError.bind(this);
+    this.onResetErrors = this.resetErrors.bind(this);
+  }
+
+  clearError(attr) {
+    if (!this.state.errors || !this.state.errors[attr]) {
+      return;
+    }
+
+    let errors = Object.assign({}, this.state.errors);
+    delete errors[attr];
+
+    console.log("CLEARING " + attr);
+    console.log(errors);
+
+    this.setState({
+      errors
+    });
+  }
+
+  resetErrors() {
+    this.setState({
+      errors: null,
+    });
   }
 
   isValid() {
@@ -72,6 +99,8 @@ class Form extends Network.Component {
       setValid: this.onSetValid,
       isValid: this.isValid(),
       isLoading: this.isLoading(),
+      clearError: this.onClearError,
+      resetErrors: this.onResetErrors,
     }
   }
 
@@ -91,6 +120,8 @@ class Form extends Network.Component {
   }
 
   postSubmit() {
+    this.reset(); // reset errors
+
     this.setIsLoading(false);
     if (this.props.onPostSubmit) {
       this.props.onPostSubmit();
@@ -318,9 +349,7 @@ class Group extends BaseComponent {
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextContext.errors) {
       let result = nextContext.errors[this.props.name];
-      if (result) {
-        this.setState({errorString: result[0]}); // HMMM
-      }
+      this.setState({errorString: (result ? result[0] : null)}); 
     }
   }
 
@@ -331,13 +360,21 @@ class Group extends BaseComponent {
     };
   }
 
+  name() {
+    return this.props.name;
+  }
+
+  displayName() {
+    return this.props.displayName || Util.displayName(this.name());
+  }
+
   error() {
     if (!this.state.errorString) {
       return null;
     }
   
     return (
-      <div className="errorString"><label className="error">{this.props.name} {this.state.errorString}</label></div>
+      <label className="error">{this.displayName()} {this.state.errorString}</label>
     );
   }
 
@@ -362,6 +399,16 @@ class Child extends Network.Component {
     model: PropTypes.string,
     errorString: PropTypes.string,
     object: PropTypes.object,
+    clearError: PropTypes.func,
+    resetErrors: PropTypes.func,
+  }
+
+  clearError() {
+    this.context.clearError(this.context.name);
+  }
+
+  resetErrors() {
+    this.context.resetErrors();
   }
 
   cleanProps(props, arr) {
@@ -564,6 +611,7 @@ class TextField extends Child {
   }
 
   focus(e) {
+    this.clearError();
     if (this.props.onFocus) {
       this.props.onFocus(e);
     }
@@ -588,19 +636,15 @@ class TextField extends Child {
   }
 
   change(e) {
+
     let val = e.target.value || "";
     let good = this.valid(val);
 
-    let keepGoing = good;
-
-    if (!keepGoing) {
+    if (good && (e.keyCode == 13) && this.props.onSubmit) {
       if (e) {
         e.preventDefault();
       }
-      return;
-    }
 
-    if ((e.keyCode == 13) && this.props.onSubmit) {
       //console.log(e);
       this.submit(e);
       return;

@@ -31,7 +31,9 @@ class CandidatesController < ApplicationController
 
     @candidate = Candidate.submit(my_head, job, commission, body: body, attachments: file_ids)
 
-    return render json: @candidate, current_user: current_user
+    return render json: @candidate, current_user: current_user if @candidate.valid?
+
+    render_create_error json: @candidate
   end
 
   def destroy

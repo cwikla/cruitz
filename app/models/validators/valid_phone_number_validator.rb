@@ -3,7 +3,7 @@ class ValidPhoneNumberValidator < ActiveModel::EachValidator
     value = value.strip.scan(/\d/).join if !value.blank?
 
     unless value =~ /\A(1\-?)?(\d{3}\-?)?(\d{3})\-?\d{4}\z/
-      record.errors[attribute] << (options[:message] || "is not a valid phone number")
+      record.errors[attribute] << (options[:message] || "is not a valid")
     end
   end
 end

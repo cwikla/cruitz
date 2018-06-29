@@ -261,7 +261,7 @@ class Base extends Component {
   }
 
   getPageTitle() {
-    return Pyr.Util.capFirstLetter(this.getPage());
+    return Pyr.Util.capitalize(this.getPage()); // hsould CSS this
   }
 
   getDefaultPage() {

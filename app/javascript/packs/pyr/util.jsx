@@ -455,6 +455,11 @@ function capFirstLetter(string) {
     //string = string.toLowerCase();
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+const capitalize = capFirstLetter; // duh
+
+function displayName(attr) {
+  return attr.replace("_", " ");
+}
 
 function childrenWithProps(children, props, kidType) {
   return React.Children.map(children, (child) => {
@@ -573,6 +578,7 @@ const Util = {
   fuzzyDate,
   friendlyDate,
   capFirstLetter,
+  capitalize,
   squish,
   merge,
   childrenWithProps,
@@ -591,7 +597,8 @@ const Util = {
   uuid,
   range,
   isValidEmail,
-  isValidPhoneNumber
+  isValidPhoneNumber,
+  displayName,
 };
 
 export default Util;

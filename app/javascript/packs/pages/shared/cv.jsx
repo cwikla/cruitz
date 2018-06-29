@@ -266,12 +266,11 @@ class EditManyExp extends Component {
       <div className="flx-col exp-form">
         <div className={ClassNames("exp-title cv-label flx-row").push("exp-" + ts)}><Pyr.UI.Label>{title}</Pyr.UI.Label> <Pyr.UI.IconButton className="ml-auto" name="plus" onClick={this.onAddByType}> Add { name }</Pyr.UI.IconButton></div>
         { exps.length == 0 ? "None" : null }
-  
         {  
           exps.map((item, pos) => {
             let kid = item.id || pos;
             return (
-              <Pyr.Form.ObjectWrapper object={item} model={"Head[experiences]["+kid+"]"} key={key + "-" + ts + "-eme-" + kid}>
+              <Pyr.Form.ObjectWrapper object={item} model={"head[experiences]["+kid+"]"} key={key + "-" + ts + "-eme-" + kid}>
                 <div className="flx-row"><EditExperience className="flx-1" expType={type}/> <Pyr.UI.IconButton name="times" className="mb-auto remove" onClick={e => this.onRemove(item)}/></div>
               </Pyr.Form.ObjectWrapper>
             );

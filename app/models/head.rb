@@ -26,7 +26,7 @@ class Head < ApplicationRecord
   validates :last_name, presence: true
   validates :phone_number, presence: true,  valid_phone_number: true
 
-  validates :email, valid_email: true
+  validates :email, presence: true, valid_email: true
 
   before_save :on_before_save
 
@@ -55,6 +55,43 @@ class Head < ApplicationRecord
 
   def add_skill(skill)
     return HeadSkill.find_or_create_unique(head: self, skill: skill)
+  end
+
+  def self.submit(user, params) 
+    Head.transaction do
+      head = nil
+      head = Head.where(user_id: user.id).find_safe(params[:id]) if params[:id]
+
+      hid = params.delete(:id)
+      experiences = params.delete(:experiences) || []
+      skill_names = params.delete(:skills) || []
+      uploads = params.delete(:uploads) || []
+
+      head ||= Head.new
+      head.recruiter = user
+      head.assign_attributes(params)
+      return head if !head.save
+
+      skills = []
+      skills = Skill.get_skill(*skill_names) if !skill_names.blank?
+
+      hs = []
+      skills.each do |skill|
+        hs << HeadSkill.find_or_create_unique(head_id: head.id, skill: skill)
+      end
+
+      head.head_skills = hs
+
+      # FIXME PERMISSIONS
+      head_uploads = []
+      file_ids.each do |fid|
+        upload = Upload.find(fid) # need to get the real id, not uuid
+        head_uploads << HeadUpload.find_or_create_unique(head_id: head.id, upload_id: upload.id) if upload
+      end
+
+      head.head_uploads = head_uploads
+      head.save
+    end
   end
 
 end
