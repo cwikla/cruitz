@@ -58,14 +58,15 @@ class Head < ApplicationRecord
   end
 
   def self.submit(user, params) 
+    head = nil
+
     Head.transaction do
-      head = nil
       head = Head.where(user_id: user.id).find_safe(params[:id]) if params[:id]
 
       hid = params.delete(:id)
       experiences = params.delete(:experiences) || []
       skill_names = params.delete(:skills) || []
-      uploads = params.delete(:uploads) || []
+      file_ids = params.delete(:uploads) || []
 
       head ||= Head.new
       head.recruiter = user
@@ -91,7 +92,10 @@ class Head < ApplicationRecord
 
       head.head_uploads = head_uploads
       head.save
+
     end
+
+    return head
   end
 
 end

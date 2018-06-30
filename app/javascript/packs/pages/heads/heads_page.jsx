@@ -270,8 +270,9 @@ class ShowSheet extends Sheet.Show {
 }
 
 class NewSheet extends Sheet.New {
+
   success(data, textStatus, jqXHR) {
-    this.props.onHeadCreate(data.head);
+    this.props.onAddItem(data.head);
     super.success(data, textStatus, jqXHR);
     this.context.setNotice("Head Created");
     this.goBack();
