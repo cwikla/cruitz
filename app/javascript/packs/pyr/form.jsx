@@ -277,18 +277,21 @@ class Nested extends BaseComponent {
     super(props);
 
     this.onGetError = this.getError.bind(this);
+    this.onClearError = this.clearError.bind(this);
   }
 
   static childContextTypes = {
     object: PropTypes.object,
     model: PropTypes.string,
     getError: PropTypes.func,
+    clearError: PropTypes.func,
   };
 
   static contextTypes = {
     model: PropTypes.string,
     errors: PropTypes.object,
     getError: PropTypes.func,
+    clearError: PropTypes.func,
   };
 
   getChildContext() {
@@ -296,6 +299,7 @@ class Nested extends BaseComponent {
       object: this.props.object,
       model: this.getModel(),
       getError: this.onGetError,
+      clearError: this.onClearError,
     }
   }
 
@@ -307,15 +311,25 @@ class Nested extends BaseComponent {
     return this.context.getError(attr);
   }
 
+  clearParentError(attr) {
+    return this.context.clearError(attr);
+  }
+
   getModel() {
     return this.getParentModel() + '[' + this.props.model + '][' + this.props.index + ']';
   }
 
-  getError(attr) {
-    let key = this.props.model + "[" + this.props.index + "]." + attr;  // FUCKING RAILS
-    return this.getParentError(key);
+  nestedAttr(attr) {
+    return this.props.model + "[" + this.props.index + "]." + attr;  // FUCKING RAILS
   }
 
+  getError(attr) {
+    return this.getParentError(this.nestedAttr(attr));
+  }
+
+  clearError(attr) {
+    this.clearParentError(this.nestedAttr(attr));
+  }
 
   render() {
     return this.props.children;
@@ -827,6 +841,18 @@ class Option extends Child {
 }
 
 class CompactSelect extends Child {
+  constructor(props) {
+    super(props);
+
+    this.onChange = this.change.bind(this);
+  }
+
+  change(e) {
+    this.clearError();
+    if (this.props.onChange) {
+      this.props.onChange(e);
+    }
+  }
   render() {
     let myProps = { 
       name: this.name(), 
@@ -838,6 +864,7 @@ class CompactSelect extends Child {
       <ReactSelect
         {...myProps}
         {...Util.propsMergeClassName(this.props, "form-control")}
+        onChange={this.onChange}
       />
     );
   }
