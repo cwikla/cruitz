@@ -39,7 +39,7 @@ import SubmittedCandidatesPage from './submitted_candidates/submitted_candidates
 import MessagesPage from './messages/messages_page';
 import HeadsPage from './heads/heads_page';
 
-const DEFAULT_PAGE = POSITIONS_PAGE;
+const DEFAULT_PAGE = MESSAGES_PAGE;
 
 const HolderPage = (props) => (
   <Redirect to="/" />
@@ -91,8 +91,8 @@ class SubNavBar extends Container.NavBar {
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-10 navbar-nav flx-row align-items-center">
             <div className="mr-auto flx-row">
-              <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={positionsCount}/>
               <Container.SubIcon name="Messages" icon="envelope" selected={this.props.page} page="messages" count={messagesCount}/>
+              <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={positionsCount}/>
               <Container.SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates" count={this.props.pageItemsCount.candidates}/>
               <Container.SubIcon name="Heads" icon="users" selected={this.props.page} page="heads" count={headsCount}/>
             </div>
