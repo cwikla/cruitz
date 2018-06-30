@@ -51,11 +51,29 @@ class Head < ApplicationRecord
     "#{self.first_name} #{self.last_name}"
   end
 
+  def current_exp(items)
+    items.max_by { |e| e.year_end || Time.zone.now.year }
+  end
+
+  def best_summary_item
+    all = []
+    exp = current_exp(experiences) if experiences
+    edu = current_exp(educations) if educations
+
+    all << exp if exp
+    all << edu if edu
+    return current_exp(all) if all.length > 0
+    return nil
+  end
+
   def summary
-    # FIXME find latest
+    # FIXME find latest - or just tag one as headline? Or add a summary? Hmmm....
     obj = experiences ? experiences : educations
-    t = obj.select(:title, :place).first
-    return "#{t.title} @ #{t.place}" if t
+    #t = obj.select(:title, :place).first
+
+    t = best_summary_item
+    return "#{t.title} @ #{t.place}" if t 
+
     return nil
   end
 
