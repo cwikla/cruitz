@@ -15,6 +15,8 @@ class HeadsController < ApplicationController
 
     @head = Head.submit(current_user, hparms)
 
+    puts @head.errors.inspect
+
     if @head.valid?
       return render json: @head
     end

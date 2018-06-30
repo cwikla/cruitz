@@ -270,9 +270,9 @@ class EditManyExp extends Component {
           exps.map((item, pos) => {
             let kid = item.id || pos;
             return (
-              <Pyr.Form.ObjectWrapper object={item} model={"head[experiences]["+kid+"]"} key={key + "-" + ts + "-eme-" + kid}>
+              <Pyr.Form.Nested object={item} model="experiences" index={pos} key={key + "-" + ts + "-eme-" + kid}>
                 <div className="flx-row"><EditExperience className="flx-1" expType={type}/> <Pyr.UI.IconButton name="times" className="mb-auto remove" onClick={e => this.onRemove(item)}/></div>
-              </Pyr.Form.ObjectWrapper>
+              </Pyr.Form.Nested>
             );
           })
         }

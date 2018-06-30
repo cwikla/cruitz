@@ -3,7 +3,8 @@ class Head < ApplicationRecord
   has_many :candidates
   has_many :jobs, through: :candidates
 
-  has_many :experiences
+  has_many :experiences, index_errors: true
+  accepts_nested_attributes_for :experiences
 
   has_many :educations, -> { where(exp_type: Experience::EXP_TYPE_SCHOOL) }, class_name: "Experience"
   has_many :works, -> { where(exp_type: Experience::EXP_TYPE_COMPANY) }, class_name: "Experience"
@@ -64,13 +65,27 @@ class Head < ApplicationRecord
       head = Head.where(user_id: user.id).find_safe(params[:id]) if params[:id]
 
       hid = params.delete(:id)
-      experiences = params.delete(:experiences) || []
+      experiences = params.delete(:experiences) || {}
       skill_names = params.delete(:skills) || []
       file_ids = params.delete(:uploads) || []
 
-      head ||= Head.new
+      head ||= Head.new(params)
       head.recruiter = user
-      head.assign_attributes(params)
+
+      exp_keys = experiences.keys()
+
+      new_exps = exp_keys.map do |k|
+        exp = experiences[k]
+        exp.delete(:id) # just in cases?
+        Experience.new(exp)
+      end
+
+      head.experiences = new_exps
+
+      #puts "CURRENT HEAD ERRORS"
+      #head.valid?
+      #puts head.errors.inspect
+
       return head if !head.save
 
       skills = []

@@ -31,6 +31,7 @@ class Form extends Network.Component {
     isLoading: PropTypes.bool,
     clearError: PropTypes.func,
     resetErrors: PropTypes.func,
+    getError: PropTypes.func,
   };
 
   constructor(props) {
@@ -50,6 +51,7 @@ class Form extends Network.Component {
 
     this.onClearError = this.clearError.bind(this);
     this.onResetErrors = this.resetErrors.bind(this);
+    this.onGetError = this.getError.bind(this);
   }
 
   clearError(attr) {
@@ -72,6 +74,10 @@ class Form extends Network.Component {
     this.setState({
       errors: null,
     });
+  }
+
+  getError(attr) {
+    return this.state.errors[attr];
   }
 
   isValid() {
@@ -101,6 +107,7 @@ class Form extends Network.Component {
       isLoading: this.isLoading(),
       clearError: this.onClearError,
       resetErrors: this.onResetErrors,
+      getError: this.onGetError,
     }
   }
 
@@ -265,18 +272,50 @@ class Form extends Network.Component {
   }
 }
 
-class ObjectWrapper extends BaseComponent {
+class Nested extends BaseComponent {
+  constructor(props) {
+    super(props);
+
+    this.onGetError = this.getError.bind(this);
+  }
+
   static childContextTypes = {
     object: PropTypes.object,
     model: PropTypes.string,
+    getError: PropTypes.func,
+  };
+
+  static contextTypes = {
+    model: PropTypes.string,
+    errors: PropTypes.object,
+    getError: PropTypes.func,
   };
 
   getChildContext() {
     return {
       object: this.props.object,
-      model: this.props.model,
+      model: this.getModel(),
+      getError: this.onGetError,
     }
   }
+
+  getParentModel() {
+    return this.context.model;
+  }
+
+  getParentError(attr) {
+    return this.context.getError(attr);
+  }
+
+  getModel() {
+    return this.getParentModel() + '[' + this.props.model + '][' + this.props.index + ']';
+  }
+
+  getError(attr) {
+    let key = this.props.model + "[" + this.props.index + "]." + attr;  // FUCKING RAILS
+    return this.getParentError(key);
+  }
+
 
   render() {
     return this.props.children;
@@ -313,11 +352,11 @@ class Many extends BaseComponent {
             let mname = this.context.model + "[" + this.props.model + "][" + item.id + "]";
             //console.log(mname);
             return (
-              <ObjectWrapper object={item} model={mname} key={mname + "-" + item.id}>
+              <Nested object={item} model={mname} key={mname + "-" + item.id}>
                 { 
                   Util.childrenWithProps(this.props.children, {}) 
                 }
-              </ObjectWrapper>
+              </Nested>
             );
           })
         }
@@ -333,7 +372,8 @@ class Group extends BaseComponent {
   };
 
   static contextTypes = {
-    errors: PropTypes.object
+    errors: PropTypes.object,
+    getError: PropTypes.func,
   };
 
   constructor(props) {
@@ -346,9 +386,17 @@ class Group extends BaseComponent {
       
   }
 
+  name() {
+    return this.props.name;
+  }
+
+  getError() {
+    return this.context.getError(this.name());
+  }
+
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextContext.errors) {
-      let result = nextContext.errors[this.props.name];
+      let result = this.getError();
       this.setState({errorString: (result ? result[0] : null)}); 
     }
   }
@@ -358,10 +406,6 @@ class Group extends BaseComponent {
       name: this.props.name,
       errorString: this.state.errorString
     };
-  }
-
-  name() {
-    return this.props.name;
   }
 
   displayName() {
@@ -1667,7 +1711,7 @@ const PyrForm = {
   CompactSelect,
   Range,
   Many,
-  ObjectWrapper,
+  Nested,
   EmailField,
   PhoneNumberField,
 };
