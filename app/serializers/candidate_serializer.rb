@@ -1,7 +1,7 @@
 class CandidateSerializer < CandidateSmallSerializer
   attributes :educations,
     :description,
-    :works,
+    :experiences,
     :links,
     :skills,
     :uploads,
@@ -19,8 +19,8 @@ class CandidateSerializer < CandidateSmallSerializer
     object.head.educations
   end
 
-  def works
-    object.head.works
+  def experiences
+    object.head.experiences
   end
 
   def skills

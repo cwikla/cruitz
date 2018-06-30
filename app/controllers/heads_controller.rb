@@ -42,7 +42,7 @@ class HeadsController < ApplicationController
 
     exp_parms = [:id, :exp_type, :title, :place, :year_start, :year_end, :description] # this sucks Rails
 
-    params.require(:head).permit(:first_name, :last_name, :email, :phone_number, experiences: exp_parms, skills: [], uploads: [])
+    params.require(:head).permit(:first_name, :last_name, :email, :phone_number, experiences: exp_parms, educations: exp_parms, skills: [], uploads: [])
   end
 
 

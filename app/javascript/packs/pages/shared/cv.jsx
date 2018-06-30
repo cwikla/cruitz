@@ -181,9 +181,6 @@ const YearSelect = (props) => (
 const EditExperience = (props) => (
   <div className={ClassNames("edit-experience").push(props.className)}>
     <div className="flx-row">
-      <Pyr.Form.Group name="exp_type">
-        <Pyr.Form.Hidden value={props.expType} />
-      </Pyr.Form.Group>
       <Pyr.Form.Group name="title" className="flx-1">
         <Pyr.Form.TextField className="" placeholder="Title"/>
       </Pyr.Form.Group>
@@ -210,7 +207,7 @@ const EditExperience = (props) => (
 );
 
 const EditManyExperiences = (props) => (
-  <Pyr.Form.Many model="Works" name="works" >
+  <Pyr.Form.Many model={props.model} name={props.name}>
     <EditExperience {...props} />
   </Pyr.Form.Many>
 );
@@ -219,7 +216,7 @@ class EditManyExp extends Component {
   constructor(props) {
     super(props);
     
-    this.onAddByType = this.addByType.bind(this);
+    this.onAdd = this.add.bind(this);
     this.onRemove = this.remove.bind(this);
   }
 
@@ -231,18 +228,13 @@ class EditManyExp extends Component {
     return this.props.name.toLowerCase();
   }
 
-  getExperiences(expType) {
-    return this.props.experiences.reduce((arr, item) => {
-      if (item.exp_type == expType) {
-        arr.push(item);
-      }
-      return arr;
-    }, []);
+  getItems() {
+    return this.props.items;
   }
 
-  addByType() {
+  add() {
     if (this.props.onAdd) {
-      this.props.onAdd(this.props.expType);
+      this.props.onAdd();
     }
   }
 
@@ -257,21 +249,18 @@ class EditManyExp extends Component {
     let name = this.getName();
     let key = this.getKey();
 
-    let type = this.props.expType;
-    let exps = this.getExperiences(type)
+    let exps = this.getItems();
 
-    let ts = type == EXP_TYPE_SCHOOL ? "edu" : "work";
-  
     return (
       <div className="flx-col exp-form">
-        <div className={ClassNames("exp-title cv-label flx-row").push("exp-" + ts)}><Pyr.UI.Label>{title}</Pyr.UI.Label> <Pyr.UI.IconButton className="ml-auto" name="plus" onClick={this.onAddByType}> Add { name }</Pyr.UI.IconButton></div>
+        <div className={ClassNames("exp-title cv-label flx-row").push("exp-" + title)}><Pyr.UI.Label>{title}</Pyr.UI.Label> <Pyr.UI.IconButton className="ml-auto" name="plus" onClick={this.onAdd}> Add { name }</Pyr.UI.IconButton></div>
         { exps.length == 0 ? "None" : null }
         {  
           exps.map((item, pos) => {
             let kid = item.id || pos;
             return (
-              <Pyr.Form.Nested object={item} model="experiences" index={pos} key={key + "-" + ts + "-eme-" + kid}>
-                <div className="flx-row"><EditExperience className="flx-1" expType={type}/> <Pyr.UI.IconButton name="times" className="mb-auto remove" onClick={e => this.onRemove(item)}/></div>
+              <Pyr.Form.Nested object={item} model={this.props.model} index={pos} key={key + "-" + title + "-eme-" + kid}>
+                <div className="flx-row"><EditExperience className="flx-1" /> <Pyr.UI.IconButton name="times" className="mb-auto remove" onClick={e => this.onRemove(item)}/></div>
               </Pyr.Form.Nested>
             );
           })
@@ -282,11 +271,11 @@ class EditManyExp extends Component {
 }
 
 const WorkEditManyExp = (props) => (
-  <EditManyExp {...props} edit={true} locked={false} name="Work" expType={EXP_TYPE_COMPANY}/>
+  <EditManyExp {...props} edit={true} locked={false} name="Experience" model="experiences"/>
 );
 
 const EducationEditManyExp = (props) => (
-  <EditManyExp {...props} edit={true} locked={false} name="Education" title="Education" expType={EXP_TYPE_SCHOOL}/>
+  <EditManyExp {...props} edit={true} locked={false} name="Education" title="Education" model="educations" />
 );
 
 const ExperienceItem = (props) => (
@@ -342,7 +331,7 @@ class Experience extends Component {
       return (
         <Pyr.PassThru>
           <div key="exp-title" className="cv-label flx-row"><Pyr.UI.Label>Experience</Pyr.UI.Label> </div>
-          <EditManyExperiences />
+          <EditManyExperiences model="Educations" name="educations"/>
         </Pyr.PassThru>
       );
     }
@@ -399,7 +388,7 @@ class Education extends Component {
       return (
         <Pyr.PassThru>
           <div key="edu-title" className="cv-label flx-row"><Pyr.UI.Label>Education</Pyr.UI.Label> </div>
-          <EditExperience model="Educations" name="educations"/>
+          <EditManyExperiences model="Educations" name="educations"/>
         </Pyr.PassThru>
       );
     }
@@ -516,7 +505,7 @@ class CandidateCVItem extends Component {
 
     //console.log("CVITEM");
     //console.log(candidate);
-    //console.log(candidate.works);
+    //console.log(candidate.experiences);
 
     return (
       <div className={allClass} id={id}>
@@ -527,7 +516,7 @@ class CandidateCVItem extends Component {
           onSetItem={this.props.onSetItem}
           edit={edit}
         />
-        <Experience experiences={candidate.works} edit={edit} locked={locked}/>
+        <Experience experiences={candidate.experiences} edit={edit} locked={locked}/>
         <Education educations={candidate.educations} edit={edit} locked={locked}/>
         <Skills skills={candidate.skills} edit={edit} locked={locked}/>
         <Uploads uploads={candidate.uploads} edit={edit} locked={locked}/>
@@ -602,27 +591,25 @@ class CVNewForm extends Component {
     super(props);
 
     this.initState({
-      experiences: []
+      experiences: [],
+      educations: [],
     });
 
     this.onAddExperience = this.addExperience.bind(this);
     this.onRemoveExperience = this.removeExperience.bind(this);
+
+    this.onAddEducations = this.addEducations.bind(this);
+    this.onRemoveEducations = this.removeEducations.bind(this);
   }
 
-  addExperience(exp_type) {
+  addExperience() {
     let experiences = this.state.experiences.slice()
-    exp_type = exp_type || EXP_TYPE_COMPANY;
-
     let last = experiences[experiences.length - 1];
-  
     let id = last ? last.id + 1 : 1;
 
     experiences.push({
-      exp_type,
       id
     });
-
-    console.log(experiences);
 
     this.setState({
       experiences
@@ -630,9 +617,6 @@ class CVNewForm extends Component {
   }
 
   removeExperience(itemId) {
-    console.log("REMOVE");
-    console.log(itemId);
-
     let experiences = this.state.experiences.reduce( (arr, item) => {
       if (item.id != itemId) {
         arr.push(item);
@@ -644,6 +628,34 @@ class CVNewForm extends Component {
       experiences
     });
   }
+
+  addEducations() {
+    let educations = this.state.educations.slice()
+    let last = educations[educations.length - 1];
+    let id = last ? last.id + 1 : 1;
+
+    educations.push({
+      id
+    });
+
+    this.setState({
+      educations
+    });
+  }
+
+  removeEducations(itemId) {
+    let educations = this.state.educations.reduce( (arr, item) => {
+      if (item.id != itemId) {
+        arr.push(item);
+      }
+      return arr;
+    }, []);
+
+    this.setState({
+      educations
+    });
+  }
+
 
   render() {
     let key = "head-form";
@@ -663,7 +675,7 @@ class CVNewForm extends Component {
     let edit = true;
 
     let object = {
-      works: this.state.works,
+      experiences: this.state.experiences,
       educations: this.state.educations,
     };
 
@@ -688,8 +700,8 @@ class CVNewForm extends Component {
             onSetItem={this.props.onSetItem}
             edit={edit}
           />
-          <WorkEditManyExp onAdd={this.onAddExperience} onRemove={this.onRemoveExperience} experiences={this.state.experiences}/>
-          <EducationEditManyExp onAdd={this.onAddExperience} onRemove={this.onRemoveExperience} experiences={this.state.experiences}/>
+          <WorkEditManyExp onAdd={this.onAddExperience} onRemove={this.onRemoveExperience} items={this.state.experiences}/>
+          <EducationEditManyExp onAdd={this.onAddEducations} onRemove={this.onRemoveEducations} items={this.state.educations}/>
           <Skills edit={edit} locked={locked}/>
           <Uploads edit={edit} locked={locked}/>
         </Pyr.Form.Form>

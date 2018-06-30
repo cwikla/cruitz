@@ -8,7 +8,7 @@ class HeadSerializer < BaseSerializer
     :summary
 
 #  has_many :candidates
-  has_many :works
+  has_many :experiences
   has_many :educations
   has_many :skills
   has_many :links

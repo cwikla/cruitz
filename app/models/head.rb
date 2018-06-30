@@ -6,8 +6,11 @@ class Head < ApplicationRecord
   has_many :experiences, index_errors: true
   accepts_nested_attributes_for :experiences
 
-  has_many :educations, -> { where(exp_type: Experience::EXP_TYPE_SCHOOL) }, class_name: "Experience"
-  has_many :works, -> { where(exp_type: Experience::EXP_TYPE_COMPANY) }, class_name: "Experience"
+  has_many :educations, index_errors: true
+  accepts_nested_attributes_for :educations
+
+  #has_many :educations, -> { where(exp_type: Experience::EXP_TYPE_SCHOOL) }, class_name: "Experience"
+  #has_many :works, -> { where(exp_type: Experience::EXP_TYPE_COMPANY) }, class_name: "Experience"
 
   has_many :head_uploads
   has_many :uploads, through: :head_uploads
@@ -49,7 +52,9 @@ class Head < ApplicationRecord
   end
 
   def summary
-    t = experiences.select(:title, :place).first
+    # FIXME find latest
+    obj = experiences ? experiences : educations
+    t = obj.select(:title, :place).first
     return "#{t.title} @ #{t.place}" if t
     return nil
   end
@@ -64,10 +69,16 @@ class Head < ApplicationRecord
     Head.transaction do
       head = Head.where(user_id: user.id).find_safe(params[:id]) if params[:id]
 
+      puts "GOT HEAD #{head.inspect}"
+
       hid = params.delete(:id)
       experiences = params.delete(:experiences) || {}
+      educations = params.delete(:educations) || {}
       skill_names = params.delete(:skills) || []
       file_ids = params.delete(:uploads) || []
+
+      puts "HEAD PARMS"
+      puts params.inspect
 
       head ||= Head.new(params)
       head.recruiter = user
@@ -80,7 +91,20 @@ class Head < ApplicationRecord
         Experience.new(exp)
       end
 
+      puts new_exps.inspect
+
+      edu_keys = educations.keys()
+
+      new_edus = edu_keys.map do |k|
+        edu = educations[k]
+        edu.delete(:id) # just in cases?
+        Education.new(edu)
+      end
+
+      puts new_edus.inspect
+
       head.experiences = new_exps
+      head.educations = new_edus
 
       #puts "CURRENT HEAD ERRORS"
       #head.valid?

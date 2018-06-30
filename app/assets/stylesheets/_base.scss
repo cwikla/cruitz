@@ -1334,7 +1334,9 @@ div.line {
       line-height: 1.5rem;
     }
 
-    input[type=text]#head-full_name {
+    input[type=text]#head-full_name,
+    input[type=text]#head-first_name,
+    input[type=text]#head-last_name {
       font-size: 2rem;
       line-height: 2.5rem;
       color: $primary_color;
