@@ -263,7 +263,7 @@ class Form extends Network.Component {
     
     return (
       <form ref={(node) => {this.form = node;}} 
-        {...Util.propsMergeClassName(rest, Util.ClassNames(!this.state.valid ? "invalid" : "").push("hello"))}
+        {...Util.propsMergeClassName(rest, Util.ClassNames(!this.state.valid ? "invalid" : ""))}
         onSubmit={this.props.onSubmit || this.onSubmit}
       >
         {this.props.children}
@@ -437,7 +437,7 @@ class Group extends BaseComponent {
   }
 
   render() { 
-    let className = Util.ClassNames("mdb-form-unused form-group");
+    let className = Util.ClassNames("unused-md-form form-group");
     if (this.state.errorString) {
       className.push("error");
     }

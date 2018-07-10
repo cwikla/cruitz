@@ -259,11 +259,13 @@ class MeForm extends Component {
                  <Pyr.Form.PhoneNumberField />
                </Pyr.Form.Group>
              </div>
- 
-             <Pyr.Form.Group name="password">
-               <Pyr.Form.Label>Password</Pyr.Form.Label>
-               <Pyr.UI.PrimaryButton onClick={this.onShowPassword}>Change Password</Pyr.UI.PrimaryButton>
-             </Pyr.Form.Group>
+
+            <div className="flx-row flx-1"> 
+               <Pyr.Form.Group name="password">
+                 <Pyr.Form.Label>Password</Pyr.Form.Label>
+                 <Pyr.UI.PrimaryButton onClick={this.onShowPassword}>Change Password</Pyr.UI.PrimaryButton>
+               </Pyr.Form.Group>
+              </div>
             </div>
           </div>
         </Pyr.Form.Form>
