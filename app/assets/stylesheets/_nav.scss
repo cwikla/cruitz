@@ -3,6 +3,10 @@
   margin-right: 0;
   font-weight: 500;
 
+  a.dropdown-item {
+    color: rgba($navbar_background_color, 0.7) !important;
+  }
+
   .form-group {
     margin: 0;
     padding: 0;

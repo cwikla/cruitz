@@ -11,6 +11,6 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w(images/*)
 
 # https://simonecarletti.com/blog/2012/02/heroku-and-rails-3-2-assetprecompile-error/
-Rails.application.config.assets.initialize_on_precompile = false 
+#Rails.application.config.assets.initialize_on_precompile = false 
 
 

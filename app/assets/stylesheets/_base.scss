@@ -70,6 +70,15 @@ label {
 
 }
 
+a.dropdown-item {
+  color: rgba($navbar_background_color, 0.7) !important;
+}
+
+label.dropdown-item {
+  color: rgba($navbar_background_color, 0.7) !important;
+}
+
+
 .sheet {
   &.index {
     margin-left: 0;

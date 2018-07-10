@@ -14,4 +14,4 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require turbolinks
-//= require pyr/base/pyr
+//= require pyr/pyr
