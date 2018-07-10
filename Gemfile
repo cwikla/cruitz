@@ -74,6 +74,8 @@ group :production do
   #gem 'rails_12factor'
 end
 
+#gem 'sendgrid-ruby' this is for the api
+
 #gem 'valium'
 
 #
@@ -88,7 +90,7 @@ source "http://pyr:akbash42@gems.cwikla.com" do
   #gem 'pyr_geo', :path => "../pyr/pyr_geo"
   gem 'jpyr', "~> 4.0.0"
   #gem 'jpyr', :path => "../pyr/jpyr"
-  gem 'pyr_base', '~> 14.1.4'
+  gem 'pyr_base', '~> 14.2.0'
   #gem 'pyr_base', :path => "../pyr/pyr_base"
 end
 

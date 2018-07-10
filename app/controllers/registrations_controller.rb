@@ -16,5 +16,4 @@ class RegistrationsController < Pyr::Base::RegistrationsController
 
   private
 
-
 end

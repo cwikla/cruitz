@@ -516,11 +516,11 @@ GEM
       elasticsearch-transport (= 5.0.5)
     elasticsearch-api (5.0.5)
       multi_json
-    elasticsearch-model (5.0.2)
+    elasticsearch-model (5.1.0)
       activesupport (> 3)
       elasticsearch (~> 5)
       hashie
-    elasticsearch-rails (5.0.2)
+    elasticsearch-rails (5.1.0)
     elasticsearch-transport (5.0.5)
       faraday
       multi_json
@@ -604,7 +604,7 @@ GEM
       rails (~> 5.1.1)
       resque
       resque-scheduler
-    pyr_base (14.1.4)
+    pyr_base (14.2.0)
       aws-sdk
       aws-sdk-rails
       bootstrap (= 4.0.0.alpha6)
@@ -791,7 +791,7 @@ DEPENDENCIES
   puma (~> 3.0)
   pusher
   pyr_async (~> 4.0.0)!
-  pyr_base (~> 14.1.4)!
+  pyr_base (~> 14.2.0)!
   pyr_gem (~> 7.0.0)!
   pyr_geo (~> 5.0.1)!
   pyr_push (~> 6.1.0)!

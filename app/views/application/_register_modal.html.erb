@@ -1,0 +1,51 @@
+<% content_for :modal_id, "register" %>
+<% content_for :title, "Register" %>
+
+<form id="register"
+      class="pyr-form form-horizontal"
+      method="POST"
+      action="<%= user_registration_url :format => :json %>"
+      data-success-target="<%= auth_sign_up_success_url %>">
+    <%= token_tag nil %>
+
+    <div class="flx-row">
+      <div class="form-group flx-1">
+          <label for="user_first_name" class="form-label">First Name</label>
+          <input id="user_first_name" type="text" name="user[first_name]" placeholder="First" class="form-control" />
+      </div>
+
+      <div class="form-group flx-1">
+          <label for="user_last_name" class="form-label">Last Name</label>
+          <input id="user_last_name" type="text" name="user[last_name]" placeholder="Last" class="form-control" />
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label for="register_user_email" class="form-label">Email</label>
+        <input id="register_user_email" type="text" name="user[email]" placeholder="Email" pyr-validates-as="email" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="hidden" name="user[is_recruiter]" value="0" />
+        <label for="is_recruiter" class="form-label">Recruiter</label>
+        <div class="flx-row form-checkbox">
+          <input id="is_recruiter" type="checkbox" name="user[is_recruiter]" class="form-control"/>
+          <span class="mt-auto mb-auto"><label>I'm a recruiter</label></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="register_user_password" class="form-label">Password</label>
+        <input id="register_user_password" type="password" name="user[password]" placeholder="Password" pyr-validates-as="password" class="form-control" />
+    </div>
+
+    <div class="non-inputs">
+        <a href="#" class="pyr-button" data-pyr-target-modal="sign-in-modal">Already a Member?</a>
+        <span class="pipe">|</span>
+        <a href="#" class="pyr-button" data-pyr-target-modal="forgot-password-modal">Forgot Your Password?</a>
+    </div>
+</form>
+
+<% content_for :footer do %>
+    <a href="#" class="btn btn-primary pyr-button" data-pyr-target-form="register">Register</a>
+<% end %>
