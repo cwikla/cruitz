@@ -276,16 +276,11 @@ class Card extends Component {
             />
             <Avatar.Stars rating={Math.random() * 5.0} className="mt-auto mb-auto"/>
 
-            <div className="dropdown ml-auto flx-me-start">
-              <Pyr.UI.Burger id={id+"-burger"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-              <div className="dropdown-menu" aria-labelledby="recCardFilterMenuButton">
-                <label className="dropdown-header">Filter with same</label>
-                <div className="dropdown-divider"></div>
-                <label className="dropdown-item" onClick={this.props.onClick}>Company</label>
-                <label className="dropdown-item" >Category</label>
-                <label className="dropdown-item" >Location</label>
-              </div>
-            </div>
+            <Pyr.UI.MenuToggle title="Filter with same" name="bars">
+                <Pyr.UI.MenuToggleItem onClick={this.props.onClick}>Company</Pyr.UI.MenuToggleItem>
+                <Pyr.UI.MenuToggleItem >Category</Pyr.UI.MenuToggleItem>
+                <Pyr.UI.MenuToggleItem >Location</Pyr.UI.MenuToggleItem>
+            </Pyr.UI.MenuToggle>
         </div>
         <div className="card-inner">
           <div className="name flx-row">

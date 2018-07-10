@@ -1020,6 +1020,31 @@ class FullScreen extends Component {
   }
 }
 
+const ToggleHeader = (props) => (
+  <PassThru>
+    { props.title ? 
+      <PassThru>
+        <label className="dropdown-header">{props.title}</label>
+        <div className="dropdown-divider"></div>
+      </PassThru>
+      : null }
+  </PassThru>
+);
+
+const MenuToggleItem = (props) => (
+  <label {...Util.propsMergeClassName(props, "dropdown-item")} >{props.children}</label>
+);
+
+const MenuToggle = (props) => (
+    <div className={ClassNames("dropdown ml-auto").push(props.className)}>
+      <IconButton name={props.name} className="dropdown-toggle pyr-icon-btn" id={props.name + "MenuButton"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+      <div className="dropdown-menu" aria-labelledby={props.name + "MenuButton"}>
+        <ToggleHeader {...props} />
+        { props.children }
+      </div>
+    </div>
+);
+
 class BackgroundImage extends Component {
   render() {
     let inlineStyle = {
@@ -1085,6 +1110,9 @@ const UI = {
 
   Scroll,
   PieChart,
+
+  MenuToggle,
+  MenuToggleItem,
 
   BackgroundImage,
   Fifty,

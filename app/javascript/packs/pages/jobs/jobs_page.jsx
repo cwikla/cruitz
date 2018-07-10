@@ -313,16 +313,11 @@ class IndexSheet extends Sheet.Index {
       <div className="flx-row">
         <div className="mr-auto">Jobs</div>
         <Link to={url.toString()}><Pyr.UI.IconButton name="plus" className="ml-auto">Add Job</Pyr.UI.IconButton></Link>
-        <div className="dropdown ml-auto">
-          <Pyr.UI.IconButton name="sort" className="dropdown-toggle pyr-icon-btn" id="jobSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-          <div className="dropdown-menu" aria-labelledby="jobSortMenuButton">
-            <label className="dropdown-header">Sort</label>
-            <div className="dropdown-divider"></div>
-            <label className="dropdown-item" >Newest</label>
-            <label className="dropdown-item" >Oldest</label>
-            <label className="dropdown-item" >Most Candidates</label>
-          </div>
-        </div>
+        <Pyr.UI.MenuToggle title="Sort" name="sort">
+            <Pyr.UI.MenuToggleItem >Newest</Pyr.UI.MenuToggleItem>
+            <Pyr.UI.MenuToggleItem >Oldest</Pyr.UI.MenuToggleItem>
+            <Pyr.UI.MenuToggleItem >Most Candidates</Pyr.UI.MenuToggleItem>
+        </Pyr.UI.MenuToggle>
       </div>
     );
   }

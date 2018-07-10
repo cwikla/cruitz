@@ -49,7 +49,7 @@ group :development, :test do
   gem 'bullet'
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'ffaker'
 end
 
@@ -65,7 +65,8 @@ end
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'tether-rails'
-gem 'bootstrap', '= 4.0.0.alpha6'
+#gem 'bootstrap', '= 4.0.0.alpha6'
+gem 'bootstrap', '~> 4.1.1'
 
 gem 'hashids'
 
@@ -90,7 +91,7 @@ source "http://pyr:akbash42@gems.cwikla.com" do
   #gem 'pyr_geo', :path => "../pyr/pyr_geo"
   gem 'jpyr', "~> 4.0.0"
   #gem 'jpyr', :path => "../pyr/jpyr"
-  gem 'pyr_base', '~> 14.2.4'
+  gem 'pyr_base', '~> 15.1.0'
   #gem 'pyr_base', :path => "../pyr/pyr_base"
 end
 

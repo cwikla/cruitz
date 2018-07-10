@@ -15,3 +15,4 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require pyr/base/application
+//= require popper

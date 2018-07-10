@@ -65,17 +65,12 @@ class Card extends Component {
         <div className="menu category flx-row">
           <span className="flx-1">{ category }</span>
 
-          <div className="dropdown">
-            <Pyr.UI.Burger id={id+"-dropdown"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-            <div className="dropdown-menu" aria-labelledby="dropdownFilterMenuButton">
-              <label className="dropdown-header">Filter with same</label>
-              <div className="dropdown-divider"></div>
-              <label className="dropdown-item" onClick={this.props.onClick}>Company</label>
-              <label className="dropdown-item" >Position</label>
-              <label className="dropdown-item" >Category</label>
-              <label className="dropdown-item" >Location</label>
-            </div>
-          </div>
+          <Pyr.UI.MenuToggle title="Filter" name="bars">
+              <Pyr.UI.MenuToggleItem onClick={this.props.onClick}>Company</Pyr.UI.MenuToggleItem>
+              <Pyr.UI.MenuToggleItem>Position</Pyr.UI.MenuToggleItem>
+              <Pyr.UI.MenuToggleItem>Category</Pyr.UI.MenuToggleItem>
+              <Pyr.UI.MenuToggleItem>Location</Pyr.UI.MenuToggleItem>
+          </Pyr.UI.MenuToggle>
         </div>
         <div className="card-inner">
           <div className="company flx-row">

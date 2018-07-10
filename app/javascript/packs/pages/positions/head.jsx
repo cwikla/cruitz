@@ -183,17 +183,12 @@ class CandidateComponent extends Component {
       <div className="flx-row">
         <div className="mr-auto">Candidates</div>
         <Pyr.UI.IconButton name="plus" className={ClassNames("ml-auto").push(canAdd ? "" : "disabled")} onClick={this.props.onClick}> Select</Pyr.UI.IconButton>
-        <div className="dropdown ml-auto">
-          <Pyr.UI.IconButton name="sort" className="dropdown-toggle pyr-icon-btn" id="candSubmitSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-          <div className="dropdown-menu" aria-labelledby="candSubmitSortMenuButton">
-            <label className="dropdown-header">Sort</label>
-            <div className="dropdown-divider"></div>
-            <label className="dropdown-item" >Newest</label>
-            <label className="dropdown-item" >Oldest</label>
-            <label className="dropdown-item" >A-Z</label>
-            <label className="dropdown-item" >Z-A</label>
-          </div>
-        </div>
+        <Pyr.UI.MenuToggle title="Sort" name="sort">
+            <Pyr.UI.MenuToggleItem>Newest</Pyr.UI.MenuToggleItem>
+            <Pyr.UI.MenuToggleItem>Oldest</Pyr.UI.MenuToggleItem>
+            <Pyr.UI.MenuToggleItem>A-Z</Pyr.UI.MenuToggleItem>
+            <Pyr.UI.MenuToggleItem>Z-A</Pyr.UI.MenuToggleItem>
+        </Pyr.UI.MenuToggle>
       </div>
     );
   }

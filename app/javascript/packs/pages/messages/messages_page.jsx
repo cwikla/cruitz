@@ -161,16 +161,11 @@ class IndexSheet extends Sheet.Index {
     return (
       <div className="flx-row">
         <div className="mr-auto">Messages</div>
-        <div className="dropdown ml-auto">
-          <Pyr.UI.IconButton name="sort" className="dropdown-toggle" id="messageSortMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-          <div className="dropdown-menu" aria-labelledby="messageSortMenuButton">
-            <label className="dropdown-header">Sort</label>
-            <div className="dropdown-divider"></div>
-            <label className="dropdown-item" >Date</label>
-            <label className="dropdown-item" >Unread</label>
-            <label className="dropdown-item" >Position</label>
-          </div>
-        </div>
+        <Pyr.UI.MenuToggle title="Sort" name="sort">
+          <Pyr.UI.MenuToggleItem>Date</Pyr.UI.MenuToggleItem>
+          <Pyr.UI.MenuToggleItem>Unread</Pyr.UI.MenuToggleItem>
+          <Pyr.UI.MenuToggleItem>Position</Pyr.UI.MenuToggleItem>
+        </Pyr.UI.MenuToggle>
       </div>
     );
   }
