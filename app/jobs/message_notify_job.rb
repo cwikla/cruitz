@@ -14,8 +14,11 @@ class MessageNotifyJob < Pyr::Async::BaseJob
     message = Message.find_safe(message_id)
     return if message.nil?
 
-    root_message = Message.find_safe(message.root_message_id) if message.root_message_id  # get the root
-    return if root_message.nil?
+    if message.root_message_id
+      root_message = Message.find_safe(message.root_message_id) 
+    else
+      root_message = message
+    end
 
     user = message.user
 
@@ -26,7 +29,7 @@ class MessageNotifyJob < Pyr::Async::BaseJob
       { name: "messages-add", data: { message: root_result} },
       { name: "message-#{root_message.id}-thread", data: { message: result } } # yes root_message.id
     ])
-    puts "PUSHER: #{stats}"
+    #puts "PUSHER: #{stats}"
   end
 
 end
