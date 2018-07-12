@@ -7,16 +7,17 @@ class MessageNotifyJob < Pyr::Async::BaseJob
   def self.perform(msg)
     return if !::USE_PUSHER
 
-    puts msg.inspect
+    #puts "MessageNotifyJob: #{msg.inspect}"
+
     message_id = msg["message_id"]
     return if message_id.blank?
 
-    puts "MessageNotifyJob: A"
+    #puts "MessageNotifyJob: A"
 
     message = Message.find_safe(message_id)
     return if message.nil?
 
-    puts "MessageNotifyJob: B"
+    #puts "MessageNotifyJob: B"
 
     if message.root_message_id
       root_message = Message.find_safe(message.root_message_id) 
@@ -29,13 +30,13 @@ class MessageNotifyJob < Pyr::Async::BaseJob
     result = MessageSerializer.new(message, current_user: user).as_json
     root_result = MessageSerializer.new(root_message, current_user: user).as_json
 
-    puts "MessageNotifyJob: C"
+    #puts "MessageNotifyJob: C"
 
     stats = user.pusher_private_batch([
       { name: "messages-add", data: { message: root_result} },
       { name: "message-#{root_message.id}-thread", data: { message: result } } # yes root_message.id
     ])
-    puts "PUSHER: #{stats}"
+    #puts "PUSHER: #{stats}"
   end
 
 end
