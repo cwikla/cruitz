@@ -787,7 +787,7 @@ class MoneyField extends TextField {
       return v;
     }
 
-    return ripOut(v).toLocaleString('en-US'); // FIXME
+    return this.ripOut(v).toLocaleString('en-US'); // FIXME
   }
 
   focus(e) {

@@ -1470,35 +1470,3 @@ div.line {
   }
 
 }
-
-.form-group {
-  input[type=text],
-  input[type=password],
-  input[type=email],
-  input[type=url],
-  input[type=email],
-  input[type=search] {
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    outline: none;
-    box-shadow: none;
-    border: none;
-    border-bottom: 1px solid $gray_color;
-    border-radius: 0;
-    box-sizing: content-box;
-    background-color: transparent;
- 
-    &:focus {
-      border-bottom: 1px solid $blue_color;
-      box-shadow: 0 1px 0 0 $blue_color;
-    } 
-
-    &.form-control.valid {
-      border-bottom: 1px solid $green_color;
-      box-shadow: 0 1px 0 0 $green_color;
-    }
-    &.form-control.invalid {
-      border_bottom: 1px solid $red_color;
-      box-shadow: 0 1px 0 0 $red_color;
-    }
-  }
-}

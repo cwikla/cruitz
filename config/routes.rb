@@ -98,7 +98,7 @@ Rails.application.routes.draw do
   authenticated :user do
     root 'marketplace#index', constraints: Constraint::Recruiter.new, as: :marketplace_url
     root 'dashboard#index', as: :dashboard_url
-    #match "*path", to: redirect('/'), via: :all
+    get "*path", to: redirect('/'), via: :all, status: 302
   end
 
 
