@@ -16,11 +16,11 @@ class CandidateSerializer < CandidateSmallSerializer
   end
 
   def educations
-    object.head.educations
+    object.head.educations.sort_by { |e| e.year_end || Time.zone.now.year }.reverse
   end
 
   def experiences
-    object.head.experiences
+    object.head.experiences.sort_by { |e| e.year_end || Time.zone.now.year }.reverse
   end
 
   def skills
