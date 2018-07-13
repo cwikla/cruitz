@@ -363,7 +363,7 @@ class MessageThread extends Component {
       return;
     }
 
-    let label = this.props.label || "Reply";
+    let label = this.props.label || "Send";
 
     return (
         <Footer
