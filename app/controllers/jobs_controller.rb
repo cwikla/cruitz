@@ -118,15 +118,16 @@ class JobsController < ApplicationController
   def do_parts(job)
     jparms = job_params
 
-    skill_names = jparms.delete(:skills)
-    cat_id = jparms.delete(:category)
-    loc_ids = jparms.delete(:locations)
-    file_ids = jparms.delete(:uploads)
+    skill_names = jparms.delete(:skills) || []
+    cat_id = jparms.delete(:category) || []
+    loc_ids = jparms.delete(:locations) || []
+    file_ids = jparms.delete(:uploads) || []
 
     # NEED TO DEDUPE
 
     # THIS WAS DONE BECAUSE I KEPT GETTING CLASS ASSOCIATIONMISMATCH errors
 
+    puts "A"
     skills = []
     skills = Skill.get_skill(*skill_names) if !skill_names.blank?
 
@@ -135,6 +136,7 @@ class JobsController < ApplicationController
       js << JobSkill.find_or_create_unique(job_id: job.id, skill: skill)
     end
 
+    puts "B"
     job.job_skills = js
 
     jcs = []
@@ -142,6 +144,7 @@ class JobsController < ApplicationController
       jcs << JobCategory.find_or_create_unique(job_id: job.id, category_id: cat_id)
     end
 
+    puts "C"
     job.job_categories = jcs
 
     jlocs = []
@@ -150,6 +153,7 @@ class JobsController < ApplicationController
     end
 
     job.job_locations = jlocs
+    #puts "D #{jlocs.inspect}"
 
     # FIXME PERMISSIONS
     job_uploads = []
@@ -157,6 +161,8 @@ class JobsController < ApplicationController
       upload = Upload.find(fid) # need to get the real id, not uuid
       job_uploads << JobUpload.find_or_create_unique(job_id: job.id, upload_id: upload.id) if upload
     end
+
+    puts "E"
 
     job.job_uploads = job_uploads
   end

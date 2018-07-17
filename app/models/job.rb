@@ -50,10 +50,16 @@ class Job < ApplicationRecord
 
   validates :salary, :numericality => {:only_integer => true}, allow_blank: true
 
+  before_save :on_before_save
+
   pyr_search_scope :search, against:  {
     title: 'A', 
     description: 'B'
   } 
+
+  def on_before_save
+    self.description = self.description.gsub("\r", "\n") if self.description
+  end
 
   def self.after_cached_candidate(candidate)
     j = Job.new(:id => candidate.job_id)
@@ -116,4 +122,5 @@ class Job < ApplicationRecord
 
     return q.order("-jobs.id")
   end
+
 end

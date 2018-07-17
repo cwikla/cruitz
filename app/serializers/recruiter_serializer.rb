@@ -14,7 +14,8 @@ class RecruiterSerializer < UserSerializer
   def attributes(*args)
     hash = super
     if instance_options[:reviews]
-      reviews = ActiveModel::Serializer::CollectionSerializer.new(object.reviews)
+      reviews = object.reviews.order("-id")
+      reviews = ActiveModel::Serializer::CollectionSerializer.new(reviews)
       hash[:reviews] = reviews
     end
     hash

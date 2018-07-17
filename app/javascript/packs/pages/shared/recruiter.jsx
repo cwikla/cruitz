@@ -20,13 +20,60 @@ import {
   SPAM_REASONS_URL,
 } from '../const';
 
+const FAKE_RATE = 64;
+const FAKE_PLACEMENT = 4;
+
+class Header extends Component {
+  render() {
+    let rest = Pyr.Util.propsRemove(this.props, ["recruiter", "reviews"]);
+    let recruiter = this.props.recruiter;
+    let company = recruiter.company;
+
+    let reviews = this.props.reviews;
+    let count = reviews ? reviews.length : 0;
+
+    let fullName = recruiter.full_name;
+    let companyName = company.name;
+
+    let description = recruiter.description || "";
+
+    return (
+      <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-header flx-row")} >
+        <div className="flx-col flx-align-center">
+          <Avatar.Avatar
+            user={recruiter}
+            imageOnly
+          />
+        </div>
+        <div className="flx-col">
+          <div className="name">{fullName}</div>
+          <div className="company">{companyName}</div>
+
+          <div className="placements">{FAKE_PLACEMENT} placements</div>
+          <div className="rate">{FAKE_RATE}% acceptance rate</div>
+
+        </div>
+        <div className="flx-col ml-auto">
+          <Avatar.Stars rating={recruiter.score} />
+          <div className="review-count">{count} Reviews</div>
+        </div>
+        <div className="blurb">{ description }</div>
+      </div>
+    );
+  }
+}
+
 
 const ReviewItem = (props) => (
   <div key={props.review.id} className="review">
-    <div><Avatar.Stars rating={props.review.score} /></div>
-    <div><Pyr.UI.MagicDate date={props.review.created_at} /></div>
-    <div>{props.review.from_user.first_name}</div>
-    <div>{props.review.description}</div>
+    <div className="flx-row">
+      <div className="score"><Avatar.Stars rating={props.review.score} /></div>
+      <div className="ml-auto date"><Pyr.UI.MagicDate medium date={props.review.created_at} /></div>
+    </div>
+    <div className="description">{props.review.description}</div>
+    <div className="flx-row">
+      <div className="ml-auto first-name">{props.review.from_user.first_name}</div>
+    </div>
   </div>
 );
 
@@ -83,8 +130,8 @@ class Reviews extends Component {
   render() {
     return (
       <div className="reviews flx-1 flx-col">
-        <Recruiter.Header recruiter={this.props.recruiter} reviews={this.state.reviews}/>
-        <div className="flx-1 flx-col scroll">
+        <Header recruiter={this.props.recruiter} reviews={this.state.reviews}/>
+        <div className="flx-1 flx-col reviews scroll">
           <ReviewList recruiter={this.props.recruiter} reviews={this.state.reviews} />
         </div>
       </div>
@@ -258,6 +305,7 @@ class Card extends Component {
     let createdAt = recruiter.created_at;
     let fullName = recruiter.full_name;
     let category = "None";
+    let company_url = company ? company.url : "";
 
     let url = recruiter.logo ? recruiter.logo.url : (logo ? logo.url : null);
 /*
@@ -288,6 +336,13 @@ class Card extends Component {
           </div>
           <div className="company flx-row">
               { companyName }
+          </div>
+          <div className="company-url flx-row">
+            <Pyr.UI.Icon name="link"/>&nbsp;{ company_url }
+          </div>
+
+          <div className="placements flx-row">
+            { Math.floor(Math.random() * 8) } placements
           </div>
         </div>
         <div className="more flx-row mt-auto">
@@ -368,6 +423,7 @@ class Blurb extends Component {
                   userOnly
                 />
                 <Avatar.Stars rating={score}/>
+                <div className="placements">3 placements</div>
                 <div className="rate">64% acceptance rate</div>
                 <div className="company">{companyName}</div>
                 <div className="blurb">{description}</div>
@@ -376,47 +432,6 @@ class Blurb extends Component {
           </Pyr.UI.Fifty>
         </TheBack>
 
-      </div>
-    );
-  }
-}
-
-const FAKE_RATE = 64;
-
-class Header extends Component {
-  render() {
-    let rest = Pyr.Util.propsRemove(this.props, ["recruiter", "reviews"]);
-    let recruiter = this.props.recruiter;
-    let company = recruiter.company;
-
-    let reviews = this.props.reviews;
-    let count = reviews ? reviews.length : 0;
-
-    let fullName = recruiter.full_name;
-    let companyName = company.name;
-
-    let description = recruiter.description || "";
-
-    return (
-      <div {...Pyr.Util.propsMergeClassName(rest, "recruiter-header flx-row")} >
-        <div className="flx-col flx-align-center">
-          <Avatar.Avatar
-            user={recruiter}
-            imageOnly
-          />
-        </div>
-        <div className="flx-col">
-          <div className="name">{fullName}</div>
-          <div className="company">{companyName}</div>
-
-          <div className="rate">{FAKE_RATE}% acceptance rate</div>
-
-        </div>
-        <div className="flx-col ml-auto">
-          <Avatar.Stars rating={recruiter.score} />
-          <div className="review-count">{count} Reviews</div>
-        </div>
-        <div className="blurb">{ description }</div>
       </div>
     );
   }

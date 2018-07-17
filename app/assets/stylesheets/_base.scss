@@ -242,6 +242,10 @@ label.error:first-letter {
 
 
 .user-signed-in {
+  .body-content {
+    height: 100%;
+  }
+
   .pyr-navbar {
     background-color: #F00 !important; 
     display: none;
@@ -736,8 +740,8 @@ label {
   }
 
   .user-avatar {
-    padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+    padding-right: 1rem;
   }
 
   .blurb {
@@ -1104,6 +1108,16 @@ label {
     font-size: 0.9rem;
   }
 
+  .company-url {
+    font-size: 0.9rem;
+    padding-top: 1rem;
+  }
+
+  .placements {
+    font-size: 1rem;
+    padding-top: 1rem;
+  }
+
 }
 
 .stats, %stats {
@@ -1176,6 +1190,29 @@ label {
 }
 
 .reviews {
+  .recruiter-header {
+    font-weight: $font_weight_bold;
+    border-bottom: 1px solid $border_color;
+
+    .placements {
+    }
+
+    .rate {
+    }
+  }
+
+  .review  {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    .description {
+      padding-top: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .first-name {
+    }
+  }
 }
 
 .o-hidden {
@@ -1298,7 +1335,7 @@ div.line {
 
   .cv-form-header {
     font-size: 1rem;
-    min-height: 7rem;
+    min-height: 9rem;
 
 
     .phone-number {
@@ -1315,7 +1352,7 @@ div.line {
 
   .cv-header {
     font-size: 1rem;
-    min-height: 7rem;
+    min-height: 9rem;
 
     .name {
       font-size: 2rem;

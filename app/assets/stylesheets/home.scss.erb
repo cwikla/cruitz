@@ -30,6 +30,70 @@
   background-color: $primary_color;
 }
 
+.carousel {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
+
+
+  .carousel-caption {
+    color: $primary_color;
+  }
+
+  .carousel-indicators  {
+    bottom: 0;
+    & li {
+      width: 1rem;
+      height: 1rem;
+
+      background-color: $primary_color;
+      &.active {
+        background-color: $secondary_color;
+      }
+    }
+  }
+
+  .carousel-control-prev-icon {
+    background-image: none;
+    content: "\25AE";  /* this is your text. You can also use UTF-8 character codes as I do here */
+    font-family: FontAwesome;
+    left:-5px;
+    position:absolute;
+    top:0;
+  }
+  .carousel-control-next-icon {
+    background-image: none;
+    content: "\25AE";  /* this is your text. You can also use UTF-8 character codes as I do here */
+    font-family: FontAwesome;
+    left:-5px;
+    position:absolute;
+    top:0;
+  }
+}
+
+.carousel-item {
+  img {
+    width: auto;
+    max-height: 25rem;
+    height: 25rem;
+    object-fit: contain;
+  }
+}
+
+.one-job {
+  img {
+    width: 35rem;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+.hello-job {
+  background: url(<%= asset_path 'images/hello-job.jpg' %>) no-repeat center center;
+  background-color: $primary_color;
+}
+
 .jumbotron {
   border-radius: 0;
 
@@ -37,6 +101,32 @@
   padding-top: 10rem;
 }
 
-.container {
-  margin-top: 2rem;
+.body-content {
+}
+
+.home-container {
+}
+
+.home-section {
+
+  & > div {
+    padding: 4rem;
+  }
+
+  .left {
+    padding-left: 8rem;
+  }
+
+  .right {
+    padding-right: 8rem;
+  }
+
+  height: 30rem;
+  border-bottom: 1px $border_color solid;
+}
+
+footer {
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
 }

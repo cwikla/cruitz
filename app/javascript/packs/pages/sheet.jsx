@@ -276,7 +276,7 @@ class Form extends Base {
       isDisabled = true;
     }
     else {
-      isDisabled = this.isValid();
+      isDisabled = !this.isValid();
     }
 
     return (

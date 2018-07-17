@@ -16,6 +16,8 @@ class ReadThreadJob < Pyr::Async::BaseJob
     return if message.nil?
 
     if !message.root_message_id  # special case here
+      return if message.read_at
+
       message.read_at = Time.zone.now
       message.save
       return

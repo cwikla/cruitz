@@ -290,7 +290,7 @@ function fancyParagraph(txt="") {
   return pieces.map(txt => {
           count = count + 1;
           return (
-            <p key={"desc-" + count}>{txt}</p>
+            <p className="bobp" key={"desc-" + count}>{txt}</p>
           );
         });
 }
@@ -390,7 +390,7 @@ function friendlyDate(date, options) {
       }
 
       return (
-        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleString("en-US", timeOptions)}</span></span>
+        <span className="friendly-date"><span className="d-none d-md-block">{result}</span><span className="d-md-none d-lg-none">{date.toLocaleString("en-US", timeOptions)}</span></span>
       );
     } 
     else if (isToday(date)) {
@@ -399,7 +399,7 @@ function friendlyDate(date, options) {
       timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
 
       return (
-        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleString("en-US", timeOptions)}</span></span>
+        <span className="friendly-date"><span className="d-none d-md-block">{result}</span><span className="d-md-none d-lg-none">{date.toLocaleString("en-US", timeOptions)}</span></span>
       );
 
     } else if (isYesterday(date)) {
@@ -407,7 +407,7 @@ function friendlyDate(date, options) {
       result = "Yesterday at " + date.toLocaleString("en-US", timeOptions);
 
       return (
-        <span className="friendly-date"><span className="hidden-sm-down">{result}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
+        <span className="friendly-date"><span className="d-none d-md-block">{result}</span><span className="d-md-none d-lg-none">{date.toLocaleDateString("en-US")}</span></span>
       );
     }
   }
@@ -438,7 +438,7 @@ function friendlyDate(date, options) {
   }
 
   return (
-    <span className="friendly-date"><span className="hidden-sm-down">{date.toLocaleString("en-US", longOptions)}</span><span className="hidden-md-up">{date.toLocaleDateString("en-US")}</span></span>
+    <span className="friendly-date"><span className="d-none d-md-block">{date.toLocaleString("en-US", longOptions)}</span><span className="d-md-none d-lg-none">{date.toLocaleDateString("en-US")}</span></span>
   );
 }
 

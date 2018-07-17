@@ -9,7 +9,7 @@ class ReviewSerializer < BaseSerializer
 
 
   def description
-    Pyr::Base::Util::String::emojify(object.description)
+    Pyr::Base::Util::String::emojify(object.description || "")
   end
 
   def created_at

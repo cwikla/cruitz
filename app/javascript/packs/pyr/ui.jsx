@@ -464,7 +464,7 @@ const FancyButton = (props) => (
 );
 
 const SmallLabel = (props) => (
-  <label {...Util.propsMergeClassName(props, "small-label hidden-sm-down")}>{props.children}</label>
+  <label {...Util.propsMergeClassName(props, "small-label d-none d-md-block")}>{props.children}</label>
 );
 
 const ButtonLabel = (props) => (

@@ -291,11 +291,16 @@ class Logout extends Component {
       e.preventDefault();
     }
 
+    if (this.onSetLoggingOut) {
+      this.onSetLoggingOut(true);
+    }
+
     this.getJSON({
       remote: "/", // don't use /api/v1
       url: DESTROY_SESSION_URL,
       type: Pyr.Method.DELETE
     }).done(() => {
+      this.setUser(null);
       this.toRoot();
     });
   }
@@ -317,14 +322,23 @@ class EditSheet extends Sheet.Edit {
   constructor(props) {
     super(props);
     this.initState({
-      open: false
+      open: false,
+      isLoggingOut: false,
     });
 
+    this.onSetLoggingOut = this.setLoggingOut.bind(this);
   }
 
   componentDidMount() {
     this.setState({
-      open: true
+      open: true,
+      isLoggingOut: false,
+    });
+  }
+
+  setLoggingOut() {
+    this.setState({
+      isLoggingOut: true
     });
   }
 
@@ -380,6 +394,14 @@ class EditSheet extends Sheet.Edit {
   }
 
   render() {
+/* HMMMM
+    if (this.state.isLoggingOut) {
+      return (
+        <Pyr.UI.Loading />
+      );
+    }
+*/
+
     return (
       <div>
         { super.render() }

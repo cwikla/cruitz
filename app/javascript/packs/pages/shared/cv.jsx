@@ -110,6 +110,8 @@ class CandidateHeader extends Component {
     let locked = this.isLocked();
 
     if (locked) {
+      firstName = Pyr.Util.scramble("George");
+      lastName = Pyr.Util.scramble("Smith");
       fullName = Pyr.Util.scramble("George Smith");
       phoneNumber = Pyr.Util.scramble("415-555-1212");
       email = Pyr.Util.scramble("georgith@george.com");
