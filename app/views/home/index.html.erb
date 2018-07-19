@@ -1,49 +1,107 @@
 
 <div class="boardroom" id="boardroom_jumbo">
-  <div class="jumbotron trans-25">
-      <h1 class="text-white">Kick your hiring up a notch</h1>
-      <h3 class="text-black">Engage with multiple recruiters to find your employees faster</h3>
-      <div class="mt-2">
-        <a href="#" class="btn btn-primary pyr-button" data-pyr-target-modal="register-modal">SIGN UP NOW</a>
-      </div>
+  <div class="jumbotron trans-15 flx-col">
+    <div class="v-center flx-col">
+      <h1 class="main text-white m-center">Kick your hiring up a notch</h1>
+      <h3 class="sub text-white m-center">
+        Let the best recruiters help fill your open positions
+      </h3>
+      <a href="#" class="m-center btn btn-primary pyr-button" data-pyr-target-modal="register-modal">SIGN UP NOW</a>
+    </div>
   </div>
 </div>
 
-<div id="carouselIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselIndicators" data-slide-to="2"></li>
-  </ol>
+<div class="flx-col getter part">
+  <h3 class="m-center">Scale your recruiting pipeline</h3>
+  <div class="flx-row">
 
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="flx-row">
-        <div class="flx-col">
-          <span class="ml-auto mr-auto">One Job</span>
-          <span class="ml-auto mr-auto">Stuff here.</span>
+    <p class="flx-1">
+      When you have positions to fill you waste time with low quality resumes from job boards or searching
+      through social networks to find candidates that will respond to contact. Engaging with a handful of
+      recruiters locks you into long term contracts, dubious quality and terms that put you at a disadvantage to
+      other clients.  
+    </p>
+
+    <p class="flx-1">
+      With <b>cruitz</b> our marketplace of recruiters search for candidates for you. 
+    </p>
+
+
+</div>
+
+<div class="flx-col part">
+  <div id="carouselIndicators" class="m-center carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselIndicators" data-slide-to="2"></li>
+    </ol>
+  
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="flx-row">
+          <div class="flx-col blurb mt-auto mb-auto">
+            <span class="m-center major">Post your job</span>
+            <span class="m-center minor">Or many. We make it easy to manage all your positions.</span>
+          </div>
+          <%= image_tag "images/job", class: "d-block w-100", alt: "Your Job" %>
         </div>
-        <%= image_tag "images/job", class: "d-block w-100", alt: "Your Job" %>
+      </div>
+      <div class="carousel-item">
+        <div class="flx-row">
+          <div class="flx-col blurb mt-auto mb-auto">
+            <span class="m-center major">Recruiters get notified</span>
+            <span class="m-center minor">Our marketplace of recruiters gets notified of the opening and immediately start finding stellar candidates.</span>
+          </div>
+          <%= image_tag "images/recruiters", class: "d-block w-100", alt: "Your Job" %>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="flx-row">
+          <div class="flx-col blurb mt-auto mb-auto">
+            <span class="m-center major">Get great candidates</span>
+            <span class="m-center minor">We pass through only the best candidates from the best recruiters.  We prevent spamming and bad recruiters from wasting your time.</span>
+          </div>
+          <%= image_tag "images/candidates", class: "d-block w-100", alt: "Your Job" %>
+        </div>
       </div>
     </div>
-    <div class="carousel-item">
-      <div class="flx-row">
-        <div class="flx-col">
-          <span class="ml-auto mr-auto">One Job</span>
-          <span class="ml-auto mr-auto">Stuff here.</span>
-        </div>
-        <%= image_tag "images/recruiters", class: "d-block w-100", alt: "Your Job" %>
-      </div>
+  </div>
+</div>
+
+<div class="flx-row checks part">
+  <div class="flx-col flx-1">
+    <div class="m-center icon"><i class="fa fa-dollar-sign m-center"></i></div>
+    <h3>No hidden fees</h3>
+    <div>
+      You only pay the recruiter's fee for placed candidates. Have existing relationships? Manage them without extra fees for both you and the recruiter!
     </div>
-    <div class="carousel-item">
-      <div class="flx-row">
-        <div class="flx-col">
-          <span class="ml-auto mr-auto">One Job</span>
-          <span class="ml-auto mr-auto">Stuff here.</span>
-        </div>
-        <%= image_tag "images/candidates", class: "d-block w-100", alt: "Your Job" %>
-      </div>
+  </div>
+
+  <div class="flx-col flx-1">
+    <div class="m-center icon"><i class="fa fa-clone m-center"></i></div>
+    <h3>Recruiting on your terms</h3>
+    <div>
+      No long term contracts. Upfront commissions. Recruiters compete to get you the best candidate.
     </div>
+  </div>
+
+  <div class="flx-col flx-1">
+    <div class="m-center icon"><i class="fa fa-star m-center"></i></div>
+    <h3>Recruiter Ratings</h3>
+    <div>
+      Bad recruiters are a thing of the past. With our ratings you'll know how much a recruiter can help you close
+      that next candidate. We block bad and spammy recruiters from ever getting to you.
+    </div>
+  </div>
+
+</div>
+
+<hr/>
+
+<div class="flx-col part">
+  <div class="flx-row p-5">
+    <h3 class="m-center">Ready to get started? <a href="#" class="btn btn-primary pyr-button" data-pyr-target-modal="register-modal">SIGN UP NOW</a></h3>
   </div>
 </div>
 

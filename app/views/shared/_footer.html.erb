@@ -1,0 +1,22 @@
+<% if !user_signed_in? %>
+  <footer class="footer">
+    <div class="links flx-col">
+      <div class="flx-row">
+        <div class=""><a href="/about/why">Why cruitz?</a></div> 
+        <div class=""><a href="/about/pricing">Pricing</a></div>
+      </div>
+      <div class="flx-row">
+        <div class=""><a href="about/us">About Us<a/></div>
+        <div class=""><a href="about/contact">Contact Us</a></div>
+      </div>
+      <div class="flx-row">
+        <div class=""><a href="about/terms">Terms of Service</a></div>
+        <div class=""><a href="about/privacy">Privacy Policy</a></div>
+      </div>
+    </div>
+    <div class="flx-col copyright">
+      <span class="m-center">&#x24B8; <%= Date.today.year %> <%= app_name %></span>
+    </div>
+  </footer>
+<% end %>
+

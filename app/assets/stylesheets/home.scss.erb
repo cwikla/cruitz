@@ -18,11 +18,48 @@
 @import "base";
 @import "md";
 
+.trans-15 {
+  background-color: rgba($primary_color, 0.10);
+}
+
+.navbar-nav#sign-in-menu {
+  padding-right: 1rem;
+}
 
 
 .boardroom {
   background: url(<%= asset_path 'images/boardroom.jpg' %>) no-repeat center center;
+  b-background: url(<%= asset_path 'images/business-chairs-company-7070.jpg' %>) no-repeat center center;
   background-color: $primary_color;
+}
+
+.part {
+  margin-bottom: 2rem;
+}
+
+.getter {
+  margin-top: 2rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+
+  color: $primary_color;
+
+  h3 {
+    color: $primary_color;
+  }
+
+  ol {
+    padding: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    li {
+      list-style-type: circle;
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+
+  }
 }
 
 .recruiters {
@@ -33,9 +70,8 @@
 .carousel {
   padding-top: 3rem;
   padding-bottom: 3rem;
-  padding-left: 10rem;
-  padding-right: 10rem;
-
+  padding-left: 5rem;
+  padding-right: 5rem;
 
   .carousel-caption {
     color: $primary_color;
@@ -73,12 +109,62 @@
 }
 
 .carousel-item {
+  .blurb {
+  }
+  .major {
+    font-size: 2rem;
+    line-height: 2.25rem;
+    color: $primary_color;
+    padding-bottom: 2rem;
+    padding-left: 1rem;
+  }
+
+  .minor {
+    font-size: 1.25rem;
+    color: $primary_color;
+  }
+
+
   img {
     width: auto;
     max-height: 25rem;
     height: 25rem;
     object-fit: contain;
   }
+}
+
+.checks {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+
+  justify-content: space-around;
+
+  & > div {
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    border: 2px solid $primary_color;
+    border-radius: 10px;
+    padding: 1.5rem;
+    max-width: 25rem;
+  }
+
+  h3 {
+    margin-left: auto;
+    margin-right: auto;
+    color: $primary_color;
+  }
+
+  .icon {
+    padding-bottom: 1rem;
+  }
+  i {
+    color: $primary_color;
+    font-size: 2rem;
+  }
+
 }
 
 .one-job {
@@ -95,13 +181,19 @@
 }
 
 .jumbotron {
+  height: 25rem;
   border-radius: 0;
 
   margin: 0;
-  padding-top: 10rem;
+
+  .btn-primary {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+  }
 }
 
 .body-content {
+  font-weight: 300;
 }
 
 .home-container {
@@ -126,7 +218,33 @@
 }
 
 footer {
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
+  &.footer {
+    a {
+      color: white !important;
+      &:hover {
+        color: white !important;
+      }
+    }
+
+    border-top: 1px solid $primary_color;
+    margin: 0;
+    font-size: 0.75rem;
+
+    .links {
+      margin-top: 1rem;
+      & > div {
+        & > div {
+          margin-left: 5rem;
+          width: 20rem;
+        }
+      }
+      font-size: 0.85rem;
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+
+    .copyright {
+      margin-top: 2rem;
+    }
+  }
 }
