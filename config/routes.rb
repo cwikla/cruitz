@@ -93,6 +93,11 @@ Rails.application.routes.draw do
   get 'pricing' => 'home#pricing'
   get 'about' => 'home#about'
   get 'recruit' => 'home#recruiters'
+  get 'why' => 'home#why'
+  get 'contact' => 'home#contact'
+  post 'contact' => 'home#contact_create', as: :contact_create
+  get 'privacy' => 'home#privacy'
+  get 'terms' => 'home#terms'
 
 
   authenticated :user do

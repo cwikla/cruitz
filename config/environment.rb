@@ -7,6 +7,7 @@ COMPANY_NAME = "cruitz"
 
 HOSTNAME = ENV["HOSTNAME"] || "cruitz.com"
 EMAIL_DOMAIN = "cruitz.com"
+SUPPORT_EMAIL = "support@" + EMAIL_DOMAIN
 
 APP_MAILER_ADDR = "info@#{EMAIL_DOMAIN}"
 EXCEPTION_NOTIFICATION_EMAIL = "cwikla@#{EMAIL_DOMAIN}"

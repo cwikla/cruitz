@@ -33,8 +33,42 @@
   background-color: $primary_color;
 }
 
+.chairs {
+  background: url(<%= asset_path 'images/business-chairs-company-7070.jpg' %>) no-repeat center center;
+  background-color: $primary_color;
+}
+
 .part {
   margin-bottom: 3rem;
+}
+
+
+.privacy, .terms, .contact, .about {
+  h2 {
+    color: $primary-color;
+  }
+
+  p {
+    margin-top: 2.0rem;
+  }
+
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  
+  margin-left: 15rem;
+  margin-right: 15rem;
+
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+}
+.a-about {
+  font-weight: $font_weight_normal;
+  font-size: 1.25rem;
+
+  margin-top: 5rem;
+  margin-left: 15rem;
+  margin-right: 15rem;
+  margin-bottom: 5rem;
 }
 
 .getter {
@@ -228,7 +262,10 @@
 }
 
 footer {
+  margin-top: auto;
   &.footer {
+    padding: 0.5rem;
+
     a {
       color: white !important;
       &:hover {
@@ -236,12 +273,10 @@ footer {
       }
     }
 
-    border-top: 1px solid $primary_color;
     margin: 0;
     font-size: 0.75rem;
 
     .links {
-      margin-top: 1rem;
       & > div {
         & > div {
           margin-left: 5rem;

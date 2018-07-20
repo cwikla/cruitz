@@ -23,6 +23,28 @@ class HomeController < ApplicationController
   def about
   end
 
+  def why
+  end
+
+  def contact
+    @contact = Contact.new
+  end
+
+  def contact_create
+    @contact = Contact.new(contact_params)
+    if @contact.save 
+      redirect_to root_path
+    else
+      render json: @contact.errors, status: :unprocessable_entity
+    end
+  end
+
+  def terms
+  end
+
+  def privacy
+  end
+
   def recruiters
     @type = RECRUITER
   end
@@ -33,5 +55,10 @@ class HomeController < ApplicationController
     @type = NORMIE
     @commission = COMMISSION
   end
+
+  def contact_params
+    params.require(:contact).permit(:name, :phone_number, :email, :comment)
+  end
+
 
 end
