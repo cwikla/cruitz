@@ -107,8 +107,19 @@
 }
 
 .recruiters {
-  background: url(<%= asset_path 'images/people.webp' %>) no-repeat center center;
-  background-color: $primary_color;
+  .recruit-tron {
+    background: url(<%= asset_path 'images/people.webp' %>) no-repeat center center;
+    background-color: $primary_color;
+  }
+
+  .options {
+    & > div {
+      border: 2px solid $primary_color;
+      border-radius: 10px;
+      margin: 1rem;
+      padding: 1rem;
+    }
+  }
 }
 
 .carousel {
@@ -122,7 +133,7 @@
   }
 
   .carousel-indicators  {
-    bottom: 0;
+    bottom: -1rem;
     & li {
       width: 1rem;
       height: 1rem;
