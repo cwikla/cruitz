@@ -117,20 +117,20 @@ class CandidateForm extends Component {
           object={this.props.candidate}
           url={url}
           method={method}
-          id="candidate-form" 
+          id="candidate-form"
           key={key}
-          ref={(node) => { this.form = node; }} 
-          onPreSubmit={this.props.onPreSubmit} 
+          ref={(node) => { this.form = node; }}
+          onPreSubmit={this.props.onPreSubmit}
           onPostSubmit={this.props.onPostSubmit}
           onSuccess={this.props.onSuccess}
           onError={this.props.onError}
         >
-      
+
           <Pyr.Form.Group name="title">
             <Pyr.Form.Label>Title</Pyr.Form.Label>
             <Pyr.Form.TextField placeholder= "Enter candidate title"/>
           </Pyr.Form.Group>
-      
+
           <Pyr.Form.Group name="time_commit">
             <Pyr.Form.Label>Time Requirements</Pyr.Form.Label>
             <Pyr.Form.Select>
@@ -139,12 +139,12 @@ class CandidateForm extends Component {
               <Pyr.Form.Option value="2">Contractor</Pyr.Form.Option>
             </Pyr.Form.Select>
           </Pyr.Form.Group>
-      
+
           <Pyr.Form.Group name="description">
             <Pyr.Form.Label>Description</Pyr.Form.Label>
             <Pyr.Form.TextArea placeholder="Enter description" rows="10" />
           </Pyr.Form.Group>
-      
+
         </Pyr.Form.Form>
         <div className="form-footer">
           <Pyr.Form.SubmitButton target={this} disabled={this.props.isLoading}>{this.methodToName(method)}</Pyr.Form.SubmitButton>
@@ -162,12 +162,12 @@ class EditSheet extends Sheet.Edit {
   renderForm() {
     //alert("JOB EDIT " + this.props.candidate.id);
     return (
-      <CandidateForm 
-        onPreSubmit={this.onPreSubmit} 
-        onPostSubmit={this.onPostSubmit} 
-        candidate={this.props.candidate} 
+      <CandidateForm
+        onPreSubmit={this.onPreSubmit}
+        onPostSubmit={this.onPostSubmit}
+        candidate={this.props.candidate}
         onSuccess={this.onSuccess}
-        method={Pyr.Method.PATCH} 
+        method={Pyr.Method.PATCH}
         isLoading={this.state.isLoading}/>
     );
   }
@@ -196,10 +196,10 @@ class JobSelect extends Component {
     let value = this.props.job ? { value: this.props.job.id, label: this.props.job.title } : null;
 
     return (
-      <Select 
-        {...this.props} 
+      <Select
+        {...this.props}
         {...Pyr.Util.propsMergeClassName(this.props, "job-select")}
-        options={options} 
+        options={options}
         value={value}
         isClearable={false}
         isSearchable={false}
@@ -260,10 +260,10 @@ class IndexSheet extends Sheet.Index {
   renderItem(item, isSelected) {
 
     return (
-      <CandidateItem 
+      <CandidateItem
         {...this.props}
-        candidate={item} 
-        isSelected={isSelected} 
+        candidate={item}
+        isSelected={isSelected}
       />
     );
   }
@@ -326,7 +326,7 @@ class RecruiterMessage extends Component {
   render() {
     let candidate = this.props.candidate;
     if (!candidate.description) {
-      return ( 
+      return (
         null
       );
     }
@@ -339,7 +339,7 @@ class RecruiterMessage extends Component {
     let url = Pyr.URL(MESSAGES_URL).push(candidate.description.id);
 
     return (
-      <div 
+      <div
         className={clazzes}
       >
         <div className="title">Note from recruiter</div>
@@ -352,9 +352,9 @@ class RecruiterMessage extends Component {
 }
 
 const StateButton = (props) =>  (
-   <Pyr.UI.PrimaryButton 
+   <Pyr.UI.PrimaryButton
     key={"state-button-" + props.state}
-    className={ClassNames(props.className, "state-button").push(State.toName(props.state))} 
+    className={ClassNames(props.className, "state-button").push(State.toName(props.state))}
     onClick={props.onClick}
   >{props.children}</Pyr.UI.PrimaryButton>
 );
@@ -391,11 +391,11 @@ class UnlockModal extends Pyr.UI.Modal {
     return (
       <div className="unlock-modal inner">
         <div className="section">
-          By unlocking this candidate you agree to pay a commission of <span className="commission">{this.props.candidate.commission}%</span> 
+          By unlocking this candidate you agree to pay a commission of <span className="commission">{this.props.candidate.commission}%</span>
           of their first year salary if they are hired within one year from today.
         </div>
         <div className="section">
-          Unlocking this candidate gives you full access to their details, attachments and the ability to 
+          Unlocking this candidate gives you full access to their details, attachments and the ability to
           directly message with the recruiter.
         </div>
         <StateButton key={"sb-unlock-mod-"+name} state={state} onClick={this.onNextStep}>{action}</StateButton>
@@ -621,9 +621,9 @@ class ShowSheet extends Sheet.Show {
     return (
         <div className="flx-row flx-1">
           <div className="flx-col left flx-5 unlock-modal-below">
-            <UnlockModal 
-              open={this.state.showUnlockModal} 
-              onClose={this.onHideUnlock} 
+            <UnlockModal
+              open={this.state.showUnlockModal}
+              onClose={this.onHideUnlock}
               candidate={candidate}
               recruiter={recruiter}
               job={job}
@@ -634,13 +634,13 @@ class ShowSheet extends Sheet.Show {
             <div className="flx-col flx-2 cv">
               <Pyr.UI.Scroll>
                 <CV.CV
-                  candidate={candidate} 
-                  isSelected={isSelected} 
+                  candidate={candidate}
+                  isSelected={isSelected}
                   job={this.state.job}
                   locked={locked}
                 />
               </Pyr.UI.Scroll>
- 
+
             </div>
           </div>
           <div className="right flx-2">
@@ -669,8 +669,8 @@ class ShowSheet extends Sheet.Show {
 }
 
 class New extends Sheet.Base {
-  renderForm() { 
-    return ( 
+  renderForm() {
+    return (
       <CandidateForm onPreSubmit={this.onPreSubmit} postSubmit={this.postSubmit} />
     );
   }
