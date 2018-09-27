@@ -73,7 +73,7 @@ Rails.application.routes.draw do
       resources :companies
 
       resources :uploads
-      post 'uploads/make' => 'uploads#make', as: :api_v1_upload_url
+      post 'uploads/make' => 'uploads#make', as: :api_v1_upload
 
 
       post 'messages/:id' => 'messages#create'
@@ -101,8 +101,8 @@ Rails.application.routes.draw do
 
 
   authenticated :user do
-    root 'marketplace#index', constraints: Constraint::Recruiter.new, as: :marketplace_url
-    root 'dashboard#index', as: :dashboard_url
+    root 'marketplace#index', constraints: Constraint::Recruiter.new, as: :marketplace
+    root 'dashboard#index', as: :dashboard
     get "*path", to: redirect('/'), via: :all, status: 302
   end
 
