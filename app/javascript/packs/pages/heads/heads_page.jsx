@@ -150,8 +150,8 @@ class IndexSheet extends Sheet.Index {
 
     return (
       <div className="flx-row">
-        <div className="mr-auto">Heads</div>
-        <Link to={url.toString()}><Pyr.UI.IconButton name="plus" className="ml-auto">Add Head</Pyr.UI.IconButton></Link>
+        <div className="mr-auto">Talent</div>
+        <Link to={url.toString()}><Pyr.UI.IconButton name="plus" className="ml-auto">Add Talent</Pyr.UI.IconButton></Link>
         <Pyr.UI.MenuToggle name="sort" title="Sort">
             <Pyr.UI.MenuToggleItem>Date</Pyr.UI.MenuToggleItem>
             <Pyr.UI.MenuToggleItem>Unread</Pyr.UI.MenuToggleItem>
@@ -233,7 +233,7 @@ class ShowSheet extends Sheet.Show {
 
   renderHeader() {
     let url = Pyr.URL(HEADS_URL);
-    let title = "Heads";
+    let title = "Talent";
 
     return (
       <Sheet.ShowHeader className="candidate-title" title={title} nextId={this.props.nextId} prevId={this.props.prevId} url={url} />
@@ -274,7 +274,7 @@ class NewSheet extends Sheet.New {
   }
 
   title() {
-    return "Add a New Head";
+    return "Add Talent";
   }
 
   renderButton() {
@@ -343,7 +343,7 @@ class HeadsPage extends Page {
   }
 
   name() {
-    return "Heads";
+    return "Talent";
   }
 
   loader() {

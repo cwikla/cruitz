@@ -94,7 +94,7 @@ class SubNavBar extends Container.NavBar {
               <Container.SubIcon name="Messages" icon="envelope" selected={this.props.page} page="messages" count={messagesCount}/>
               <Container.SubIcon name="Jobs" icon="bullseye" selected={this.props.page} page="positions" count={positionsCount}/>
               <Container.SubIcon name="Candidates" icon="users" selected={this.props.page} page="candidates" count={this.props.pageItemsCount.candidates}/>
-              <Container.SubIcon name="Heads" icon="users" selected={this.props.page} page="heads" count={headsCount}/>
+              <Container.SubIcon name="Talent" icon="users" selected={this.props.page} page="talent" count={headsCount}/>
             </div>
           </Pyr.Grid.Col>
           <Pyr.Grid.Col className="col col-1">

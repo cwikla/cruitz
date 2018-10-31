@@ -14,7 +14,7 @@ export const ME_PAGE = 'Me';
 export const COMPANY_PAGE = 'Company';
 export const COMPANIES_PAGE = 'Companies';
 export const POSITIONS_PAGE = 'Positions';
-export const HEADS_PAGE = 'Heads';
+export const HEADS_PAGE = 'Talent';
 
 export const MAIN_URL = "/";
 export const JOBS_URL = "/jobs";
@@ -27,7 +27,7 @@ export const POSTINGS_URL = "/postings";
 export const COMPANY_URL = "/company";
 export const COMPANIES_URL = "/companies";
 export const POSITIONS_URL = "/positions";
-export const HEADS_URL = "/heads";
+export const HEADS_URL = "/talent";
 export const SPAMS_URL = "/spams";
 export const SPAM_REASONS_URL = "/spam_reasons";
 

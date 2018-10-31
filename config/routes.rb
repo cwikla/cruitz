@@ -59,7 +59,7 @@ Rails.application.routes.draw do
 
       resources :ratings
       resources :candidates
-      resources :heads
+      resources :talent, :controller => :heads
       resources :jobs
       resources :invites, only: [:new, :create]
       resources :categories
