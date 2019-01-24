@@ -6,6 +6,8 @@ module PusherConcern
   
     module ClassMethods
       def pusher_client
+        return nil if !::PUSHER_APP_ID
+
         @@pusher_client ||= ::Pusher::Client.new(
           app_id: ::PUSHER_APP_ID,
           key: ::PUSHER_KEY,
@@ -17,7 +19,7 @@ module PusherConcern
       end
 
       def pusher_batch(*events)
-        self.pusher_client.trigger_batch(*events)
+        self.pusher_client&.trigger_batch(*events)
       end
   
     end
@@ -27,7 +29,7 @@ module PusherConcern
     end
   
     def pusher_private_event(eventName, **data)
-      self.class.pusher_client.trigger(self.pusher_private_channel, eventName, **data)
+      self.class.pusher_client&.trigger(self.pusher_private_channel, eventName, **data)
     end
 
     def pusher_private_batch(events)
