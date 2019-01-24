@@ -6,7 +6,7 @@ module PusherConcern
   
     module ClassMethods
       def pusher_client
-        return nil if !::PUSHER_APP_ID
+        return nil if !::USE_PUSHER || !::PUSHER_APP_ID
 
         @@pusher_client ||= ::Pusher::Client.new(
           app_id: ::PUSHER_APP_ID,
