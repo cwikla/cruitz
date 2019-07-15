@@ -266,6 +266,7 @@ class Form extends Network.Component {
         {...Util.propsMergeClassName(rest, Util.ClassNames(!this.state.valid ? "invalid" : ""))}
         onSubmit={this.props.onSubmit || this.onSubmit}
       >
+        <CSRFHidden />
         {this.props.children}
       </form>
     );
@@ -879,6 +880,19 @@ class Hidden extends Child {
 
     return(
       <input type="hidden" {...myProps} {...Util.propsMergeClassName(this.props, "form-control")} />
+    );
+  }
+}
+
+class CSRFHidden extends Child {
+  render() {
+    const token = $('meta[name="csrf-token"]').attr('content');
+    return (
+      <Hidden
+        name="authenticity_token"
+        value={token}
+        readOnly={true}
+      />
     );
   }
 }
@@ -1741,6 +1755,7 @@ const PyrForm = {
   Nested,
   EmailField,
   PhoneNumberField,
+  CSRFHidden,
 };
 
 export { 

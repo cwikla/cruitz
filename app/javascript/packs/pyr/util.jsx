@@ -63,7 +63,7 @@ class URLObj {
     return this;
   }
   
-  get(k,v) {
+  get(k) {
     this.searchParams.get(k);
     return this;
   }
