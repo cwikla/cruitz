@@ -865,7 +865,7 @@ GEM
       nesty
       reentrant_flock
       sinatra (>= 1.2.7)
-    geocoder (1.5.1)
+    geocoder (1.6.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-api-client (0.30.2)
