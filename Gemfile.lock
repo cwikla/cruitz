@@ -888,7 +888,7 @@ GEM
     httpclient (2.8.3)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
-    jmespath (1.4.0)
+    jmespath (1.6.1)
     jpyr (4.0.0)
       jquery-rails
       jquery-ui-rails
