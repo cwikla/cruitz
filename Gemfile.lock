@@ -817,7 +817,7 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
-    dalli (2.7.10)
+    dalli (3.2.3)
     declarative (0.0.10)
     declarative-option (0.1.0)
     devise (4.6.2)
